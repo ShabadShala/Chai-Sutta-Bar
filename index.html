@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chai Sutta Bar</title>
+        <style>
+            html {
+            font-size: 1vw; /* 1vw = 1% of viewport width */
+            }
+            
+            body {
+            font-family: Arial, sans-serif;
+            background-color: #000000; /* Set background to black */
+            color: white; /* Set default text color to white */
+            padding: 5%; /* Adjusted padding for mobile */
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures full viewport height */
+            overflow-x: hidden;            
+            }
+            
+            
+            /* Loading animation overlay */
+            #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);  /* Subtle dimming effect */
+            display: flex;
+            flex-direction: column;  /* Align children vertically */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            }
+            
+            /* Spinner animation */
+            .spinner {
+            border: 3.5rem solid rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+            border-top: 3.5rem solid #fae68e; /* Chai color for the spinning part */
+            border-radius: 50%;
+            width: 25rem;
+            height: 25rem;
+            animation: spin 1.5s linear infinite;
+            position: relative;
+            }
+            
+            @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+            }
+            
+            /* Loading message */
+            .loading-message {
+            margin-top: 5rem;
+            font-size: 5rem;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 0.5rem;
+            }
+            
+            /* Header container */
+            .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1% 0;
+            width: 100%;
+            margin: 0 auto;
+            flex-wrap: nowrap;
+            }
+            
+            /* White circle styling */
+            .circle {
+            width: 12vw;  
+            height: 12vw;  
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            }
+            
+            .circle img {
+            width: 70%;  
+            height: 70%;  
+            }
+            
+            /* Logo text */
+            .logo-text {
+            text-align: center;
+            margin: 0 3vw;
+            font-size: 7rem;              
+            font-weight: bold;
+            white-space: nowrap;
+            max-width: 100%;
+            }
+            
+            .logo-text .chai {
+            color: #fae68e;
+            }
+            
+            .logo-text .sutta {
+            color: red;
+            }
+            
+            .logo-text .bar {
+            color: white;
+            }
+            
+            .bagha-purana {
+            font-size: 4rem;
+            color: #008CFF;
+            margin-top: 0.5rem; /* Space between Chai Sutta Bar and Bagha Purana */            
+            }
+            
+            /* Footer styling */
+            .footer {
+            background-color: #ff4d4d;
+            text-align: center;
+            padding: 3rem 0;
+            color: white;
+            display: none;
+            margin-top: auto; /* Pushes footer down */
+            }
+            
+            .footer .color1 {
+            font-size: 5rem;
+            font-weight: bold;
+            color: white;
+            }
+            
+            .footer .color2 {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #f5d56b;
+            }
+            
+            
+            
+            /* Menu items */
+            .menu-item {
+            padding: 5px;
+            border-bottom: 1px solid rgba(221, 221, 221, 0.3);
+            }
+            
+            .menu-item:last-child {
+            border-bottom: none;
+            }
+            
+            .menu-item-title {
+            font-weight: bold;
+            font-size: 5rem;
+            }
+            
+            .menu-item-line {
+            display: flex;
+            justify-content: space-between;
+            }
+            
+            .colAB, .colCDE {
+            font-size: 5rem;
+            }
+            .colCDE {
+            color: #008CFF; /* Neon Blue */
+            font-weight: bold;
+            }
+            
+            
+            
+            .category-header {
+            background-color: transparent;
+            font-size: 6rem;
+            font-weight: bold;
+            font-family: 'Comic Sans MS';
+            cursor: pointer;
+            padding: 5% 0;
+            margin-top: 5px;
+            margin-bottom: -10px;
+            display: flex;
+            justify-content: space-between;
+            color: #fae68e;
+            align-items: center;            
+            }
+            
+            .category-header .left {
+            font-weight: bold;
+            flex-grow: 1;
+            text-align: left;
+            }
+            
+            .category-header .right {
+            font-size: 5rem;
+            text-align: right;
+            white-space: nowrap;
+            color: #40E0D0;
+            }
+            
+            
+            
+            
+            /* Universal reset */
+            *,
+            *::before,
+            *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            }
+            
+            /* Ensure parent container takes full width */
+            .parent-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            }
+            
+            /* Search Bar */
+            .search-container {
+            width: 55%;
+            margin: 0 auto;
+            position: relative;
+            display: none;
+            margin-top: 2rem;
+            }
+            
+            #searchBar {
+            width: 100%;
+            padding: 2rem;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            }
+            
+            #searchInput {
+            width: 100%;
+            padding: 1.5rem;
+            padding-left: 10px;
+            padding-right: 35px;
+            font-size: 6rem;
+            border: 2px solid #fae68e;
+            border-radius: 3rem;
+            background-color: #000000;
+            color: white;
+            outline: none;
+            }
+            
+            
+            #searchInput::placeholder {
+            color: #888;
+            }
+            
+            .clear-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 10rem;
+            color: white;
+            z-index: 10;
+            }
+            
+            .clear-btn:hover {
+            color: yellow;
+            }
+            
+            .signature {
+            background-color: #000000;
+            color: #fae68e; /* Signature text color */
+            font-size: 4rem;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto; /* Ensures it's at the bottom */
+            }
+            
+            
+            #sidebar {
+            position: fixed;
+            right: -100px; /* Initially hidden off the screen */
+            top: 50%;
+            transform: translateY(-50%); /* Vertically center the sidebar */
+            width: 60px; /* Set the width to fit the logos */
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            transition: right 0.3s ease;
+            z-index: 1000; /* Ensure sidebar is on top */
+            box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5); /* Optional shadow for better visibility */
+            }
+            
+            #sidebar a {
+            margin: 10px 0;
+            text-decoration: none;
+            }
+            
+            #sidebar .logo {
+            width: 10rem;
+            height: 10rem;
+            }
+            
+            #sidebar.open {
+            right: 0; /* Show sidebar when open */
+            }
+            
+            #sidebar-indicator {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 100px;
+            background-color: #333;
+            cursor: pointer;
+            }
+            
+            /* Add styles for touch gestures */
+            @media (pointer: coarse) {
+            #sidebar {
+            touch-action: manipulation;
+            }
+            }            
+        </style>
+    </head>
+    <body>
+        <div id="loadingOverlay">
+            <div class="spinner"></div>
+            <div class="loading-message">Loading...</div>
+        </div>
+        
+        <div class="header">
+            <!-- Left logo wrapped in white circle -->
+            <div class="circle">
+                <img src="logo.png" alt="Logo">
+            </div>
+            
+            <!-- Centered Chai Sutta Bar text -->
+            <div class="logo-text">
+                <span class="chai">CHAI</span>
+                <span class="sutta">SUTTA</span>
+                <span class="bar">BAR</span>
+                <div class="bagha-purana">Bagha Purana</div>
+            </div>
+            
+            <!-- Right burger wrapped in white circle -->
+            <div class="circle">
+                <img src="burger.png" alt="Burger">
+            </div>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" maxlength="10" placeholder="Search...">
+            <span id="clearButton" class="clear-btn" style="display: none;">×</span>
+        </div>
+        
+        <div id="no-results-message" style="display: none; color: #fae68e; font-size: 5rem; text-align: center; padding: 2rem;">
+            No items found.
+        </div>
+        
+        
+        <div id="menu"></div>
+        
+        
+        <br><br><br>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="color1">Opp. Petrol Pump, Kotkapura Road</div>
+            <div class="color2">Bagha Purana (Moga) Punjab</div>
+            <div class="color1">
+                Phone: <a href="tel:+919112400010">91124-00010</a>, <a href="tel:+919023406002">90234-06002</a>
+            </div>            
+        </div>
+        <br>
+        
+        <div id="sidebar">
+            <a href="tel:+919112400010"><img src="phone.png" alt="Phone" class="logo"></a>
+            <a href="tel:+919023406002"><img src="phone.png" alt="Phone" class="logo"></a>
+            <a href="https://wa.me/+919112400010?text=Hello%20Chai%20Sutta%20Bar!"><img src="whatsapp.png" alt="Chat on WA" class="logo"></a>
+            <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="location.png" alt="Location" class="logo"></a>
+            <a href="https://t.me/chaisuttabar_baghapurana"><img src="telegram.png" alt="Telegram" class="logo"></a>
+            <a href="https://www.facebook.com/p/Chai-Sutta-Bar-Bagha-Purana-61553478237898/"><img src="facebook.png" alt="Facebook" class="logo"></a>
+            <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="insta.png" alt="Instagram" class="logo"></a>
+</div>
+        
+        
+        <div class="signature">
+            Web App by Komal Brar
+        </div>
+        
+        <script>
+            function filterMenuItems(searchQuery) {
+                const menuDiv = document.getElementById('menu');
+                if (!menuDiv) return;
+                
+                const menuItems = document.querySelectorAll('.menu-item');
+                const categoryHeaders = document.querySelectorAll('.category-header');
+                const categoryItems = document.querySelectorAll('.category-items');
+                
+                let hasVisibleItems = false;
+                
+                const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+                
+                categoryHeaders.forEach((header, index) => {
+                    const categoryItem = categoryItems[index];
+                    const itemsInCategory = categoryItem.querySelectorAll('.menu-item');
+                    const headerText = header.textContent.trim().toLowerCase();
+                    
+                    const headerMatches = headerText.split(' ').some(word => {
+                        const splitWords = word.split('('); 
+                        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+                    });
+                    
+                    let hasVisibleItemsInCategory = false;
+                    
+                    itemsInCategory.forEach(item => {
+                        const colABElement = item.querySelector('.colAB');
+                        const itemText = colABElement ? colABElement.textContent.trim().toLowerCase() : '';
+                        
+                        const itemMatches = itemText.split(' ').some(word => {
+                            const splitWords = word.split('('); 
+                            return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+                        });
+                        
+                        if (headerMatches || itemMatches) {
+                            item.style.display = 'block';
+                            hasVisibleItemsInCategory = true;
+                            hasVisibleItems = true;
+                            item.style.borderBottom = ''; // Reset border-bottom for all items
+                            } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // Adjust the header display and styling based on matches
+                    if (headerMatches || hasVisibleItemsInCategory) {
+                        header.style.display = 'flex';  // Show category header
+                        categoryItem.style.display = 'block';  // Show category items
+                        header.style.fontSize = '6rem';  // Set font size for expanded header
+                        header.querySelector('.right').style.display = 'inline';  // Show second column
+                        } else {
+                        header.style.display = 'none';  // Hide category header
+                        categoryItem.style.display = 'none';  // Hide category items
+                        header.style.fontSize = '7rem';  // Set font size for collapsed header
+                        
+                        header.querySelector('.right').style.display = 'none';  // Hide second column
+                    }
+                    
+                    // Now handle the last visible item in the category
+                    const visibleItems = Array.from(itemsInCategory).filter(item => item.style.display === 'block');
+                    if (visibleItems.length > 0) {
+                        const lastVisibleItem = visibleItems[visibleItems.length - 1];
+                        lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
+                    }
+                });
+                
+                let noResults = document.getElementById('no-results-message');
+                
+                // If no items match, show a message
+                if (!hasVisibleItems) {
+                    if (!noResults) {
+                        noResults = document.createElement('div');
+                        noResults.id = 'no-results-message';
+                        noResults.textContent = 'No items found.';
+                        noResults.style.color = '#fae68e';
+                        noResults.style.fontSize = '5rem';
+                        noResults.style.textAlign = 'center';
+                        noResults.style.padding = '2rem';
+                        menuDiv.appendChild(noResults);
+                    }
+                    } else if (noResults) {
+                    noResults.remove();  // Remove the "No items found" message when results are visible
+                }
+            }
+            
+            
+            // Function to reset headers and hide the second column when search is cleared
+            function resetHeaders() {
+                document.querySelectorAll('.category-header').forEach(header => {
+                    header.style.fontSize = '7rem';  // Reset to collapsed size
+                    header.querySelector('.right').style.display = 'none';  // Hide second column
+                });
+                
+                document.querySelectorAll('.category-items').forEach(container => {
+                    container.style.display = 'none';  // Collapse all categories
+                });
+            }
+            
+            // Search Input Event Listener
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.getElementById('clearButton');
+            
+            searchInput.addEventListener('input', (e) => {
+                const searchQuery = e.target.value.trim();
+                
+                // Show the clear button if there is any input text
+                if (searchQuery.length > 0) {
+                    clearButton.style.display = 'block';
+                    } else {
+                    clearButton.style.display = 'none';
+                    resetHeaders();  // Reset headers when search is cleared
+                }
+                
+                const regex = /^[a-zA-Z\u0A00-\u0A7F]*$/;  // Ensure only English or Gurmukhi characters
+                if (!regex.test(searchQuery)) {
+                    e.target.value = searchQuery.slice(0, -1);
+                    } else {
+                    filterMenuItems(searchQuery.trim());  // Filter items based on search query
+                }
+                
+                clearButton.offsetHeight;  // Trigger reflow to show the clear button
+            });
+            
+            // Ensure headers reset when the search box is clicked
+            searchInput.addEventListener('focus', resetHeaders);
+            
+            // Prevent spaces from being typed
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === " ") {
+                    e.preventDefault();
+                }
+            });
+            
+            
+            
+            
+            
+            // Add event listener to clear the input field when the cross is clicked
+            clearButton.addEventListener('click', () => {
+                searchInput.value = ''; // Clear input field
+                clearButton.style.display = 'none'; // Hide the clear button
+                filterMenuItems(''); // Reset the filter
+                
+                // Collapse all category items when the filter is cleared
+                const categoryItemsContainers = document.querySelectorAll('.category-items');
+                categoryItemsContainers.forEach(container => {
+                    container.style.display = 'none'; // Explicitly collapse all categories
+                });
+                
+                // Collapse all category headers to ensure they are not expanded
+                const categoryHeaders = document.querySelectorAll('.category-header');
+                categoryHeaders.forEach(header => {
+                    header.classList.remove('expanded'); // Remove any "expanded" class or styles
+                });
+                
+                searchInput.focus(); // Set focus to the search box
+                
+            });
+            
+            
+            
+            // Fetch data from Google Script URL
+            fetch("https://script.google.com/macros/s/AKfycbxoXXySteTBVLCIyOShOLz3V5jX4iBeY7fQTgPQRlLJKTQQ01yiFene_wxFF_CiDjmUuQ/exec")
+            .then(response => response.json())
+            .then(data => {
+                const menuDiv = document.getElementById('menu');
+                let currentCategory = null;
+                
+                // Store all category item containers for collapsing
+                const categoryItemsContainers = [];
+                
+                data.forEach(row => {
+                    const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
+                    const mergedcolCDE = [row.columnC, row.columnD, row.columnE].filter(col => col).join(' / ');
+                    
+                    // Empty 3rd column behave as category except -
+                    // const isCategory = isNaN(row.columnC) && row.columnC.trim() !== "";
+                    const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
+                    
+                    
+                    if (isCategory) {
+                        const categoryHeaderDiv = document.createElement('div');
+                        categoryHeaderDiv.classList.add('category-header');
+                        
+                        const leftPart = document.createElement('span');
+                        leftPart.classList.add('left');
+                        leftPart.textContent = mergedColAB;
+                        
+                        const rightPart = document.createElement('span');
+                        rightPart.classList.add('right');
+                        rightPart.textContent = mergedcolCDE;
+                        
+                        categoryHeaderDiv.appendChild(leftPart);
+                        categoryHeaderDiv.appendChild(rightPart);
+                        
+                        const categoryItemsDiv = document.createElement('div');
+                        categoryItemsDiv.classList.add('category-items');
+                        
+                        // Toggle category items visibility on click
+                        categoryHeaderDiv.addEventListener('click', () => {
+                            // Reset all other headers to default collapsed size and show only the first column
+                            document.querySelectorAll('.category-header').forEach(header => {
+                                header.style.fontSize = '7rem'; // Set collapsed size
+                                header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
+                            });
+                            
+                            document.querySelectorAll('.category-items').forEach(container => {
+                                if (container !== categoryItemsDiv) {
+                                    container.style.display = 'none';
+                                }
+                            });
+                            
+                            // Toggle visibility and adjust styles accordingly
+                            if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
+                                categoryItemsDiv.style.display = 'block'; // Expand
+                                categoryHeaderDiv.style.fontSize = '6rem'; // Set expanded size
+                                categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show second column
+                                } else {
+                                categoryItemsDiv.style.display = 'none'; // Collapse
+                                categoryHeaderDiv.style.fontSize = '7rem'; // Set collapsed size
+                                
+                                categoryHeaderDiv.querySelector('.right').style.display = 'none'; // Hide second column
+                            }
+                        });
+                        
+                        // Initial state: Increase font size for collapsed categories and hide second column
+                        categoryHeaderDiv.style.fontSize = '7rem';
+                        categoryHeaderDiv.querySelector('.right').style.display = 'none';
+                        
+                        
+                        
+                        
+                        menuDiv.appendChild(categoryHeaderDiv);
+                        menuDiv.appendChild(categoryItemsDiv);
+                        
+                        categoryItemsContainers.push(categoryItemsDiv);                    
+                        currentCategory = categoryItemsDiv;
+                        } else if (currentCategory) {
+                        const menuItemDiv = document.createElement('div');
+                        menuItemDiv.classList.add('menu-item');
+                        
+                        const lineDiv = document.createElement('div');
+                        lineDiv.classList.add('menu-item-line');
+                        
+                        const colABElement = document.createElement('span');
+                        colABElement.classList.add('colAB');
+                        colABElement.textContent = mergedColAB;
+                        
+                        const colCDEElement = document.createElement('span');
+                        colCDEElement.classList.add('colCDE');
+                        colCDEElement.textContent = mergedcolCDE;
+                        
+                        lineDiv.appendChild(colABElement);
+                        lineDiv.appendChild(colCDEElement);                        
+                        menuItemDiv.appendChild(lineDiv);
+                        currentCategory.appendChild(menuItemDiv);
+                    }
+                });
+                
+                categoryItemsContainers.forEach(container => {
+                    container.style.display = 'none';
+                });
+                
+                document.querySelector(".search-container").style.display = "block";
+                document.querySelector(".footer").style.display = "block"; // Show footer
+                // Remove the loading overlay after the data is fetched and processed
+                document.getElementById('loadingOverlay').style.display = 'none';
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
+            });
+            
+            
+            
+     let sidebar = document.getElementById('sidebar');
+let indicator = document.createElement('div');
+indicator.id = 'sidebar-indicator';
+document.body.appendChild(indicator);
+
+let hoverTimeout;
+let sidebarAutoHideTimer;
+let touchStartX = 0;
+let touchEndX = 0;
+const swipeThreshold = 80;  // Minimum swipe distance
+const edgeThreshold = 50;   // Swipe must start within 50px from screen edge
+
+// Mouse-triggered sidebar behavior (Unchanged)
+document.addEventListener('mousemove', (event) => {
+    clearTimeout(hoverTimeout);
+
+    if (event.clientX > window.innerWidth - 50) {
+        hoverTimeout = setTimeout(() => {
+            sidebar.classList.add('open');
+        }, 300);
+    } else {
+        hoverTimeout = setTimeout(() => {
+            sidebar.classList.remove('open');
+        }, 300);
+    }
+});
+
+// Touch gesture handling
+document.addEventListener('touchstart', (event) => {
+    touchStartX = event.touches[0].clientX;
+});
+
+document.addEventListener('touchmove', (event) => {
+    touchEndX = event.touches[0].clientX;
+});
+
+document.addEventListener('touchend', (event) => {
+    if (touchEndX === 0) return;  // Ignore if no movement
+
+    if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold) {
+        sidebar.classList.add('open'); // Swipe-in from left edge → Open sidebar
+    } 
+    else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
+        sidebar.classList.remove('open'); // Swipe-out to right edge → Hide sidebar
+    } 
+    else if (touchStartX > sidebar.offsetWidth + 50) {
+        sidebar.classList.remove('open'); // Tap outside sidebar → Hide sidebar
+    }
+
+    touchStartX = 0;
+    touchEndX = 0;
+});
+
+// Toggle sidebar on indicator tap
+indicator.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    sidebar.classList.toggle('open');
+});
+
+// Auto-hide timer starts only when leaving the sidebar
+function resetAutoHideTimer() {
+    clearTimeout(sidebarAutoHideTimer);
+    sidebarAutoHideTimer = setTimeout(() => {
+        sidebar.classList.remove('open');
+    }, 2500);
+}
+
+// Stop auto-hide while interacting
+sidebar.addEventListener('mouseenter', () => clearTimeout(sidebarAutoHideTimer)); // Mouse enters sidebar
+sidebar.addEventListener('mouseleave', resetAutoHideTimer); // Mouse leaves sidebar
+
+sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
+sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
+
+// Blink the touch indicator every 1 second
+setInterval(() => {
+    indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
+}, 1000);
+
+        </script>                
+    </body>
+</html>
