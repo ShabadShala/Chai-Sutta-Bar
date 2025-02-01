@@ -419,7 +419,9 @@
         <div id="sidebar">
             <a href="tel:+919112400010"><img src="phone.png" alt="Phone" class="logo"></a>
             <a href="tel:+919023406002"><img src="phone2.png" alt="Phone" class="logo"></a>
-            <a href="https://wa.me/+919112400010?text=Hello%20Chai%20Sutta%20Bar!"><img src="whatsapp.png" alt="Chat on WA" class="logo"></a>
+            <a id="whatsapp-link" href="#">
+                <img src="whatsapp.png" alt="Chat on WA" class="logo">
+            </a>
             <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="location.png" alt="Location" class="logo"></a>
             <a href="https://t.me/chaisuttabar_baghapurana"><img src="telegram.png" alt="Telegram" class="logo"></a>
             <a href="https://www.facebook.com/p/Chai-Sutta-Bar-Bagha-Purana-61553478237898/"><img src="facebook.png" alt="Facebook" class="logo"></a>
@@ -830,89 +832,106 @@
             
             
             
-      const miscUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec?sheet=misc&raw=true";
-
-fetch(miscUrl)
-    .then(response => response.json())
-    .then(data => {
-        if (data && data.length >= 2) {
-            // Extract Open and Close times from Google Sheets
-            const openTimeStr = data[0][1]; // Example: "09.30am"
-            const closeTimeStr = data[1][1]; // Example: "10.45pm"
+            const miscUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec?sheet=misc&raw=true";
             
-                        // Check if either openTimeStr or closeTimeStr is empty
-                        if (!openTimeStr || !closeTimeStr) {
-                // If one or both times are missing, don't display anything
-                const baghaElem = document.querySelector('.bagha-purana');
-                if (baghaElem) {
-                    baghaElem.innerHTML = "";
+            fetch(miscUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length >= 2) {
+                    // Fetch WhatsApp message from the B3 cell
+                    let message = data[2][1]; // Assuming B3 is in the 3rd row, 2nd column (0-indexed)                    
+                    // Check if the message is empty or undefined, and assign default message if so
+                    if (!message || message.trim() === "") {
+                        message = "Hello Chai Sutta Bar!"; // Default message
+                    }                    
+                    // URL-encode the message for the WhatsApp link
+                    const encodedMessage = encodeURIComponent(message);                    
+                    // Construct the full WhatsApp link with dynamic message
+                    const whatsappLink = `https://wa.me/+919112400010?text=${encodedMessage}`;                    
+                    // Update the href attribute of the anchor tag with the new link
+                    const whatsappLinkElement = document.getElementById('whatsapp-link');
+                    if (whatsappLinkElement) {
+                        whatsappLinkElement.href = whatsappLink;
+                    }
+                    
+                    // Extract Open and Close times from Google Sheets
+                    const openTimeStr = data[0][1]; // Example: "09.30am"
+                    const closeTimeStr = data[1][1]; // Example: "10.45pm"
+                                                           
+                    // Check if either openTimeStr or closeTimeStr is empty
+                    if (!openTimeStr || !closeTimeStr) {
+                        // If one or both times are missing, don't display anything
+                        const baghaElem = document.querySelector('.bagha-purana');
+                        if (baghaElem) {
+                            baghaElem.innerHTML = "";
+                        }
+                        return; // Exit the function
+                    }
+                    
+                    // Convert Open and Close times to Date objects
+                    const openTime = parseCustomTime(openTimeStr);
+                    const closeTime = parseCustomTime(closeTimeStr);
+                    
+                    // Get current time
+                    const now = new Date();
+                    const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
+                    
+                    // Convert Open and Close times to minutes since midnight
+                    const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
+                    const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
+                    
+                    let statusMessage = "";
+                    // Compare times based on minutes from midnight
+                    if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
+                        statusMessage = `<span style="color: #00FF00; animation: blink 2s step-start 0s infinite;">Open</span> ⋅ Closing at ${formatTime(closeTime)}`;
+                        } else {
+                        statusMessage = `<span style="color: red; animation: blink 2s step-start 0s infinite;">Closed</span> ⋅ Opens at ${formatTime(openTime)}`;
+                    }
+                    
+                    // Update the display
+                    const baghaElem = document.querySelector('.bagha-purana');
+                    if (baghaElem) {
+                        baghaElem.innerHTML = statusMessage;
+                    }                                    
+                }                
+            })
+            
+            .catch(error => {
+                console.error("Error fetching Misc data:", error);
+            });
+            
+            // Function to parse custom time format (hh.mmap)
+            function parseCustomTime(timeStr) {
+                const hour = parseInt(timeStr.substring(0, 2), 10); // Get the hour part
+                const minute = parseInt(timeStr.substring(3, 5), 10); // Get the minute part
+                const ampm = timeStr.substring(5).toLowerCase(); // Get 'am' or 'pm'
+                
+                let hours24 = hour;
+                
+                // Convert to 24-hour format
+                if (ampm === 'pm' && hours24 !== 12) {
+                    hours24 += 12; // Convert PM hours to 24-hour format
                 }
-                return; // Exit the function
+                if (ampm === 'am' && hours24 === 12) {
+                    hours24 = 0; // Convert 12 AM to 00:00
+                }
+                
+                const date = new Date();
+                date.setHours(hours24, minute, 0, 0); // Set the time to the parsed hour and minute
+                
+                return date;
             }
             
-            // Convert Open and Close times to Date objects
-            const openTime = parseCustomTime(openTimeStr);
-            const closeTime = parseCustomTime(closeTimeStr);
-            
-            // Get current time
-            const now = new Date();
-            const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
-
-            // Convert Open and Close times to minutes since midnight
-            const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
-            const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
-            
-            let statusMessage = "";
-            // Compare times based on minutes from midnight
-            if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
-                statusMessage = `<span style="color: #00FF00; animation: blink 2s step-start 0s infinite;">Open</span> ⋅ Closing at ${formatTime(closeTime)}`;
-            } else {
-                statusMessage = `<span style="color: red; animation: blink 2s step-start 0s infinite;">Closed</span> ⋅ Opens at ${formatTime(openTime)}`;
+            // Function to format time in "h:mm AM/PM" format
+            function formatTime(date) {
+                const hours = date.getHours();
+                const minutes = date.getMinutes();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                const formattedHour = hours % 12 || 12; // Adjust hour for 12-hour format
+                const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                return `${formattedHour}:${formattedMinutes} ${ampm}`;
             }
             
-            // Update the display
-            const baghaElem = document.querySelector('.bagha-purana');
-            if (baghaElem) {
-                baghaElem.innerHTML = statusMessage;
-            }
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching Misc data:", error);
-    });
-
-// Function to parse custom time format (hh.mmap)
-function parseCustomTime(timeStr) {
-    const hour = parseInt(timeStr.substring(0, 2), 10); // Get the hour part
-    const minute = parseInt(timeStr.substring(3, 5), 10); // Get the minute part
-    const ampm = timeStr.substring(5).toLowerCase(); // Get 'am' or 'pm'
-    
-    let hours24 = hour;
-    
-    // Convert to 24-hour format
-    if (ampm === 'pm' && hours24 !== 12) {
-        hours24 += 12; // Convert PM hours to 24-hour format
-    }
-    if (ampm === 'am' && hours24 === 12) {
-        hours24 = 0; // Convert 12 AM to 00:00
-    }
-
-    const date = new Date();
-    date.setHours(hours24, minute, 0, 0); // Set the time to the parsed hour and minute
-    
-    return date;
-}
-
-// Function to format time in "h:mm AM/PM" format
-function formatTime(date) {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHour = hours % 12 || 12; // Adjust hour for 12-hour format
-    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-    return `${formattedHour}:${formattedMinutes} ${ampm}`;
-}
-
         </script>                
     </body>
 </html>
