@@ -585,9 +585,10 @@
             });
             
             
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec";
             
             // Fetch data from Google Script URL
-            fetch("https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec")
+            fetch(scriptUrl)
             .then(response => response.json())
             .then(data => {
                 const menuDiv = document.getElementById('menu');
@@ -796,25 +797,27 @@
             sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
             sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
             
-let logos = document.querySelectorAll('#sidebar .logo');
-
-// Global listener: clear hovered class from all logos on any touchstart
-document.addEventListener('touchstart', () => {
-    logos.forEach(logo => logo.classList.remove('hovered'));
-});
-
-// Then add the specific listeners for each logo
-logos.forEach(logo => {
-    logo.addEventListener('touchstart', (e) => {
-        e.stopPropagation(); // Prevent interference from global handler if necessary
-        logo.classList.add('hovered');
-    });
-
-    logo.addEventListener('touchend', (e) => {
-        e.stopPropagation();
-        logo.classList.remove('hovered');
-    });
-});
+            // Inject touch-based zoom-in effect on logos
+            // Select all logos
+            let logos = document.querySelectorAll('#sidebar .logo');
+            
+            // Listen for touchstart events on each logo
+            logos.forEach(logo => {
+                logo.addEventListener('touchstart', (e) => {
+                    e.stopPropagation();
+                    
+                    // Remove the hovered class from all logos
+                    logos.forEach(l => l.classList.remove('hovered'));
+                    
+                    // Add the hovered class to the current logo
+                    logo.classList.add('hovered');
+                });
+                
+                logo.addEventListener('touchend', (e) => {
+                    e.stopPropagation();
+                    logo.classList.remove('hovered');
+                });
+            });
             
             
             // Blink the touch indicator every 1 second
@@ -824,7 +827,8 @@ logos.forEach(logo => {
             
             
             
-            const miscUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec?sheet=misc&raw=true";
+const miscUrl = scriptUrl + "?sheet=misc&raw=true";
+
             
             fetch(miscUrl)
             .then(response => response.json())
