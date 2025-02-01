@@ -120,11 +120,11 @@
             }
             
             @keyframes blink {
-    50% {
-        visibility: hidden;
-    }
-}
-
+            50% {
+            visibility: hidden;
+            }
+            }
+            
             
             /* Footer styling */
             .footer {
@@ -829,64 +829,80 @@
             }, 1000);
             
             
-
-            const miscUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec?sheet=misc&raw=true";
             
-            fetch(miscUrl)
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.length >= 2) {
-                    // Extract times from Google Sheet
-                    const openTimeStr = data[0][1]; // Example: "9 AM"
-                    const closeTimeStr = data[1][1]; // Example: "10 PM"
-                    
-                    // Convert to 24-hour format
-                    const openHour = parseTime(openTimeStr);
-                    const closeHour = parseTime(closeTimeStr);
-                    
-                    // Get current hour in 24-hour format
-                    const now = new Date();
-                    const currentHour = now.getHours();
-                    
-                   
-let statusMessage = "";
-if (currentHour >= openHour && currentHour < closeHour) {
-    statusMessage = `<span style="color: #00FF00; animation: blink 2s step-start 0s infinite;">Open</span> ⋅ Closing at ${closeTimeStr}`;
-} else {
-    statusMessage = `<span style="color: red; animation: blink 2s step-start 0s infinite;">Closed</span> ⋅ Opens at ${openTimeStr}`;
-}
+      const miscUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec?sheet=misc&raw=true";
 
-
-
-
-                    
-                    // Update the display
-                    const baghaElem = document.querySelector('.bagha-purana');
-                    if (baghaElem) {
-                        baghaElem.innerHTML = statusMessage;
-                    }
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching Misc data:", error);
-            });
+fetch(miscUrl)
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.length >= 2) {
+            // Extract Open and Close times from Google Sheets
+            const openTimeStr = data[0][1]; // Example: "09.30am"
+            const closeTimeStr = data[1][1]; // Example: "10.45pm"
             
-            // Function to convert "9 AM" / "10 PM" to 24-hour format
-            function parseTime(timeStr) {
-                const match = timeStr.match(/(\d+)\s*(AM|PM)/i);
-                if (!match) return null;
-                
-                let hour = parseInt(match[1], 10);
-                const period = match[2].toUpperCase();
-                
-                if (period === "PM" && hour !== 12) hour += 12;
-                if (period === "AM" && hour === 12) hour = 0;
-                
-                return hour;
+            // Convert Open and Close times to Date objects
+            const openTime = parseCustomTime(openTimeStr);
+            const closeTime = parseCustomTime(closeTimeStr);
+            
+            // Get current time
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
+
+            // Convert Open and Close times to minutes since midnight
+            const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
+            const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
+            
+            let statusMessage = "";
+            // Compare times based on minutes from midnight
+            if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
+                statusMessage = `<span style="color: #00FF00; animation: blink 2s step-start 0s infinite;">Open</span> ⋅ Closing at ${formatTime(closeTime)}`;
+            } else {
+                statusMessage = `<span style="color: red; animation: blink 2s step-start 0s infinite;">Closed</span> ⋅ Opens at ${formatTime(openTime)}`;
             }
             
-            
-            
+            // Update the display
+            const baghaElem = document.querySelector('.bagha-purana');
+            if (baghaElem) {
+                baghaElem.innerHTML = statusMessage;
+            }
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching Misc data:", error);
+    });
+
+// Function to parse custom time format (hh.mmap)
+function parseCustomTime(timeStr) {
+    const hour = parseInt(timeStr.substring(0, 2), 10); // Get the hour part
+    const minute = parseInt(timeStr.substring(3, 5), 10); // Get the minute part
+    const ampm = timeStr.substring(5).toLowerCase(); // Get 'am' or 'pm'
+    
+    let hours24 = hour;
+    
+    // Convert to 24-hour format
+    if (ampm === 'pm' && hours24 !== 12) {
+        hours24 += 12; // Convert PM hours to 24-hour format
+    }
+    if (ampm === 'am' && hours24 === 12) {
+        hours24 = 0; // Convert 12 AM to 00:00
+    }
+
+    const date = new Date();
+    date.setHours(hours24, minute, 0, 0); // Set the time to the parsed hour and minute
+    
+    return date;
+}
+
+// Function to format time in "h:mm AM/PM" format
+function formatTime(date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHour = hours % 12 || 12; // Adjust hour for 12-hour format
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    return `${formattedHour}:${formattedMinutes} ${ampm}`;
+}
+
         </script>                
     </body>
 </html>
