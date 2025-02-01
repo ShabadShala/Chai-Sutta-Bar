@@ -119,6 +119,12 @@
             margin-top: 0.5rem; /* Space between Chai Sutta Bar and Bagha Purana */            
             }
             
+            @keyframes blink {
+    50% {
+        visibility: hidden;
+    }
+}
+
             
             /* Footer styling */
             .footer {
@@ -845,10 +851,13 @@
                    
 let statusMessage = "";
 if (currentHour >= openHour && currentHour < closeHour) {
-    statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closing at ${closeTimeStr}`;
+    statusMessage = `<span style="color: #00FF00; animation: blink 2s step-start 0s infinite;">Open</span> ⋅ Closing at ${closeTimeStr}`;
 } else {
-    statusMessage = `<span style="color: red;">Closed</span> ⋅ Opens at ${openTimeStr}`;
+    statusMessage = `<span style="color: red; animation: blink 2s step-start 0s infinite;">Closed</span> ⋅ Opens at ${openTimeStr}`;
 }
+
+
+
 
                     
                     // Update the display
