@@ -308,17 +308,17 @@
             text-decoration: none;
             }
             
-#sidebar .logo {
-    width: 10rem;
-    height: 10rem;
-    transition: transform 0.3s ease; /* Smooth zoom-in effect */
-}
-
-#sidebar .logo.hovered,
-#sidebar .logo:hover {
-    transform: scale(1.3); /* Zoom-in effect when hovering */
-}
-
+            #sidebar .logo {
+            width: 10rem;
+            height: 10rem;
+            transition: transform 0.3s ease; /* Smooth zoom-in effect */
+            }
+            
+            #sidebar .logo.hovered,
+            #sidebar .logo:hover {
+            transform: scale(1.3); /* Zoom-in effect when hovering */
+            }
+            
             
             #sidebar.open {
             right: 0; /* Show sidebar when open */
@@ -403,12 +403,22 @@
             <a href="https://t.me/chaisuttabar_baghapurana"><img src="telegram.png" alt="Telegram" class="logo"></a>
             <a href="https://www.facebook.com/p/Chai-Sutta-Bar-Bagha-Purana-61553478237898/"><img src="facebook.png" alt="Facebook" class="logo"></a>
             <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="insta.png" alt="Instagram" class="logo"></a>
-</div>
+        </div>
         
         
         <div class="signature">
             Web App by Komal Brar
         </div>
+        
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <h3 style="margin-right: 10px; font-size: 6rem;">Visitor</h3>
+            <!-- hitwebcounter Code START -->
+            <a href="https://www.hitwebcounter.com" target="_blank">
+                <img src="https://hitwebcounter.com/counter/counter.php?page=18035707&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="" />
+            </a>
+            <!-- hitwebcounter Code END -->
+        </div>
+        
         
         <script>
             function filterMenuItems(searchQuery) {
@@ -685,118 +695,118 @@
             
             
             
- let sidebar = document.getElementById('sidebar');
-let indicator = document.createElement('div');
-indicator.id = 'sidebar-indicator';
-document.body.appendChild(indicator);
-
-let hoverTimeout;
-let sidebarAutoHideTimer;
-let touchStartX = 0;
-let touchEndX = 0;
-const swipeThreshold = 80;  // Minimum swipe distance
-const edgeThreshold = 50;   // Swipe must start within 50px from screen edge
-
-// Add/Remove a class that disables scroll on body
-function disableScroll() {
-    document.body.style.overflow = 'hidden';
-}
-
-function enableScroll() {
-    document.body.style.overflow = 'auto';
-}
-
-// Mouse-triggered sidebar behavior (Unchanged)
-document.addEventListener('mousemove', (event) => {
-    clearTimeout(hoverTimeout);
-
-    if (event.clientX > window.innerWidth - 50) {
-        hoverTimeout = setTimeout(() => {
-            sidebar.classList.add('open');
-            disableScroll(); // Prevent scrolling when sidebar opens
-        }, 300);
-    } else {
-        hoverTimeout = setTimeout(() => {
-            sidebar.classList.remove('open');
-            enableScroll(); // Enable scrolling when sidebar closes
-        }, 300);
-    }
-});
-
-// Touch gesture handling
-document.addEventListener('touchstart', (event) => {
-    touchStartX = event.touches[0].clientX;
-});
-
-document.addEventListener('touchmove', (event) => {
-    touchEndX = event.touches[0].clientX;
-});
-
-document.addEventListener('touchend', (event) => {
-    if (touchEndX === 0) return;  // Ignore if no movement
-
-    if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold) {
-        sidebar.classList.add('open');
-        disableScroll(); // Prevent scrolling when sidebar opens
-    } 
-    else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
-        sidebar.classList.remove('open');
-        enableScroll(); // Enable scrolling when sidebar closes
-    } 
-    else if (touchStartX > sidebar.offsetWidth + 50) {
-        sidebar.classList.remove('open');
-        enableScroll(); // Enable scrolling when sidebar closes
-    }
-
-    touchStartX = 0;
-    touchEndX = 0;
-});
-
-// Toggle sidebar on indicator tap
-indicator.addEventListener('touchstart', (event) => {
-    event.preventDefault();
-    sidebar.classList.toggle('open');
-    if (sidebar.classList.contains('open')) {
-        disableScroll(); // Prevent scrolling when sidebar opens
-    } else {
-        enableScroll(); // Enable scrolling when sidebar closes
-    }
-});
-
-// Auto-hide timer starts only when leaving the sidebar
-function resetAutoHideTimer() {
-    clearTimeout(sidebarAutoHideTimer);
-    sidebarAutoHideTimer = setTimeout(() => {
-        sidebar.classList.remove('open');
-        enableScroll(); // Enable scrolling when sidebar closes
-    }, 2500);
-}
-
-// Stop auto-hide while interacting
-sidebar.addEventListener('mouseenter', () => clearTimeout(sidebarAutoHideTimer)); // Mouse enters sidebar
-sidebar.addEventListener('mouseleave', resetAutoHideTimer); // Mouse leaves sidebar
-
-sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
-sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
-
-// Inject touch-based zoom-in effect on logos
-let logos = document.querySelectorAll('#sidebar .logo');
-
-logos.forEach(logo => {
-    logo.addEventListener('touchstart', () => {
-        logo.classList.add('hovered'); // Apply zoom effect on touchstart
-    });
-
-    logo.addEventListener('touchend', () => {
-        logo.classList.remove('hovered'); // Remove zoom effect on touchend
-    });
-});
-
-// Blink the touch indicator every 1 second
-setInterval(() => {
-    indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
-}, 1000);
-
+            let sidebar = document.getElementById('sidebar');
+            let indicator = document.createElement('div');
+            indicator.id = 'sidebar-indicator';
+            document.body.appendChild(indicator);
+            
+            let hoverTimeout;
+            let sidebarAutoHideTimer;
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const swipeThreshold = 80;  // Minimum swipe distance
+            const edgeThreshold = 50;   // Swipe must start within 50px from screen edge
+            
+            // Add/Remove a class that disables scroll on body
+            function disableScroll() {
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function enableScroll() {
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Mouse-triggered sidebar behavior (Unchanged)
+            document.addEventListener('mousemove', (event) => {
+                clearTimeout(hoverTimeout);
+                
+                if (event.clientX > window.innerWidth - 50) {
+                    hoverTimeout = setTimeout(() => {
+                        sidebar.classList.add('open');
+                        disableScroll(); // Prevent scrolling when sidebar opens
+                    }, 300);
+                    } else {
+                    hoverTimeout = setTimeout(() => {
+                        sidebar.classList.remove('open');
+                        enableScroll(); // Enable scrolling when sidebar closes
+                    }, 300);
+                }
+            });
+            
+            // Touch gesture handling
+            document.addEventListener('touchstart', (event) => {
+                touchStartX = event.touches[0].clientX;
+            });
+            
+            document.addEventListener('touchmove', (event) => {
+                touchEndX = event.touches[0].clientX;
+            });
+            
+            document.addEventListener('touchend', (event) => {
+                if (touchEndX === 0) return;  // Ignore if no movement
+                
+                if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold) {
+                    sidebar.classList.add('open');
+                    disableScroll(); // Prevent scrolling when sidebar opens
+                } 
+                else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
+                    sidebar.classList.remove('open');
+                    enableScroll(); // Enable scrolling when sidebar closes
+                } 
+                else if (touchStartX > sidebar.offsetWidth + 50) {
+                    sidebar.classList.remove('open');
+                    enableScroll(); // Enable scrolling when sidebar closes
+                }
+                
+                touchStartX = 0;
+                touchEndX = 0;
+            });
+            
+            // Toggle sidebar on indicator tap
+            indicator.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+                sidebar.classList.toggle('open');
+                if (sidebar.classList.contains('open')) {
+                    disableScroll(); // Prevent scrolling when sidebar opens
+                    } else {
+                    enableScroll(); // Enable scrolling when sidebar closes
+                }
+            });
+            
+            // Auto-hide timer starts only when leaving the sidebar
+            function resetAutoHideTimer() {
+                clearTimeout(sidebarAutoHideTimer);
+                sidebarAutoHideTimer = setTimeout(() => {
+                    sidebar.classList.remove('open');
+                    enableScroll(); // Enable scrolling when sidebar closes
+                }, 2500);
+            }
+            
+            // Stop auto-hide while interacting
+            sidebar.addEventListener('mouseenter', () => clearTimeout(sidebarAutoHideTimer)); // Mouse enters sidebar
+            sidebar.addEventListener('mouseleave', resetAutoHideTimer); // Mouse leaves sidebar
+            
+            sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
+            sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
+            
+            // Inject touch-based zoom-in effect on logos
+            let logos = document.querySelectorAll('#sidebar .logo');
+            
+            logos.forEach(logo => {
+                logo.addEventListener('touchstart', () => {
+                    logo.classList.add('hovered'); // Apply zoom effect on touchstart
+                });
+                
+                logo.addEventListener('touchend', () => {
+                    logo.classList.remove('hovered'); // Remove zoom effect on touchend
+                });
+            });
+            
+            // Blink the touch indicator every 1 second
+            setInterval(() => {
+                indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
+            }, 1000);
+            
         </script>                
     </body>
 </html>
