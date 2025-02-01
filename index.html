@@ -62,7 +62,8 @@
             font-weight: bold;
             letter-spacing: 0.5rem;
             }
-            
+
+
             /* Header container */
             .header {
             display: flex;
@@ -119,6 +120,7 @@
             margin-top: 0.5rem; /* Space between Chai Sutta Bar and Bagha Purana */            
             }
             
+            
             /* Footer styling */
             .footer {
             background-color: #ff4d4d;
@@ -140,8 +142,7 @@
             font-weight: bold;
             color: #f5d56b;
             }
-            
-            
+        
             
             /* Menu items */
             .menu-item {
@@ -170,8 +171,7 @@
             color: #008CFF; /* Neon Blue */
             font-weight: bold;
             }
-            
-            
+                        
             
             .category-header {
             background-color: transparent;
@@ -200,9 +200,7 @@
             white-space: nowrap;
             color: #40E0D0;
             }
-            
-            
-            
+                        
             
             /* Universal reset */
             *,
@@ -349,7 +347,7 @@
     <body>
         <div id="loadingOverlay">
             <div class="spinner"></div>
-            <div class="loading-message">Loading...</div>
+            <div class="loading-message">Loading</div>
         </div>
         
         <div class="header">
@@ -400,10 +398,10 @@
         
                 <div style="display: flex; align-items: center; justify-content: center;">
                     <h3 style="margin-right: 10px; font-size: 6rem;">Visitor</h3>
-            <!-- hitwebcounter Code START -->
-            <a href="https://www.hitwebcounter.com" target="_blank">
-                <img src="https://hitwebcounter.com/counter/counter.php?page=18035707&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="" />
-            </a>
+                    <!-- hitwebcounter Code START -->
+<a href="https://www.hitwebcounter.com" target="_blank">
+<img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" Alt="Visit counter For Websites"   border="0" /></a>                  
+
             <!-- hitwebcounter Code END -->
         </div>
         
@@ -795,21 +793,28 @@
             sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
             
             // Inject touch-based zoom-in effect on logos
+// Select all logos
 let logos = document.querySelectorAll('#sidebar .logo');
 
+// Listen for touchstart events on each logo
 logos.forEach(logo => {
     logo.addEventListener('touchstart', (e) => {
-        e.stopPropagation(); // Prevent global touch handlers from interfering
-        logo.classList.add('hovered'); // Apply zoom effect on touchstart
+        e.stopPropagation();
+
+        // Remove the hovered class from all logos
+        logos.forEach(l => l.classList.remove('hovered'));
+
+        // Add the hovered class to the current logo
+        logo.classList.add('hovered');
     });
-    
+
     logo.addEventListener('touchend', (e) => {
         e.stopPropagation();
-        logo.classList.remove('hovered'); // Remove zoom effect on touchend
+        logo.classList.remove('hovered');
     });
 });
 
-            
+           
 // Blink the touch indicator every 1 second
 setInterval(() => {
     indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
