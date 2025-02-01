@@ -277,6 +277,9 @@
             color: yellow;
             }
             
+            
+
+            
             .signature {
             background-color: #000000;
             color: #fae68e; /* Signature text color */
@@ -329,9 +332,9 @@
             right: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: 10px;
+            width: 8px;
             height: 100px;
-            background-color: #333;
+            background-color: #00CCCC;
             cursor: pointer;
             }
             
@@ -395,9 +398,23 @@
         </div>
         <br>
         
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <h3 style="margin-right: 10px; font-size: 6rem;">Visitor</h3>
+            <!-- hitwebcounter Code START -->
+            <a href="https://www.hitwebcounter.com" target="_blank">
+                <img src="https://hitwebcounter.com/counter/counter.php?page=18035707&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="" />
+            </a>
+            <!-- hitwebcounter Code END -->
+        </div>
+        
+       
+        <div class="signature">
+            Web App by Komal Brar
+        </div>   
+        
         <div id="sidebar">
             <a href="tel:+919112400010"><img src="phone.png" alt="Phone" class="logo"></a>
-            <a href="tel:+919023406002"><img src="phone.png" alt="Phone" class="logo"></a>
+            <a href="tel:+919023406002"><img src="phone2.png" alt="Phone" class="logo"></a>
             <a href="https://wa.me/+919112400010?text=Hello%20Chai%20Sutta%20Bar!"><img src="whatsapp.png" alt="Chat on WA" class="logo"></a>
             <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="location.png" alt="Location" class="logo"></a>
             <a href="https://t.me/chaisuttabar_baghapurana"><img src="telegram.png" alt="Telegram" class="logo"></a>
@@ -406,18 +423,6 @@
         </div>
         
         
-        <div class="signature">
-            Web App by Komal Brar
-        </div>
-        
-        <div style="display: flex; align-items: center; justify-content: center;">
-            <h3 style="margin-right: 10px; font-size: 6rem;">Visitor</h3>
-            <!-- hitwebcounter Code START -->
-            <a href="https://www.hitwebcounter.com" target="_blank">
-                <img src="https://hitwebcounter.com/counter/counter.php?page=18035707&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="" />
-            </a>
-            <!-- hitwebcounter Code END -->
-        </div>
         
         
         <script>
@@ -790,22 +795,27 @@
             sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
             
             // Inject touch-based zoom-in effect on logos
-            let logos = document.querySelectorAll('#sidebar .logo');
+let logos = document.querySelectorAll('#sidebar .logo');
+
+logos.forEach(logo => {
+    logo.addEventListener('touchstart', (e) => {
+        e.stopPropagation(); // Prevent global touch handlers from interfering
+        logo.classList.add('hovered'); // Apply zoom effect on touchstart
+    });
+    
+    logo.addEventListener('touchend', (e) => {
+        e.stopPropagation();
+        logo.classList.remove('hovered'); // Remove zoom effect on touchend
+    });
+});
+
             
-            logos.forEach(logo => {
-                logo.addEventListener('touchstart', () => {
-                    logo.classList.add('hovered'); // Apply zoom effect on touchstart
-                });
-                
-                logo.addEventListener('touchend', () => {
-                    logo.classList.remove('hovered'); // Remove zoom effect on touchend
-                });
-            });
-            
-            // Blink the touch indicator every 1 second
-            setInterval(() => {
-                indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
-            }, 1000);
+// Blink the touch indicator every 1 second
+setInterval(() => {
+    indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
+}, 1000);
+
+
             
         </script>                
     </body>
