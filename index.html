@@ -118,13 +118,7 @@
             font-size: 4rem;
             margin-top: 0.5rem; /* Space between Chai Sutta Bar and Bagha Purana */            
             }
-            
-            @keyframes blink {
-            50% {
-            visibility: hidden;
-            }
-            }
-            
+                    
             
             /* Footer styling */
             .footer {
@@ -417,7 +411,7 @@
         </div>   
         
         <div id="sidebar">
-            <a href="tel:+919112400010"><img src="phone.png" alt="Phone" class="logo"></a>
+            <a href="tel:+919112400010"><img src="phone1.png" alt="Phone" class="logo"></a>
             <a href="tel:+919023406002"><img src="phone2.png" alt="Phone" class="logo"></a>
             <a id="whatsapp-link" href="#">
                 <img src="whatsapp.png" alt="Chat on WA" class="logo">
@@ -802,27 +796,25 @@
             sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
             sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
             
-            // Inject touch-based zoom-in effect on logos
-            // Select all logos
-            let logos = document.querySelectorAll('#sidebar .logo');
-            
-            // Listen for touchstart events on each logo
-            logos.forEach(logo => {
-                logo.addEventListener('touchstart', (e) => {
-                    e.stopPropagation();
-                    
-                    // Remove the hovered class from all logos
-                    logos.forEach(l => l.classList.remove('hovered'));
-                    
-                    // Add the hovered class to the current logo
-                    logo.classList.add('hovered');
-                });
-                
-                logo.addEventListener('touchend', (e) => {
-                    e.stopPropagation();
-                    logo.classList.remove('hovered');
-                });
-            });
+let logos = document.querySelectorAll('#sidebar .logo');
+
+// Global listener: clear hovered class from all logos on any touchstart
+document.addEventListener('touchstart', () => {
+    logos.forEach(logo => logo.classList.remove('hovered'));
+});
+
+// Then add the specific listeners for each logo
+logos.forEach(logo => {
+    logo.addEventListener('touchstart', (e) => {
+        e.stopPropagation(); // Prevent interference from global handler if necessary
+        logo.classList.add('hovered');
+    });
+
+    logo.addEventListener('touchend', (e) => {
+        e.stopPropagation();
+        logo.classList.remove('hovered');
+    });
+});
             
             
             // Blink the touch indicator every 1 second
@@ -883,9 +875,9 @@
                     let statusMessage = "";
                     // Compare times based on minutes from midnight
                     if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
-                        statusMessage = `<span style="color: #00FF00; animation: blink 2s step-start 0s infinite;">Open</span> ⋅ Closing at ${formatTime(closeTime)}`;
+                        statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
                         } else {
-                        statusMessage = `<span style="color: red; animation: blink 2s step-start 0s infinite;">Closed</span> ⋅ Opens at ${formatTime(openTime)}`;
+                        statusMessage = `<span style="color: red;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
                     }
                     
                     // Update the display
