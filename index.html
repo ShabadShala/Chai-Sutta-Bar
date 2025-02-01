@@ -337,7 +337,7 @@
             transform: translateY(-50%);
             width: 2rem;
             height: 100px;
-            background-color: #00CCCC;
+            background-color: rgba(0, 204, 204, 0.5);
             cursor: pointer;
             }
             
@@ -826,7 +826,7 @@
             // Blink the touch indicator every 1 second
             setInterval(() => {
                 indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
-            }, 1000);
+            }, 3000);
             
             
             
@@ -839,6 +839,16 @@ fetch(miscUrl)
             // Extract Open and Close times from Google Sheets
             const openTimeStr = data[0][1]; // Example: "09.30am"
             const closeTimeStr = data[1][1]; // Example: "10.45pm"
+            
+                        // Check if either openTimeStr or closeTimeStr is empty
+                        if (!openTimeStr || !closeTimeStr) {
+                // If one or both times are missing, don't display anything
+                const baghaElem = document.querySelector('.bagha-purana');
+                if (baghaElem) {
+                    baghaElem.innerHTML = "";
+                }
+                return; // Exit the function
+            }
             
             // Convert Open and Close times to Date objects
             const openTime = parseCustomTime(openTimeStr);
