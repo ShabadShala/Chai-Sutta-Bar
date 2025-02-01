@@ -62,8 +62,8 @@
             font-weight: bold;
             letter-spacing: 0.5rem;
             }
-
-
+            
+            
             /* Header container */
             .header {
             display: flex;
@@ -116,7 +116,6 @@
             
             .bagha-purana {
             font-size: 4rem;
-            color: #008CFF;
             margin-top: 0.5rem; /* Space between Chai Sutta Bar and Bagha Purana */            
             }
             
@@ -142,7 +141,7 @@
             font-weight: bold;
             color: #f5d56b;
             }
-        
+            
             
             /* Menu items */
             .menu-item {
@@ -171,7 +170,7 @@
             color: #008CFF; /* Neon Blue */
             font-weight: bold;
             }
-                        
+            
             
             .category-header {
             background-color: transparent;
@@ -200,7 +199,7 @@
             white-space: nowrap;
             color: #40E0D0;
             }
-                        
+            
             
             /* Universal reset */
             *,
@@ -276,7 +275,7 @@
             }
             
             
-
+            
             
             .signature {
             background-color: #000000;
@@ -361,7 +360,7 @@
                 <span class="chai">CHAI</span>
                 <span class="sutta">SUTTA</span>
                 <span class="bar">BAR</span>
-                <div class="bagha-purana">Bagha Purana</div>
+                <div class="bagha-purana"></div>
             </div>
             
             <!-- Right burger wrapped in white circle -->
@@ -396,16 +395,17 @@
         </div>
         <br>
         
-                <div style="display: flex; align-items: center; justify-content: center;">
-                    <h3 style="margin-right: 10px; font-size: 6rem;">Visitor</h3>
-                    <!-- hitwebcounter Code START -->
-<a href="https://www.hitwebcounter.com" target="_blank">
-<img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" Alt="Visit counter For Websites"   border="0" /></a>                  
-
+        <div id="visitorElement" style="display: none; align-items: center; justify-content: center;">
+            <h3 style="margin-right: 10px; font-size: 6rem;">Visitor</h3>
+            <!-- hitwebcounter Code START -->
+            <a href="https://www.hitwebcounter.com" target="_blank">
+                <img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="0" />
+            </a>                              
             <!-- hitwebcounter Code END -->
         </div>
         
-       
+        
+        
         <div class="signature">
             Web App by Komal Brar
         </div>   
@@ -585,7 +585,7 @@
             
             
             // Fetch data from Google Script URL
-            fetch("https://script.google.com/macros/s/AKfycbwht-ciK4YPi1xWCAX4iSwHtrRGtHNTX3ZMH2Tn0v43Cr81VTb5XTuIHQq0CgOGumshdg/exec")
+            fetch("https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec")
             .then(response => response.json())
             .then(data => {
                 const menuDiv = document.getElementById('menu');
@@ -688,6 +688,8 @@
                 
                 document.querySelector(".search-container").style.display = "block";
                 document.querySelector(".footer").style.display = "block"; // Show footer
+                document.getElementById("visitorElement").style.display = "flex";
+                
                 // Remove the loading overlay after the data is fetched and processed
                 document.getElementById('loadingOverlay').style.display = 'none';
             })
@@ -793,34 +795,88 @@
             sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
             
             // Inject touch-based zoom-in effect on logos
-// Select all logos
-let logos = document.querySelectorAll('#sidebar .logo');
+            // Select all logos
+            let logos = document.querySelectorAll('#sidebar .logo');
+            
+            // Listen for touchstart events on each logo
+            logos.forEach(logo => {
+                logo.addEventListener('touchstart', (e) => {
+                    e.stopPropagation();
+                    
+                    // Remove the hovered class from all logos
+                    logos.forEach(l => l.classList.remove('hovered'));
+                    
+                    // Add the hovered class to the current logo
+                    logo.classList.add('hovered');
+                });
+                
+                logo.addEventListener('touchend', (e) => {
+                    e.stopPropagation();
+                    logo.classList.remove('hovered');
+                });
+            });
+            
+            
+            // Blink the touch indicator every 1 second
+            setInterval(() => {
+                indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
+            }, 1000);
+            
+            
 
-// Listen for touchstart events on each logo
-logos.forEach(logo => {
-    logo.addEventListener('touchstart', (e) => {
-        e.stopPropagation();
+            const miscUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec?sheet=misc&raw=true";
+            
+            fetch(miscUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length >= 2) {
+                    // Extract times from Google Sheet
+                    const openTimeStr = data[0][1]; // Example: "9 AM"
+                    const closeTimeStr = data[1][1]; // Example: "10 PM"
+                    
+                    // Convert to 24-hour format
+                    const openHour = parseTime(openTimeStr);
+                    const closeHour = parseTime(closeTimeStr);
+                    
+                    // Get current hour in 24-hour format
+                    const now = new Date();
+                    const currentHour = now.getHours();
+                    
+                   
+let statusMessage = "";
+if (currentHour >= openHour && currentHour < closeHour) {
+    statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closing at ${closeTimeStr}`;
+} else {
+    statusMessage = `<span style="color: red;">Closed</span> ⋅ Opens at ${openTimeStr}`;
+}
 
-        // Remove the hovered class from all logos
-        logos.forEach(l => l.classList.remove('hovered'));
-
-        // Add the hovered class to the current logo
-        logo.classList.add('hovered');
-    });
-
-    logo.addEventListener('touchend', (e) => {
-        e.stopPropagation();
-        logo.classList.remove('hovered');
-    });
-});
-
-           
-// Blink the touch indicator every 1 second
-setInterval(() => {
-    indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
-}, 1000);
-
-
+                    
+                    // Update the display
+                    const baghaElem = document.querySelector('.bagha-purana');
+                    if (baghaElem) {
+                        baghaElem.innerHTML = statusMessage;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching Misc data:", error);
+            });
+            
+            // Function to convert "9 AM" / "10 PM" to 24-hour format
+            function parseTime(timeStr) {
+                const match = timeStr.match(/(\d+)\s*(AM|PM)/i);
+                if (!match) return null;
+                
+                let hour = parseInt(match[1], 10);
+                const period = match[2].toUpperCase();
+                
+                if (period === "PM" && hour !== 12) hour += 12;
+                if (period === "AM" && hour === 12) hour = 0;
+                
+                return hour;
+            }
+            
+            
             
         </script>                
     </body>
