@@ -928,7 +928,7 @@ const miscUrl = scriptUrl + "?sheet=misc&raw=true";
                 const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
                 return `${formattedHour}:${formattedMinutes} ${ampm}`;
             }
-            
+
             
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
@@ -936,8 +936,8 @@ window.addEventListener("beforeinstallprompt", (e) => {
         e.prompt(); // Automatically prompt user to install after a delay
     }, 3000); // Adjust delay as needed
 });
+</script>
 
-
-        </script>                
-    </body>
+<script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+</body>
 </html>
