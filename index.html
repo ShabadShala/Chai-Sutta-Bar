@@ -1192,27 +1192,28 @@ updateClock();
             sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
             sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
             
-            // Inject touch-based zoom-in effect on logos
-            // Select all logos
-            let logos = document.querySelectorAll('#sidebar .logo');
+  // Check if the device supports touch
+if ('ontouchstart' in window) {
+    let logos = document.querySelectorAll('#sidebar .logo');
+
+    logos.forEach(logo => {
+        logo.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
             
-            // Listen for touchstart events on each logo
-            logos.forEach(logo => {
-                logo.addEventListener('touchstart', (e) => {
-                    e.stopPropagation();
-                    
-                    // Remove the hovered class from all logos
-                    logos.forEach(l => l.classList.remove('hovered'));
-                    
-                    // Add the hovered class to the current logo
-                    logo.classList.add('hovered');
-                });
-                
-                logo.addEventListener('touchend', (e) => {
-                    e.stopPropagation();
-                    logo.classList.remove('hovered');
-                });
-            });
+            // Remove the hovered class from all logos
+            logos.forEach(l => l.classList.remove('hovered'));
+
+            // Add the hovered class to the touched logo
+            logo.classList.add('hovered');
+        });
+
+        logo.addEventListener('touchend', (e) => {
+            e.stopPropagation();
+            setTimeout(() => logo.classList.remove('hovered'), 300); // Smooth effect
+        });
+    });
+}
+
             
             
             // Blink the touch indicator every 1 second
