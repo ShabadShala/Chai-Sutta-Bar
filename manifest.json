@@ -1,0 +1,13 @@
+{
+  "name": "Chai Sutta Bar",
+  "short_name": "CSB",
+  "start_url": "https://shabadshala.github.io/Chai-Sutta-Bar/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
