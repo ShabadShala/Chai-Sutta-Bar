@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
         <title>Chai Sutta Bar</title>
+        <link rel="manifest" href="manifest.json">
         <style>
             html {
             font-size: 1vw; /* 1vw = 1% of viewport width */
@@ -928,6 +929,15 @@ const miscUrl = scriptUrl + "?sheet=misc&raw=true";
                 return `${formattedHour}:${formattedMinutes} ${ampm}`;
             }
             
+            
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    setTimeout(() => {
+        e.prompt(); // Automatically prompt user to install after a delay
+    }, 3000); // Adjust delay as needed
+});
+
+
         </script>                
     </body>
 </html>
