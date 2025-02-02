@@ -38,7 +38,7 @@ body {
 #hamburger-button {
     position: fixed;
     top: 1.8rem;
-    left: 1rem;
+    left: 0.8rem;
     font-size: 5rem;
     cursor: pointer;
     z-index: 1001;    
@@ -55,8 +55,8 @@ body {
 #hsidebar {
     position: fixed;
     top: 0;
-    left: -320px;
-    width: 280px;
+    left: -60%; /* Adjust this to move the sidebar off-screen initially */
+    width: 60vw; /* Set the width to 50% of the viewport width */
     height: 100%;
     background: #1c1c1c; /* Dark gray for better contrast */
     backdrop-filter: blur(8px);
@@ -67,6 +67,7 @@ body {
     border-radius: 0 15px 15px 0;
     color: #e0e0e0; /* Soft white text */
 }
+
 
 #hsidebar.open {
     left: 0;
@@ -81,7 +82,7 @@ body {
     padding: 16px;
     margin: 12px 0;
     cursor: pointer;
-    font-size: 5rem;
+    font-size: 6rem;
     font-weight: 500;
     text-align: left;
     background: rgba(255, 255, 255, 0.15); /* Slightly lighter gray */
@@ -117,20 +118,33 @@ body {
     height: 100%;
     background: rgba(0, 0, 0, 0.9);
     z-index: 1003;
+    overflow: hidden; /* Prevents overflow */
 }
 
-.modal-content {
+/* Modal Content */
+#qr-code-modal .modal-content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #2a2a2a; /* Slightly lighter gray modal */
-    padding: 30px;
-    text-align: center;
+    background: #2a2a2a;
+    padding: 20px;
     border-radius: 12px;
     color: #f1f1f1;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.7);
+    width: 90%; /* Ensure modal width is 90% of screen width */
+    max-width: 400px; /* Optional: Limit the maximum width */
+    height: auto; /* Height should adjust based on content */
 }
+
+/* QR Code Image */
+#qr-code-modal .modal-content img {
+    width: 100%;  /* Full width */
+    height: auto;  /* Maintain aspect ratio */
+    max-width: 100%;  /* Prevents overflow */
+    object-fit: contain; /* Ensure the whole image is visible */
+}
+
 
 #close-modal {
     position: absolute;
@@ -147,7 +161,7 @@ body {
 
 /* Style for the CSB text */
 .sidebar-title {
-    font-size: 5rem;
+    font-size: 6rem;
       text-align: center;
     font-weight: bold;
     color: white; /* Change to your preferred color */
@@ -157,16 +171,17 @@ body {
 /* Style for the current date */
 #current-date {
     font-family: 'Arial', sans-serif;
-    font-size: 5rem;
+    font-size: 6rem;
     font-weight: bold;
     color: #ffffff; /* White color for date */
     text-align: center;
+     margin-top: -5rem;
 }
 
 /* Style for the digital clock */
 #digital-clock {
     font-family: 'Courier New', Courier, monospace; /* Monospace font for digital look */
-    font-size: 5rem;
+    font-size: 6rem;
     font-weight: bold;
     color: #00ff00; /* Green color typical for digital clocks */
     text-align: center;
@@ -177,7 +192,7 @@ body {
 /* Style for the footer text */
 .footer-text {
     position: absolute;
-    bottom: 5rem; /* Position the footer text at the bottom */
+    bottom: 6rem; /* Position the footer text at the bottom */
     left: 40%; /* Center horizontally */
     transform: translateX(-50%); /* Adjust for perfect centering */
     font-size: 4rem; /* Font size for the footer text */
@@ -186,7 +201,53 @@ body {
      line-height: 1.5;
 }
 
-            
+ /* Close button */
+#close-sidebar {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 8rem;
+    color: #f1f1f1; /* Lighter color for contrast */
+    cursor: pointer;
+    z-index: 1003; /* Ensures it is on top of other content */
+}
+
+#close-sidebar:hover {
+    color: #ff5555; /* Change to red on hover */
+}
+
+
+
+
+.spinner {
+border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#install-progress {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    z-index: 9999;
+}
+
+
+
             /* Loading animation overlay */
             #loadingOverlay {
             position: fixed;
@@ -548,12 +609,16 @@ body {
             <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
         </div>
         
-        
+        <div id="install-progress" style="display: none;">
+    <div class="spinner"></div>
+    Installing...
+</div>
+
         
         
         <script>
     
- function setupHamburgerMenu() {
+function setupHamburgerMenu() {
     // Create Hamburger Button
     const hamburgerButton = document.createElement('div');
     hamburgerButton.id = 'hamburger-button';
@@ -563,21 +628,20 @@ body {
     // Create Sidebar
     const hsidebar = document.createElement('div');
     hsidebar.id = 'hsidebar';
-    hsidebar.innerHTML = `
-<div class="hsidebar-content">
-    <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
-    <div class="sidebar-title" id="digital-clock"></div> <!-- Digital watch will be here -->
-    <div class="hsidebar-option" id="install-app">Install App</div>
-    <div class="hsidebar-option" id="show-qrcode">App QR Code</div>
-    <!-- Footer text -->
-    <div class="footer-text" id="footer-info">
-    <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
-</div>
+    hsidebar.innerHTML = ` 
+    <div class="hsidebar-content">
+        <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
+        <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
+        <div class="hsidebar-option" id="install-app">Install App</div>
+        <div class="hsidebar-option" id="show-qrcode">App QR Code</div>
+        <!-- Close button -->
+        <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->
 
-</div>
-
-
-
+        <!-- Footer text -->
+        <div class="footer-text" id="footer-info">
+            <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
+        </div>
+    </div>
     `;
     document.body.appendChild(hsidebar);
 
@@ -629,6 +693,16 @@ body {
         }
     });
 
+    // Close Sidebar when clicking on the cross button
+    document.getElementById('close-sidebar').addEventListener('click', () => {
+        hsidebar.classList.remove('open');
+        overlay.style.display = 'none';
+        document.body.style.overflow = ''; // Unlock scrolling
+        document.documentElement.style.overflow = ''; // Unlock scrolling
+        document.body.style.height = ''; // Allow body resizing
+        document.documentElement.style.height = ''; // Allow html resizing
+    });
+
     // Install App
     document.getElementById('install-app').addEventListener('click', () => {
         if (deferredPrompt) {
@@ -656,10 +730,55 @@ body {
             qrCodeModal.style.display = 'none';
         }
     });
+
+    // Swipe Left to Close Sidebar (Mobile Gesture)
+    let startX;
+    let startY;
+
+    // Detect swipe start
+    hsidebar.addEventListener('touchstart', (e) => {
+        const touchStart = e.touches[0];
+        startX = touchStart.clientX;
+        startY = touchStart.clientY;
+    });
+
+    // Detect swipe end
+    hsidebar.addEventListener('touchend', (e) => {
+        const touchEnd = e.changedTouches[0];
+        const deltaX = touchEnd.clientX - startX;
+        const deltaY = touchEnd.clientY - startY;
+
+        // Swipe left detection (horizontal swipe with a minimal vertical movement)
+        if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
+            hsidebar.classList.remove('open');
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            document.body.style.height = '';
+            document.documentElement.style.height = '';
+        }
+    });
 }
 
 // Call the setup function
 setupHamburgerMenu();
+
+
+
+
+
+// Close Sidebar when clicking on the cross button
+document.getElementById('close-sidebar').addEventListener('click', () => {
+    hsidebar.classList.remove('open');
+    overlay.style.display = 'none';
+    document.body.style.overflow = ''; // Unlock scrolling
+    document.documentElement.style.overflow = ''; // Unlock scrolling
+    document.body.style.height = ''; // Allow body resizing
+    document.documentElement.style.height = ''; // Allow html resizing
+});
+
+
+
 
 // Function to update the time
 function updateClock() {
