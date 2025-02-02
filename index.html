@@ -79,15 +79,15 @@ body {
 }
 
 .hsidebar-option {
-    padding: 16px;
-    margin: 12px 0;
+    padding: 2rem;
+    margin: 0;
     cursor: pointer;
     font-size: 6rem;
     font-weight: 500;
     text-align: left;
-    background: rgba(255, 255, 255, 0.15); /* Slightly lighter gray */
+
     color: #e0e0e0;
-    border-radius: 10px;
+
     transition: background 0.3s ease, transform 0.3s ease;
 }
 
@@ -185,7 +185,7 @@ body {
     font-weight: bold;
     color: #00ff00; /* Green color typical for digital clocks */
     text-align: center;
-    margin-top: -3rem; /* Remove the large negative margin */
+    margin-top: -5rem; /* Remove the large negative margin */
     margin-bottom: 10rem; /* Add space below the clock (adjust as needed) */
 }
 
@@ -632,8 +632,8 @@ function setupHamburgerMenu() {
     <div class="hsidebar-content">
         <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
         <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
-        <div class="hsidebar-option" id="install-app">Install App</div>
-        <div class="hsidebar-option" id="show-qrcode">App QR Code</div>
+        <div class="hsidebar-option" id="install-app">⚙️ Install App</div>
+        <div class="hsidebar-option" id="show-qrcode">🔗 Share Link</div>
         <!-- Close button -->
         <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->
 
@@ -1313,7 +1313,7 @@ if (whatsappLinkElement) {
                     if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
                         statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
                         } else {
-                        statusMessage = `<span style="color: red;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
+                        statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
                     }
                     
                     // Update the display
