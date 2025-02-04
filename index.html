@@ -24,7 +24,7 @@
             /* /* General Styles */
             body {
             font-family: Arial, sans-serif;
-            background-color: #000000; /* Black background */
+            background-color: #212121; /* Black background */
             color: white; /* White text */
             display: flex;
             flex-direction: column;
@@ -125,31 +125,38 @@
             
             /* Search */
             .search-container {
-            width: 55%;
+            width: 70%;
             margin: 0 auto;
             position: relative;
             display: none;
             margin-top: 2rem;
             }
             
-            /* Set width to 40% on wide screens (e.g., desktops) */
-            @media (min-width: 700px) {  /* Adjust 1200px based on your design */
+            /* Set width to 45% on wide screens (e.g., desktops) */
+            @media (min-width: 43.75rem) {  /* 700px ≈ 43.75rem */
             .search-container {
-            width: 40%;
-            
+            width: 45%;            
             }
+            }
+            
+            /* Flex container for input and clear button */
+            .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
             }
             
             #searchInput {
             width: 100%;
             padding: 1.5rem;
-            padding-left: 3rem;
-            padding-right: 10rem;
+            padding-left: 11rem;
+            padding-right: 11rem;
             font-size: 6rem;
-            border: 2px solid #fae68e;
-            border-radius: 3rem;
-            background-color: #000000;
-            color: white;
+            border: 1px solid #fae68e;  /* Converted 2px to 0.125rem */
+            border-radius: 5rem;              /* Increased from 3rem to 5rem for more roundness */
+            background-color: #f0f0f0;         /* Changed to a light background color */
+            color: #333;                     /* Adjusted text color for better contrast */
             outline: none;
             }
             
@@ -159,23 +166,120 @@
             
             .clear-btn {
             position: absolute;
-            right: 2rem;
+            right: 2.5rem;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
             font-size: 10rem;
-            color: white;
+            color: black;
             z-index: 10;
             }
             
             .clear-btn:hover {
-            color: yellow;
+            color: red;
             }
+            
+            /* Search Lens (Magnifying Glass Icon) */
+            .search-lens {
+            position: absolute;
+            left: 2.2rem; /* Adjust based on input padding */
+            font-size: 5rem;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            }
+            
+            /* Hide the lens if input has text */
+            .hide-lens .search-lens {
+            display: none;
+            }
+            
+            /* Animate the lens when hovering on the search bar */
+            .search-input-wrapper:hover .search-lens {
+            animation: shake 0.5s ease-in-out;
+            }
+            
+            /* Shake Animation */
+            @keyframes shake {
+            0% {
+            transform: translateX(0);
+            }
+            25% {
+            transform: translateX(-0.3125rem); /* 5px ≈ 0.3125rem */
+            }
+            50% {
+            transform: translateX(0.3125rem);  /* 5px ≈ 0.3125rem */
+            }
+            75% {
+            transform: translateX(-0.3125rem); /* 5px ≈ 0.3125rem */
+            }
+            100% {
+            transform: translateX(0);
+            }
+            }
+            
+            
+            
+            
+            #filterContainer {
+            display: flex;
+            justify-content: center; /* Centers the entire content */
+            align-items: center; /* Aligns items vertically */
+            width: 100%; /* Ensures full width */
+            margin-top: 3rem;            
+            font-size: 5rem;
+            gap: 5rem; /* Gap between 3-button element and total-items-found */
+            }
+            
+            #filterButtons {
+            display: flex;
+            align-items: center;
+            gap: 5rem; /* Gap between "Filter by" and 3-button element */
+            }
+            
+            #threeButtonsContainer {
+            display: flex;
+            gap: 3rem; /* Space between buttons */
+            }
+            
+            .filter-label {
+            color: white;
+            }
+            
+            .filter-btn {
+            width: 10rem;
+            padding: 1.4rem 3rem;
+            color: #333;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 1rem;
+            cursor: pointer;
+            }
+            
+            .filter-btn.active {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;            
+            }
+            
+            #total-items-found {
+            color: white;
+            text-align: left; /* Ensures right alignment */
+            }
+            
             
             
             
             #menu {
             margin: 0 auto; /* Centers the menu */            
+            width: 100%; /* Default width for small screens */
+            transition: width 0.3s ease;
+            }
+            
+            @media (min-width: 700px) {
+            #menu {
+            width: 50%; /* 50% width on screens larger than 700px */
+            }
             }
             
             .category-header {
@@ -241,7 +345,7 @@
             justify-content: center;
             width: fit-content;
             display: none;
-            margin: 0 auto;             
+            margin:3rem auto;             
             }
             
             /* Footer styling */
@@ -253,20 +357,26 @@
             margin-top: auto; /* Pushes footer down */
             }
             
+            .footer a {
+            text-decoration: none;
+            }
+            
             .footer .color1 {
-            font-size: 5rem;
+            font-size: 4rem;
             font-weight: bold;
             color: white;
             }
             
             .footer .color2 {
-            font-size: 6rem;
+            font-size: 4.5rem;
             font-weight: bold;
             color: #f5d56b;
             }
             
+            
+            
             .signature {
-            background-color: #000000;
+            background-color: #212121;
             color: #fae68e; /* Signature text color */
             font-size: 4rem;
             text-align: center;
@@ -545,6 +655,11 @@
             }
             }        
             
+            
+            
+            
+            
+            
         </style>
     </head>
     <body>
@@ -567,876 +682,960 @@
         
         <!-- Search Bar -->
         <div class="search-container">
-            <input type="text" id="searchInput" maxlength="10" placeholder="Search...">
-            <span id="clearButton" class="clear-btn" style="display: none;">×</span>
-        </div>        
-        <div id="no-results-message" style="display: none; color: #fae68e; font-size: 5rem; text-align: center; padding: 2rem;">
-            No items found.
-        </div>
-        
-        <div id="menu"></div>        
-        
-        <!-- Footer Container -->
-        <div class="footer-container">
-            <!-- Footer -->
-            <div class="footer">
-                <div class="color1">Opp. Petrol Pump, Kotkapura Road</div>
-                <div class="color2">Bagha Purana (Moga) Punjab</div>
-                <div class="color1">
-                    Phone: <a href="tel:+919112400010">91124-00010</a>, <a href="tel:+919023406002">90234-06002</a>
-                </div>            
+            <div class="search-input-wrapper">
+                <span id="magnifierIcon" class="search-lens">&#128270;</span> <!-- Search Lens Icon -->
+                <input type="text" id="searchInput" maxlength="10" placeholder="item or rate">            
+                <span id="clearButton" class="clear-btn" style="display: none;">×</span>
             </div>
-            <br>
-            
-            <div class="signature">
-                Web App by Komal Brar
-            </div>  
-            
-            <div id="visitorElement">
-                <h3>Visitor  </h3>
-                <!-- hitwebcounter Code START -->
-                <a href="https://www.hitwebcounter.com" target="_blank">
-                    <img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="0" />
-                </a>                              
-                <!-- hitwebcounter Code END -->
-            </div>        
-        </div> 
-        
-        <div id="sidebar">
-            <a id="delivery-link" href="#"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
-            <a id="whatsapp-link" href="#"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
-            <a id="phone-link" href="#"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
-            <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="sidebar/location.png" alt="Location" class="logo"></a>
-            <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
-            <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
         </div>
         
-        
-        
-        <script>
-            
-            function updateScreenWidth() {
-                const width = window.innerWidth;
-                document.getElementById('screenWidthDisplay').textContent = `w${width}p`;
-            }    
-            window.addEventListener('resize', updateScreenWidth); // Update width on window resize
-            updateScreenWidth(); // Initial update
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            function filterMenuItems(searchQuery) {
-                const menuDiv = document.getElementById('menu');
-                if (!menuDiv) return;
+        <div id="filterContainer">
+            <div id="filterButtons" style="display: none;">
+                <div class="filter-label">Filter by</div>
+                <div id="threeButtonsContainer">
+                    <button class="filter-btn active" data-filter="=">=</button>  <!-- Default active -->
+                    <button class="filter-btn" data-filter="<="><=</button>
+                        <button class="filter-btn" data-filter=">=">>=</button>
+                    </div>
+                    </div>                  
+                    <div id="total-items-found"></div>
+                </div>
                 
-                const menuItems = document.querySelectorAll('.menu-item');
-                const categoryHeaders = document.querySelectorAll('.category-header');
-                const categoryItems = document.querySelectorAll('.category-items');
                 
-                let hasVisibleItems = false;
                 
-                const normalizedSearchQuery = searchQuery.trim().toLowerCase();
-                const isNumberSearch = /^\d+$/.test(normalizedSearchQuery); // Check if the search query is a number
+                <div id="no-results-message" style="display: none; color: #fae68e; font-size: 5rem; text-align: center; padding: 2rem;">
+                    No items found.
+                </div>
                 
-                categoryHeaders.forEach((header, index) => {
-                    const categoryItem = categoryItems[index];
-                    const itemsInCategory = categoryItem.querySelectorAll('.menu-item');
+                <div id="menu"></div>        
+                
+                <!-- Footer Container -->
+                <div class="footer-container">
+                    <!-- Footer -->
+                    <div class="footer">
+                        <div class="color1">Opp. Petrol Pump, Kotkapura Road</div>
+                        <div class="color2">Bagha Purana (Moga) Punjab</div>
+                        <div class="color1">
+                            Ph: <a href="tel:+919112400010">91124-00010</a>, <a href="tel:+919023406002">90234-06002</a>
+                        </div>            
+                    </div>
+                    <br>
                     
-                    // Access the header's left and right parts (columns)
-                    const leftPart = header.querySelector('.left')?.textContent.trim().toLowerCase() || '';
-                    const rightPart = header.querySelector('.right')?.textContent.trim().toLowerCase() || '';
+                    <div class="signature">
+                        Web App by Komal Brar
+                    </div>  
                     
-                    // Combine the header text for searching
-                    const headerText = `${leftPart} ${rightPart}`.trim();
+                    <div id="visitorElement">
+                        <h3>Visitor  </h3>
+                        <!-- hitwebcounter Code START -->
+                        <a href="https://www.hitwebcounter.com" target="_blank">
+                            <img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="0" />
+                        </a>                              
+                        <!-- hitwebcounter Code END -->
+                    </div>        
+                </div> 
+                
+                <div id="sidebar">
+                    <a id="delivery-link" href="#"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
+                    <a id="whatsapp-link" href="#"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
+                    <a id="phone-link" href="#"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
+                    <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="sidebar/location.png" alt="Location" class="logo"></a>
+                    <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
+                    <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
+                </div>
+                
+                
+                
+                <script>
                     
-                    // Debug: Log the header text and split words
-                    console.log("Header Text:", headerText);
-                    console.log("Header Words:", headerText.split(/[\s,]+/).filter(word => word.length > 0));
+                    function updateScreenWidth() {
+                        const width = window.innerWidth;
+                        document.getElementById('screenWidthDisplay').textContent = `w${width}p`;
+                    }    
+                    window.addEventListener('resize', updateScreenWidth); // Update width on window resize
+                    updateScreenWidth(); // Initial update
                     
-                    // Check if the header matches the search query
-const headerMatches = headerText.includes('ml') ? false : headerText.split(/[\s,]+/).filter(word => word.length > 0).some(word => {
-
-                        const splitWords = word.split('('); 
-                        console.log("Header Word:", word, "Split Parts:", splitWords); // Debug: Log each word and its split parts
-                        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
-                    });
                     
-                    let hasVisibleItemsInCategory = false;
                     
-                    itemsInCategory.forEach(item => {
-                        const colABElement = item.querySelector('.colAB');
-                        const colCDEElement = item.querySelector('.colCDE');
-                        const itemTextAB = colABElement ? colABElement.textContent.trim().toLowerCase() : '';
-                        const itemTextCDE = colCDEElement ? colCDEElement.textContent.trim().toLowerCase() : '';
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    let selectedFilter = "="; // Default to "="
+                    
+                    
+                    function filterMenuItems(searchQuery) {
+                        const menuDiv = document.getElementById('menu');
+                        if (!menuDiv) return;
                         
-                       let itemMatches = itemTextAB.includes('ml') || itemTextCDE.includes('ml') ? false : false;
-
+                        const menuItems = document.querySelectorAll('.menu-item');
+                        const categoryHeaders = document.querySelectorAll('.category-header');
+                        const categoryItems = document.querySelectorAll('.category-items');
                         
+                        let totalVisibleItems = 0;
+                        
+                        
+                        const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+                        const isNumberSearch = /^\d+$/.test(normalizedSearchQuery); // Check if the search query is a number                        
+                        
+                        // Show/hide filter buttons based on whether the search query is a number
+                        const filterButtons = document.getElementById('filterButtons');
                         if (isNumberSearch) {
-                            // If the search query is a number, search for partial matches in columns C, D, and E
-                            itemMatches = itemTextCDE.split(/[\s,]+/).some(word => {
-                                const splitWords = word.split('(');
-                                return splitWords.some(part => part === normalizedSearchQuery); // Check for full word match
-                            });                            
+                            filterButtons.style.display = 'flex'; // Show filter buttons
                             } else {
-                            // Otherwise, check start-with words from all 5 columns (A, B, C, D, E)
-                            itemMatches = itemTextAB.split(' ').some(word => {
+                            filterButtons.style.display = 'none'; // Hide filter buttons
+                        }
+                        
+                        // Get the selected filter type (=, <=, >=)
+                        // Use the globally selected filter type
+                        const filterType = selectedFilter;
+                        
+                        
+                        // Convert the search query to a number
+                        const searchNumber = isNumberSearch ? parseInt(normalizedSearchQuery, 10) : null;
+                        
+                        categoryHeaders.forEach((header, index) => {
+                            const categoryItem = categoryItems[index];
+                            const itemsInCategory = categoryItem.querySelectorAll('.menu-item');
+                            
+                            // Access the header's left and right parts (columns)
+                            const leftPart = header.querySelector('.left')?.textContent.trim().toLowerCase() || '';
+                            const rightPart = header.querySelector('.right')?.textContent.trim().toLowerCase() || '';
+                            
+                            // Combine the header text for searching
+                            const headerText = `${leftPart} ${rightPart}`.trim();
+                            
+                            // Debug: Log the header text and split words
+                            console.log("Header Text:", headerText);
+                            console.log("Header Words:", headerText.split(/[\s,]+/).filter(word => word.length > 0));
+                            
+                            // Check if the header matches the search query
+                            const headerMatches = headerText.includes('ml') ? false : headerText.split(/[\s,]+/).filter(word => word.length > 0).some(word => {                                
                                 const splitWords = word.split('('); 
-                                return splitWords.some(part => part.startsWith(normalizedSearchQuery));
-                                }) || itemTextCDE.split(' ').some(word => {
-                                const splitWords = word.split('('); 
+                                console.log("Header Word:", word, "Split Parts:", splitWords); // Debug: Log each word and its split parts
                                 return splitWords.some(part => part.startsWith(normalizedSearchQuery));
                             });
+                            
+                            let hasVisibleItemsInCategory = false;
+                            
+                            itemsInCategory.forEach(item => {
+                                const colABElement = item.querySelector('.colAB');
+                                const colCDEElement = item.querySelector('.colCDE');
+                                const itemTextAB = colABElement ? colABElement.textContent.trim().toLowerCase() : '';
+                                const itemTextCDE = colCDEElement ? colCDEElement.textContent.trim().toLowerCase() : '';
+                                
+                                let itemMatches = itemTextAB.includes('ml') || itemTextCDE.includes('ml') ? false : false;
+                                
+                                if (isNumberSearch) {
+                                    // Extract numbers from the last three columns (colCDE)
+                                    const numbersInCDE = itemTextCDE.match(/\d+/g) || [];
+                                    itemMatches = numbersInCDE.some(numberStr => {
+                                        const number = parseInt(numberStr, 10);
+                                        switch (filterType) {
+                                            case '=':
+                                            return number === searchNumber;
+                                            case '<=':
+                                            return number <= searchNumber;
+                                            case '>=':
+                                            return number >= searchNumber;
+                                            default:
+                                            return false;
+                                        }
+                                        
+                                    });                      
+                                    } else {
+                                    // Otherwise, check start-with words from all 5 columns (A, B, C, D, E)
+                                    itemMatches = itemTextAB.split(' ').some(word => {
+                                        const splitWords = word.split('('); 
+                                        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+                                        }) || itemTextCDE.split(' ').some(word => {
+                                        const splitWords = word.split('('); 
+                                        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+                                    });
+                                }
+                                
+                                if (headerMatches || itemMatches) {
+                                    totalVisibleItems++;
+                                    
+                                    item.style.display = 'block';
+                                    hasVisibleItemsInCategory = true;
+                                    hasVisibleItems = true;
+                                    item.style.borderBottom = ''; // Reset border-bottom for all items
+                                    } else {
+                                    item.style.display = 'none';
+                                }
+                            });
+                            
+                            // Adjust the header display and styling based on matches
+                            if (headerMatches || hasVisibleItemsInCategory) {
+                                header.style.display = 'flex';  // Show category header
+                                categoryItem.style.display = 'block';  // Show category items
+                                header.style.fontSize = '6rem';  // Set font size for expanded header
+                                header.querySelector('.right').style.display = 'none';  // Show second column
+                                } else {
+                                header.style.display = 'none';  // Hide category header
+                                categoryItem.style.display = 'none';  // Hide category items
+                                header.style.fontSize = '7rem';  // Set font size for collapsed header
+                                header.querySelector('.right').style.display = 'none';  // Hide second column
+                            }
+                            
+                            // Now handle the last visible item in the category
+                            const visibleItems = Array.from(itemsInCategory).filter(item => item.style.display === 'block');
+                            if (visibleItems.length > 0) {
+                                const lastVisibleItem = visibleItems[visibleItems.length - 1];
+                                lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
+                            }
+                        });
+                        
+                        
+                        
+                        const totalItemsDiv = document.getElementById('total-items-found');
+                        
+                        if (searchQuery.length === 0) {
+                            totalItemsDiv.style.display = 'none'; // Hide when search box is empty
+                            } else {
+                            if (totalVisibleItems > 0) {
+                                totalItemsDiv.textContent = `${totalVisibleItems} items`;
+                                totalItemsDiv.style.color = '#00FF00'; // Green for visibility
+                                } else {
+                                totalItemsDiv.textContent = 'No item';
+                                totalItemsDiv.style.color = '#ff4d4d'; // Red for visibility
+                            }
+                            totalItemsDiv.style.display = 'block'; // Show only when search is not empty
                         }
                         
-                        if (headerMatches || itemMatches) {
-                            item.style.display = 'block';
-                            hasVisibleItemsInCategory = true;
-                            hasVisibleItems = true;
-                            item.style.borderBottom = ''; // Reset border-bottom for all items
-                            } else {
-                            item.style.display = 'none';
+                        
+                        
+                        
+                        
+                        let noResults = document.getElementById('no-results-message');                    
+                        // If no items match, show a message
+                        if (!hasVisibleItems) {
+                            if (!noResults) {
+                                noResults = document.createElement('div');
+                                noResults.id = 'no-results-message';
+                                noResults.textContent = 'No items found.';
+                                noResults.style.color = 'red';
+                                noResults.style.fontSize = '5rem';
+                                noResults.style.textAlign = 'center';
+                                noResults.style.padding = '2rem';
+                                menuDiv.appendChild(noResults);
+                            }
+                            } else if (noResults) {
+                            noResults.remove();  // Remove the "No items found" message when results are visible
                         }
-                    });
-                    
-                    // Adjust the header display and styling based on matches
-                    if (headerMatches || hasVisibleItemsInCategory) {
-                        header.style.display = 'flex';  // Show category header
-                        categoryItem.style.display = 'block';  // Show category items
-                        header.style.fontSize = '6rem';  // Set font size for expanded header
-                        header.querySelector('.right').style.display = 'inline';  // Show second column
-                        } else {
-                        header.style.display = 'none';  // Hide category header
-                        categoryItem.style.display = 'none';  // Hide category items
-                        header.style.fontSize = '7rem';  // Set font size for collapsed header
-                        header.querySelector('.right').style.display = 'none';  // Hide second column
                     }
                     
-                    // Now handle the last visible item in the category
-                const visibleItems = Array.from(itemsInCategory).filter(item => item.style.display === 'block');
-                if (visibleItems.length > 0) {
-                const lastVisibleItem = visibleItems[visibleItems.length - 1];
-                lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
-                }
-                });
-                
-                let noResults = document.getElementById('no-results-message');
-                
-                // If no items match, show a message
-                if (!hasVisibleItems) {
-                if (!noResults) {
-                noResults = document.createElement('div');
-                noResults.id = 'no-results-message';
-                noResults.textContent = 'No items found.';
-                noResults.style.color = '#fae68e';
-                noResults.style.fontSize = '5rem';
-                noResults.style.textAlign = 'center';
-                noResults.style.padding = '2rem';
-                menuDiv.appendChild(noResults);
-                }
-                } else if (noResults) {
-                noResults.remove();  // Remove the "No items found" message when results are visible
-                }
-                }
-                
-                // Function to reset headers and hide the second column when search is cleared
-                function resetHeaders() {
-                document.querySelectorAll('.category-header').forEach(header => {
-                header.style.fontSize = '7rem';  // Reset to collapsed size
-                header.querySelector('.right').style.display = 'none';  // Hide second column
-                });
-                
-                document.querySelectorAll('.category-items').forEach(container => {
-                container.style.display = 'none';  // Collapse all categories
-                });
-                }
-                
-                // Search Input Event Listener
-                const searchInput = document.getElementById('searchInput');
-                const clearButton = document.getElementById('clearButton');
-                
-                searchInput.addEventListener('input', (e) => {
-                const searchQuery = e.target.value.trim();
-                
-                // Show the clear button if there is any input text
-                if (searchQuery.length > 0) {
-                clearButton.style.display = 'block';
-                } else {
-                clearButton.style.display = 'none';
-                resetHeaders();  // Reset headers when search is cleared
-                }
-                
-                const regex = /^[a-zA-Z0-9\u0A00-\u0A7F]*$/;  // Ensure only English or Gurmukhi characters
-                if (!regex.test(searchQuery)) {
-                e.target.value = searchQuery.slice(0, -1);
-                } else {
-                filterMenuItems(searchQuery.trim());  // Filter items based on search query
-                }
-                
-                clearButton.offsetHeight;  // Trigger reflow to show the clear button
-                });
-                
-                // Ensure headers reset when the search box is clicked
-                searchInput.addEventListener('focus', resetHeaders);
-                
-                // Prevent spaces from being typed
-                searchInput.addEventListener('keydown', (e) => {
-                if (e.key === " ") {
-                e.preventDefault();
-                }
-                });
-                
-                
-                // Add event listener to clear the input field when the cross is clicked
-                clearButton.addEventListener('click', () => {
-                searchInput.value = ''; // Clear input field
-                clearButton.style.display = 'none'; // Hide the clear button
-                filterMenuItems(''); // Reset the filter
-                
-                // Collapse all category items when the filter is cleared
-                const categoryItemsContainers = document.querySelectorAll('.category-items');
-                categoryItemsContainers.forEach(container => {
-                container.style.display = 'none'; // Explicitly collapse all categories
-                });
-                
-                // Collapse all category headers to ensure they are not expanded
-                const categoryHeaders = document.querySelectorAll('.category-header');
-                categoryHeaders.forEach(header => {
-                header.classList.remove('expanded'); // Remove any "expanded" class or styles
-                });    
-                searchInput.focus(); // Set focus to the search box    
-                });
-                
-                
-                const scriptUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec";
-                
-                // Fetch data from Google Script URL
-                fetch(scriptUrl)
-                .then(response => response.json())
-                .then(data => {
-                const menuDiv = document.getElementById('menu');
-                let currentCategory = null;
-                
-                // Store all category item containers for collapsing
-                const categoryItemsContainers = [];
-                
-                data.forEach(row => {
-                const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
-                const mergedcolCDE = [row.columnC, row.columnD, row.columnE].filter(col => col).join(' / ');
-                
-                // Empty 3rd column behave as category except -
-                // const isCategory = isNaN(row.columnC) && row.columnC.trim() !== "";
-                const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
-                
-                
-                if (isCategory) {
-                const categoryHeaderDiv = document.createElement('div');
-                categoryHeaderDiv.classList.add('category-header');
-                
-                const leftPart = document.createElement('span');
-                leftPart.classList.add('left');
-                leftPart.textContent = mergedColAB;
-                
-                const rightPart = document.createElement('span');
-                rightPart.classList.add('right');
-                rightPart.textContent = mergedcolCDE;
-                
-                categoryHeaderDiv.appendChild(leftPart);
-                categoryHeaderDiv.appendChild(rightPart);
-                
-                const categoryItemsDiv = document.createElement('div');
-                categoryItemsDiv.classList.add('category-items');
-                
-                // Toggle category items visibility on click
-                categoryHeaderDiv.addEventListener('click', () => {
-                // Reset all other headers to default collapsed size and show only the first column
-                document.querySelectorAll('.category-header').forEach(header => {
-                header.style.fontSize = '7rem'; // Set collapsed size
-                header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
-                });
-                
-                document.querySelectorAll('.category-items').forEach(container => {
-                if (container !== categoryItemsDiv) {
-                container.style.display = 'none';
-                }
-                });
-                
-                // Toggle visibility and adjust styles accordingly
-                if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
-                categoryItemsDiv.style.display = 'block'; // Expand
-                categoryHeaderDiv.style.fontSize = '6rem'; // Set expanded size
-                categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show second column
-                } else {
-                categoryItemsDiv.style.display = 'none'; // Collapse
-                categoryHeaderDiv.style.fontSize = '7rem'; // Set collapsed size
-                
-                categoryHeaderDiv.querySelector('.right').style.display = 'none'; // Hide second column
-                }
-                });
-                
-                // Initial state: Increase font size for collapsed categories and hide second column
-                categoryHeaderDiv.style.fontSize = '7rem';
-                categoryHeaderDiv.querySelector('.right').style.display = 'none';
-                
-                menuDiv.appendChild(categoryHeaderDiv);
-                menuDiv.appendChild(categoryItemsDiv);
-                
-                categoryItemsContainers.push(categoryItemsDiv);                    
-                currentCategory = categoryItemsDiv;
-                } else if (currentCategory) {
-                const menuItemDiv = document.createElement('div');
-                menuItemDiv.classList.add('menu-item');
-                
-                const lineDiv = document.createElement('div');
-                lineDiv.classList.add('menu-item-line');
-                
-                const colABElement = document.createElement('span');
-                colABElement.classList.add('colAB');
-                colABElement.textContent = mergedColAB;
-                
-                const colCDEElement = document.createElement('span');
-                colCDEElement.classList.add('colCDE');
-                colCDEElement.textContent = mergedcolCDE;
-                
-                lineDiv.appendChild(colABElement);
-                lineDiv.appendChild(colCDEElement);                        
-                menuItemDiv.appendChild(lineDiv);
-                currentCategory.appendChild(menuItemDiv);
-                }
-                });
-                
-                categoryItemsContainers.forEach(container => {
-                container.style.display = 'none';
-                });
-                
-                document.querySelector(".search-container").style.display = "block";
-                document.querySelector(".footer-container").style.display = "block"; // Show footer
-                
-                
-                // Remove the loading overlay after the data is fetched and processed
-                document.getElementById('loadingOverlay').style.display = 'none';
-                })
-                .catch(error => {
-                console.error("Error fetching data:", error);
-                document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                let sidebar = document.getElementById('sidebar');
-                let indicator = document.createElement('div');
-                indicator.id = 'sidebar-indicator';
-                document.body.appendChild(indicator);
-                
-                let hoverTimeout;
-                let sidebarAutoHideTimer;
-                let touchStartX = 0;
-                let touchEndX = 0;
-                const swipeThreshold = 80;  // Minimum swipe distance
-                const edgeThreshold = 50;   // Swipe must start within 50px from screen edge
-                
-                // Add/Remove a class that disables scroll on body
-                function disableScroll() {
-                document.body.style.overflow = 'hidden';
-                }
-                
-                function enableScroll() {
-                document.body.style.overflow = 'auto';
-                }
-                
-                // Mouse-triggered sidebar behavior (Unchanged)
-                document.addEventListener('mousemove', (event) => {
-                clearTimeout(hoverTimeout);
-                
-                if (event.clientX > window.innerWidth - 50) {
-                hoverTimeout = setTimeout(() => {
-                sidebar.classList.add('open');
-                disableScroll(); // Prevent scrolling when sidebar opens
-                }, 300);
-                } else {
-                hoverTimeout = setTimeout(() => {
-                sidebar.classList.remove('open');
-                enableScroll(); // Enable scrolling when sidebar closes
-                }, 300);
-                }
-                });
-                
-                // Touch gesture handling
-                document.addEventListener('touchstart', (event) => {
-                touchStartX = event.touches[0].clientX;
-                });
-                
-                document.addEventListener('touchmove', (event) => {
-                touchEndX = event.touches[0].clientX;
-                });
-                
-                document.addEventListener('touchend', (event) => {
-                if (touchEndX === 0) return;  // Ignore if no movement
-                
-                if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold) {
-                sidebar.classList.add('open');
-                disableScroll(); // Prevent scrolling when sidebar opens
-                } 
-                else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
-                sidebar.classList.remove('open');
-                enableScroll(); // Enable scrolling when sidebar closes
-                } 
-                else if (touchStartX > sidebar.offsetWidth + 50) {
-                sidebar.classList.remove('open');
-                enableScroll(); // Enable scrolling when sidebar closes
-                }
-                
-                touchStartX = 0;
-                touchEndX = 0;
-                });
-                
-                // Toggle sidebar on indicator tap
-                indicator.addEventListener('touchstart', (event) => {
-                event.preventDefault();
-                sidebar.classList.toggle('open');
-                if (sidebar.classList.contains('open')) {
-                disableScroll(); // Prevent scrolling when sidebar opens
-                } else {
-                enableScroll(); // Enable scrolling when sidebar closes
-                }
-                });
-                
-                // Auto-hide timer starts only when leaving the sidebar
-                function resetAutoHideTimer() {
-                clearTimeout(sidebarAutoHideTimer);
-                sidebarAutoHideTimer = setTimeout(() => {
-                sidebar.classList.remove('open');
-                enableScroll(); // Enable scrolling when sidebar closes
-                }, 2500);
-                }
-                
-                // Stop auto-hide while interacting
-                sidebar.addEventListener('mouseenter', () => clearTimeout(sidebarAutoHideTimer)); // Mouse enters sidebar
-                sidebar.addEventListener('mouseleave', resetAutoHideTimer); // Mouse leaves sidebar
-                
-                sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
-                sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
-                
-                // Check if the device supports touch
-                if ('ontouchstart' in window) {
-                let logos = document.querySelectorAll('#sidebar .logo');
-                
-                logos.forEach(logo => {
-                logo.addEventListener('touchstart', (e) => {
-                e.stopPropagation();
-                
-                // Remove the hovered class from all logos
-                logos.forEach(l => l.classList.remove('hovered'));
-                
-                // Add the hovered class to the touched logo
-                logo.classList.add('hovered');
-                });
-                
-                logo.addEventListener('touchend', (e) => {
-                e.stopPropagation();
-                setTimeout(() => logo.classList.remove('hovered'), 300); // Smooth effect
-                });
-                });
-                }
-                
-                
-                // Blink the touch indicator every 1 second
-                setInterval(() => {
-                indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
-                }, 3000);
-                
-                const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
-                
-                fetch(miscUrl)
-                .then(response => response.json())
-                .then(data => {
-                if (data && data.length >= 2) {
-                // Fetch delivery phone number from B3 cell
-                let deliveryPhone = data[2][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
-                if (deliveryPhone) {
-                deliveryPhone = deliveryPhone.replace(/-/g, ""); // Remove dashes
-                const formattedDeliveryPhone = `tel:+91${deliveryPhone}`; // Add country code
-                
-                // Update the delivery phone link
-                const deliveryLinkElement = document.getElementById('delivery-link');
-                if (deliveryLinkElement) {
-                deliveryLinkElement.href = formattedDeliveryPhone;
-                }
-                }
-                
-                // Fetch WhatsApp phone number from B4 cell (3rd row, 2nd column, 0-indexed)
-                let chatNumber = data[3][1];
-                if (chatNumber) {
-                chatNumber = chatNumber.replace(/-/g, ""); // Remove dashes
-                }
-                
-                // Fetch WhatsApp message from B5 cell (4th row, 2nd column, 0-indexed)
-                let message = data[4][1]; 
-                if (!message || message.trim() === "") {
-                message = "Hello Chai Sutta Bar!"; // Default message
-                }
-                
-                // URL-encode the message for the WhatsApp link
-                const encodedMessage = encodeURIComponent(message);
-                
-                // Construct the full WhatsApp link dynamically
-                const whatsappLink = `https://wa.me/+91${chatNumber}?text=${encodedMessage}`;
-                
-                // Update the href attribute of the anchor tag with the new link
-                const whatsappLinkElement = document.getElementById('whatsapp-link');
-                if (whatsappLinkElement) {
-                whatsappLinkElement.href = whatsappLink;
-                }
-                
-                
-                // Fetch phone number from B6 cell (5th row, 2nd column, 0-indexed)
-                let contactPhone = data[5][1]; 
-                if (contactPhone) {
-                contactPhone = contactPhone.replace(/-/g, ""); // Remove dashes
-                const formattedContactPhone = `tel:+91${contactPhone}`; // Add country code
-                
-                // Update the phone link dynamically
-                const phoneLinkElement = document.getElementById("phone-link");
-                if (phoneLinkElement) {
-                phoneLinkElement.href = formattedContactPhone;
-                }
-                }
-                
-                // Extract Open and Close times from Google Sheets
-                const openTimeStr = data[0][1]; // Example: "09.30am"
-                const closeTimeStr = data[1][1]; // Example: "10.45pm"
-                
-                // Check if either openTimeStr or closeTimeStr is empty
-                if (!openTimeStr || !closeTimeStr) {
-                // If one or both times are missing, don't display anything
-                const timeElem = document.querySelector('.open-close');
-                if (timeElem) {
-                timeElem.innerHTML = "";
-                }
-                return; // Exit the function
-                }
-                
-                // Convert Open and Close times to Date objects
-                const openTime = parseCustomTime(openTimeStr);
-                const closeTime = parseCustomTime(closeTimeStr);
-                
-                // Get current time
-                const now = new Date();
-                const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
-                
-                // Convert Open and Close times to minutes since midnight
-                const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
-                const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
-                
-                let statusMessage = "";
-                // Compare times based on minutes from midnight
-                if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
-                statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
-                } else {
-                statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
-                }
-                
-                // Update the display
-                const timeElem = document.querySelector('.open-close');
-                if (timeElem) {
-                timeElem.innerHTML = statusMessage;
-                }                                    
-                }                
-                })
-                
-                .catch(error => {
-                console.error("Error fetching Misc data:", error);
-                });
-                
-                // Function to parse custom time format (hh.mmap)
-                function parseCustomTime(timeStr) {
-                const hour = parseInt(timeStr.substring(0, 2), 10); // Get the hour part
-                const minute = parseInt(timeStr.substring(3, 5), 10); // Get the minute part
-                const ampm = timeStr.substring(5).toLowerCase(); // Get 'am' or 'pm'
-                
-                let hours24 = hour;
-                
-                // Convert to 24-hour format
-                if (ampm === 'pm' && hours24 !== 12) {
-                hours24 += 12; // Convert PM hours to 24-hour format
-                }
-                if (ampm === 'am' && hours24 === 12) {
-                hours24 = 0; // Convert 12 AM to 00:00
-                }
-                
-                const date = new Date();
-                date.setHours(hours24, minute, 0, 0); // Set the time to the parsed hour and minute
-                
-                return date;
-                }
-                
-                // Function to format time in "h:mm AM/PM" format
-                function formatTime(date) {
-                const hours = date.getHours();
-                const minutes = date.getMinutes();
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                const formattedHour = hours % 12 || 12; // Adjust hour for 12-hour format
-                const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-                return `${formattedHour}:${formattedMinutes} ${ampm}`;
-                }
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                function setupHamburgerMenu() {
-                // Create Hamburger Button
-                const hamburgerButton = document.createElement('div');
-                hamburgerButton.id = 'hamburger-button';
-                hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
-                document.body.appendChild(hamburgerButton);
-                
-                // Create Sidebar
-                const hsidebar = document.createElement('div');
-                hsidebar.id = 'hsidebar';
-                hsidebar.innerHTML = ` 
-                <div class="hsidebar-content">
-                <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
-                <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
-                <div class="hsidebar-option" id="install-app">⚙️ Install CSB App</div>
-                <div class="hsidebar-option" id="show-qrcode">🔗 Share Link</div>
-                <!-- Close button -->
-                <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->
-                
-                <!-- Footer text -->
-                <div class="footer-text" id="footer-info">
-                <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
-                </div>
-                </div>
-                `;
-                document.body.appendChild(hsidebar);
-                
-                // Create Backdrop
-                const overlay = document.createElement('div');
-                overlay.id = 'sidebar-overlay';
-                document.body.appendChild(overlay);
-                
-                // Create QR Code Modal
-                const qrCodeModal = document.createElement('div');
-                qrCodeModal.id = 'qr-code-modal';
-                qrCodeModal.innerHTML = `
-                <div class="modal-content">
-                <span id="close-modal">&times;</span>
-                <img src="qrcode.png" alt="QR Code">
-                </div>
-                `;
-                document.body.appendChild(qrCodeModal);
-                
-                // Open Sidebar
-                hamburgerButton.addEventListener('click', () => {
-                hsidebar.classList.add('open');
-                overlay.style.display = 'block';
-                document.body.style.overflow = 'hidden'; // Lock scrolling on body
-                document.documentElement.style.overflow = 'hidden'; // Lock scrolling on html
-                document.body.style.height = '100%'; // Prevent body from resizing while locked
-                document.documentElement.style.height = '100%'; // Prevent html from resizing
-                });
-                
-                // Close Sidebar when clicking outside
-                overlay.addEventListener('click', () => {
-                hsidebar.classList.remove('open');
-                overlay.style.display = 'none';
-                document.body.style.overflow = ''; // Unlock scrolling on body
-                document.documentElement.style.overflow = ''; // Unlock scrolling on html
-                document.body.style.height = ''; // Allow body resizing again
-                document.documentElement.style.height = ''; // Allow html resizing
-                });
-                
-                // Close Sidebar on Escape Key
-                document.addEventListener('keydown', (e) => {
-                if (e.key === "Escape") {
-                hsidebar.classList.remove('open');
-                overlay.style.display = 'none';
-                document.body.style.overflow = '';
-                document.documentElement.style.overflow = ''; // Unlock scrolling on html
-                document.body.style.height = ''; // Allow body resizing again
-                document.documentElement.style.height = ''; // Allow html resizing
-                }
-                });
-                
-                // Close Sidebar when clicking on the cross button
-                document.getElementById('close-sidebar').addEventListener('click', () => {
-                hsidebar.classList.remove('open');
-                overlay.style.display = 'none';
-                document.body.style.overflow = ''; // Unlock scrolling
-                document.documentElement.style.overflow = ''; // Unlock scrolling
-                document.body.style.height = ''; // Allow body resizing
-                document.documentElement.style.height = ''; // Allow html resizing
-                });
-                
-                // Install App
-                document.getElementById('install-app').addEventListener('click', () => {
-                if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                console.log(choiceResult.outcome === 'accepted' ? 'User accepted' : 'User dismissed');
-                deferredPrompt = null;
-                });
-                }
-                });
-                
-                // Show QR Code
-                document.getElementById('show-qrcode').addEventListener('click', () => {
-                qrCodeModal.style.display = 'block';
-                });
-                
-                // Close QR Code Modal
-                document.getElementById('close-modal').addEventListener('click', () => {
-                qrCodeModal.style.display = 'none';
-                });
-                
-                // Close QR Code Modal on Click Outside
-                window.addEventListener('click', (event) => {
-                if (event.target === qrCodeModal) {
-                qrCodeModal.style.display = 'none';
-                }
-                });
-                
-                // Swipe Left to Close Sidebar (Mobile Gesture)
-                let startX;
-                let startY;
-                
-                // Detect swipe start
-                hsidebar.addEventListener('touchstart', (e) => {
-                const touchStart = e.touches[0];
-                startX = touchStart.clientX;
-                startY = touchStart.clientY;
-                });
-                
-                // Detect swipe end
-                hsidebar.addEventListener('touchend', (e) => {
-                const touchEnd = e.changedTouches[0];
-                const deltaX = touchEnd.clientX - startX;
-                const deltaY = touchEnd.clientY - startY;
-                
-                // Swipe left detection (horizontal swipe with a minimal vertical movement)
-                if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
-                hsidebar.classList.remove('open');
-                overlay.style.display = 'none';
-                document.body.style.overflow = '';
-                document.documentElement.style.overflow = '';
-                document.body.style.height = '';
-                document.documentElement.style.height = '';
-                }
-                });
-                }
-                
-                // Call the setup function
-                setupHamburgerMenu();
-                
-                // Close Sidebar when clicking on the cross button
-                document.getElementById('close-sidebar').addEventListener('click', () => {
-                hsidebar.classList.remove('open');
-                overlay.style.display = 'none';
-                document.body.style.overflow = ''; // Unlock scrolling
-                document.documentElement.style.overflow = ''; // Unlock scrolling
-                document.body.style.height = ''; // Allow body resizing
-                document.documentElement.style.height = ''; // Allow html resizing
-                });
-                
-                // Function to update the time
-                function updateClock() {
-                const clockElement = document.getElementById('digital-clock');
-                const dateElement = document.getElementById('current-date');
-                
-                const now = new Date();
-                
-                // Get today's date in "dd-MMM-yyyy" format (e.g., "02-Feb-2025")
-                const date = now.getDate();
-                const month = now.toLocaleString('default', { month: 'short' }); // Short month name (e.g., "Feb")
-                const year = now.getFullYear();
-                const formattedDate = `${date < 10 ? '0' + date : date}-${month}-${year}`;
-                
-                // Set the date in the #current-date element
-                dateElement.innerHTML = formattedDate;
-                
-                // Get time in HH:MM:SS format
-                let hours = now.getHours();
-                let minutes = now.getMinutes();
-                let seconds = now.getSeconds();
-                
-                // Add leading zeros for single digits
-                hours = (hours < 10) ? '0' + hours : hours;
-                minutes = (minutes < 10) ? '0' + minutes : minutes;
-                seconds = (seconds < 10) ? '0' + seconds : seconds;
-                
-                // Set the time in the #digital-clock element
-                clockElement.innerHTML = `${hours}:${minutes}:${seconds}`;
-                }
-                
-                // Update the clock every second
-                setInterval(updateClock, 1000);
-                
-                // Initialize clock on page load
-                updateClock();
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                let deferredPrompt; // Variable to hold the deferred prompt event
-                
-                // Listen for the beforeinstallprompt event
-                window.addEventListener("beforeinstallprompt", (e) => {
-                e.preventDefault(); // Prevent the default prompt from showing automatically
-                deferredPrompt = e; // Store the event so we can trigger it later
-                
-                // Optionally, show a custom install button here if needed
-                // document.getElementById('install-button').style.display = 'block'; 
-                
-                // Automatically trigger the prompt after a delay
-                setTimeout(() => {
-                deferredPrompt.prompt(); // Show the install prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                // Handle the user's response
-                if (choiceResult.outcome === "accepted") {
-                console.log("User accepted the install prompt");
-                } else {
-                console.log("User dismissed the install prompt");
-                }
-                deferredPrompt = null; // Reset the deferred prompt
-                });
-                }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-                });
-                
-                </script>
-                
-                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-                </body>
-                </html>
+                    // Add event listener to filter buttons
+                    document.querySelectorAll('.filter-btn').forEach(button => {
+                        button.addEventListener('click', () => {
+                            // Remove active class from all buttons
+                            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                            
+                            // Add active class to the clicked button
+                            button.classList.add('active');
+                            
+                            // Update the selected filter type
+                            selectedFilter = button.getAttribute('data-filter');
+                            
+                            // Trigger filtering
+                            const searchQuery = document.getElementById('searchInput').value.trim();
+                            filterMenuItems(searchQuery);
+                        });
+                    });
+                    
+                    
+                    // Function to reset headers and hide the second column when search is cleared
+                    function resetHeaders() {
+                        document.querySelectorAll('.category-header').forEach(header => {
+                            header.style.fontSize = '7rem';  // Reset to collapsed size
+                            header.querySelector('.right').style.display = 'none';  // Hide second column
+                        });
+                        
+                        document.querySelectorAll('.category-items').forEach(container => {
+                            container.style.display = 'none';  // Collapse all categories
+                        });
+                    }
+                    
+                    // Get references to the elements
+                    const searchInput = document.getElementById('searchInput');
+                    const clearButton = document.getElementById('clearButton');
+                    // The magnifierIcon remains always visible, so no toggling is required here
+                    
+                    searchInput.addEventListener('input', (e) => {
+                        const searchQuery = e.target.value.trim();
+                        
+                        // Show the clear button if there is any input text; otherwise, hide it.
+                        if (searchQuery.length > 0) {
+                            clearButton.style.display = 'block';
+                            } else {
+                            clearButton.style.display = 'none';
+                            resetHeaders();  // Reset headers when search is cleared
+                        }
+                        
+                        // Validate the input to allow only English or Gurmukhi characters
+                        const regex = /^[a-zA-Z0-9\u0A00-\u0A7F]*$/;
+                        if (!regex.test(searchQuery)) {
+                            e.target.value = searchQuery.slice(0, -1);
+                            } else {
+                            filterMenuItems(searchQuery);  // Filter items based on search query
+                        }
+                        
+                        // Trigger a reflow for the clear button if necessary
+                        clearButton.offsetHeight;
+                    });
+                    
+                    // Clear Button Event Listener
+                    clearButton.addEventListener('click', () => {
+                        searchInput.value = '';              // Clear input field
+                        clearButton.style.display = 'none';  // Hide the clear button
+                        
+                        // Reset filtering and collapse categories (your existing logic)
+                        filterMenuItems('');
+                        
+                        // Collapse all category items (your existing logic)
+                        document.querySelectorAll('.category-items').forEach(container => {
+                            container.style.display = 'none';
+                        });
+                        document.querySelectorAll('.category-header').forEach(header => {
+                            header.classList.remove('expanded');
+                        });
+                        
+                        // Focus back on the search box
+                        searchInput.focus();
+                    });
+                    
+                    
+                    
+                    const scriptUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec";
+                    
+                    // Fetch data from Google Script URL
+                    fetch(scriptUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const menuDiv = document.getElementById('menu');
+                        let currentCategory = null;
+                        
+                        // Store all category item containers for collapsing
+                        const categoryItemsContainers = [];
+                        
+                        data.forEach(row => {
+                            const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
+                            const mergedcolCDE = [row.columnC, row.columnD, row.columnE].filter(col => col).join(' / ');
+                            
+                            // Empty 3rd column behave as category except -
+                            // const isCategory = isNaN(row.columnC) && row.columnC.trim() !== "";
+                            const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
+                            
+                            
+                            if (isCategory) {
+                                const categoryHeaderDiv = document.createElement('div');
+                                categoryHeaderDiv.classList.add('category-header');
                                 
+                                const leftPart = document.createElement('span');
+                                leftPart.classList.add('left');
+                                leftPart.textContent = mergedColAB;
+                                
+                                const rightPart = document.createElement('span');
+                                rightPart.classList.add('right');
+                                rightPart.textContent = mergedcolCDE;
+                                
+                                categoryHeaderDiv.appendChild(leftPart);
+                            categoryHeaderDiv.appendChild(rightPart);
+                            
+                            const categoryItemsDiv = document.createElement('div');
+                            categoryItemsDiv.classList.add('category-items');
+                            
+                            // Toggle category items visibility on click
+                            categoryHeaderDiv.addEventListener('click', () => {
+                            // Reset all other headers to default collapsed size and show only the first column
+                            document.querySelectorAll('.category-header').forEach(header => {
+                            header.style.fontSize = '7rem'; // Set collapsed size
+                            header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
+                            });
+                            
+                            document.querySelectorAll('.category-items').forEach(container => {
+                            if (container !== categoryItemsDiv) {
+                            container.style.display = 'none';
+                            }
+                            });
+                            
+                            // Toggle visibility and adjust styles accordingly
+                            if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
+                            categoryItemsDiv.style.display = 'block'; // Expand
+                            categoryHeaderDiv.style.fontSize = '6rem'; // Set expanded size
+                            categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show second column
+                            } else {
+                            categoryItemsDiv.style.display = 'none'; // Collapse
+                            categoryHeaderDiv.style.fontSize = '7rem'; // Set collapsed size
+                            
+                            categoryHeaderDiv.querySelector('.right').style.display = 'none'; // Hide second column
+                            }
+                            });
+                            
+                            // Initial state: Increase font size for collapsed categories and hide second column
+                            categoryHeaderDiv.style.fontSize = '7rem';
+                            categoryHeaderDiv.querySelector('.right').style.display = 'none';
+                            
+                            menuDiv.appendChild(categoryHeaderDiv);
+                            menuDiv.appendChild(categoryItemsDiv);
+                            
+                            categoryItemsContainers.push(categoryItemsDiv);                    
+                            currentCategory = categoryItemsDiv;
+                            } else if (currentCategory) {
+                            const menuItemDiv = document.createElement('div');
+                            menuItemDiv.classList.add('menu-item');
+                            
+                            const lineDiv = document.createElement('div');
+                            lineDiv.classList.add('menu-item-line');
+                            
+                            const colABElement = document.createElement('span');
+                            colABElement.classList.add('colAB');
+                            colABElement.textContent = mergedColAB;
+                            
+                            const colCDEElement = document.createElement('span');
+                            colCDEElement.classList.add('colCDE');
+                            colCDEElement.textContent = mergedcolCDE;
+                            
+                            lineDiv.appendChild(colABElement);
+                            lineDiv.appendChild(colCDEElement);                        
+                            menuItemDiv.appendChild(lineDiv);
+                            currentCategory.appendChild(menuItemDiv);
+                            }
+                            });
+                            
+                            categoryItemsContainers.forEach(container => {
+                            container.style.display = 'none';
+                            });
+                            
+                            document.querySelector(".search-container").style.display = "block";
+                            document.querySelector(".footer-container").style.display = "block"; // Show footer
+                            
+                            
+                            // Remove the loading overlay after the data is fetched and processed
+                            document.getElementById('loadingOverlay').style.display = 'none';
+                            })
+                            .catch(error => {
+                            console.error("Error fetching data:", error);
+                            document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
+                            });
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            let sidebar = document.getElementById('sidebar');
+                            let indicator = document.createElement('div');
+                            indicator.id = 'sidebar-indicator';
+                            document.body.appendChild(indicator);
+                            
+                            let hoverTimeout;
+                            let sidebarAutoHideTimer;
+                            let touchStartX = 0;
+                            let touchEndX = 0;
+                            const swipeThreshold = 80;  // Minimum swipe distance
+                            const edgeThreshold = 50;   // Swipe must start within 50px from screen edge
+                            
+                            // Add/Remove a class that disables scroll on body
+                            function disableScroll() {
+                            document.body.style.overflow = 'hidden';
+                            }
+                            
+                            function enableScroll() {
+                            document.body.style.overflow = 'auto';
+                            }
+                            
+                            // Mouse-triggered sidebar behavior (Unchanged)
+                            document.addEventListener('mousemove', (event) => {
+                            clearTimeout(hoverTimeout);
+                            
+                            if (event.clientX > window.innerWidth - 50) {
+                            hoverTimeout = setTimeout(() => {
+                            sidebar.classList.add('open');
+                            disableScroll(); // Prevent scrolling when sidebar opens
+                            }, 300);
+                            } else {
+                            hoverTimeout = setTimeout(() => {
+                            sidebar.classList.remove('open');
+                            enableScroll(); // Enable scrolling when sidebar closes
+                            }, 300);
+                            }
+                            });
+                            
+                            // Touch gesture handling
+                            document.addEventListener('touchstart', (event) => {
+                            touchStartX = event.touches[0].clientX;
+                            });
+                            
+                            document.addEventListener('touchmove', (event) => {
+                            touchEndX = event.touches[0].clientX;
+                            });
+                            
+                            document.addEventListener('touchend', (event) => {
+                            if (touchEndX === 0) return;  // Ignore if no movement
+                            
+                            if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold) {
+                            sidebar.classList.add('open');
+                            disableScroll(); // Prevent scrolling when sidebar opens
+                            } 
+                            else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
+                            sidebar.classList.remove('open');
+                            enableScroll(); // Enable scrolling when sidebar closes
+                            } 
+                            else if (touchStartX > sidebar.offsetWidth + 50) {
+                            sidebar.classList.remove('open');
+                            enableScroll(); // Enable scrolling when sidebar closes
+                            }
+                            
+                            touchStartX = 0;
+                            touchEndX = 0;
+                            });
+                            
+                            // Toggle sidebar on indicator tap
+                            indicator.addEventListener('touchstart', (event) => {
+                            event.preventDefault();
+                            sidebar.classList.toggle('open');
+                            if (sidebar.classList.contains('open')) {
+                            disableScroll(); // Prevent scrolling when sidebar opens
+                            } else {
+                            enableScroll(); // Enable scrolling when sidebar closes
+                            }
+                            });
+                            
+                            // Auto-hide timer starts only when leaving the sidebar
+                            function resetAutoHideTimer() {
+                            clearTimeout(sidebarAutoHideTimer);
+                            sidebarAutoHideTimer = setTimeout(() => {
+                            sidebar.classList.remove('open');
+                            enableScroll(); // Enable scrolling when sidebar closes
+                            }, 2500);
+                            }
+                            
+                            // Stop auto-hide while interacting
+                            sidebar.addEventListener('mouseenter', () => clearTimeout(sidebarAutoHideTimer)); // Mouse enters sidebar
+                            sidebar.addEventListener('mouseleave', resetAutoHideTimer); // Mouse leaves sidebar
+                            
+                            sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
+                            sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
+                            
+                            // Check if the device supports touch
+                            if ('ontouchstart' in window) {
+                            let logos = document.querySelectorAll('#sidebar .logo');
+                            
+                            logos.forEach(logo => {
+                            logo.addEventListener('touchstart', (e) => {
+                            e.stopPropagation();
+                            
+                            // Remove the hovered class from all logos
+                            logos.forEach(l => l.classList.remove('hovered'));
+                            
+                            // Add the hovered class to the touched logo
+                            logo.classList.add('hovered');
+                            });
+                            
+                            logo.addEventListener('touchend', (e) => {
+                            e.stopPropagation();
+                            setTimeout(() => logo.classList.remove('hovered'), 300); // Smooth effect
+                            });
+                            });
+                            }
+                            
+                            
+                            // Blink the touch indicator every 1 second
+                            setInterval(() => {
+                            indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
+                            }, 3000);
+                            
+                            const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
+                            
+                            fetch(miscUrl)
+                            .then(response => response.json())
+                            .then(data => {
+                            if (data && data.length >= 2) {
+                            // Fetch delivery phone number from B3 cell
+                            let deliveryPhone = data[2][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
+                            if (deliveryPhone) {
+                            deliveryPhone = deliveryPhone.replace(/-/g, ""); // Remove dashes
+                            const formattedDeliveryPhone = `tel:+91${deliveryPhone}`; // Add country code
+                            
+                            // Update the delivery phone link
+                            const deliveryLinkElement = document.getElementById('delivery-link');
+                            if (deliveryLinkElement) {
+                            deliveryLinkElement.href = formattedDeliveryPhone;
+                            }
+                            }
+                            
+                            // Fetch WhatsApp phone number from B4 cell (3rd row, 2nd column, 0-indexed)
+                            let chatNumber = data[3][1];
+                            if (chatNumber) {
+                            chatNumber = chatNumber.replace(/-/g, ""); // Remove dashes
+                            }
+                            
+                            // Fetch WhatsApp message from B5 cell (4th row, 2nd column, 0-indexed)
+                            let message = data[4][1]; 
+                            if (!message || message.trim() === "") {
+                            message = "Hello Chai Sutta Bar!"; // Default message
+                            }
+                            
+                            // URL-encode the message for the WhatsApp link
+                            const encodedMessage = encodeURIComponent(message);
+                            
+                            // Construct the full WhatsApp link dynamically
+                            const whatsappLink = `https://wa.me/+91${chatNumber}?text=${encodedMessage}`;
+                            
+                            // Update the href attribute of the anchor tag with the new link
+                            const whatsappLinkElement = document.getElementById('whatsapp-link');
+                            if (whatsappLinkElement) {
+                            whatsappLinkElement.href = whatsappLink;
+                            }
+                            
+                            
+                            // Fetch phone number from B6 cell (5th row, 2nd column, 0-indexed)
+                            let contactPhone = data[5][1]; 
+                            if (contactPhone) {
+                            contactPhone = contactPhone.replace(/-/g, ""); // Remove dashes
+                            const formattedContactPhone = `tel:+91${contactPhone}`; // Add country code
+                            
+                            // Update the phone link dynamically
+                            const phoneLinkElement = document.getElementById("phone-link");
+                            if (phoneLinkElement) {
+                            phoneLinkElement.href = formattedContactPhone;
+                            }
+                            }
+                            
+                            // Extract Open and Close times from Google Sheets
+                            const openTimeStr = data[0][1]; // Example: "09.30am"
+                            const closeTimeStr = data[1][1]; // Example: "10.45pm"
+                            
+                            // Check if either openTimeStr or closeTimeStr is empty
+                            if (!openTimeStr || !closeTimeStr) {
+                            // If one or both times are missing, don't display anything
+                            const timeElem = document.querySelector('.open-close');
+                            if (timeElem) {
+                            timeElem.innerHTML = "";
+                            }
+                            return; // Exit the function
+                            }
+                            
+                            // Convert Open and Close times to Date objects
+                            const openTime = parseCustomTime(openTimeStr);
+                            const closeTime = parseCustomTime(closeTimeStr);
+                            
+                            // Get current time
+                            const now = new Date();
+                            const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
+                            
+                            // Convert Open and Close times to minutes since midnight
+                            const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
+                            const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
+                            
+                            let statusMessage = "";
+                            // Compare times based on minutes from midnight
+                            if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
+                            statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
+                            } else {
+                            statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
+                            }
+                            
+                            // Update the display
+                            const timeElem = document.querySelector('.open-close');
+                            if (timeElem) {
+                            timeElem.innerHTML = statusMessage;
+                            }                                    
+                            }                
+                            })
+                            
+                            .catch(error => {
+                            console.error("Error fetching Misc data:", error);
+                            });
+                            
+                            // Function to parse custom time format (hh.mmap)
+                            function parseCustomTime(timeStr) {
+                            const hour = parseInt(timeStr.substring(0, 2), 10); // Get the hour part
+                            const minute = parseInt(timeStr.substring(3, 5), 10); // Get the minute part
+                            const ampm = timeStr.substring(5).toLowerCase(); // Get 'am' or 'pm'
+                            
+                            let hours24 = hour;
+                            
+                            // Convert to 24-hour format
+                            if (ampm === 'pm' && hours24 !== 12) {
+                            hours24 += 12; // Convert PM hours to 24-hour format
+                            }
+                            if (ampm === 'am' && hours24 === 12) {
+                            hours24 = 0; // Convert 12 AM to 00:00
+                            }
+                            
+                            const date = new Date();
+                            date.setHours(hours24, minute, 0, 0); // Set the time to the parsed hour and minute
+                            
+                            return date;
+                            }
+                            
+                            // Function to format time in "h:mm AM/PM" format
+                            function formatTime(date) {
+                            const hours = date.getHours();
+                            const minutes = date.getMinutes();
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            const formattedHour = hours % 12 || 12; // Adjust hour for 12-hour format
+                            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                            return `${formattedHour}:${formattedMinutes} ${ampm}`;
+                            }
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            function setupHamburgerMenu() {
+                            // Create Hamburger Button
+                            const hamburgerButton = document.createElement('div');
+                            hamburgerButton.id = 'hamburger-button';
+                            hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
+                            document.body.appendChild(hamburgerButton);
+                            
+                            // Create Sidebar
+                            const hsidebar = document.createElement('div');
+                            hsidebar.id = 'hsidebar';
+                            hsidebar.innerHTML = ` 
+                            <div class="hsidebar-content">
+                            <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
+                            <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
+                            <div class="hsidebar-option" id="install-app">⚙️ Install CSB App</div>
+                            <div class="hsidebar-option" id="show-qrcode">🔗 Share Link</div>
+                            <!-- Close button -->
+                            <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->
+                            
+                            <!-- Footer text -->
+                            <div class="footer-text" id="footer-info">
+                            <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
+                            </div>
+                            </div>
+                            `;
+                            document.body.appendChild(hsidebar);
+                            
+                            // Create Backdrop
+                            const overlay = document.createElement('div');
+                            overlay.id = 'sidebar-overlay';
+                            document.body.appendChild(overlay);
+                            
+                            // Create QR Code Modal
+                            const qrCodeModal = document.createElement('div');
+                            qrCodeModal.id = 'qr-code-modal';
+                            qrCodeModal.innerHTML = `
+                            <div class="modal-content">
+                            <span id="close-modal">&times;</span>
+                            <img src="qrcode.png" alt="QR Code">
+                            </div>
+                            `;
+                            document.body.appendChild(qrCodeModal);
+                            
+                            // Open Sidebar
+                            hamburgerButton.addEventListener('click', () => {
+                            hsidebar.classList.add('open');
+                            overlay.style.display = 'block';
+                            document.body.style.overflow = 'hidden'; // Lock scrolling on body
+                            document.documentElement.style.overflow = 'hidden'; // Lock scrolling on html
+                            document.body.style.height = '100%'; // Prevent body from resizing while locked
+                            document.documentElement.style.height = '100%'; // Prevent html from resizing
+                            });
+                            
+                            // Close Sidebar when clicking outside
+                            overlay.addEventListener('click', () => {
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = ''; // Unlock scrolling on body
+                            document.documentElement.style.overflow = ''; // Unlock scrolling on html
+                            document.body.style.height = ''; // Allow body resizing again
+                            document.documentElement.style.height = ''; // Allow html resizing
+                            });
+                            
+                            // Close Sidebar on Escape Key
+                            document.addEventListener('keydown', (e) => {
+                            if (e.key === "Escape") {
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = '';
+                            document.documentElement.style.overflow = ''; // Unlock scrolling on html
+                            document.body.style.height = ''; // Allow body resizing again
+                            document.documentElement.style.height = ''; // Allow html resizing
+                            }
+                            });
+                            
+                            // Close Sidebar when clicking on the cross button
+                            document.getElementById('close-sidebar').addEventListener('click', () => {
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = ''; // Unlock scrolling
+                            document.documentElement.style.overflow = ''; // Unlock scrolling
+                            document.body.style.height = ''; // Allow body resizing
+                            document.documentElement.style.height = ''; // Allow html resizing
+                            });
+                            
+                            // Install App
+                            document.getElementById('install-app').addEventListener('click', () => {
+                            if (deferredPrompt) {
+                            deferredPrompt.prompt();
+                            deferredPrompt.userChoice.then((choiceResult) => {
+                            console.log(choiceResult.outcome === 'accepted' ? 'User accepted' : 'User dismissed');
+                            deferredPrompt = null;
+                            });
+                            }
+                            });
+                            
+                            // Show QR Code
+                            document.getElementById('show-qrcode').addEventListener('click', () => {
+                            qrCodeModal.style.display = 'block';
+                            });
+                            
+                            // Close QR Code Modal
+                            document.getElementById('close-modal').addEventListener('click', () => {
+                            qrCodeModal.style.display = 'none';
+                            });
+                            
+                            // Close QR Code Modal on Click Outside
+                            window.addEventListener('click', (event) => {
+                            if (event.target === qrCodeModal) {
+                            qrCodeModal.style.display = 'none';
+                            }
+                            });
+                            
+                            // Swipe Left to Close Sidebar (Mobile Gesture)
+                            let startX;
+                            let startY;
+                            
+                            // Detect swipe start
+                            hsidebar.addEventListener('touchstart', (e) => {
+                            const touchStart = e.touches[0];
+                            startX = touchStart.clientX;
+                            startY = touchStart.clientY;
+                            });
+                            
+                            // Detect swipe end
+                            hsidebar.addEventListener('touchend', (e) => {
+                            const touchEnd = e.changedTouches[0];
+                            const deltaX = touchEnd.clientX - startX;
+                            const deltaY = touchEnd.clientY - startY;
+                            
+                            // Swipe left detection (horizontal swipe with a minimal vertical movement)
+                            if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = '';
+                            document.documentElement.style.overflow = '';
+                            document.body.style.height = '';
+                            document.documentElement.style.height = '';
+                            }
+                            });
+                            }
+                            
+                            // Call the setup function
+                            setupHamburgerMenu();
+                            
+                            // Close Sidebar when clicking on the cross button
+                            document.getElementById('close-sidebar').addEventListener('click', () => {
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = ''; // Unlock scrolling
+                            document.documentElement.style.overflow = ''; // Unlock scrolling
+                            document.body.style.height = ''; // Allow body resizing
+                            document.documentElement.style.height = ''; // Allow html resizing
+                            });
+                            
+                            // Function to update the time
+                            function updateClock() {
+                            const clockElement = document.getElementById('digital-clock');
+                            const dateElement = document.getElementById('current-date');
+                            
+                            const now = new Date();
+                            
+                            // Get today's date in "dd-MMM-yyyy" format (e.g., "02-Feb-2025")
+                            const date = now.getDate();
+                            const month = now.toLocaleString('default', { month: 'short' }); // Short month name (e.g., "Feb")
+                            const year = now.getFullYear();
+                            const formattedDate = `${date < 10 ? '0' + date : date}-${month}-${year}`;
+                            
+                            // Set the date in the #current-date element
+                            dateElement.innerHTML = formattedDate;
+                            
+                            // Get time in HH:MM:SS format
+                            let hours = now.getHours();
+                            let minutes = now.getMinutes();
+                            let seconds = now.getSeconds();
+                            
+                            // Add leading zeros for single digits
+                            hours = (hours < 10) ? '0' + hours : hours;
+                            minutes = (minutes < 10) ? '0' + minutes : minutes;
+                            seconds = (seconds < 10) ? '0' + seconds : seconds;
+                            
+                            // Set the time in the #digital-clock element
+                            clockElement.innerHTML = `${hours}:${minutes}:${seconds}`;
+                            }
+                            
+                            // Update the clock every second
+                            setInterval(updateClock, 1000);
+                            
+                            // Initialize clock on page load
+                            updateClock();
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            let deferredPrompt; // Variable to hold the deferred prompt event
+                            
+                            // Listen for the beforeinstallprompt event
+                            window.addEventListener("beforeinstallprompt", (e) => {
+                            e.preventDefault(); // Prevent the default prompt from showing automatically
+                            deferredPrompt = e; // Store the event so we can trigger it later
+                            
+                            // Optionally, show a custom install button here if needed
+                            // document.getElementById('install-button').style.display = 'block'; 
+                            
+                            // Automatically trigger the prompt after a delay
+                            setTimeout(() => {
+                            deferredPrompt.prompt(); // Show the install prompt
+                            deferredPrompt.userChoice.then((choiceResult) => {
+                            // Handle the user's response
+                            if (choiceResult.outcome === "accepted") {
+                            console.log("User accepted the install prompt");
+                            } else {
+                            console.log("User dismissed the install prompt");
+                            }
+                            deferredPrompt = null; // Reset the deferred prompt
+                            });
+                            }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+                            });
+                            
+                            </script>
+                            
+                            <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+                            </body>
+                            </html>
+                                                        
