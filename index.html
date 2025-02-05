@@ -338,14 +338,36 @@
             color: #40E0D0;
             }
             
+            
+.category-items {
+    padding-bottom: 1rem; /* Adds space after last item */
+}            
+
+            /* Add these CSS styles */
+.category-header.visible-border {
+    border: 2px solid #00FF00;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    
+}
+
+.category-items.visible-border {
+    border: 2px solid #00FF00;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 2rem;
+}
+            
             /* Menu items */
             .menu-item {
             padding: 1rem;
             border-bottom: 1px solid rgba(221, 221, 221, 0.3);
+            
             }
             
             .menu-item:last-child {
             border-bottom: none;
+            margin-bottom: 1rem !important;
             }
             
             .menu-item-title {
@@ -452,7 +474,7 @@
             font-size: 5rem;
             cursor: pointer;
             z-index: 1001;
-            color: #f1f1f1; /* Lighter text for visibility */
+            color: #FFFFFF; /* Lighter text for visibility */
             
             transition: transform 0.3s ease, background 0.3s ease;
             }
@@ -577,7 +599,7 @@
             margin-bottom: 20px; /* Optional: Adds space below the CSB text */
             }
             
- 
+            
             
             /* Style for the footer text */
             .footer-text {
@@ -674,6 +696,8 @@
             }
             }        
             
+            
+
         </style>
     </head>
     <body>
@@ -688,7 +712,7 @@
                 <div class="loading-message">Loading</div>
             </div>
         </div>
-
+        
         <!-- Header -->
         <div class="header">
             <div class="logo-text">
@@ -895,15 +919,16 @@
                             
                             // Adjust the header display and styling based on matches
                             if (headerMatches || hasVisibleItemsInCategory) {
-                                header.style.display = 'flex';  // Show category header
-                                categoryItem.style.display = 'block';  // Show category items
-                                header.style.fontSize = '6rem';  // Set font size for expanded header
-                                header.querySelector('.right').style.display = 'inline';  // Show second column
+        header.style.display = 'flex';
+        categoryItem.style.display = 'block';
+        header.classList.add('visible-border');
+        categoryItem.classList.add('visible-border');
                                 } else {
-                                header.style.display = 'none';  // Hide category header
-                                categoryItem.style.display = 'none';  // Hide category items
-                                header.style.fontSize = '7rem';  // Set font size for collapsed header
-                                header.querySelector('.right').style.display = 'none';  // Hide second column
+                               header.style.display = 'none';
+ header.style.display = 'none';
+    categoryItem.style.display = 'none';
+    header.classList.remove('visible-border'); // Ensure these lines exist
+    categoryItem.classList.remove('visible-border');
                             }
                             
                             // Now handle the last visible item in the category
@@ -911,6 +936,7 @@
                             if (visibleItems.length > 0) {
                                 const lastVisibleItem = visibleItems[visibleItems.length - 1];
                                 lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
+                                 lastVisibleItem.style.marginBottom = '2rem'; // Add this line
                             }
                         });
                         
@@ -962,10 +988,12 @@
                         document.querySelectorAll('.category-header').forEach(header => {
                             header.style.fontSize = '7rem';  // Reset to collapsed size
                             header.querySelector('.right').style.display = 'none';  // Hide second column
+                            header.classList.remove('visible-border'); 
                         });
                         
                         document.querySelectorAll('.category-items').forEach(container => {
                             container.style.display = 'none';  // Collapse all categories
+                            container.classList.remove('visible-border'); 
                         });
                     }
                     
@@ -1065,26 +1093,27 @@
                                     document.querySelectorAll('.category-header').forEach(header => {
                                         header.style.fontSize = '7rem'; // Set collapsed size
                                         header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
+                                         header.classList.remove('visible-border'); // Add this line
                                     });
                                     
                                     document.querySelectorAll('.category-items').forEach(container => {
                                         if (container !== categoryItemsDiv) {
                                             container.style.display = 'none';
+                                            container.classList.remove('visible-border'); // Add this line
                                         }
                                     });
                                     
                                     // Toggle visibility and adjust styles accordingly
-                                    if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
-                                        categoryItemsDiv.style.display = 'block'; // Expand
-                                        categoryHeaderDiv.style.fontSize = '6rem'; // Set expanded size
-                                        categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show second column
-                                        } else {
-                                        categoryItemsDiv.style.display = 'none'; // Collapse
-                                        categoryHeaderDiv.style.fontSize = '7rem'; // Set collapsed size
-                                        
-                                        categoryHeaderDiv.querySelector('.right').style.display = 'none'; // Hide second column
-                                    }
-                                });
+                      if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
+        categoryItemsDiv.style.display = 'block';
+        categoryHeaderDiv.classList.add('visible-border');
+        categoryItemsDiv.classList.add('visible-border');
+    } else {
+        categoryItemsDiv.style.display = 'none';
+        categoryHeaderDiv.classList.remove('visible-border');
+        categoryItemsDiv.classList.remove('visible-border');
+    }
+});
                                 
                                 // Initial state: Increase font size for collapsed categories and hide second column
                                 categoryHeaderDiv.style.fontSize = '7rem';
@@ -1098,6 +1127,7 @@
                                 } else if (currentCategory) {
                                 const menuItemDiv = document.createElement('div');
                                 menuItemDiv.classList.add('menu-item');
+                                menuItemDiv.style.marginBottom = '0';
                                 
                                 const lineDiv = document.createElement('div');
                                 lineDiv.classList.add('menu-item-line');
@@ -1512,10 +1542,10 @@
                         // Show QR Code
                         document.getElementById('show-qrcode').addEventListener('click', () => {
                             // Hide the sidebar when showing the modal
-    const hsidebar = document.getElementById('hsidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    hsidebar.classList.remove('open');
-    overlay.style.display = 'none';
+                            const hsidebar = document.getElementById('hsidebar');
+                            const overlay = document.getElementById('sidebar-overlay');
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
                             qrCodeModal.style.display = 'block';
                         });
                         
@@ -1535,29 +1565,29 @@
                         document.getElementById('copy-app-link').addEventListener('click', () => {
                             const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
                             navigator.clipboard.writeText(appLink).then(() => {
-                               
                                 
-                                            // Create feedback element
-            const feedback = document.createElement('div');
-            feedback.textContent = 'Link copied';
-            feedback.style.position = 'fixed';
-            feedback.style.bottom = '20px';
-            feedback.style.left = '50%';
-            feedback.style.transform = 'translateX(-50%)';
-            feedback.style.background = '#333';
-            feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
-            feedback.style.color = '#fff';
-            feedback.style.padding = '8px 16px';
-            feedback.style.borderRadius = '4px';
-            feedback.style.zIndex = '2000';
-            document.body.appendChild(feedback);
-            
-            // Remove feedback after 2 seconds
-            setTimeout(() => {
-                if (document.body.contains(feedback)) {
-                    document.body.removeChild(feedback);
-                }
-            }, 2000);
+                                
+                                // Create feedback element
+                                const feedback = document.createElement('div');
+                                feedback.textContent = 'Link copied';
+                                feedback.style.position = 'fixed';
+                                feedback.style.bottom = '20px';
+                                feedback.style.left = '50%';
+                                feedback.style.transform = 'translateX(-50%)';
+                                feedback.style.background = '#333';
+                                feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
+                                feedback.style.color = '#fff';
+                                feedback.style.padding = '8px 16px';
+                                feedback.style.borderRadius = '4px';
+                                feedback.style.zIndex = '2000';
+                                document.body.appendChild(feedback);
+                                
+                                // Remove feedback after 2 seconds
+                                setTimeout(() => {
+                                    if (document.body.contains(feedback)) {
+                                        document.body.removeChild(feedback);
+                                    }
+                                }, 2000);
                             });
                         });
                         
@@ -1601,123 +1631,121 @@
                     
                     
                     
-function showDeviceInfoModal() {
-    // Hide the sidebar when showing the modal
-    const hsidebar = document.getElementById('hsidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    hsidebar.classList.remove('open');
-    overlay.style.display = 'none';
-    
-    // Gather device info
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    const innerWidth = window.innerWidth;
-    const innerHeight = window.innerHeight;
-    const pixelRatio = window.devicePixelRatio;
-    const userAgent = navigator.userAgent;
-    const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
-    
-    // Create modal content with updated font size and styles
-    const modalContent = `
-        <div style="padding: 20px; font-family: Arial, sans-serif; background-color: #fff; color: #333; border-radius: 8px; width: 80%; max-width: 500px; font-size: 16px; position: relative; text-align: center;">
-            <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
-            <p style="line-height: 1.5;"><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
-            <p style="line-height: 1.5;"><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
-            <p style="line-height: 1.5;"><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
-            <p style="line-height: 1.5;"><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
-            <p style="line-height: 1.5;"><strong>Device Type:</strong> ${deviceType}</p>
-            <p style="line-height: 1.5;"><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
-            <p style="line-height: 1.5;"><strong>User Agent:</strong> ${userAgent}</p>
-            <p style="line-height: 1.5;"><strong>Time Zone:</strong> ${timeZone}</p>
-            <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
-            <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
-        </div>
-    `;
-    
-    // Create modal container
-    const modalContainer = document.createElement('div');
-    modalContainer.style.position = 'fixed';
-    modalContainer.style.top = '0';
-    modalContainer.style.left = '0';
-    modalContainer.style.width = '100%';
-    modalContainer.style.height = '100%';
-    modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    modalContainer.style.display = 'flex';
-    modalContainer.style.justifyContent = 'center';
-    modalContainer.style.alignItems = 'center';
-    modalContainer.style.zIndex = '1000';
-    modalContainer.innerHTML = modalContent;
-    
-    // Append modal to body
-    document.body.appendChild(modalContainer);
-
-    // Add event listener for the close button
-    const closeModalButton = modalContainer.querySelector('#close-modal');
-    closeModalButton.addEventListener('click', function() {
-        document.body.removeChild(modalContainer);
-    });
-
-    // Add event listener for the copy button
-    const copyButton = modalContainer.querySelector('#copy-button');
-    copyButton.addEventListener('click', function() {
-        // Get all text content from h3 and p elements
-        const contentDiv = modalContainer.querySelector('div');
-        const elements = contentDiv.querySelectorAll('h3, p');
-        let text = Array.from(elements).map(el => el.textContent).join('\n');
-        
-        // Copy to clipboard
-        navigator.clipboard.writeText(text).then(() => {
-            // Create feedback element
-            const feedback = document.createElement('div');
-            feedback.textContent = 'Text copied';
-            feedback.style.position = 'fixed';
-            feedback.style.bottom = '20px';
-            feedback.style.left = '50%';
-            feedback.style.transform = 'translateX(-50%)';
-            feedback.style.background = '#333';
-            feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
-            feedback.style.color = '#fff';
-            feedback.style.padding = '8px 16px';
-            feedback.style.borderRadius = '4px';
-            feedback.style.zIndex = '2000';
-            document.body.appendChild(feedback);
-            
-            // Remove feedback after 2 seconds
-            setTimeout(() => {
-                if (document.body.contains(feedback)) {
-                    document.body.removeChild(feedback);
-                }
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy:', err);
-        });
-    });
-
-    // Close modal when clicking outside
-    modalContainer.addEventListener('click', function(event) {
-        if (event.target === modalContainer) {
-            document.body.removeChild(modalContainer);
-        }
-    });
-
-    // Close modal on Escape key
-    window.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            document.body.removeChild(modalContainer);
-        }
-    });
-
-    // Close modal on back button
-    window.addEventListener('popstate', function() {
-        document.body.removeChild(modalContainer);
-    });
-}
+                    function showDeviceInfoModal() {
+                        // Hide the sidebar when showing the modal
+                        const hsidebar = document.getElementById('hsidebar');
+                        const overlay = document.getElementById('sidebar-overlay');
+                        hsidebar.classList.remove('open');
+                        overlay.style.display = 'none';
+                        
+                        // Gather device info
+                        const screenWidth = window.screen.width;
+                        const screenHeight = window.screen.height;
+                        const innerWidth = window.innerWidth;
+                        const innerHeight = window.innerHeight;
+                        const pixelRatio = window.devicePixelRatio;
+                        const userAgent = navigator.userAgent;
+                        const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
+                        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                        const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
+                        
+                        // Create modal content with updated font size and styles
+                        const modalContent = `
+                        <div style="padding: 20px; font-family: Arial, sans-serif; background-color: #fff; color: #333; border-radius: 8px; width: 80%; max-width: 500px; font-size: 16px; position: relative; text-align: center;">
+                        <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
+                        <p style="line-height: 1.5;"><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
+                        <p style="line-height: 1.5;"><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
+                        <p style="line-height: 1.5;"><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
+                        <p style="line-height: 1.5;"><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
+                        <p style="line-height: 1.5;"><strong>Device Type:</strong> ${deviceType}</p>
+                        <p style="line-height: 1.5;"><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
+                        <p style="line-height: 1.5;"><strong>User Agent:</strong> ${userAgent}</p>
+                        <p style="line-height: 1.5;"><strong>Time Zone:</strong> ${timeZone}</p>
+                        <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
+                        <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
+                        </div>
+                        `;
+                        
+                        // Create modal container
+                        const modalContainer = document.createElement('div');
+                        modalContainer.style.position = 'fixed';
+                        modalContainer.style.top = '0';
+                        modalContainer.style.left = '0';
+                        modalContainer.style.width = '100%';
+                        modalContainer.style.height = '100%';
+                        modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                        modalContainer.style.display = 'flex';
+                        modalContainer.style.justifyContent = 'center';
+                        modalContainer.style.alignItems = 'center';
+                        modalContainer.style.zIndex = '1000';
+                        modalContainer.innerHTML = modalContent;
+                        
+                        // Append modal to body
+                        document.body.appendChild(modalContainer);
+                        
+                        // Add event listener for the close button
+                        const closeModalButton = modalContainer.querySelector('#close-modal');
+                        closeModalButton.addEventListener('click', function() {
+                            document.body.removeChild(modalContainer);
+                        });
+                        
+                        // Add event listener for the copy button
+                        const copyButton = modalContainer.querySelector('#copy-button');
+                        copyButton.addEventListener('click', function() {
+                            // Get all text content from h3 and p elements
+                            const contentDiv = modalContainer.querySelector('div');
+                            const elements = contentDiv.querySelectorAll('h3, p');
+                            let text = Array.from(elements).map(el => el.textContent).join('\n');
+                            
+                            // Copy to clipboard
+                            navigator.clipboard.writeText(text).then(() => {
+                                // Create feedback element
+                                const feedback = document.createElement('div');
+                                feedback.textContent = 'Text copied';
+                                feedback.style.position = 'fixed';
+                                feedback.style.bottom = '20px';
+                                feedback.style.left = '50%';
+                                feedback.style.transform = 'translateX(-50%)';
+                                feedback.style.background = '#333';
+                                feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
+                                feedback.style.color = '#fff';
+                                feedback.style.padding = '8px 16px';
+                                feedback.style.borderRadius = '4px';
+                                feedback.style.zIndex = '2000';
+                                document.body.appendChild(feedback);
+                                
+                                // Remove feedback after 2 seconds
+                                setTimeout(() => {
+                                    if (document.body.contains(feedback)) {
+                                        document.body.removeChild(feedback);
+                                    }
+                                }, 2000);
+                                }).catch(err => {
+                                console.error('Failed to copy:', err);
+                            });
+                        });
+                        
+                        // Close modal when clicking outside
+                        modalContainer.addEventListener('click', function(event) {
+                            if (event.target === modalContainer) {
+                                document.body.removeChild(modalContainer);
+                            }
+                        });
                     
+                    // Close modal on Escape key
+                    window.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                    document.body.removeChild(modalContainer);
+                    }
+                    });
                     
+                    // Close modal on back button
+                    window.addEventListener('popstate', function() {
+                    document.body.removeChild(modalContainer);
+                    });
+                    }
                     
-                    
+
                     
                     
                     
@@ -1730,30 +1758,30 @@ function showDeviceInfoModal() {
                     
                     // Listen for the beforeinstallprompt event
                     window.addEventListener("beforeinstallprompt", (e) => {
-                        e.preventDefault(); // Prevent the default prompt from showing automatically
-                        deferredPrompt = e; // Store the event so we can trigger it later
-                        
-                        // Optionally, show a custom install button here if needed
-                        // document.getElementById('install-button').style.display = 'block'; 
-                        
-                        // Automatically trigger the prompt after a delay
-                        setTimeout(() => {
-                            deferredPrompt.prompt(); // Show the install prompt
-                            deferredPrompt.userChoice.then((choiceResult) => {
-                                // Handle the user's response
-                                if (choiceResult.outcome === "accepted") {
-                                    console.log("User accepted the install prompt");
-                                    } else {
-                                    console.log("User dismissed the install prompt");
-                                }
-                                deferredPrompt = null; // Reset the deferred prompt
-                            });
-                        }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+                    e.preventDefault(); // Prevent the default prompt from showing automatically
+                    deferredPrompt = e; // Store the event so we can trigger it later
+                    
+                    // Optionally, show a custom install button here if needed
+                    // document.getElementById('install-button').style.display = 'block'; 
+                    
+                    // Automatically trigger the prompt after a delay
+                    setTimeout(() => {
+                    deferredPrompt.prompt(); // Show the install prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                    // Handle the user's response
+                    if (choiceResult.outcome === "accepted") {
+                    console.log("User accepted the install prompt");
+                    } else {
+                    console.log("User dismissed the install prompt");
+                    }
+                    deferredPrompt = null; // Reset the deferred prompt
+                    });
+                    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
                     });
                     
-                </script>
-                
-                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-            </body>
-        </html>
-        
+                    </script>
+                    
+                    <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+                    </body>
+                    </html>
+                                        
