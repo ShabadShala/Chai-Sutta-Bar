@@ -15,7 +15,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            }
+            }                
             
             html {
             font-size: clamp(3px, 1vw, 4.5px);
@@ -34,29 +34,47 @@
             padding:2rem;              
             }
             
-
-            
-            #screenWidthDisplay {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            font-size: 3rem;
-            }
             
             
-            /* Loading animation overlay */
+            
+            
+            
             #loadingOverlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);  /* Subtle dimming effect */
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
-            flex-direction: column;  /* Align children vertically */
             justify-content: center;
+            align-items: flex-start; /* Align towards top */
+            }
+            
+            .loading-container {
+            position: absolute;
+            top: 45%; /* Set the center of spinner 40% from the top */
+            transform: translateY(-50%); /* Adjust for proper centering */
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            z-index: 9999;
+            }
+            
+            /* Spinner wrapper for positioning */
+            .spinner-container {
+            position: relative;  /* Allows absolute positioning inside */
+            width: 25rem;
+            height: 25rem;
+            }
+            
+            /* Image centered inside spinner */
+            .loading-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Perfect centering */
+            width: 85%; /* Adjust size */
+            height: auto;
             }
             
             /* Spinner animation */
@@ -64,10 +82,10 @@
             border: 3.5rem solid rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
             border-top: 3.5rem solid #fae68e; /* Chai color for the spinning part */
             border-radius: 50%;
-            width: 25rem;
-            height: 25rem;
+            width: 100%;
+            height: 100%;
             animation: spin 1.5s linear infinite;
-            position: relative;
+            
             }
             
             @keyframes spin {
@@ -89,22 +107,26 @@
             
             
             /* Header container */
- .header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  flex-wrap: nowrap;
-  position: fixed; /* Fix the header at the top */
-  top: 0;
-  left: 0;
-  background-color: #212121; /* Match the body background */
-  z-index: 1000; /* Ensure the header stays above other content */
-  padding: 2rem; /* Adjust padding as needed */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
-  border-bottom: 1px solid #fae68e; /* Adds a border */
-  
-}
+            .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+            position: fixed; /* Fix the header at the top */
+            top: 0;
+            left: 50%; /* Move the header to the center horizontally */
+            transform: translateX(-50%);
+            background-color: #212121; /* Match the body background */
+            z-index: 1000; /* Ensure the header stays above other content */
+            padding: 2rem; /* Adjust padding as needed */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+            border-bottom: 1px solid #fae68e; /* Adds a border */                    
+            }
+            
+            .scrollable {
+            position: absolute; /* Fix the header at the top */
+            }
             
             /* Logo text */
             .logo-text {
@@ -128,42 +150,27 @@
             color: white;
             }
             
-            /* Vegetarian symbol */
-            .logo-text .veg-symbol {
-            font-size: 2.5rem; /* Set font size */
-            position: absolute; /* Position absolutely within .logo-text */
-            top: 0; /* Align to the top */
-            right: -4rem; /* Move to the right of the text */
-            vertical-align: top; /* Align to the top */
-            }
-            
             .open-close {
             font-size: 5rem;            
             }
             
             
             #main-content {
-  flex: 1; /* Grow to fill remaining space */
-  padding-top: 20rem; /* Add padding equal to the header height */
-  scroll-padding-top: 20rem;
-  overflow-y: auto; /* Allow scrolling for content */
-}
+            flex: 1; /* Grow to fill remaining space */
+            padding-top: 20rem; /* Add padding equal to the header height */
+            scroll-padding-top: 20rem;
+            overflow-y: auto; /* Allow scrolling for content */
+            }
             
             
             /* Search */
             .search-container {
             width: 70%;
+            max-width: 400px;
             margin: 0 auto;
             position: relative;
             display: none;
             margin-top: 2rem;
-            }
-            
-            /* Set width to 45% on wide screens (e.g., desktops) */
-            @media (min-width: 43.75rem) {  /* 700px ≈ 43.75rem */
-            .search-container {
-            width: 45%;            
-            }
             }
             
             /* Flex container for input and clear button */
@@ -253,31 +260,33 @@
             justify-content: center; /* Centers the entire content */
             align-items: center; /* Aligns items vertically */
             width: 100%; /* Ensures full width */
-            margin-top: 3rem;            
+            margin-top: 1rem;            
             font-size: 5rem;
-            gap: 5rem; /* Gap between 3-button element and total-items-found */
+            gap: 3rem; /* Gap between 3-button element and total-items-found */
+            }
+            
+            .filter-label {
+            color: #00FF00;
             }
             
             #filterButtons {
             display: flex;
             align-items: center;
-            gap: 5rem; /* Gap between "Filter by" and 3-button element */
+            gap: 3rem; /* Gap between "Filter by" and 3-button element */
             }
             
             #threeButtonsContainer {
             display: flex;
-            gap: 3rem; /* Space between buttons */
-            }
-            
-            .filter-label {
-            color: white;
-            }
+            gap: 2rem; /* Space between buttons */
+            border: 2px solid #fae68e ; /* Adds a 2px solid black border */
+            padding: 1rem; 
+            }            
             
             .filter-btn {
             width: 10rem;
             padding: 1rem 2rem;
             color: #333;
-            background-color: #ffe6f7;
+            background-color: #f0f0f0;
             border: 1px solid #ccc;
             border-radius: 1rem;
             cursor: pointer;
@@ -300,13 +309,8 @@
             #menu {
             margin: 0 auto; /* Centers the menu */            
             width: 100%; /* Default width for small screens */
+            max-width : 600px;
             transition: width 0.3s ease;
-            }
-            
-            @media (min-width: 700px) {
-            #menu {
-            width: 50%; /* 50% width on screens larger than 700px */
-            }
             }
             
             .category-header {
@@ -370,16 +374,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: fit-content;
-            display: none;
-            margin:3rem auto;             
+            width: 90%;
+            max-width: 500px;
+            margin: 3rem auto;
             }
             
             /* Footer styling */
             .footer {
-            background-color: #ff4d4d;
+            background-color: #e64545;
             text-align: center;
-            padding: 3rem 3rem;
+            padding: 2rem 1rem; /* Adjust padding for small screens */
             color: white;
             margin-top: auto; /* Pushes footer down */
             }
@@ -388,19 +392,25 @@
             text-decoration: none;
             }
             
+            /* Adjust font sizes for small screens */
             .footer .color1 {
-            font-size: 4rem;
+            font-size: 3.8em;
             font-weight: bold;
             color: white;
             }
             
             .footer .color2 {
-            font-size: 4.5rem;
+            font-size: 3.7em;
             font-weight: bold;
             color: #f5d56b;
             }
             
-            
+            .footer .color3 {
+            font-size: 4em;
+            font-weight: bold;
+            text-decoration: none;
+            color: blue;
+            }
             
             .signature {
             background-color: #212121;
@@ -421,6 +431,7 @@
             #visitorElement h3 {
             font-size: 4rem;    
             }
+            
             
             
             
@@ -566,26 +577,7 @@
             margin-bottom: 20px; /* Optional: Adds space below the CSB text */
             }
             
-            /* Style for the current date */
-            #current-date {
-            font-family: 'Arial', sans-serif;
-            font-size: 6rem;
-            font-weight: bold;
-            color: #ffffff; /* White color for date */
-            text-align: center;
-            margin-top: -5rem;
-            }
-            
-            /* Style for the digital clock */
-            #digital-clock {
-            font-family: 'Courier New', Courier, monospace; /* Monospace font for digital look */
-            font-size: 6rem;
-            font-weight: bold;
-            color: #00ff00; /* Green color typical for digital clocks */
-            text-align: center;
-            margin-top: -5rem; /* Remove the large negative margin */
-            margin-bottom: 10rem; /* Add space below the clock (adjust as needed) */
-            }
+ 
             
             /* Style for the footer text */
             .footer-text {
@@ -682,32 +674,27 @@
             }
             }        
             
-            
-            
-            
-            
-            
         </style>
     </head>
     <body>
         
         <!-- Loading Overlay -->
         <div id="loadingOverlay">
-            <div class="spinner"></div>
-            <div class="loading-message">Loading</div>
+            <div class="loading-container">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <img src="veg.png" alt="Loading" class="loading-image">
+                </div>
+                <div class="loading-message">Loading</div>
+            </div>
         </div>
-        
-        
+
         <!-- Header -->
-        
         <div class="header">
-            <!-- Screen Width Display -->
-            <div id="screenWidthDisplay"></div>
             <div class="logo-text">
                 <span class="chai">CHAI</span>
                 <span class="sutta">SUTTA</span>
                 <span class="bar">BAR</span>
-                <span class="veg-symbol">🟢</span>
                 <div class="open-close"></div>
             </div>
         </div>
@@ -746,7 +733,7 @@
                     <div class="footer">
                         <div class="color1">Opp. Petrol Pump, Kotkapura Road</div>
                         <div class="color2">Bagha Purana (Moga) Punjab</div>
-                        <div class="color1">
+                        <div class="color3">
                             Ph: <a href="tel:+919112400010">91124-00010</a>, <a href="tel:+919023406002">90234-06002</a>
                         </div>
                     </div>
@@ -777,12 +764,23 @@
                 
                 <script>
                     
-                    function updateScreenWidth() {
+                    function updateScreenSize() {
                         const width = window.innerWidth;
-                        document.getElementById('screenWidthDisplay').textContent = `w${width}p`;
-                    }    
-                    window.addEventListener('resize', updateScreenWidth); // Update width on window resize
-                    updateScreenWidth(); // Initial update
+                        const height = window.innerHeight;
+                        
+                        const header = document.querySelector('.header');
+                        
+                        // If width is greater than or equal to height, make header scrollable
+                        if (width >= height) {
+                            header.classList.add('scrollable'); // Make header scrollable
+                            } else {
+                            header.classList.remove('scrollable'); // Keep header fixed
+                        }
+                    }                    
+                    // Listen for window resizing
+                    window.addEventListener('resize', updateScreenSize);                    
+                    // Call the function initially to set the correct behavior based on current screen size
+                    updateScreenSize();
                     
                     
                     
@@ -792,13 +790,7 @@
                     
                     
                     
-                    
-                    
-                    
-                    
-                    let selectedFilter = "="; // Default to "="
-                    
-                    
+                    let selectedFilter = "="; // Default to "="                                        
                     function filterMenuItems(searchQuery) {
                         const menuDiv = document.getElementById('menu');
                         if (!menuDiv) return;
@@ -926,19 +918,24 @@
                         
                         const totalItemsDiv = document.getElementById('total-items-found');
                         
- if (searchQuery.length === 0) {
-  totalItemsDiv.style.display = 'none'; // Hide when search box is empty
-} else {
-  if (totalVisibleItems > 0) {
-    // Check if totalVisibleItems is 1 (singular) or more (plural)
-    totalItemsDiv.textContent = `${totalVisibleItems} ${totalVisibleItems === 1 ? 'item' : 'items'}`;
-    totalItemsDiv.style.color = '#00FF00'; // Green for visibility
-  } else {
-    totalItemsDiv.textContent = 'No item';
-    totalItemsDiv.style.color = '#ff4d4d'; // Red for visibility
-  }
-  totalItemsDiv.style.display = 'block'; // Show only when search is not empty
-}
+                        if (searchQuery.length === 0) {
+                            totalItemsDiv.style.display = 'none'; // Hide when search box is empty
+                            } else {
+                            if (totalVisibleItems > 0) {
+                                // Check if totalVisibleItems is 1 (singular) or more (plural)
+                                totalItemsDiv.textContent = `${totalVisibleItems} ${totalVisibleItems === 1 ? 'item' : 'items'}`;
+                                totalItemsDiv.style.color = '#00FF00'; // Green for visibility
+                                } else {
+                                if (filterButtons.style.display === 'none') {
+                                    totalItemsDiv.textContent = 'No item found';
+                                    } else {
+                                    totalItemsDiv.textContent = 'No item';
+                                }
+                                
+                                totalItemsDiv.style.color = '#ff4d4d'; // Red for visibility
+                            }
+                            totalItemsDiv.style.display = 'block'; // Show only when search is not empty
+                        }
                     }
                     
                     // Add event listener to filter buttons
@@ -1419,22 +1416,22 @@
                         hamburgerButton.id = 'hamburger-button';
                         hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
                         
-                        
                         // Append it to the header
                         document.querySelector('.header').appendChild(hamburgerButton);
                         
                         // Create Sidebar
                         const hsidebar = document.createElement('div');
                         hsidebar.id = 'hsidebar';
-                        hsidebar.innerHTML = ` 
+                        hsidebar.innerHTML = `
                         <div class="hsidebar-content">
                         <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
                         <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
                         <div class="hsidebar-option" id="install-app">⚙️ Install CSB App</div>
-                        <div class="hsidebar-option" id="show-qrcode">🔗 Share Link</div>
+                        <div class="hsidebar-option" id="show-qrcode">🔗 App QR Code</div>
+                        <div class="hsidebar-option" id="copy-app-link">📋 Copy App Link</div>
+                        <div class="hsidebar-option" id="device-screen-info">📱 Screen Info</div> <!-- New option -->
                         <!-- Close button -->
-                        <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->
-                        
+                        <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->                    
                         <!-- Footer text -->
                         <div class="footer-text" id="footer-info">
                         <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
@@ -1514,6 +1511,11 @@
                         
                         // Show QR Code
                         document.getElementById('show-qrcode').addEventListener('click', () => {
+                            // Hide the sidebar when showing the modal
+    const hsidebar = document.getElementById('hsidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    hsidebar.classList.remove('open');
+    overlay.style.display = 'none';
                             qrCodeModal.style.display = 'block';
                         });
                         
@@ -1529,24 +1531,57 @@
                             }
                         });
                         
+                        // Copy App Link
+                        document.getElementById('copy-app-link').addEventListener('click', () => {
+                            const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
+                            navigator.clipboard.writeText(appLink).then(() => {
+                               
+                                
+                                            // Create feedback element
+            const feedback = document.createElement('div');
+            feedback.textContent = 'Link copied';
+            feedback.style.position = 'fixed';
+            feedback.style.bottom = '20px';
+            feedback.style.left = '50%';
+            feedback.style.transform = 'translateX(-50%)';
+            feedback.style.background = '#333';
+            feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
+            feedback.style.color = '#fff';
+            feedback.style.padding = '8px 16px';
+            feedback.style.borderRadius = '4px';
+            feedback.style.zIndex = '2000';
+            document.body.appendChild(feedback);
+            
+            // Remove feedback after 2 seconds
+            setTimeout(() => {
+                if (document.body.contains(feedback)) {
+                    document.body.removeChild(feedback);
+                }
+            }, 2000);
+                            });
+                        });
+                        
+                        // Show Device Screen Info
+                        document.getElementById('device-screen-info').addEventListener('click', function() {
+                            showDeviceInfoModal();
+                        });
+                        
+                        
                         // Swipe Left to Close Sidebar (Mobile Gesture)
                         let startX;
                         let startY;
                         
-                        // Detect swipe start
                         hsidebar.addEventListener('touchstart', (e) => {
                             const touchStart = e.touches[0];
                             startX = touchStart.clientX;
                             startY = touchStart.clientY;
                         });
                         
-                        // Detect swipe end
                         hsidebar.addEventListener('touchend', (e) => {
                             const touchEnd = e.changedTouches[0];
                             const deltaX = touchEnd.clientX - startX;
                             const deltaY = touchEnd.clientY - startY;
                             
-                            // Swipe left detection (horizontal swipe with a minimal vertical movement)
                             if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
                                 hsidebar.classList.remove('open');
                                 overlay.style.display = 'none';
@@ -1558,57 +1593,127 @@
                         });
                     }
                     
+                    
                     // Call the setup function
                     setupHamburgerMenu();
                     
-                    // Close Sidebar when clicking on the cross button
-                    document.getElementById('close-sidebar').addEventListener('click', () => {
-                        hsidebar.classList.remove('open');
-                        overlay.style.display = 'none';
-                        document.body.style.overflow = ''; // Unlock scrolling
-                        document.documentElement.style.overflow = ''; // Unlock scrolling
-                        document.body.style.height = ''; // Allow body resizing
-                        document.documentElement.style.height = ''; // Allow html resizing
-                    });
-                    
-                    // Function to update the time
-                    function updateClock() {
-                        const clockElement = document.getElementById('digital-clock');
-                        const dateElement = document.getElementById('current-date');
-                        
-                        const now = new Date();
-                        
-                        // Get today's date in "dd-MMM-yyyy" format (e.g., "02-Feb-2025")
-                        const date = now.getDate();
-                        const month = now.toLocaleString('default', { month: 'short' }); // Short month name (e.g., "Feb")
-                        const year = now.getFullYear();
-                        const formattedDate = `${date < 10 ? '0' + date : date}-${month}-${year}`;
-                        
-                        // Set the date in the #current-date element
-                        dateElement.innerHTML = formattedDate;
-                        
-                        // Get time in HH:MM:SS format
-                        let hours = now.getHours();
-                        let minutes = now.getMinutes();
-                        let seconds = now.getSeconds();
-                        
-                        // Add leading zeros for single digits
-                        hours = (hours < 10) ? '0' + hours : hours;
-                        minutes = (minutes < 10) ? '0' + minutes : minutes;
-                        seconds = (seconds < 10) ? '0' + seconds : seconds;
-                        
-                        // Set the time in the #digital-clock element
-                        clockElement.innerHTML = `${hours}:${minutes}:${seconds}`;
-                    }
-                    
-                    // Update the clock every second
-                    setInterval(updateClock, 1000);
-                    
-                    // Initialize clock on page load
-                    updateClock();
                     
                     
                     
+                    
+function showDeviceInfoModal() {
+    // Hide the sidebar when showing the modal
+    const hsidebar = document.getElementById('hsidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    hsidebar.classList.remove('open');
+    overlay.style.display = 'none';
+    
+    // Gather device info
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+    const innerWidth = window.innerWidth;
+    const innerHeight = window.innerHeight;
+    const pixelRatio = window.devicePixelRatio;
+    const userAgent = navigator.userAgent;
+    const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
+    
+    // Create modal content with updated font size and styles
+    const modalContent = `
+        <div style="padding: 20px; font-family: Arial, sans-serif; background-color: #fff; color: #333; border-radius: 8px; width: 80%; max-width: 500px; font-size: 16px; position: relative; text-align: center;">
+            <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
+            <p style="line-height: 1.5;"><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
+            <p style="line-height: 1.5;"><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
+            <p style="line-height: 1.5;"><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
+            <p style="line-height: 1.5;"><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
+            <p style="line-height: 1.5;"><strong>Device Type:</strong> ${deviceType}</p>
+            <p style="line-height: 1.5;"><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
+            <p style="line-height: 1.5;"><strong>User Agent:</strong> ${userAgent}</p>
+            <p style="line-height: 1.5;"><strong>Time Zone:</strong> ${timeZone}</p>
+            <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
+            <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
+        </div>
+    `;
+    
+    // Create modal container
+    const modalContainer = document.createElement('div');
+    modalContainer.style.position = 'fixed';
+    modalContainer.style.top = '0';
+    modalContainer.style.left = '0';
+    modalContainer.style.width = '100%';
+    modalContainer.style.height = '100%';
+    modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    modalContainer.style.display = 'flex';
+    modalContainer.style.justifyContent = 'center';
+    modalContainer.style.alignItems = 'center';
+    modalContainer.style.zIndex = '1000';
+    modalContainer.innerHTML = modalContent;
+    
+    // Append modal to body
+    document.body.appendChild(modalContainer);
+
+    // Add event listener for the close button
+    const closeModalButton = modalContainer.querySelector('#close-modal');
+    closeModalButton.addEventListener('click', function() {
+        document.body.removeChild(modalContainer);
+    });
+
+    // Add event listener for the copy button
+    const copyButton = modalContainer.querySelector('#copy-button');
+    copyButton.addEventListener('click', function() {
+        // Get all text content from h3 and p elements
+        const contentDiv = modalContainer.querySelector('div');
+        const elements = contentDiv.querySelectorAll('h3, p');
+        let text = Array.from(elements).map(el => el.textContent).join('\n');
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(text).then(() => {
+            // Create feedback element
+            const feedback = document.createElement('div');
+            feedback.textContent = 'Text copied';
+            feedback.style.position = 'fixed';
+            feedback.style.bottom = '20px';
+            feedback.style.left = '50%';
+            feedback.style.transform = 'translateX(-50%)';
+            feedback.style.background = '#333';
+            feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
+            feedback.style.color = '#fff';
+            feedback.style.padding = '8px 16px';
+            feedback.style.borderRadius = '4px';
+            feedback.style.zIndex = '2000';
+            document.body.appendChild(feedback);
+            
+            // Remove feedback after 2 seconds
+            setTimeout(() => {
+                if (document.body.contains(feedback)) {
+                    document.body.removeChild(feedback);
+                }
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+        });
+    });
+
+    // Close modal when clicking outside
+    modalContainer.addEventListener('click', function(event) {
+        if (event.target === modalContainer) {
+            document.body.removeChild(modalContainer);
+        }
+    });
+
+    // Close modal on Escape key
+    window.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            document.body.removeChild(modalContainer);
+        }
+    });
+
+    // Close modal on back button
+    window.addEventListener('popstate', function() {
+        document.body.removeChild(modalContainer);
+    });
+}
                     
                     
                     
