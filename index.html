@@ -5,7 +5,32 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
         <title>Chai Sutta Bar</title>
         <link rel="manifest" href="manifest.json">
-        
+
+
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Chai Sutta Bar - Bagha Purana",
+  "description": "Experience the taste of chai, pizza, burger and other edibles at Bagha Purana.",
+  "url": "https://shabadshala.github.io/Chai-Sutta-Bar/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Shabad Shala",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://shabadshala.github.io/Chai-Sutta-Bar/icon-512.png"
+    }
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Shabad Shala"
+  },
+  "image": "https://shabadshala.github.io/Chai-Sutta-Bar/icon-512.png",
+  "mainEntityOfPage": "https://shabadshala.github.io/Chai-Sutta-Bar/"
+}
+</script>
+
         <style>
             
             /* Universal reset */
@@ -339,24 +364,23 @@
             }
             
             
-.category-items {
-    padding-bottom: 1rem; /* Adds space after last item */
-}            
-
+            .category-items {
+            padding-bottom: 0; /* Adds space after last item */
+            }            
+            
             /* Add these CSS styles */
-.category-header.visible-border {
-    border: 2px solid #00FF00;
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
-    
-}
-
-.category-items.visible-border {
-    border: 2px solid #00FF00;
-    border-top: none;
-    border-radius: 0 0 10px 10px;
-    margin-bottom: 2rem;
-}
+            .category-header.visible-border {
+            border: 2px solid #F8BBD0;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;    
+            }
+            
+            .category-items.visible-border {
+            border: 2px solid #F8BBD0;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 2rem;
+            }
             
             /* Menu items */
             .menu-item {
@@ -697,7 +721,7 @@
             }        
             
             
-
+            
         </style>
     </head>
     <body>
@@ -906,8 +930,7 @@
                                 }
                                 
                                 if (headerMatches || itemMatches) {
-                                    totalVisibleItems++;
-                                    
+                                    totalVisibleItems++;                                    
                                     item.style.display = 'block';
                                     hasVisibleItemsInCategory = true;
                                     hasVisibleItems = true;
@@ -919,16 +942,23 @@
                             
                             // Adjust the header display and styling based on matches
                             if (headerMatches || hasVisibleItemsInCategory) {
-        header.style.display = 'flex';
-        categoryItem.style.display = 'block';
-        header.classList.add('visible-border');
-        categoryItem.classList.add('visible-border');
+                                header.style.display = 'flex';
+                                categoryItem.style.display = 'block';
+                                header.classList.add('visible-border');
+                                categoryItem.classList.add('visible-border');
+                                
+                                header.style.fontSize = '6rem';  // Set font size for expanded header
+                                header.querySelector('.right').style.display = 'inline';  // Show second column
                                 } else {
-                               header.style.display = 'none';
- header.style.display = 'none';
-    categoryItem.style.display = 'none';
-    header.classList.remove('visible-border'); // Ensure these lines exist
-    categoryItem.classList.remove('visible-border');
+
+                                header.style.display = 'none';
+                                categoryItem.style.display = 'none';
+                                header.classList.remove('visible-border'); // Ensure these lines exist
+                                categoryItem.classList.remove('visible-border');
+                                header.querySelector('.right').style.display = 'none';  // Hide second column
+                                
+                              
+
                             }
                             
                             // Now handle the last visible item in the category
@@ -936,7 +966,7 @@
                             if (visibleItems.length > 0) {
                                 const lastVisibleItem = visibleItems[visibleItems.length - 1];
                                 lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
-                                 lastVisibleItem.style.marginBottom = '2rem'; // Add this line
+                                lastVisibleItem.style.marginBottom = '2rem'; // Add this line
                             }
                         });
                         
@@ -1076,252 +1106,254 @@
                                 const leftPart = document.createElement('span');
                                 leftPart.classList.add('left');
                                 leftPart.textContent = mergedColAB;
-                                
-                                const rightPart = document.createElement('span');
-                                rightPart.classList.add('right');
-                                rightPart.textContent = mergedcolCDE;
-                                
-                                categoryHeaderDiv.appendChild(leftPart);
-                                categoryHeaderDiv.appendChild(rightPart);
-                                
-                                const categoryItemsDiv = document.createElement('div');
-                                categoryItemsDiv.classList.add('category-items');
-                                
-                                // Toggle category items visibility on click
-                                categoryHeaderDiv.addEventListener('click', () => {
-                                    // Reset all other headers to default collapsed size and show only the first column
-                                    document.querySelectorAll('.category-header').forEach(header => {
-                                        header.style.fontSize = '7rem'; // Set collapsed size
-                                        header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
-                                         header.classList.remove('visible-border'); // Add this line
-                                    });
-                                    
-                                    document.querySelectorAll('.category-items').forEach(container => {
-                                        if (container !== categoryItemsDiv) {
-                                            container.style.display = 'none';
-                                            container.classList.remove('visible-border'); // Add this line
-                                        }
-                                    });
-                                    
-                                    // Toggle visibility and adjust styles accordingly
-                      if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
-        categoryItemsDiv.style.display = 'block';
-        categoryHeaderDiv.classList.add('visible-border');
-        categoryItemsDiv.classList.add('visible-border');
-    } else {
-        categoryItemsDiv.style.display = 'none';
-        categoryHeaderDiv.classList.remove('visible-border');
-        categoryItemsDiv.classList.remove('visible-border');
-    }
-});
-                                
-                                // Initial state: Increase font size for collapsed categories and hide second column
-                                categoryHeaderDiv.style.fontSize = '7rem';
-                                categoryHeaderDiv.querySelector('.right').style.display = 'none';
-                                
-                                menuDiv.appendChild(categoryHeaderDiv);
-                                menuDiv.appendChild(categoryItemsDiv);
-                                
-                                categoryItemsContainers.push(categoryItemsDiv);                    
-                                currentCategory = categoryItemsDiv;
-                                } else if (currentCategory) {
-                                const menuItemDiv = document.createElement('div');
-                                menuItemDiv.classList.add('menu-item');
-                                menuItemDiv.style.marginBottom = '0';
-                                
-                                const lineDiv = document.createElement('div');
-                                lineDiv.classList.add('menu-item-line');
-                                
-                                const colABElement = document.createElement('span');
-                                colABElement.classList.add('colAB');
-                                colABElement.textContent = mergedColAB;
-                                
-                                const colCDEElement = document.createElement('span');
-                                colCDEElement.classList.add('colCDE');
-                                colCDEElement.textContent = mergedcolCDE;
-                                
-                                lineDiv.appendChild(colABElement);
-                                lineDiv.appendChild(colCDEElement);                        
-                                menuItemDiv.appendChild(lineDiv);
-                                currentCategory.appendChild(menuItemDiv);
-                            }
-                        });
-                        
-                        categoryItemsContainers.forEach(container => {
+                            
+                            const rightPart = document.createElement('span');
+                            rightPart.classList.add('right');
+                            rightPart.textContent = mergedcolCDE;
+                            
+                            categoryHeaderDiv.appendChild(leftPart);
+                            categoryHeaderDiv.appendChild(rightPart);
+                            
+                            const categoryItemsDiv = document.createElement('div');
+                            categoryItemsDiv.classList.add('category-items');
+                            
+                            // Toggle category items visibility on click
+                            categoryHeaderDiv.addEventListener('click', () => {
+                            // Reset all other headers to default collapsed size and show only the first column
+                            document.querySelectorAll('.category-header').forEach(header => {
+                            header.style.fontSize = '7rem'; // Set collapsed size
+                            header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
+                            header.classList.remove('visible-border'); // Add this line
+                            });
+                            
+                            document.querySelectorAll('.category-items').forEach(container => {
+                            if (container !== categoryItemsDiv) {
                             container.style.display = 'none';
-                        });
-                        
-                        document.querySelector(".search-container").style.display = "block";
-                        document.querySelector(".footer-container").style.display = "block"; // Show footer
-                        
-                        
-                        // Remove the loading overlay after the data is fetched and processed
-                        document.getElementById('loadingOverlay').style.display = 'none';
-                    })
-                    .catch(error => {
-                        console.error("Error fetching data:", error);
-                        document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
-                    });
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    let sidebar = document.getElementById('sidebar');
-                    let indicator = document.createElement('div');
-                    indicator.id = 'sidebar-indicator';
-                    document.body.appendChild(indicator);
-                    
-                    let hoverTimeout;
-                    let sidebarAutoHideTimer;
-                    let touchStartX = 0;
-                    let touchEndX = 0;
-                    const swipeThreshold = 80;  // Minimum swipe distance
-                    const edgeThreshold = 50;   // Swipe must start within 50px from screen edge
-                    
-                    // Add/Remove a class that disables scroll on body
-                    function disableScroll() {
-                        document.body.style.overflow = 'hidden';
-                    }
-                    
-                    function enableScroll() {
-                        document.body.style.overflow = 'auto';
-                    }
-                    
-                    // Mouse-triggered sidebar behavior (Unchanged)
-                    document.addEventListener('mousemove', (event) => {
-                        clearTimeout(hoverTimeout);
-                        
-                        if (event.clientX > window.innerWidth - 50) {
-                            hoverTimeout = setTimeout(() => {
-                                sidebar.classList.add('open');
-                                disableScroll(); // Prevent scrolling when sidebar opens
-                            }, 300);
+                            container.classList.remove('visible-border'); // Add this line
+                            }
+                            });
+                            
+                            // Toggle visibility and adjust styles accordingly
+                            if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
+            categoryItemsDiv.style.display = 'block';
+            categoryHeaderDiv.style.fontSize = '6rem';
+            categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show right column
+            categoryHeaderDiv.classList.add('visible-border');
+            categoryItemsDiv.classList.add('visible-border');
                             } else {
+                            categoryItemsDiv.style.display = 'none';
+                            categoryHeaderDiv.classList.remove('visible-border');
+                            categoryItemsDiv.classList.remove('visible-border');
+                            }
+                            });
+                            
+                            // Initial state: Increase font size for collapsed categories and hide second column
+                            categoryHeaderDiv.style.fontSize = '7rem';
+                            categoryHeaderDiv.querySelector('.right').style.display = 'none';
+                            
+                            menuDiv.appendChild(categoryHeaderDiv);
+                            menuDiv.appendChild(categoryItemsDiv);
+                            
+                            categoryItemsContainers.push(categoryItemsDiv);                    
+                            currentCategory = categoryItemsDiv;
+                            } else if (currentCategory) {
+                            const menuItemDiv = document.createElement('div');
+                            menuItemDiv.classList.add('menu-item');
+                            menuItemDiv.style.marginBottom = '0';
+                            
+                            const lineDiv = document.createElement('div');
+                            lineDiv.classList.add('menu-item-line');
+                            
+                            const colABElement = document.createElement('span');
+                            colABElement.classList.add('colAB');
+                            colABElement.textContent = mergedColAB;
+                            
+                            const colCDEElement = document.createElement('span');
+                            colCDEElement.classList.add('colCDE');
+                            colCDEElement.textContent = mergedcolCDE;
+                            
+                            lineDiv.appendChild(colABElement);
+                            lineDiv.appendChild(colCDEElement);                        
+                            menuItemDiv.appendChild(lineDiv);
+                            currentCategory.appendChild(menuItemDiv);
+                            }
+                            });
+                            
+                            categoryItemsContainers.forEach(container => {
+                            container.style.display = 'none';
+                            });
+                            
+                            document.querySelector(".search-container").style.display = "block";
+                            document.querySelector(".footer-container").style.display = "block"; // Show footer
+                            
+                            
+                            // Remove the loading overlay after the data is fetched and processed
+                            document.getElementById('loadingOverlay').style.display = 'none';
+                            })
+                            .catch(error => {
+                            console.error("Error fetching data:", error);
+                            document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
+                            });
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            let sidebar = document.getElementById('sidebar');
+                            let indicator = document.createElement('div');
+                            indicator.id = 'sidebar-indicator';
+                            document.body.appendChild(indicator);
+                            
+                            let hoverTimeout;
+                            let sidebarAutoHideTimer;
+                            let touchStartX = 0;
+                            let touchEndX = 0;
+                            const swipeThreshold = 80;  // Minimum swipe distance
+                            const edgeThreshold = 50;   // Swipe must start within 50px from screen edge
+                            
+                            // Add/Remove a class that disables scroll on body
+                            function disableScroll() {
+                            document.body.style.overflow = 'hidden';
+                            }
+                            
+                            function enableScroll() {
+                            document.body.style.overflow = 'auto';
+                            }
+                            
+                            // Mouse-triggered sidebar behavior (Unchanged)
+                            document.addEventListener('mousemove', (event) => {
+                            clearTimeout(hoverTimeout);
+                            
+                            if (event.clientX > window.innerWidth - 50) {
                             hoverTimeout = setTimeout(() => {
-                                sidebar.classList.remove('open');
-                                enableScroll(); // Enable scrolling when sidebar closes
-                            }, 300);
-                        }
-                    });
-                    
-                    // Touch gesture handling
-                    document.addEventListener('touchstart', (event) => {
-                        touchStartX = event.touches[0].clientX;
-                    });
-                    
-                    document.addEventListener('touchmove', (event) => {
-                        touchEndX = event.touches[0].clientX;
-                    });
-                    
-                    document.addEventListener('touchend', (event) => {
-                        if (touchEndX === 0) return;  // Ignore if no movement
-                        
-                        if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold) {
                             sidebar.classList.add('open');
                             disableScroll(); // Prevent scrolling when sidebar opens
-                        } 
-                        else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
+                            }, 300);
+                            } else {
+                            hoverTimeout = setTimeout(() => {
                             sidebar.classList.remove('open');
                             enableScroll(); // Enable scrolling when sidebar closes
-                        } 
-                        else if (touchStartX > sidebar.offsetWidth + 50) {
+                            }, 300);
+                            }
+                            });
+                            
+                            // Touch gesture handling
+                            document.addEventListener('touchstart', (event) => {
+                            touchStartX = event.touches[0].clientX;
+                            });
+                            
+                            document.addEventListener('touchmove', (event) => {
+                            touchEndX = event.touches[0].clientX;
+                            });
+                            
+                            document.addEventListener('touchend', (event) => {
+                            if (touchEndX === 0) return;  // Ignore if no movement
+                            
+                            if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold) {
+                            sidebar.classList.add('open');
+                            disableScroll(); // Prevent scrolling when sidebar opens
+                            } 
+                            else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
                             sidebar.classList.remove('open');
                             enableScroll(); // Enable scrolling when sidebar closes
-                        }
-                        
-                        touchStartX = 0;
-                        touchEndX = 0;
-                    });
-                    
-                    // Toggle sidebar on indicator tap
-                    indicator.addEventListener('touchstart', (event) => {
-                        event.preventDefault();
-                        sidebar.classList.toggle('open');
-                        if (sidebar.classList.contains('open')) {
+                            } 
+                            else if (touchStartX > sidebar.offsetWidth + 50) {
+                            sidebar.classList.remove('open');
+                            enableScroll(); // Enable scrolling when sidebar closes
+                            }
+                            
+                            touchStartX = 0;
+                            touchEndX = 0;
+                            });
+                            
+                            // Toggle sidebar on indicator tap
+                            indicator.addEventListener('touchstart', (event) => {
+                            event.preventDefault();
+                            sidebar.classList.toggle('open');
+                            if (sidebar.classList.contains('open')) {
                             disableScroll(); // Prevent scrolling when sidebar opens
                             } else {
                             enableScroll(); // Enable scrolling when sidebar closes
-                        }
-                    });
-                    
-                    // Auto-hide timer starts only when leaving the sidebar
-                    function resetAutoHideTimer() {
-                        clearTimeout(sidebarAutoHideTimer);
-                        sidebarAutoHideTimer = setTimeout(() => {
+                            }
+                            });
+                            
+                            // Auto-hide timer starts only when leaving the sidebar
+                            function resetAutoHideTimer() {
+                            clearTimeout(sidebarAutoHideTimer);
+                            sidebarAutoHideTimer = setTimeout(() => {
                             sidebar.classList.remove('open');
                             enableScroll(); // Enable scrolling when sidebar closes
-                        }, 2500);
-                    }
-                    
-                    // Stop auto-hide while interacting
-                    sidebar.addEventListener('mouseenter', () => clearTimeout(sidebarAutoHideTimer)); // Mouse enters sidebar
-                    sidebar.addEventListener('mouseleave', resetAutoHideTimer); // Mouse leaves sidebar
-                    
-                    sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
-                    sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
-                    
-                    // Check if the device supports touch
-                    if ('ontouchstart' in window) {
-                        let logos = document.querySelectorAll('#sidebar .logo');
-                        
-                        logos.forEach(logo => {
+                            }, 2500);
+                            }
+                            
+                            // Stop auto-hide while interacting
+                            sidebar.addEventListener('mouseenter', () => clearTimeout(sidebarAutoHideTimer)); // Mouse enters sidebar
+                            sidebar.addEventListener('mouseleave', resetAutoHideTimer); // Mouse leaves sidebar
+                            
+                            sidebar.addEventListener('touchstart', () => clearTimeout(sidebarAutoHideTimer)); // User touches sidebar
+                            sidebar.addEventListener('touchend', resetAutoHideTimer); // User lifts finger from sidebar
+                            
+                            // Check if the device supports touch
+                            if ('ontouchstart' in window) {
+                            let logos = document.querySelectorAll('#sidebar .logo');
+                            
+                            logos.forEach(logo => {
                             logo.addEventListener('touchstart', (e) => {
-                                e.stopPropagation();
-                                
-                                // Remove the hovered class from all logos
-                                logos.forEach(l => l.classList.remove('hovered'));
-                                
-                                // Add the hovered class to the touched logo
-                                logo.classList.add('hovered');
+                            e.stopPropagation();
+                            
+                            // Remove the hovered class from all logos
+                            logos.forEach(l => l.classList.remove('hovered'));
+                            
+                            // Add the hovered class to the touched logo
+                            logo.classList.add('hovered');
                             });
                             
                             logo.addEventListener('touchend', (e) => {
-                                e.stopPropagation();
-                                setTimeout(() => logo.classList.remove('hovered'), 300); // Smooth effect
+                            e.stopPropagation();
+                            setTimeout(() => logo.classList.remove('hovered'), 300); // Smooth effect
                             });
-                        });
-                    }
-                    
-                    
-                    // Blink the touch indicator every 1 second
-                    setInterval(() => {
-                        indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
-                    }, 3000);
-                    
-                    const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
-                    
-                    fetch(miscUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.length >= 2) {
+                            });
+                            }
+                            
+                            
+                            // Blink the touch indicator every 1 second
+                            setInterval(() => {
+                            indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
+                            }, 3000);
+                            
+                            const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
+                            
+                            fetch(miscUrl)
+                            .then(response => response.json())
+                            .then(data => {
+                            if (data && data.length >= 2) {
                             // Fetch delivery phone number from B3 cell
                             let deliveryPhone = data[2][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
                             if (deliveryPhone) {
-                                deliveryPhone = deliveryPhone.replace(/-/g, ""); // Remove dashes
-                                const formattedDeliveryPhone = `tel:+91${deliveryPhone}`; // Add country code
-                                
-                                // Update the delivery phone link
-                                const deliveryLinkElement = document.getElementById('delivery-link');
-                                if (deliveryLinkElement) {
-                                    deliveryLinkElement.href = formattedDeliveryPhone;
-                                }
+                            deliveryPhone = deliveryPhone.replace(/-/g, ""); // Remove dashes
+                            const formattedDeliveryPhone = `tel:+91${deliveryPhone}`; // Add country code
+                            
+                            // Update the delivery phone link
+                            const deliveryLinkElement = document.getElementById('delivery-link');
+                            if (deliveryLinkElement) {
+                            deliveryLinkElement.href = formattedDeliveryPhone;
+                            }
                             }
                             
                             // Fetch WhatsApp phone number from B4 cell (3rd row, 2nd column, 0-indexed)
                             let chatNumber = data[3][1];
                             if (chatNumber) {
-                                chatNumber = chatNumber.replace(/-/g, ""); // Remove dashes
+                            chatNumber = chatNumber.replace(/-/g, ""); // Remove dashes
                             }
                             
                             // Fetch WhatsApp message from B5 cell (4th row, 2nd column, 0-indexed)
                             let message = data[4][1]; 
                             if (!message || message.trim() === "") {
-                                message = "Hello Chai Sutta Bar!"; // Default message
+                            message = "Hello Chai Sutta Bar!"; // Default message
                             }
                             
                             // URL-encode the message for the WhatsApp link
@@ -1333,21 +1365,21 @@
                             // Update the href attribute of the anchor tag with the new link
                             const whatsappLinkElement = document.getElementById('whatsapp-link');
                             if (whatsappLinkElement) {
-                                whatsappLinkElement.href = whatsappLink;
+                            whatsappLinkElement.href = whatsappLink;
                             }
                             
                             
                             // Fetch phone number from B6 cell (5th row, 2nd column, 0-indexed)
                             let contactPhone = data[5][1]; 
                             if (contactPhone) {
-                                contactPhone = contactPhone.replace(/-/g, ""); // Remove dashes
-                                const formattedContactPhone = `tel:+91${contactPhone}`; // Add country code
-                                
-                                // Update the phone link dynamically
-                                const phoneLinkElement = document.getElementById("phone-link");
-                                if (phoneLinkElement) {
-                                    phoneLinkElement.href = formattedContactPhone;
-                                }
+                            contactPhone = contactPhone.replace(/-/g, ""); // Remove dashes
+                            const formattedContactPhone = `tel:+91${contactPhone}`; // Add country code
+                            
+                            // Update the phone link dynamically
+                            const phoneLinkElement = document.getElementById("phone-link");
+                            if (phoneLinkElement) {
+                            phoneLinkElement.href = formattedContactPhone;
+                            }
                             }
                             
                             // Extract Open and Close times from Google Sheets
@@ -1356,12 +1388,12 @@
                             
                             // Check if either openTimeStr or closeTimeStr is empty
                             if (!openTimeStr || !closeTimeStr) {
-                                // If one or both times are missing, don't display anything
-                                const timeElem = document.querySelector('.open-close');
-                                if (timeElem) {
-                                    timeElem.innerHTML = "";
-                                }
-                                return; // Exit the function
+                            // If one or both times are missing, don't display anything
+                            const timeElem = document.querySelector('.open-close');
+                            if (timeElem) {
+                            timeElem.innerHTML = "";
+                            }
+                            return; // Exit the function
                             }
                             
                             // Convert Open and Close times to Date objects
@@ -1379,319 +1411,319 @@
                             let statusMessage = "";
                             // Compare times based on minutes from midnight
                             if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
-                                statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
-                                } else {
-                                statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
+                            statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
+                            } else {
+                            statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
                             }
                             
                             // Update the display
                             const timeElem = document.querySelector('.open-close');
                             if (timeElem) {
-                                timeElem.innerHTML = statusMessage;
+                            timeElem.innerHTML = statusMessage;
                             }                                    
-                        }                
-                    })
-                    
-                    .catch(error => {
-                        console.error("Error fetching Misc data:", error);
-                    });
-                    
-                    // Function to parse custom time format (hh.mmap)
-                    function parseCustomTime(timeStr) {
-                        const hour = parseInt(timeStr.substring(0, 2), 10); // Get the hour part
-                        const minute = parseInt(timeStr.substring(3, 5), 10); // Get the minute part
-                        const ampm = timeStr.substring(5).toLowerCase(); // Get 'am' or 'pm'
-                        
-                        let hours24 = hour;
-                        
-                        // Convert to 24-hour format
-                        if (ampm === 'pm' && hours24 !== 12) {
+                            }                
+                            })
+                            
+                            .catch(error => {
+                            console.error("Error fetching Misc data:", error);
+                            });
+                            
+                            // Function to parse custom time format (hh.mmap)
+                            function parseCustomTime(timeStr) {
+                            const hour = parseInt(timeStr.substring(0, 2), 10); // Get the hour part
+                            const minute = parseInt(timeStr.substring(3, 5), 10); // Get the minute part
+                            const ampm = timeStr.substring(5).toLowerCase(); // Get 'am' or 'pm'
+                            
+                            let hours24 = hour;
+                            
+                            // Convert to 24-hour format
+                            if (ampm === 'pm' && hours24 !== 12) {
                             hours24 += 12; // Convert PM hours to 24-hour format
-                        }
-                        if (ampm === 'am' && hours24 === 12) {
+                            }
+                            if (ampm === 'am' && hours24 === 12) {
                             hours24 = 0; // Convert 12 AM to 00:00
-                        }
-                        
-                        const date = new Date();
-                        date.setHours(hours24, minute, 0, 0); // Set the time to the parsed hour and minute
-                        
-                        return date;
-                    }
-                    
-                    // Function to format time in "h:mm AM/PM" format
-                    function formatTime(date) {
-                        const hours = date.getHours();
-                        const minutes = date.getMinutes();
-                        const ampm = hours >= 12 ? 'PM' : 'AM';
-                        const formattedHour = hours % 12 || 12; // Adjust hour for 12-hour format
-                        const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-                        return `${formattedHour}:${formattedMinutes} ${ampm}`;
-                    }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    function setupHamburgerMenu() {
-                        // Create Hamburger Button
-                        const hamburgerButton = document.createElement('div');
-                        hamburgerButton.id = 'hamburger-button';
-                        hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
-                        
-                        // Append it to the header
-                        document.querySelector('.header').appendChild(hamburgerButton);
-                        
-                        // Create Sidebar
-                        const hsidebar = document.createElement('div');
-                        hsidebar.id = 'hsidebar';
-                        hsidebar.innerHTML = `
-                        <div class="hsidebar-content">
-                        <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
-                        <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
-                        <div class="hsidebar-option" id="install-app">⚙️ Install CSB App</div>
-                        <div class="hsidebar-option" id="show-qrcode">🔗 App QR Code</div>
-                        <div class="hsidebar-option" id="copy-app-link">📋 Copy App Link</div>
-                        <div class="hsidebar-option" id="device-screen-info">📱 Screen Info</div> <!-- New option -->
-                        <!-- Close button -->
-                        <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->                    
-                        <!-- Footer text -->
-                        <div class="footer-text" id="footer-info">
-                        <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
-                        </div>
-                        </div>
-                        `;
-                        document.body.appendChild(hsidebar);
-                        
-                        // Create Backdrop
-                        const overlay = document.createElement('div');
-                        overlay.id = 'sidebar-overlay';
-                        document.body.appendChild(overlay);
-                        
-                        // Create QR Code Modal
-                        const qrCodeModal = document.createElement('div');
-                        qrCodeModal.id = 'qr-code-modal';
-                        qrCodeModal.innerHTML = `
-                        <div class="modal-content">
-                        <span id="close-modal">&times;</span>
-                        <img src="qrcode.png" alt="QR Code">
-                        </div>
-                        `;
-                        document.body.appendChild(qrCodeModal);
-                        
-                        // Open Sidebar
-                        hamburgerButton.addEventListener('click', () => {
+                            }
+                            
+                            const date = new Date();
+                            date.setHours(hours24, minute, 0, 0); // Set the time to the parsed hour and minute
+                            
+                            return date;
+                            }
+                            
+                            // Function to format time in "h:mm AM/PM" format
+                            function formatTime(date) {
+                            const hours = date.getHours();
+                            const minutes = date.getMinutes();
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            const formattedHour = hours % 12 || 12; // Adjust hour for 12-hour format
+                            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                            return `${formattedHour}:${formattedMinutes} ${ampm}`;
+                            }
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            function setupHamburgerMenu() {
+                            // Create Hamburger Button
+                            const hamburgerButton = document.createElement('div');
+                            hamburgerButton.id = 'hamburger-button';
+                            hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
+                            
+                            // Append it to the header
+                            document.querySelector('.header').appendChild(hamburgerButton);
+                            
+                            // Create Sidebar
+                            const hsidebar = document.createElement('div');
+                            hsidebar.id = 'hsidebar';
+                            hsidebar.innerHTML = `
+                            <div class="hsidebar-content">
+                            <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
+                            <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
+                            <div class="hsidebar-option" id="install-app">⚙️ Install CSB App</div>
+                            <div class="hsidebar-option" id="show-qrcode">🔗 App QR Code</div>
+                            <div class="hsidebar-option" id="copy-app-link">📋 Copy App Link</div>
+                            <div class="hsidebar-option" id="device-screen-info">📱 Screen Info</div> <!-- New option -->
+                            <!-- Close button -->
+                            <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->                    
+                            <!-- Footer text -->
+                            <div class="footer-text" id="footer-info">
+                            <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
+                            </div>
+                            </div>
+                            `;
+                            document.body.appendChild(hsidebar);
+                            
+                            // Create Backdrop
+                            const overlay = document.createElement('div');
+                            overlay.id = 'sidebar-overlay';
+                            document.body.appendChild(overlay);
+                            
+                            // Create QR Code Modal
+                            const qrCodeModal = document.createElement('div');
+                            qrCodeModal.id = 'qr-code-modal';
+                            qrCodeModal.innerHTML = `
+                            <div class="modal-content">
+                            <span id="close-modal">&times;</span>
+                            <img src="qrcode.png" alt="QR Code">
+                            </div>
+                            `;
+                            document.body.appendChild(qrCodeModal);
+                            
+                            // Open Sidebar
+                            hamburgerButton.addEventListener('click', () => {
                             hsidebar.classList.add('open');
                             overlay.style.display = 'block';
                             document.body.style.overflow = 'hidden'; // Lock scrolling on body
                             document.documentElement.style.overflow = 'hidden'; // Lock scrolling on html
                             document.body.style.height = '100%'; // Prevent body from resizing while locked
                             document.documentElement.style.height = '100%'; // Prevent html from resizing
-                        });
-                        
-                        // Close Sidebar when clicking outside
-                        overlay.addEventListener('click', () => {
+                            });
+                            
+                            // Close Sidebar when clicking outside
+                            overlay.addEventListener('click', () => {
                             hsidebar.classList.remove('open');
                             overlay.style.display = 'none';
                             document.body.style.overflow = ''; // Unlock scrolling on body
                             document.documentElement.style.overflow = ''; // Unlock scrolling on html
                             document.body.style.height = ''; // Allow body resizing again
                             document.documentElement.style.height = ''; // Allow html resizing
-                        });
-                        
-                        // Close Sidebar on Escape Key
-                        document.addEventListener('keydown', (e) => {
+                            });
+                            
+                            // Close Sidebar on Escape Key
+                            document.addEventListener('keydown', (e) => {
                             if (e.key === "Escape") {
-                                hsidebar.classList.remove('open');
-                                overlay.style.display = 'none';
-                                document.body.style.overflow = '';
-                                document.documentElement.style.overflow = ''; // Unlock scrolling on html
-                                document.body.style.height = ''; // Allow body resizing again
-                                document.documentElement.style.height = ''; // Allow html resizing
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = '';
+                            document.documentElement.style.overflow = ''; // Unlock scrolling on html
+                            document.body.style.height = ''; // Allow body resizing again
+                            document.documentElement.style.height = ''; // Allow html resizing
                             }
-                        });
-                        
-                        // Close Sidebar when clicking on the cross button
-                        document.getElementById('close-sidebar').addEventListener('click', () => {
+                            });
+                            
+                            // Close Sidebar when clicking on the cross button
+                            document.getElementById('close-sidebar').addEventListener('click', () => {
                             hsidebar.classList.remove('open');
                             overlay.style.display = 'none';
                             document.body.style.overflow = ''; // Unlock scrolling
                             document.documentElement.style.overflow = ''; // Unlock scrolling
                             document.body.style.height = ''; // Allow body resizing
                             document.documentElement.style.height = ''; // Allow html resizing
-                        });
-                        
-                        // Install App
-                        document.getElementById('install-app').addEventListener('click', () => {
+                            });
+                            
+                            // Install App
+                            document.getElementById('install-app').addEventListener('click', () => {
                             if (deferredPrompt) {
-                                deferredPrompt.prompt();
-                                deferredPrompt.userChoice.then((choiceResult) => {
-                                    console.log(choiceResult.outcome === 'accepted' ? 'User accepted' : 'User dismissed');
-                                    deferredPrompt = null;
-                                });
+                            deferredPrompt.prompt();
+                            deferredPrompt.userChoice.then((choiceResult) => {
+                            console.log(choiceResult.outcome === 'accepted' ? 'User accepted' : 'User dismissed');
+                            deferredPrompt = null;
+                            });
                             }
-                        });
-                        
-                        // Show QR Code
-                        document.getElementById('show-qrcode').addEventListener('click', () => {
+                            });
+                            
+                            // Show QR Code
+                            document.getElementById('show-qrcode').addEventListener('click', () => {
                             // Hide the sidebar when showing the modal
                             const hsidebar = document.getElementById('hsidebar');
                             const overlay = document.getElementById('sidebar-overlay');
                             hsidebar.classList.remove('open');
                             overlay.style.display = 'none';
                             qrCodeModal.style.display = 'block';
-                        });
-                        
-                        // Close QR Code Modal
-                        document.getElementById('close-modal').addEventListener('click', () => {
+                            });
+                            
+                            // Close QR Code Modal
+                            document.getElementById('close-modal').addEventListener('click', () => {
                             qrCodeModal.style.display = 'none';
-                        });
-                        
-                        // Close QR Code Modal on Click Outside
-                        window.addEventListener('click', (event) => {
+                            });
+                            
+                            // Close QR Code Modal on Click Outside
+                            window.addEventListener('click', (event) => {
                             if (event.target === qrCodeModal) {
-                                qrCodeModal.style.display = 'none';
+                            qrCodeModal.style.display = 'none';
                             }
-                        });
-                        
-                        // Copy App Link
-                        document.getElementById('copy-app-link').addEventListener('click', () => {
+                            });
+                            
+                            // Copy App Link
+                            document.getElementById('copy-app-link').addEventListener('click', () => {
                             const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
                             navigator.clipboard.writeText(appLink).then(() => {
-                                
-                                
-                                // Create feedback element
-                                const feedback = document.createElement('div');
-                                feedback.textContent = 'Link copied';
-                                feedback.style.position = 'fixed';
-                                feedback.style.bottom = '20px';
-                                feedback.style.left = '50%';
-                                feedback.style.transform = 'translateX(-50%)';
-                                feedback.style.background = '#333';
-                                feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
-                                feedback.style.color = '#fff';
-                                feedback.style.padding = '8px 16px';
-                                feedback.style.borderRadius = '4px';
-                                feedback.style.zIndex = '2000';
-                                document.body.appendChild(feedback);
-                                
-                                // Remove feedback after 2 seconds
-                                setTimeout(() => {
-                                    if (document.body.contains(feedback)) {
-                                        document.body.removeChild(feedback);
-                                    }
-                                }, 2000);
+                            
+                            
+                            // Create feedback element
+                            const feedback = document.createElement('div');
+                            feedback.textContent = 'Link copied';
+                            feedback.style.position = 'fixed';
+                            feedback.style.bottom = '20px';
+                            feedback.style.left = '50%';
+                            feedback.style.transform = 'translateX(-50%)';
+                            feedback.style.background = '#333';
+                            feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
+                            feedback.style.color = '#fff';
+                            feedback.style.padding = '8px 16px';
+                            feedback.style.borderRadius = '4px';
+                            feedback.style.zIndex = '2000';
+                            document.body.appendChild(feedback);
+                            
+                            // Remove feedback after 2 seconds
+                            setTimeout(() => {
+                            if (document.body.contains(feedback)) {
+                            document.body.removeChild(feedback);
+                            }
+                            }, 2000);
                             });
-                        });
-                        
-                        // Show Device Screen Info
-                        document.getElementById('device-screen-info').addEventListener('click', function() {
+                            });
+                            
+                            // Show Device Screen Info
+                            document.getElementById('device-screen-info').addEventListener('click', function() {
                             showDeviceInfoModal();
-                        });
-                        
-                        
-                        // Swipe Left to Close Sidebar (Mobile Gesture)
-                        let startX;
-                        let startY;
-                        
-                        hsidebar.addEventListener('touchstart', (e) => {
+                            });
+                            
+                            
+                            // Swipe Left to Close Sidebar (Mobile Gesture)
+                            let startX;
+                            let startY;
+                            
+                            hsidebar.addEventListener('touchstart', (e) => {
                             const touchStart = e.touches[0];
                             startX = touchStart.clientX;
                             startY = touchStart.clientY;
-                        });
-                        
-                        hsidebar.addEventListener('touchend', (e) => {
+                            });
+                            
+                            hsidebar.addEventListener('touchend', (e) => {
                             const touchEnd = e.changedTouches[0];
                             const deltaX = touchEnd.clientX - startX;
                             const deltaY = touchEnd.clientY - startY;
                             
                             if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
-                                hsidebar.classList.remove('open');
-                                overlay.style.display = 'none';
-                                document.body.style.overflow = '';
-                                document.documentElement.style.overflow = '';
-                                document.body.style.height = '';
-                                document.documentElement.style.height = '';
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = '';
+                            document.documentElement.style.overflow = '';
+                            document.body.style.height = '';
+                            document.documentElement.style.height = '';
                             }
-                        });
-                    }
-                    
-                    
-                    // Call the setup function
-                    setupHamburgerMenu();
-                    
-                    
-                    
-                    
-                    
-                    function showDeviceInfoModal() {
-                        // Hide the sidebar when showing the modal
-                        const hsidebar = document.getElementById('hsidebar');
-                        const overlay = document.getElementById('sidebar-overlay');
-                        hsidebar.classList.remove('open');
-                        overlay.style.display = 'none';
-                        
-                        // Gather device info
-                        const screenWidth = window.screen.width;
-                        const screenHeight = window.screen.height;
-                        const innerWidth = window.innerWidth;
-                        const innerHeight = window.innerHeight;
-                        const pixelRatio = window.devicePixelRatio;
-                        const userAgent = navigator.userAgent;
-                        const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
-                        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                        const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
-                        
-                        // Create modal content with updated font size and styles
-                        const modalContent = `
-                        <div style="padding: 20px; font-family: Arial, sans-serif; background-color: #fff; color: #333; border-radius: 8px; width: 80%; max-width: 500px; font-size: 16px; position: relative; text-align: center;">
-                        <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
-                        <p style="line-height: 1.5;"><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
-                        <p style="line-height: 1.5;"><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
-                        <p style="line-height: 1.5;"><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
-                        <p style="line-height: 1.5;"><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
-                        <p style="line-height: 1.5;"><strong>Device Type:</strong> ${deviceType}</p>
-                        <p style="line-height: 1.5;"><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
-                        <p style="line-height: 1.5;"><strong>User Agent:</strong> ${userAgent}</p>
-                        <p style="line-height: 1.5;"><strong>Time Zone:</strong> ${timeZone}</p>
-                        <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
-                        <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
-                        </div>
-                        `;
-                        
-                        // Create modal container
-                        const modalContainer = document.createElement('div');
-                        modalContainer.style.position = 'fixed';
-                        modalContainer.style.top = '0';
-                        modalContainer.style.left = '0';
-                        modalContainer.style.width = '100%';
-                        modalContainer.style.height = '100%';
-                        modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                        modalContainer.style.display = 'flex';
-                        modalContainer.style.justifyContent = 'center';
-                        modalContainer.style.alignItems = 'center';
-                        modalContainer.style.zIndex = '1000';
-                        modalContainer.innerHTML = modalContent;
-                        
-                        // Append modal to body
-                        document.body.appendChild(modalContainer);
-                        
-                        // Add event listener for the close button
-                        const closeModalButton = modalContainer.querySelector('#close-modal');
-                        closeModalButton.addEventListener('click', function() {
+                            });
+                            }
+                            
+                            
+                            // Call the setup function
+                            setupHamburgerMenu();
+                            
+                            
+                            
+                            
+                            
+                            function showDeviceInfoModal() {
+                            // Hide the sidebar when showing the modal
+                            const hsidebar = document.getElementById('hsidebar');
+                            const overlay = document.getElementById('sidebar-overlay');
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            
+                            // Gather device info
+                            const screenWidth = window.screen.width;
+                            const screenHeight = window.screen.height;
+                            const innerWidth = window.innerWidth;
+                            const innerHeight = window.innerHeight;
+                            const pixelRatio = window.devicePixelRatio;
+                            const userAgent = navigator.userAgent;
+                            const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
+                            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                            const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
+                            
+                            // Create modal content with updated font size and styles
+                            const modalContent = `
+                            <div style="padding: 20px; font-family: Arial, sans-serif; background-color: #fff; color: #333; border-radius: 8px; width: 80%; max-width: 500px; font-size: 16px; position: relative; text-align: center;">
+                            <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
+                            <p style="line-height: 1.5;"><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
+                            <p style="line-height: 1.5;"><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
+                            <p style="line-height: 1.5;"><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
+                            <p style="line-height: 1.5;"><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
+                            <p style="line-height: 1.5;"><strong>Device Type:</strong> ${deviceType}</p>
+                            <p style="line-height: 1.5;"><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
+                            <p style="line-height: 1.5;"><strong>User Agent:</strong> ${userAgent}</p>
+                            <p style="line-height: 1.5;"><strong>Time Zone:</strong> ${timeZone}</p>
+                            <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
+                            <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
+                            </div>
+                            `;
+                            
+                            // Create modal container
+                            const modalContainer = document.createElement('div');
+                            modalContainer.style.position = 'fixed';
+                            modalContainer.style.top = '0';
+                            modalContainer.style.left = '0';
+                            modalContainer.style.width = '100%';
+                            modalContainer.style.height = '100%';
+                            modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                            modalContainer.style.display = 'flex';
+                            modalContainer.style.justifyContent = 'center';
+                            modalContainer.style.alignItems = 'center';
+                            modalContainer.style.zIndex = '1000';
+                            modalContainer.innerHTML = modalContent;
+                            
+                            // Append modal to body
+                            document.body.appendChild(modalContainer);
+                            
+                            // Add event listener for the close button
+                            const closeModalButton = modalContainer.querySelector('#close-modal');
+                            closeModalButton.addEventListener('click', function() {
                             document.body.removeChild(modalContainer);
-                        });
-                        
-                        // Add event listener for the copy button
-                        const copyButton = modalContainer.querySelector('#copy-button');
-                        copyButton.addEventListener('click', function() {
+                            });
+                            
+                            // Add event listener for the copy button
+                            const copyButton = modalContainer.querySelector('#copy-button');
+                            copyButton.addEventListener('click', function() {
                             // Get all text content from h3 and p elements
                             const contentDiv = modalContainer.querySelector('div');
                             const elements = contentDiv.querySelectorAll('h3, p');
@@ -1699,89 +1731,89 @@
                             
                             // Copy to clipboard
                             navigator.clipboard.writeText(text).then(() => {
-                                // Create feedback element
-                                const feedback = document.createElement('div');
-                                feedback.textContent = 'Text copied';
-                                feedback.style.position = 'fixed';
-                                feedback.style.bottom = '20px';
-                                feedback.style.left = '50%';
-                                feedback.style.transform = 'translateX(-50%)';
-                                feedback.style.background = '#333';
-                                feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
-                                feedback.style.color = '#fff';
-                                feedback.style.padding = '8px 16px';
-                                feedback.style.borderRadius = '4px';
-                                feedback.style.zIndex = '2000';
-                                document.body.appendChild(feedback);
-                                
-                                // Remove feedback after 2 seconds
-                                setTimeout(() => {
-                                    if (document.body.contains(feedback)) {
-                                        document.body.removeChild(feedback);
-                                    }
-                                }, 2000);
-                                }).catch(err => {
-                                console.error('Failed to copy:', err);
-                            });
-                        });
-                        
-                        // Close modal when clicking outside
-                        modalContainer.addEventListener('click', function(event) {
-                            if (event.target === modalContainer) {
-                                document.body.removeChild(modalContainer);
+                            // Create feedback element
+                            const feedback = document.createElement('div');
+                            feedback.textContent = 'Text copied';
+                            feedback.style.position = 'fixed';
+                            feedback.style.bottom = '20px';
+                            feedback.style.left = '50%';
+                            feedback.style.transform = 'translateX(-50%)';
+                            feedback.style.background = '#333';
+                            feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
+                            feedback.style.color = '#fff';
+                            feedback.style.padding = '8px 16px';
+                            feedback.style.borderRadius = '4px';
+                            feedback.style.zIndex = '2000';
+                            document.body.appendChild(feedback);
+                            
+                            // Remove feedback after 2 seconds
+                            setTimeout(() => {
+                            if (document.body.contains(feedback)) {
+                            document.body.removeChild(feedback);
                             }
-                        });
-                    
-                    // Close modal on Escape key
-                    window.addEventListener('keydown', function(event) {
-                    if (event.key === 'Escape') {
-                    document.body.removeChild(modalContainer);
-                    }
-                    });
-                    
-                    // Close modal on back button
-                    window.addEventListener('popstate', function() {
-                    document.body.removeChild(modalContainer);
-                    });
-                    }
-                    
-
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    let deferredPrompt; // Variable to hold the deferred prompt event
-                    
-                    // Listen for the beforeinstallprompt event
-                    window.addEventListener("beforeinstallprompt", (e) => {
-                    e.preventDefault(); // Prevent the default prompt from showing automatically
-                    deferredPrompt = e; // Store the event so we can trigger it later
-                    
-                    // Optionally, show a custom install button here if needed
-                    // document.getElementById('install-button').style.display = 'block'; 
-                    
-                    // Automatically trigger the prompt after a delay
-                    setTimeout(() => {
-                    deferredPrompt.prompt(); // Show the install prompt
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                    // Handle the user's response
-                    if (choiceResult.outcome === "accepted") {
-                    console.log("User accepted the install prompt");
-                    } else {
-                    console.log("User dismissed the install prompt");
-                    }
-                    deferredPrompt = null; // Reset the deferred prompt
-                    });
-                    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-                    });
-                    
-                    </script>
-                    
-                    <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-                    </body>
-                    </html>
-                                        
+                            }, 2000);
+                            }).catch(err => {
+                            console.error('Failed to copy:', err);
+                            });
+                            });
+                            
+                            // Close modal when clicking outside
+                            modalContainer.addEventListener('click', function(event) {
+                            if (event.target === modalContainer) {
+                            document.body.removeChild(modalContainer);
+                            }
+                            });
+                            
+                            // Close modal on Escape key
+                            window.addEventListener('keydown', function(event) {
+                            if (event.key === 'Escape') {
+                            document.body.removeChild(modalContainer);
+                            }
+                            });
+                            
+                            // Close modal on back button
+                            window.addEventListener('popstate', function() {
+                            document.body.removeChild(modalContainer);
+                            });
+                            }
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            let deferredPrompt; // Variable to hold the deferred prompt event
+                            
+                            // Listen for the beforeinstallprompt event
+                            window.addEventListener("beforeinstallprompt", (e) => {
+                            e.preventDefault(); // Prevent the default prompt from showing automatically
+                            deferredPrompt = e; // Store the event so we can trigger it later
+                            
+                            // Optionally, show a custom install button here if needed
+                            // document.getElementById('install-button').style.display = 'block'; 
+                            
+                            // Automatically trigger the prompt after a delay
+                            setTimeout(() => {
+                            deferredPrompt.prompt(); // Show the install prompt
+                            deferredPrompt.userChoice.then((choiceResult) => {
+                            // Handle the user's response
+                            if (choiceResult.outcome === "accepted") {
+                            console.log("User accepted the install prompt");
+                            } else {
+                            console.log("User dismissed the install prompt");
+                            }
+                            deferredPrompt = null; // Reset the deferred prompt
+                            });
+                            }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+                            });
+                            
+                            </script>
+                            
+                            <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+                            </body>
+                            </html>
+                                                        
