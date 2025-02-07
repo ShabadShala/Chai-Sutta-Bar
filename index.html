@@ -160,7 +160,7 @@
             left: 50%; /* Move the header to the center horizontally */
             transform: translateX(-50%);
             background-color: #212121; /* Match the body background */
-            z-index: 1000; /* Ensure the header stays above other content */
+            z-index: 1001; /* Ensure the header stays above other content */
             padding: 2rem; /* Adjust padding as needed */
             box-shadow: 0 0.4rem 3rem rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
             border-bottom: 1px solid #fae68e; /* Adds a border */                    
@@ -513,24 +513,24 @@
             margin-top: auto; /* Ensures it's at the bottom */
             }   
             
-#visitorElement {
-  display: none; /* Hidden by default */
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin: 2rem 0;
-  text-align: center; /* Center inline elements */
-}
-
-#visitorElement h3 {
-  font-size: 4rem;
-  display: inline-block; /* Make h3 inline */
-  margin-right: 1rem; /* Space between text and image */
-}
-
-#visitorElement a {
-  display: inline-block; /* Keep image inline with text */
-}
+            #visitorElement {
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin: 2rem 0;
+            text-align: center; /* Center inline elements */
+            }
+            
+            #visitorElement h3 {
+            font-size: 4rem;
+            display: inline-block; /* Make h3 inline */
+            margin-right: 1rem; /* Space between text and image */
+            }
+            
+            #visitorElement a {
+            display: inline-block; /* Keep image inline with text */
+            }
             
             
             
@@ -816,13 +816,17 @@
             /* Scrap List Modal */
             #scrapList {
             display: none;
-            position: fixed;            
-            top: 0;
-            left: 0;
-            width: 75%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.95); /* Light gray with slight transparency */
-            z-index: 2000;            
+            position: fixed;
+            top: 10% !important; /* Set the distance from the top */
+            left: 50% !important;
+            transform: translateX(-50%);
+            width: 350px; /* Match content width */
+            max-width: 90vw;
+            max-height: 80vh;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 2000;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             }
             
             /* Scrap Content - Fileds inside scrap list*/
@@ -834,1725 +838,1725 @@
             margin: 2rem auto;
             padding: 2rem;
             border-radius: 1rem;
-            color: #333; /* Dark font color */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for paper effect */
-            }
-            
-            #scrapItems {
-            max-height: 85vh;
-            overflow-y: auto;
-            }
-            
-            /* Scrap Items Container */
-            #scrapItemsContainer {
-            width: 100%;
-            overflow-x: hidden;
-            }
-            
-            /* Scrap Item Row */
-            .scrap-item {
-            display: flex;
-            align-items: center; /* Align items to the top */
-            justify-content: space-between;
-            padding: 1rem;
-            border-bottom: 1px solid #ddd;
-            font-size: 4rem;
-            color: #333;
-            }
-            
-            /* Item Name (First Column) */
-            .scrap-item-name {
-            flex: 3; /* Give more space to the item name */
-            overflow: hidden; /* Keep this to prevent overflow issues */
-            word-wrap: break-word; /* Allow text to break into the next line */
-            white-space: normal; /* Allow text to wrap */
-            min-width: 100px; /
-            }
-            
-            /* Rate (Middle Column with Right Alignment) */
-            .scrap-item-rate {
-            flex: 1;
-            text-align: right;
-            padding: 0 1rem;
-            min-width: 50px;
-            color: #333; /* Dark font color */
-            }
-            
-            /* Updated Title Style */
-            .scrap-content h2 {
-            text-align: center;
-            margin: 2rem 0;
-            }
-            
-            /* Total Price Alignment */
-            #totalPrice {
-            text-align: right;
-            padding-right: 2rem;
-            font-size: 4rem;
-            font-weight: bold;
-            color: #333; /* Dark font color */
-            }
-            
-            /* Close Button of scrap list (top-right corner)*/
-            #closeScrap {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 6rem;
-            cursor: pointer;
-            color: #333; /* Dark red font color */
-            }            
-            
-            /* Delete Button on each item end*/
-            .delete-btn {
-            cursor: pointer;
-            color: #cc0000; /* Darker red for better contrast */
-            font-size: 4rem;
-            margin-left: 2rem;
-            }                                
-            
-            .button-container {
-            display: flex;
-            justify-content: center; /* Centers buttons horizontally */
-            gap: 4rem; /* Adds space between buttons */
-            }
-            
-            #orderScrap, #clearScrap {
-            display: inline-block;  
-            padding: 1rem 3rem;
-            background-color: #cc0000;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 4rem;
-            cursor: pointer;
-            }
-            
-            #orderScrap {
-            background-color: #28a745; /* Green */
-            }
-            
-            #orderScrap:hover {
-            background-color: #218838;
-            }
-            
-            @keyframes washOutEffect {
-            0% {
-            opacity: 1;
-            transform: translateX(0) skewX(0deg);
-            filter: blur(0px);
-            }
-            30% {
-            opacity: 0.8;
-            transform: translateX(-10px) skewX(-5deg);
-            filter: blur(2px);
-            }
-            60% {
-            opacity: 0.5;
-            transform: translateX(-30px) skewX(-10deg);
-            filter: blur(4px);
-            }
-            100% {
-            opacity: 0;
-            transform: translateX(-100px) skewX(-15deg);
-            filter: blur(8px);
-            }
-            }            
-            .wash-out-animation {
-            animation: washOutEffect 0.8s ease-in-out forwards;
-            }
-            
-            
-            
-            
-            /* Modal Overlay, when order list empty */
-            .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 1;
-            transition: opacity 0.3s ease;
-            }
-            
-            /* Modal Box */
-            .modal-content {
-            background: white;
-            padding: 8rem 5rem;
-            border-radius: 10px;
-            max-width: 300px;
-            text-align: left;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            position: relative;
-            font-family: Arial, sans-serif;
-            animation: fadeIn 0.3s ease-in-out;
-            }
-            
-            /* Title Styling */
-            .modal-content p {
-            font-size: 5rem;
-            font-weight: bold;
-            color: Red;
-            margin-bottom: 10px;
-            text-align: center;    
-            }
-            
-            /* Close Button on Order List empty popup*/
-            .close-button {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            font-size: 8rem;
-            cursor: pointer;
-            color: #333;
-            }
-            
-            /* List Styling */
-            .modal-content ul {
-            padding-left: 20px;
-            margin-top: 10px;
-            }
-            
-            .modal-content ul li {
-            margin: 5px 0;
-            font-size: 4.5rem;
-            color: #444;
-            }
-            
-            /* Fade-out Animation */
-            .fade-out {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            }
-            
-            /* Fade-in Animation */
-            @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-            }
-            
-            /* Eng-Pbi Toggle Button Styling */
-            .toggle-btn {
-            display: block;      /* Makes it a block element */
-            margin: 20px auto;   /* Centers it horizontally */
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: center;
-            margin-bottom: 0;
-            }
-            
-            .toggle-btn:hover {
-            background-color: #0056b3;
-            }
-            
-            
-            
-            
-            
-            
-            
+        color: #333; /* Dark font color */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for paper effect */
+        }
+        
+        #scrapItems {
+        max-height: 85vh;
+        overflow-y: auto;
+        }
+        
+        /* Scrap Items Container */
+        #scrapItemsContainer {
+        width: 100%;
+        overflow-x: hidden;
+        }
+        
+        /* Scrap Item Row */
+        .scrap-item {
+        display: flex;
+        align-items: center; /* Align items to the top */
+        justify-content: space-between;
+        padding: 1rem;
+        border-bottom: 1px solid #ddd;
+        font-size: 4rem;
+        color: #333;
+        }
+        
+        /* Item Name (First Column) */
+        .scrap-item-name {
+        flex: 3; /* Give more space to the item name */
+        overflow: hidden; /* Keep this to prevent overflow issues */
+        word-wrap: break-word; /* Allow text to break into the next line */
+        white-space: normal; /* Allow text to wrap */
+        min-width: 100px; /
+        }
+        
+        /* Rate (Middle Column with Right Alignment) */
+        .scrap-item-rate {
+        flex: 1;
+        text-align: right;
+        padding: 0 1rem;
+        min-width: 50px;
+        color: #333; /* Dark font color */
+        }
+        
+        /* Updated Title Style */
+        .scrap-content h2 {
+        text-align: center;
+        margin: 2rem 0;
+        }
+        
+        /* Total Price Alignment */
+        #totalPrice {
+        text-align: right;
+        padding-right: 2rem;
+        font-size: 4rem;
+        font-weight: bold;
+        color: #333; /* Dark font color */
+        }
+        
+        /* Close Button of scrap list (top-right corner)*/
+        #closeScrap {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 6rem;
+        cursor: pointer;
+        color: #333; /* Dark red font color */
+        }            
+        
+        /* Delete Button on each item end*/
+        .delete-btn {
+        cursor: pointer;
+        color: #cc0000; /* Darker red for better contrast */
+        font-size: 4rem;
+        margin-left: 2rem;
+        }                                
+        
+        .button-container {
+        display: flex;
+        justify-content: center; /* Centers buttons horizontally */
+        gap: 4rem; /* Adds space between buttons */
+        }
+        
+        #orderScrap, #clearScrap {
+        display: inline-block;  
+        padding: 1rem 3rem;
+        background-color: #cc0000;
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 4rem;
+        cursor: pointer;
+        }
+        
+        #orderScrap {
+        background-color: #28a745; /* Green */
+        }
+        
+        #orderScrap:hover {
+        background-color: #218838;
+        }
+        
+        @keyframes washOutEffect {
+        0% {
+        opacity: 1;
+        transform: translateX(0) skewX(0deg);
+        filter: blur(0px);
+        }
+        30% {
+        opacity: 0.8;
+        transform: translateX(-10px) skewX(-5deg);
+        filter: blur(2px);
+        }
+        60% {
+        opacity: 0.5;
+        transform: translateX(-30px) skewX(-10deg);
+        filter: blur(4px);
+        }
+        100% {
+        opacity: 0;
+        transform: translateX(-100px) skewX(-15deg);
+        filter: blur(8px);
+        }
+        }            
+        .wash-out-animation {
+        animation: washOutEffect 0.8s ease-in-out forwards;
+        }
+        
+        
+        
+        
+        /* Modal Overlay, when order list empty */
+        .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        }
+        
+        /* Modal Box */
+        .modal-content {
+        background: white;
+        padding: 8rem 5rem;
+        border-radius: 10px;
+        max-width: 300px;
+        text-align: left;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        position: relative;
+        font-family: Arial, sans-serif;
+        animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        /* Title Styling */
+        .modal-content p {
+        font-size: 5rem;
+        font-weight: bold;
+        color: Red;
+        margin-bottom: 10px;
+        text-align: center;    
+        }
+        
+        /* Close Button on Order List empty popup*/
+        .close-button {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        font-size: 8rem;
+        cursor: pointer;
+        color: #333;
+        }
+        
+        /* List Styling */
+        .modal-content ul {
+        padding-left: 20px;
+        margin-top: 10px;
+        }
+        
+        .modal-content ul li {
+        margin: 5px 0;
+        font-size: 4.5rem;
+        color: #444;
+        }
+        
+        /* Fade-out Animation */
+        .fade-out {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        }
+        
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+        }
+        
+        /* Eng-Pbi Toggle Button Styling */
+        .toggle-btn {
+        display: block;      /* Makes it a block element */
+        margin: 20px auto;   /* Centers it horizontally */
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 0;
+        }
+        
+        .toggle-btn:hover {
+        background-color: #0056b3;
+        }
+        
+        
+        
+        
+        
+        
+        
         </style>
-    </head>
-    <body>
+        </head>
+        <body>
         
         <!-- Loading Overlay -->
         <div id="loadingOverlay">
-            <div class="loading-container">
-                <div class="spinner-container">
-                    <div class="spinner"></div>
-                    <img src="veg.png" alt="Loading" class="loading-image">
-                </div>
-                <div class="loading-message">Loading</div>
-            </div>
+        <div class="loading-container">
+        <div class="spinner-container">
+        <div class="spinner"></div>
+        <img src="veg.png" alt="Loading" class="loading-image">
+        </div>
+        <div class="loading-message">Loading</div>
+        </div>
         </div>
         
         <!-- Header -->
         <div class="header">
-            <button id="scrapButton">📝</button>
-            <div id="scrapList">
-                <div class="scrap-content">
-                    <div id="closeScrap">×</div>
-                    <h2 style="font-size: 6rem;">CSB Order List</h2>
-                    <div id="scrapItemsContainer">
-                        <div id="scrapItems"></div>
-                        <!-- Total price aligned below the rate column -->
-                        <div id="totalPrice" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total: ₹0</div>
-                    </div>
-                    <div class="button-container">
-                        <button id="orderScrap">Order</button>
-                        <button id="clearScrap">Clear</button>
-                    </div>
-                    
-                </div>
-            </div>            
-            <div class="logo-text">
-                <span class="chai">CHAI</span>
-                <span class="sutta">SUTTA</span>
-                <span class="bar">BAR</span>
-                <span class="bpa-logo">BPA</span>
-                <div class="open-close"></div>
-            </div>
+        <button id="scrapButton">📝</button>
+        <div id="scrapList">
+        <div class="scrap-content">
+        <div id="closeScrap">×</div>
+        <h2 style="font-size: 6rem;">CSB Order List</h2>
+        <div id="scrapItemsContainer">
+        <div id="scrapItems"></div>
+        <!-- Total price aligned below the rate column -->
+        <div id="totalPrice" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total: ₹0</div>
+        </div>
+        <div class="button-container">
+        <button id="orderScrap">Order</button>
+        <button id="clearScrap">Clear</button>
+        </div>
+        
+        </div>
+        </div>            
+        <div class="logo-text">
+        <span class="chai">CHAI</span>
+        <span class="sutta">SUTTA</span>
+        <span class="bar">BAR</span>
+        <span class="bpa-logo">BPA</span>
+        <div class="open-close"></div>
+        </div>
         </div>
         
         
         
         <!-- Main Content Wrapper -->
         <div id="main-content">
-            <!-- Search Bar -->
-            <div class="search-container">
-                <div class="search-input-wrapper">
-                    <span id="magnifierIcon" class="search-lens">&#128270;</span>
-                    <input type="text" id="searchInput" maxlength="10" placeholder="item or rate" />
-                    <span id="clearButton" class="clear-btn" style="display: none;">×</span>
-                </div>
-            </div>
-            
-            <!-- Filter Container -->
-            <div id="filterContainer">
-                <div id="filterButtons" style="display: none;">
-                    <div class="filter-label">Filter by</div>
-                    <div id="threeButtonsContainer">
-                        <button class="filter-btn active" data-filter="=">=</button>
-                        <button class="filter-btn" data-filter="<="><=</button>
-                            <button class="filter-btn" data-filter=">=">>=</button>
-                        </div>
-                        </div>
-                        <div id="total-items-found"></div>
-                    </div>
-                    
-                    <!-- Menu -->
-                    <div id="menu"></div>
-                </div>
-                
-                <div class="feedback-message"></div>
-                
-                <!-- Footer Container -->
-                <div class="footer-container">
-                    <!-- Footer -->
-                    <div class="footer">
-                        <div class="color1">Opp. Petrol Pump, Kotkapura Road</div>
-                        <div class="color2">Bagha Purana (Moga) Punjab</div>
-                        <div class="color3">
-                            Ph: <a href="tel:+919112400010">91124-00010</a>, <a href="tel:+919023406002">90234-06002</a>
-                        </div>
-                    </div>
-                    <div id="visitorElement">
-                    <!--    <h3>Visitor</h3> -->
-                        <a href="https://www.hitwebcounter.com" target="_blank">
-                            <img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="0" />
-                        </a>
-                    </div>
-                    <div class="signature">Developed by Komal Brar</div>        
-                </div>
-                
-                <!-- Sidebar -->
-                <div id="sidebar">
-                    <a id="delivery-link" href="#"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
-                    <a id="whatsapp-link" href="#"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
-                    <a id="phone-link" href="#"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
-                    <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="sidebar/location.png" alt="Location" class="logo"></a>
-                    <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
-                    <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
-                </div>
-                
-                
-                
-                <script>
-                    function showFeedback(message) {
-                        const feedback = document.querySelector('.feedback-message');
-                        feedback.textContent = message;
-                        feedback.style.display = 'block';
-                        setTimeout(() => {
-                            feedback.style.display = 'none';
-                        }, 1000);
-                    }
-                    
-                    
-                    function updateScreenSize() {
-                        const width = window.innerWidth;
-                        const height = window.innerHeight;
-                        
-                        const header = document.querySelector('.header');
-                        
-                        // If width is greater than or equal to height, make header scrollable
-                        if (width >= height) {
-                            header.classList.add('scrollable'); // Make header scrollable
-                            } else {
-                            header.classList.remove('scrollable'); // Keep header fixed
-                        }
-                    }                    
-                    // Listen for window resizing
-                    window.addEventListener('resize', updateScreenSize);                    
-                    // Call the function initially to set the correct behavior based on current screen size
-                    updateScreenSize();
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    let selectedFilter = "="; // Default to "="                                        
-                    function filterMenuItems(searchQuery) {
-                        const menuDiv = document.getElementById('menu');
-                        if (!menuDiv) return;
-                        
-                        
-                        const menuItems = document.querySelectorAll('.menu-item');
-                        const categoryHeaders = document.querySelectorAll('.category-header');
-                        const categoryItems = document.querySelectorAll('.category-items');
-                        
-                        let totalVisibleItems = 0;
-                        
-                        
-                        const normalizedSearchQuery = searchQuery.trim().toLowerCase();
-                        const isNumberSearch = /^\d+$/.test(normalizedSearchQuery); // Check if the search query is a number                        
-                        
-                        // Show/hide filter buttons based on whether the search query is a number
-                        const filterButtons = document.getElementById('filterButtons');
-                        if (isNumberSearch) {
-                            filterButtons.style.display = 'flex'; // Show filter buttons
-                            } else {
-                            filterButtons.style.display = 'none'; // Hide filter buttons
-                        }
-                        
-                        // Get the selected filter type (=, <=, >=)
-                        // Use the globally selected filter type
-                        const filterType = selectedFilter;
-                        
-                        
-                        // Convert the search query to a number
-                        const searchNumber = isNumberSearch ? parseInt(normalizedSearchQuery, 10) : null;
-                        
-                        categoryHeaders.forEach((header, index) => {
-                            const categoryItem = categoryItems[index];
-                            const itemsInCategory = categoryItem.querySelectorAll('.menu-item');
-                            
-                            // Access the header's left and right parts (columns)
-                            const leftPart = header.querySelector('.left')?.textContent.trim().toLowerCase() || '';
-                            const rightPart = header.querySelector('.right')?.textContent.trim().toLowerCase() || '';
-                            
-                            // Combine the header text for searching
-                            const headerText = `${leftPart} ${rightPart}`.trim();
-                            
-                            // Debug: Log the header text and split words
-                            console.log("Header Text:", headerText);
-                            console.log("Header Words:", headerText.split(/[\s,]+/).filter(word => word.length > 0));
-                            
-                            // Check if the header matches the search query
-                            const headerMatches = headerText.includes('ml') ? false : headerText.split(/[\s,]+/).filter(word => word.length > 0).some(word => {                                
-                                const splitWords = word.split('('); 
-                                console.log("Header Word:", word, "Split Parts:", splitWords); // Debug: Log each word and its split parts
-                                return splitWords.some(part => part.startsWith(normalizedSearchQuery));
-                            });
-                            
-                            let hasVisibleItemsInCategory = false;
-                            
-                            itemsInCategory.forEach(item => {
-                                const colABElement = item.querySelector('.colAB');
-                                const colCDEElement = item.querySelector('.colCDE');
-                                const itemTextAB = colABElement ? colABElement.textContent.trim().toLowerCase() : '';
-                                const itemTextCDE = colCDEElement ? colCDEElement.textContent.trim().toLowerCase() : '';
-                                
-                                let itemMatches = itemTextAB.includes('ml') || itemTextCDE.includes('ml') ? false : false;
-                                
-                                if (isNumberSearch) {
-                                    // Extract numbers from the last three columns (colCDE)
-                                    const numbersInCDE = itemTextCDE.match(/\d+/g) || [];
-                                    itemMatches = numbersInCDE.some(numberStr => {
-                                        const number = parseInt(numberStr, 10);
-                                        switch (filterType) {
-                                            case '=':
-                                            return number === searchNumber;
-                                            case '<=':
-                                            return number <= searchNumber;
-                                            case '>=':
-                                            return number >= searchNumber;
-                                            default:
-                                            return false;
-                                        }
-                                        
-                                    });                      
-                                    } else {
-                                    // Otherwise, check start-with words from all 5 columns (A, B, C, D, E)
-                                    itemMatches = itemTextAB.split(' ').some(word => {
-                                        const splitWords = word.split('('); 
-                                        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
-                                        }) || itemTextCDE.split(' ').some(word => {
-                                        const splitWords = word.split('('); 
-                                        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
-                                    });
-                                }
-                                
-                                if (headerMatches || itemMatches) {
-                                    totalVisibleItems++;                                    
-                                    item.style.display = 'block';
-                                    hasVisibleItemsInCategory = true;
-                                    hasVisibleItems = true;
-                                    item.style.borderBottom = ''; // Reset border-bottom for all items
-                                    
-                                    } else {
-                                    item.style.display = 'none';
-                                }
-                            });
-                            
-                            // Adjust the header display and styling based on matches
-                            if (headerMatches || hasVisibleItemsInCategory) {
-                                header.style.display = 'flex';
-                                categoryItem.style.display = 'block';
-                                header.classList.add('visible-border');
-                                categoryItem.classList.add('visible-border');                                
-                                header.style.fontSize = '6rem';  // Set font size for expanded header
-                                header.querySelector('.right').style.display = 'inline';  // Show second column
-                                } else {                                
-                                header.style.display = 'none';
-                                categoryItem.style.display = 'none';
-                                header.classList.remove('visible-border'); // Ensure these lines exist
-                                categoryItem.classList.remove('visible-border');
-                                header.querySelector('.right').style.display = 'none';  // Hide second column
-                            }
-                            
-                            // Now handle the last visible item in the category
-                            const visibleItems = Array.from(itemsInCategory).filter(item => item.style.display === 'block');
-                            if (visibleItems.length > 0) {    
-                                const lastVisibleItem = visibleItems[visibleItems.length - 1];
-                                lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
-                                lastVisibleItem.style.marginBottom = '2rem'; // Add this line
-                            }
-                        });
-                        
-                        
-                        
-                        
-                        const totalItemsDiv = document.getElementById('total-items-found');
-                        
-                        if (searchQuery.length === 0) {
-                            totalItemsDiv.style.display = 'none'; // Hide when search box is empty
-                            } else {
-                            if (totalVisibleItems > 0) {
-                                // Check if totalVisibleItems is 1 (singular) or more (plural)
-                                totalItemsDiv.textContent = `${totalVisibleItems} ${totalVisibleItems === 1 ? 'item' : 'items'}`;
-                                totalItemsDiv.style.color = '#00FF00'; // Green for visibility
-                                } else {
-                                if (filterButtons.style.display === 'none') {
-                                    totalItemsDiv.textContent = 'No item found';
-                                    } else {
-                                    totalItemsDiv.textContent = 'No item';
-                                }
-                                
-                                totalItemsDiv.style.color = '#ff4d4d'; // Red for visibility
-                            }
-                            totalItemsDiv.style.display = 'block'; // Show only when search is not empty
-                        }
-                    }
-                    
-                    // Add event listener to filter buttons
-                    document.querySelectorAll('.filter-btn').forEach(button => {
-                        button.addEventListener('click', () => {
-                            // Remove active class from all buttons
-                            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-                            
-                            // Add active class to the clicked button
-                            button.classList.add('active');
-                            
-                            // Update the selected filter type
-                            selectedFilter = button.getAttribute('data-filter');
-                            
-                            // Trigger filtering
-                            const searchQuery = document.getElementById('searchInput').value.trim();
-                            filterMenuItems(searchQuery);
-                        });
-                    });
-                    
-                    
-                    // Function to reset headers and hide the second column when search is cleared
-                    function resetHeaders() {
-                        document.querySelectorAll('.category-header').forEach(header => {
-                            header.style.fontSize = '7rem';  // Reset to collapsed size
-                            header.querySelector('.right').style.display = 'none';  // Hide second column
-                            header.classList.remove('visible-border'); 
-                        });
-                        
-                        document.querySelectorAll('.category-items').forEach(container => {
-                            container.style.display = 'none';  // Collapse all categories
-                            container.classList.remove('visible-border'); 
-                        });
-                    }
-                    
-                    // Get references to the elements
-                    const searchInput = document.getElementById('searchInput');
-                    const clearButton = document.getElementById('clearButton');
-                    // The magnifierIcon remains always visible, so no toggling is required here
-                    
-                    searchInput.addEventListener('input', (e) => {
-                        const searchQuery = e.target.value.trim();
-                        
-                        // Show the clear button if there is any input text; otherwise, hide it.
-                        if (searchQuery.length > 0) {
-                            clearButton.style.display = 'block';
-                            } else {
-                            clearButton.style.display = 'none';
-                            resetHeaders();  // Reset headers when search is cleared
-                        }
-                        
-                        // Validate the input to allow only English or Gurmukhi characters
-                        const regex = /^[a-zA-Z0-9\u0A00-\u0A7F]*$/;
-                        if (!regex.test(searchQuery)) {
-                            e.target.value = searchQuery.slice(0, -1);
-                            } else {
-                            filterMenuItems(searchQuery);  // Filter items based on search query
-                        }
-                        
-                        // Trigger a reflow for the clear button if necessary
-                        clearButton.offsetHeight;
-                    });
-                    
-                    
-                    // Clear Button Event Listener
-                    clearButton.addEventListener('click', () => {
-                        searchInput.value = '';              // Clear input field
-                        clearButton.style.display = 'none';  // Hide the clear button
-                        
-                        // Reset filtering and collapse categories (your existing logic)
-                        filterMenuItems('');
-                        
-                        // Collapse all category items (your existing logic)
-                        document.querySelectorAll('.category-items').forEach(container => {
-                            container.style.display = 'none';
-                        });
-                        document.querySelectorAll('.category-header').forEach(header => {
-                            header.classList.remove('expanded');
-                        });
-                        
-                        // Focus back on the search box
-                        searchInput.focus();
-                        resetHeaders();
-                    });
-                    
-                    
-                    
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec";
-                    
-                    // Fetch data from Google Script URL
-                    fetch(scriptUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        const menuDiv = document.getElementById('menu');
-                        let currentCategory = null;
-                        
-                        // Store all category item containers for collapsing
-                        const categoryItemsContainers = [];
-                        
-                        console.log("Fetched data:", data); // Debugging data fetching
-                        
-                        data.forEach(row => {
-                            const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
-                            
-                            // Apply different colors to column C, D, and E and join them with " / "
-                            const mergedcolCDE = [
-                            row.columnC ? `<span style="color: #40E0D0   ;">${row.columnC}</span>` : '',
-                            row.columnD ? `<span style="color: #00FF7F    ;">${row.columnD}</span>` : '',
-                            row.columnE ? `<span style="color: #E6E6FA  ;">${row.columnE}</span>` : ''
-                            ].filter(col => col).join(' / ');
-                            
-                            console.log("Merged colCDE:", mergedcolCDE); // Debugging merged colCDE
-                            
-                            // Check if columnC is empty or is a category header
-                            const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
-                            
-                            console.log("Is category?", isCategory); // Debugging category check
-                            
-                            if (isCategory) {
-                                const categoryHeaderDiv = document.createElement('div');
-                                categoryHeaderDiv.classList.add('category-header');
-                                
-                                const leftPart = document.createElement('span');
-                                leftPart.classList.add('left');
-                                leftPart.textContent = mergedColAB;
-                                
-                                const rightPart = document.createElement('span');
-                                rightPart.classList.add('right');
-                                rightPart.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
-                                
-                                categoryHeaderDiv.appendChild(leftPart);
-                                categoryHeaderDiv.appendChild(rightPart);
-                                
-                                const categoryItemsDiv = document.createElement('div');
-                                categoryItemsDiv.classList.add('category-items');
-                                
-                                // Toggle category items visibility on click
-                                categoryHeaderDiv.addEventListener('click', () => {
-                                    // Reset all other headers to default collapsed size and show only the first column
-                                    document.querySelectorAll('.category-header').forEach(header => {
-                                        header.style.fontSize = '7rem'; // Set collapsed size
-                                        header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
-                                        header.classList.remove('visible-border'); // Add this line
-                                    });
-                                    
-                                    document.querySelectorAll('.category-items').forEach(container => {
-                                        if (container !== categoryItemsDiv) {
-                                            container.style.display = 'none';
-                                            container.classList.remove('visible-border'); // Add this line
-                                        }
-                                    });
-                                    
-                                    // Toggle visibility and adjust styles accordingly
-                                    if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
-                                        categoryItemsDiv.style.display = 'block';
-                                        categoryHeaderDiv.style.fontSize = '6rem';
-                                        categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show right column
-                                        categoryHeaderDiv.classList.add('visible-border');
-                                        categoryItemsDiv.classList.add('visible-border');
-                                        } else {
-                                        categoryItemsDiv.style.display = 'none';
-                                        categoryHeaderDiv.classList.remove('visible-border');
-                                        categoryItemsDiv.classList.remove('visible-border');
-                                    }
-                                });
-                                
-                                // Initial state: Increase font size for collapsed categories and hide second column
-                                categoryHeaderDiv.style.fontSize = '7rem';
-                                categoryHeaderDiv.querySelector('.right').style.display = 'none';
-                                
-                                menuDiv.appendChild(categoryHeaderDiv);
-                                menuDiv.appendChild(categoryItemsDiv);
-                                
-                                categoryItemsContainers.push(categoryItemsDiv);                    
-                                currentCategory = categoryItemsDiv;
-                                } else if (currentCategory) {
-                                const menuItemDiv = document.createElement('div');
-                                menuItemDiv.classList.add('menu-item');
-                                menuItemDiv.style.marginBottom = '0';
-                                
-                                const lineDiv = document.createElement('div');
-                                lineDiv.classList.add('menu-item-line');
-                                
-                                const colABElement = document.createElement('span');
-                                colABElement.classList.add('colAB');
-                                colABElement.textContent = mergedColAB;
-                                
-                                const colCDEElement = document.createElement('span');
-                                colCDEElement.classList.add('colCDE');
-                                colCDEElement.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
-                                
-                                lineDiv.appendChild(colABElement);
-                                lineDiv.appendChild(colCDEElement);                        
-                                menuItemDiv.appendChild(lineDiv);
-                                currentCategory.appendChild(menuItemDiv);
-                            }
-                        });
-                        
-                        categoryItemsContainers.forEach(container => {
-                            container.style.display = 'none';
-                        });
-                        
-                        document.querySelector(".search-container").style.display = "block";
-                        
-                        document.querySelector('.footer').style.display = 'block'; // Show footer
-                        document.getElementById('visitorElement').style.display = 'block'; // Show visitor element}
-                        
-                        
-                        
-                        // Remove the loading overlay after the data is fetched and processed
-                        document.getElementById('loadingOverlay').style.display = 'none';
-                    })
-                    .catch(error => {
-                        console.error("Error fetching data:", error);
-                        document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
-                    });
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    let sidebar = document.getElementById('sidebar');
-                    let indicator = document.createElement('div');
-                    indicator.id = 'sidebar-indicator';
-                    document.body.appendChild(indicator);
-                    
-                    let hoverTimeout;
-                    let touchStartX = 0, touchEndX = 0, touchStartY = 0;
-                    const swipeThreshold = 80;  // Minimum swipe distance
-                    const edgeThreshold = 50;   // Touch must start near the edge
-                    const sidebarTop = sidebar.offsetTop;
-                    const sidebarBottom = sidebarTop + sidebar.offsetHeight;
-                    
-                    function disableScroll() {
-                        document.body.style.overflow = 'hidden';
-                    }
-                    
-                    function enableScroll() {
-                        document.body.style.overflow = 'auto';
-                    }
-                    
-                    // Mouse activation and deactivation
-                    indicator.addEventListener('click', () => {
-                        sidebar.classList.toggle('open');
-                        sidebar.classList.contains('open') ? disableScroll() : enableScroll();
-                    });
-                    
-                    // Mouse enter/leave logic (unchanged)
-                    document.addEventListener('mousemove', (event) => {
-                        clearTimeout(hoverTimeout);
-                        
-                        if (event.clientX > window.innerWidth - 50 && event.clientY > 0 && event.clientY < window.innerHeight) {
-                            hoverTimeout = setTimeout(() => {
-                                sidebar.classList.add('open');
-                                disableScroll();
-                            }, 300);
-                            } else {
-                            hoverTimeout = setTimeout(() => {
-                                sidebar.classList.remove('open');
-                                enableScroll();
-                            }, 300);
-                        }
-                    });
-                    
-                    // Deactivate on clicking outside sidebar
-                    document.addEventListener('click', (event) => {
-                        if (!sidebar.contains(event.target) && !indicator.contains(event.target)) {
-                            sidebar.classList.remove('open');
-                            enableScroll();
-                        }
-                    });
-                    
-                    // Touch gesture handling with improved accuracy
-                    document.addEventListener('touchstart', (event) => {
-                        touchStartX = event.touches[0].clientX;
-                        touchStartY = event.touches[0].clientY;
-                    });
-                    
-                    document.addEventListener('touchmove', (event) => {
-                        touchEndX = event.touches[0].clientX;
-                    });
-                    
-                    document.addEventListener('touchend', () => {
-                        if (touchEndX === 0) return;  // Ignore if no movement
-                        
-                        // **Swipe-in only if touch started within sidebar's vertical range**
-                        if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold &&
-                        touchStartY >= sidebarTop && touchStartY <= sidebarBottom) {
-                            sidebar.classList.add('open');
-                            disableScroll();
-                        } 
-                        // **Swipe-out works anywhere on the sidebar side**
-                        else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
-                            sidebar.classList.remove('open');
-                            enableScroll();
-                        }
-                        // **Touch outside sidebar closes it**
-                        else if (touchStartX > sidebar.offsetWidth + 50) {
-                            sidebar.classList.remove('open');
-                            enableScroll();
-                        }
-                        
-                        touchStartX = 0;
-                        touchEndX = 0;
-                    });
-                    
-                    // Toggle sidebar on indicator tap
-                    indicator.addEventListener('touchstart', (event) => {
-                        event.preventDefault();
-                        sidebar.classList.toggle('open');
-                        sidebar.classList.contains('open') ? disableScroll() : enableScroll();
-                    });
-                    
-                    
-                    
-                    // Blink the touch indicator every 1 second
-                    setInterval(() => {
-                        indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
-                    }, 2500);
-                    
-                    const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
-                    
-                    fetch(miscUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.length >= 2) {
-                            // Fetch delivery phone number from B3 cell
-                            let deliveryPhone = data[3][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
-                            if (deliveryPhone) {
-                                deliveryPhone = deliveryPhone.replace(/-/g, ""); // Remove dashes
-                                const formattedDeliveryPhone = `tel:+91${deliveryPhone}`; // Add country code
-                                
-                                // Update the delivery phone link
-                                const deliveryLinkElement = document.getElementById('delivery-link');
-                                if (deliveryLinkElement) {
-                                    deliveryLinkElement.href = formattedDeliveryPhone;
-                                }
-                            }
-                            
-                            // Fetch WhatsApp phone number from B4 cell (3rd row, 2nd column, 0-indexed)
-                            let chatNumber = data[4][1];
-                            if (chatNumber) {
-                                chatNumber = chatNumber.replace(/-/g, ""); // Remove dashes
-                            }
-                            
-                            // Fetch WhatsApp message from B5 cell (4th row, 2nd column, 0-indexed)
-                            let message = data[5][1]; 
-                            if (!message || message.trim() === "") {
-                                message = "Hello Chai Sutta Bar!"; // Default message
-                            }
-                            
-                            // URL-encode the message for the WhatsApp link
-                            const encodedMessage = encodeURIComponent(message);
-                            
-                            // Construct the full WhatsApp link dynamically
-                            const whatsappLink = `https://wa.me/+91${chatNumber}?text=${encodedMessage}`;
-                            
-                            // Update the href attribute of the anchor tag with the new link
-                            const whatsappLinkElement = document.getElementById('whatsapp-link');
-                            if (whatsappLinkElement) {
-                                whatsappLinkElement.href = whatsappLink;
-                            }
-                            
-                            // Fetch phone number from B6 cell (5th row, 2nd column, 0-indexed)
-                            let contactPhone = data[6][1]; 
-                            if (contactPhone) {
-                                contactPhone = contactPhone.replace(/-/g, ""); // Remove dashes
-                                const formattedContactPhone = `tel:+91${contactPhone}`; // Add country code
-                                
-                                // Update the phone link dynamically
-                                const phoneLinkElement = document.getElementById("phone-link");
-                                if (phoneLinkElement) {
-                                    phoneLinkElement.href = formattedContactPhone;
-                                }
-                            }
-                            
-                            // Extract Open and Close times from Google Sheets
-                            const openTimeStr = data[0][1]; // Example: "09.30am"
-                            const closeTimeStr = data[1][1]; // Example: "10.45pm"
-                            
-                            // Get current date
-                            const now = new Date();
-                            const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Get today's date without time
-                            
-                            // Convert the date in data[2][0] to a Date object (assuming it's already in dd/mm/yy format and can be parsed directly)
-                            const dataDate = new Date(data[2][0]); // This assumes the date is in a format that JavaScript can parse directly (e.g., mm/dd/yyyy or yyyy/mm/dd)
-                            
-                            // Check if data[2][0] is today's date and data[2][1] is not empty
-                            if (dataDate.getTime() === currentDate.getTime() && data[2][1] !== "") {
-                                // If the date is today and data[2][1] is not empty, set statusMessage to data[2][1]
-                                statusMessage = `<span style="color: #FFA500;">${data[2][1]}</span>`;
-                                } else {
-                                // Check if either openTimeStr or closeTimeStr is empty
-                                if (!openTimeStr || !closeTimeStr) {
-                                    // If one or both times are missing, don't display anything
-                                    const timeElem = document.querySelector('.open-close');
-                                    if (timeElem) {
-                                        timeElem.innerHTML = "";
-                                    }
-                                    return; // Exit the function
-                                }
-                                
-                                // Add validation for time format
-                                if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
-                                    console.error('Invalid time format detected');
-                                    return;
-                                }
-                                
-                                // Convert Open and Close times to Date objects
-                                const openTime = parseCustomTime(openTimeStr);
-                                const closeTime = parseCustomTime(closeTimeStr);
-                                
-                                // Get current time
-                                const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
-                                
-                                // Convert Open and Close times to minutes since midnight
-                                const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
-                                const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
-                                
-                                // Compare times based on minutes from midnight
-                                if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
-                                    statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
-                                    } else {
-                                    statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
-                                }
-                            }
-                            
-                            
-                            // Update the display
-                            const timeElem = document.querySelector('.open-close');
-                            if (timeElem) {
-                                timeElem.innerHTML = statusMessage;
-                            }
-                            
-                        }                
-                    })
-                    .catch(error => {
-                        console.error("Error fetching Misc data:", error);
-                    });
-                    
-                    // Function to parse custom time format (hh.mmap)
-                    function parseCustomTime(timeStr) {
-                        // Extract hour, minute, and period using regex
-                        const match = timeStr.match(/(\d{1,2})\.(\d{2})(am|pm)/i);
-                        if (!match) {
-                            console.error('Invalid time format:', timeStr);
-                            return new Date(); // Handle error appropriately
-                        }
-                        
-                        let hour = parseInt(match[1], 10);
-                        const minute = parseInt(match[2], 10);
-                        const period = match[3].toLowerCase();
-                        
-                        // Convert to 24-hour format
-                        if (period === 'pm' && hour !== 12) {
-                            hour += 12;
-                            } else if (period === 'am' && hour === 12) {
-                            hour = 0;
-                        }
-                        
-                        return new Date(0, 0, 0, hour, minute);
-                    }
-                    
-                    // Function to format time in hh:mm am/pm format
-                    function formatTime(date) {
-                        const hours = date.getHours();
-                        const minutes = date.getMinutes();
-                        const period = hours >= 12 ? "pm" : "am";
-                        const formattedHours = hours % 12 || 12;  // Convert to 12-hour format
-                        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-                        return `${formattedHours}:${formattedMinutes} ${period}`;
-                    }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    function setupHamburgerMenu() {
-                        // Create Hamburger Button
-                        const hamburgerButton = document.createElement('div');
-                        hamburgerButton.id = 'hamburger-button';
-                        hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
-                        
-                        // Append it to the header
-                        document.querySelector('.header').appendChild(hamburgerButton);
-                        
-                        // Create Sidebar
-                        const hsidebar = document.createElement('div');
-                        hsidebar.id = 'hsidebar';
-                        hsidebar.innerHTML = `
-                        <div class="hsidebar-content">
-                        <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
-                        <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
-                        <div class="hsidebar-option" id="install-app">⚙️ Install CSB App</div>
-                        <div class="hsidebar-option" id="show-qrcode">🔗 App QR Code</div>
-                        <div class="hsidebar-option" id="copy-app-link">📋 Copy App Link</div>
-                        <div class="hsidebar-option" id="device-screen-info">📱 Screen Info</div> <!-- New option -->
-                        <!-- Close button -->
-                        <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->                    
-                        <!-- Footer text -->
-                        <div class="footer-text" id="footer-info">
-                        <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
-                        </div>
-                        </div>
-                        `;
-                        document.body.appendChild(hsidebar);
-                        
-                        // Create Backdrop
-                        const overlay = document.createElement('div');
-                        overlay.id = 'sidebar-overlay';
-                        document.body.appendChild(overlay);
-                        
-                        // Create QR Code Modal
-                        const qrCodeModal = document.createElement('div');
-                        qrCodeModal.id = 'qr-code-modal';
-                        qrCodeModal.innerHTML = `
-                        <div class="modal-content">
-                        <span id="close-modal">&times;</span>
-                        <img src="qrcode.png" alt="QR Code">
-                        </div>
-                        `;
-                        document.body.appendChild(qrCodeModal);
-                        
-                        // Open Sidebar
-                        hamburgerButton.addEventListener('click', () => {
-                            hsidebar.classList.add('open');
-                            overlay.style.display = 'block';
-                            document.body.style.overflow = 'hidden'; // Lock scrolling on body
-                            document.documentElement.style.overflow = 'hidden'; // Lock scrolling on html
-                            document.body.style.height = '100%'; // Prevent body from resizing while locked
-                            document.documentElement.style.height = '100%'; // Prevent html from resizing
-                        });
-                        
-                        // Close Sidebar when clicking outside
-                        overlay.addEventListener('click', () => {
-                            hsidebar.classList.remove('open');
-                            overlay.style.display = 'none';
-                            document.body.style.overflow = ''; // Unlock scrolling on body
-                            document.documentElement.style.overflow = ''; // Unlock scrolling on html
-                            document.body.style.height = ''; // Allow body resizing again
-                            document.documentElement.style.height = ''; // Allow html resizing
-                        });
-                        
-                        // Close Sidebar on Escape Key
-                        document.addEventListener('keydown', (e) => {
-                            if (e.key === "Escape") {
-                                hsidebar.classList.remove('open');
-                                overlay.style.display = 'none';
-                                document.body.style.overflow = '';
-                                document.documentElement.style.overflow = ''; // Unlock scrolling on html
-                                document.body.style.height = ''; // Allow body resizing again
-                                document.documentElement.style.height = ''; // Allow html resizing
-                            }
-                        });
-                        
-                        // Close Sidebar when clicking on the cross button
-                        document.getElementById('close-sidebar').addEventListener('click', () => {
-                            hsidebar.classList.remove('open');
-                            overlay.style.display = 'none';
-                            document.body.style.overflow = ''; // Unlock scrolling
-                            document.documentElement.style.overflow = ''; // Unlock scrolling
-                            document.body.style.height = ''; // Allow body resizing
-                            document.documentElement.style.height = ''; // Allow html resizing
-                        });
-                        
-                        // Install App
-                        document.getElementById('install-app').addEventListener('click', () => {
-                            if (deferredPrompt) {
-                                deferredPrompt.prompt();
-                                deferredPrompt.userChoice.then((choiceResult) => {
-                                    console.log(choiceResult.outcome === 'accepted' ? 'User accepted' : 'User dismissed');
-                                    deferredPrompt = null;
-                                });
-                            }
-                        });
-                        
-                        // Show QR Code
-                        document.getElementById('show-qrcode').addEventListener('click', () => {
-                            // Hide the sidebar when showing the modal
-                            const hsidebar = document.getElementById('hsidebar');
-                            const overlay = document.getElementById('sidebar-overlay');
-                            hsidebar.classList.remove('open');
-                            overlay.style.display = 'none';
-                            qrCodeModal.style.display = 'block';
-                            document.body.style.overflow = ''; 
-                            document.documentElement.style.overflow = ''; 
-                            document.body.style.height = ''; 
-                            document.documentElement.style.height = '';
-                        });
-                        
-                        // Close QR Code Modal
-                        document.getElementById('close-modal').addEventListener('click', () => {
-                            qrCodeModal.style.display = 'none';
-                        });
-                        
-                        // Close QR Code Modal on Click Outside
-                        window.addEventListener('click', (event) => {
-                            if (event.target === qrCodeModal) {
-                                qrCodeModal.style.display = 'none';
-                            }
-                        });
-                        
-                        // Copy App Link
-                        document.getElementById('copy-app-link').addEventListener('click', () => {
-                            const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
-                            navigator.clipboard.writeText(appLink).then(() => {
-                                
-                                
-                                // Create feedback element
-                                const feedback = document.createElement('div');
-                                feedback.textContent = 'Link copied';
-                                feedback.style.position = 'fixed';
-                                feedback.style.bottom = '20px';
-                                feedback.style.left = '50%';
-                                feedback.style.transform = 'translateX(-50%)';
-                                feedback.style.background = '#333';
-                                feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
-                                feedback.style.color = '#fff';
-                                feedback.style.padding = '8px 16px';
-                                feedback.style.borderRadius = '4px';
-                                feedback.style.zIndex = '2000';
-                                document.body.appendChild(feedback);
-                                
-                                // Remove feedback after 2 seconds
-                                setTimeout(() => {
-                                    if (document.body.contains(feedback)) {
-                                        document.body.removeChild(feedback);
-                                    }
-                                }, 2000);
-                            });
-                        });
-                        
-                        // Show Device Screen Info
-                        document.getElementById('device-screen-info').addEventListener('click', function() {
-                            showDeviceInfoModal();
-                        });
-                        
-                        
-                        // Swipe Left to Close Sidebar (Mobile Gesture)
-                        let startX;
-                        let startY;
-                        
-                        hsidebar.addEventListener('touchstart', (e) => {
-                            const touchStart = e.touches[0];
-                            startX = touchStart.clientX;
-                            startY = touchStart.clientY;
-                        });
-                        
-                        hsidebar.addEventListener('touchend', (e) => {
-                            const touchEnd = e.changedTouches[0];
-                            const deltaX = touchEnd.clientX - startX;
-                            const deltaY = touchEnd.clientY - startY;
-                            
-                            if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
-                                hsidebar.classList.remove('open');
-                                overlay.style.display = 'none';
-                                document.body.style.overflow = '';
-                                document.documentElement.style.overflow = '';
-                                document.body.style.height = '';
-                                document.documentElement.style.height = '';
-                            }
-                        });
-                    }
-                    
-                    // Call the setup function
-                    setupHamburgerMenu();
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    function showDeviceInfoModal() {
-                        // Hide the sidebar when showing the modal
-                        const hsidebar = document.getElementById('hsidebar');
-                        const overlay = document.getElementById('sidebar-overlay');
-                        hsidebar.classList.remove('open');
-                        overlay.style.display = 'none';
-                        document.body.style.overflow = 'hidden';
-                        document.documentElement.style.overflow = 'hidden';
-                        
-                        document.body.style.height = ''; 
-                        document.documentElement.style.height = '';
-                        
-                        // Gather device info
-                        const screenWidth = window.screen.width;
-                        const screenHeight = window.screen.height;
-                        const innerWidth = window.innerWidth;
-                        const innerHeight = window.innerHeight;
-                        const pixelRatio = window.devicePixelRatio;
-                        const userAgent = navigator.userAgent;
-                        const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
-                        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                        const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
-                        
-                        // Create modal content with updated font size and styles
-                        const modalContent = `
-                        <div style="padding: 20px; font-family: Arial, sans-serif; background-color: #fff; color: #333; border-radius: 8px; width: 80%; max-width: 500px; font-size: 13px; position: relative; text-align: center;">
-                        <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
-                        <p style="line-height: 1.5;"><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
-                        <p style="line-height: 1.5;"><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
-                        <p style="line-height: 1.5;"><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
-                        <p style="line-height: 1.5;"><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
-                        <p style="line-height: 1.5;"><strong>Device Type:</strong> ${deviceType}</p>
-                        <p style="line-height: 1.5;"><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
-                        <p style="line-height: 1.5;"><strong>User Agent:</strong> ${userAgent}</p>
-                        <p style="line-height: 1.5;"><strong>Time Zone:</strong> ${timeZone}</p>
-                        <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
-                        <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
-                        </div>
-                        `;
-                        
-                        // Create modal container
-                        const modalContainer = document.createElement('div');
-                        modalContainer.style.position = 'fixed';
-                        modalContainer.style.top = '0';
-                        modalContainer.style.left = '0';
-                        modalContainer.style.width = '100%';
-                        modalContainer.style.height = '100%';
-                        modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                        modalContainer.style.display = 'flex';
-                        modalContainer.style.justifyContent = 'center';
-                        modalContainer.style.alignItems = 'center';
-                        modalContainer.style.zIndex = '1000';
-                        modalContainer.innerHTML = modalContent;
-                        
-                        // Append modal to body
-                        document.body.appendChild(modalContainer);
-                        
-                        // Add event listener for the close button
-                        const closeModalButton = modalContainer.querySelector('#close-modal');
-                        closeModalButton.addEventListener('click', function() {
-                            document.body.removeChild(modalContainer);
-                            document.body.style.overflow = ''; 
-                            document.documentElement.style.overflow = ''; 
-                            
-                            
-                        });
-                        
-                        // Add event listener for the copy button
-                        const copyButton = modalContainer.querySelector('#copy-button');
-                        copyButton.addEventListener('click', function() {
-                            // Get all text content from h3 and p elements
-                            const contentDiv = modalContainer.querySelector('div');
-                            const elements = contentDiv.querySelectorAll('h3, p');
-                            let text = Array.from(elements).map(el => el.textContent).join('\n');
-                            
-                            // Copy to clipboard
-                            navigator.clipboard.writeText(text).then(() => {
-                                // Create feedback element
-                                const feedback = document.createElement('div');
-                                feedback.textContent = 'Text copied';
-                                feedback.style.position = 'fixed';
-                                feedback.style.bottom = '20px';
-                                feedback.style.left = '50%';
-                                feedback.style.transform = 'translateX(-50%)';
-                                feedback.style.background = '#333';
-                                feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
-                                feedback.style.color = '#fff';
-                                feedback.style.padding = '8px 16px';
-                                feedback.style.borderRadius = '4px';
-                                feedback.style.zIndex = '2000';
-                                document.body.appendChild(feedback);
-                                
-                                // Remove feedback after 2 seconds
-                                setTimeout(() => {
-                                    if (document.body.contains(feedback)) {
-                                        document.body.removeChild(feedback);
-                                    }
-                                }, 2000);
-                                }).catch(err => {
-                                console.error('Failed to copy:', err);
-                            });
-                        });
-                        
-                        // Close modal when clicking outside
-                        modalContainer.addEventListener('click', function(event) {
-                            if (event.target === modalContainer) {
-                                document.body.removeChild(modalContainer);
-                                document.body.style.overflow = ''; 
-                                document.documentElement.style.overflow = ''; 
-                                
-                            }
-                        });
-                        
-                        // Close modal on Escape key
-                        window.addEventListener('keydown', function(event) {
-                            if (event.key === 'Escape') {
-                                document.body.removeChild(modalContainer);
-                                document.body.style.overflow = ''; 
-                                document.documentElement.style.overflow = ''; 
-                                
-                            }
-                        });
-                        
-                        // Close modal on back button
-                        window.addEventListener('popstate', function() {
-                            document.body.removeChild(modalContainer);
-                            document.body.style.overflow = ''; 
-                            document.documentElement.style.overflow = ''; 
-                            
-                        });
-                    }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    let deferredPrompt; // Variable to hold the deferred prompt event
-                    
-                    // Listen for the beforeinstallprompt event
-                    window.addEventListener("beforeinstallprompt", (e) => {
-                        e.preventDefault(); // Prevent the default prompt from showing automatically
-                        deferredPrompt = e; // Store the event so we can trigger it later
-                        
-                        // Optionally, show a custom install button here if needed
-                        // document.getElementById('install-button').style.display = 'block'; 
-                        
-                        // Automatically trigger the prompt after a delay
-                        setTimeout(() => {
-                            deferredPrompt.prompt(); // Show the install prompt
-                            deferredPrompt.userChoice.then((choiceResult) => {
-                                // Handle the user's response
-                                if (choiceResult.outcome === "accepted") {
-                                    console.log("User accepted the install prompt");
-                                    } else {
-                                    console.log("User dismissed the install prompt");
-                                }
-                                deferredPrompt = null; // Reset the deferred prompt
-                            });
-                        }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-                    });
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    let scrapItems = [];
-                    let scrapVisible = false;
-                    
-                    // Scrap Button Functionality
-                    document.getElementById('scrapButton').addEventListener('click', toggleScrapList);
-                    
-                    // Close scrap list when clicking outside
-                    document.addEventListener('click', (e) => {
-                        const scrapList = document.getElementById('scrapList');
-                        const scrapButton = document.getElementById('scrapButton');
-                        if (scrapVisible && !scrapList.contains(e.target) && e.target !== scrapButton) {
-                            closeScrapList();
-                        }
-                    });
-                    
-                    // Close scrap list when clicking close button
-                    document.getElementById('closeScrap').addEventListener('click', closeScrapList);                    
-                    document.getElementById('clearScrap').addEventListener('click', () => {
-                        if (!scrapList) return; // Safety check                        
-                        // Add wash-out animation class
-                        scrapList.classList.add('wash-out-animation');                        
-                        // Wait for animation to complete before clearing
-                        setTimeout(() => {
-                            scrapItems = []; // Clear the list after animation
-                            updateScrapListDisplay(); // Refresh UI
-                            showFeedback("Order list cleared"); // Show feedback message
-                            closeScrapList(); // Close the scrap list if needed                            
-                            // Reset for future use
-                            scrapList.classList.remove('wash-out-animation');
-                        }, 800); // Match CSS animation duration
-                    });
-                    
-                    // Add items to scrap list when clicking rates
-                    document.getElementById('menu').addEventListener('click', (e) => {
-                        const rateElement = e.target.closest('.colCDE span, .colCDE');
-                        if (rateElement && rateElement.textContent.match(/₹?\d+/)) {
-                            const menuItemLine = rateElement.closest('.menu-item-line');
-                            
-                            // Get raw item name and trim second column
-                            let itemNameFull = menuItemLine.querySelector('.colAB').textContent.trim();
-                            let itemName = itemNameFull.split('(')[0].trim();
-                            
-                            // Get category name and trim second column
-                            const categoryHeader = menuItemLine.closest('.menu-item')
-                            .closest('.category-items')
-                            .previousElementSibling;
-                            const categoryNameFull = categoryHeader.querySelector('.left').textContent.trim();
-                            const categoryName = categoryNameFull.split('(')[0].trim();
-                            
-                            // Combine cleaned names
-                            const combinedName = `${categoryName} - ${itemName}`;
-                            
-                            const clickedRate = rateElement.textContent.replace('₹', '').trim();
-                            if (clickedRate.includes('/')) {
-                                showToggleButtonFeedback('❌', 'red');
-                                return;
-                            }
-                            
-                            animateRateMovement(rateElement);
-                            
-                            // Push to scrap list with cleaned names
-                            scrapItems.push({ 
-                                name: combinedName, 
-                                rate: clickedRate 
-                            });
-                            
-                            showToggleButtonFeedback('✅', '#00FF00');
-                            updateScrapListDisplay();
-                        }
-                    });
-                    
-                    function animateRateMovement(sourceElement) {
-                        const scrapButton = document.getElementById('scrapButton');                        
-                        // Get positions of the source element and the scrap button
-                        const sourceRect = sourceElement.getBoundingClientRect();
-                        const targetRect = scrapButton.getBoundingClientRect();                        
-                        // Create a floating clone of the rate element
-                        const floatingClone = document.createElement('div');
-                        floatingClone.textContent = sourceElement.textContent;
-                        floatingClone.style.position = 'fixed';
-                        floatingClone.style.left = `${sourceRect.left}px`;
-                        floatingClone.style.top = `${sourceRect.top}px`;
-                        floatingClone.style.fontSize = '16px';
-                        floatingClone.style.fontWeight = 'bold';
-                        floatingClone.style.background = '#ffcc00';
-                        floatingClone.style.padding = '5px 10px';
-                        floatingClone.style.borderRadius = '5px';
-                        floatingClone.style.boxShadow = '0px 2px 5px rgba(0,0,0,0.2)';
-                        floatingClone.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
-                        floatingClone.style.zIndex = '1000';
-                        
-                        document.body.appendChild(floatingClone);                        
-                        // Force repaint before moving
-                        requestAnimationFrame(() => {
-                            floatingClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px) scale(0.5)`;
-                            floatingClone.style.opacity = '0';
-                        });                        
-                        // Remove the element after animation
-                        setTimeout(() => {
-                            floatingClone.remove();
-                        }, 500);
-                    }
-                    
-                    let feedbackTimeout; // Store the timeout reference
-                    let originalContent; // Store original content persistently                    
-                    function showToggleButtonFeedback(symbol, color) {
-                        const scrapButton = document.getElementById('scrapButton');                        
-                        // Store original content only if it's not already replaced
-                        if (!originalContent) {
-                            originalContent = scrapButton.innerHTML;
-                        }                        
-                        // Clear any existing timeout to prevent overlapping animations
-                        clearTimeout(feedbackTimeout);                        
-                        // Set the feedback symbol with drop shadow
-                        scrapButton.innerHTML = `<span style="filter: drop-shadow(0 0 2px ${color});">${symbol}</span>`;
-                        scrapButton.disabled = true; // Disable the button temporarily                        
-                        // Ensure the button resets correctly
-                        feedbackTimeout = setTimeout(() => {
-                            scrapButton.innerHTML = originalContent;
-                            scrapButton.disabled = false;
-                            originalContent = null; // Reset originalContent after restoring
-                        }, 250);
-                    }
-                    
-                    function updateScrapListDisplay() {
-                        const scrapContainer = document.getElementById('scrapItems');
-                        
-                        // Step 1: Combine duplicate items and calculate quantities
-                        const itemMap = new Map();
-                        scrapItems.forEach((item) => {
-                            const key = `${item.name}-${item.rate}`;
-                            if (itemMap.has(key)) {
-                                itemMap.get(key).qty++;
-                                } else {
-                                itemMap.set(key, { ...item, qty: 1 });
-                            }
-                        });
-                        
-                        // Step 2: Convert map values to array and sort alphabetically by item name
-const sortedItems = Array.from(itemMap.values()).sort((a, b) => 
-    trimLeftNonEnglish(a.name).localeCompare(trimLeftNonEnglish(b.name))
-);
-
-                        
-                        // Step 3: Generate HTML for sorted items
-                        scrapContainer.innerHTML = sortedItems.map((groupedItem) => `
-                        <div class="scrap-item">
-                        <div class="scrap-item-name"><strong>${groupedItem.name}</strong></div>
-                        <div class="scrap-item-rate"><span style="color: #666;">${groupedItem.qty} @</span> ₹${groupedItem.rate}</div>
-                        <span class="delete-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">✕</span>
-                        </div>
-                        `).join('');
-                        
-                        // Step 4: Update total price
-                        const totalPriceElement = document.getElementById('totalPrice');
-                        const total = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
-                        totalPriceElement.textContent = `Total: ₹${total.toFixed(2)}`;
-                        
-                        // Step 5: Add delete button handlers (delete ALL instances of the item)
-                        document.querySelectorAll('.delete-btn').forEach(btn => {
-                            btn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                const name = e.target.dataset.name;
-                                const rate = e.target.dataset.rate;
-                                // Remove ALL items matching this name and rate
-                                scrapItems = scrapItems.filter(item => item.name !== name || item.rate !== rate);
-                                updateScrapListDisplay();
-                            });
-                        });
-                    }
-                    
-                    function showOrderListWarning() {                            
-                        // Check if modal already exists, if not, create one
-                        let existingModal = document.getElementById('orderListWarningModal');
-                        if (existingModal) {
-                            existingModal.remove(); // Remove existing modal if any
-                        }                        
-                        // Create modal container
-                        let modal = document.createElement('div');
-                        modal.id = 'orderListWarningModal';
-                        modal.className = 'modal-overlay';                        
-                        // Initial content in English
-                        let contentEnglish = `
-                        <p><strong>Order list is empty.</strong></p>
-                        <ul>
-                        <li>Touch any <b>rate</b> to add an item.</li>
-                        <li>To add <b>quantity</b>, touch rate multiple times.</li>
-                        <li>View <b>'Order List'</b> and <b>'Total'</b> any time.</li>
-                        <li>You can <b>remove</b> items also from order list.</li>
-                        </ul>
-                        `;                        
-                        // Content in Punjabi
-                        let contentPunjabi = `
-                        <p><strong>ਆਰਡਰ ਸੂਚੀ ਅਜੇ ਖਾਲੀ ਹੈ।</strong></p>
-                        <ul>
-                        <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ ਕੋਈ ਵੀ <b>ਰੇਟ</b> ਛੂਹੋ।</li>
-                        <li><b>ਮਾਤਰਾ</b> ਵਧਾਉਣ ਲਈ, ਇੱਕੋ ਰੇਟ ਨੂੰ ਵਾਰ-ਵਾਰ ਛੂਹੋ।</li>
-                        <li>ਕਿਸੇ ਵੀ ਸਮੇਂ <b>'ਆਰਡਰ ਸੂਚੀ'</b> ਅਤੇ <b>'ਕੁੱਲ ਬਿੱਲ'</b> ਦੇਖ ਸਕਦੇ ਹੋ।</li>
-                        <li>ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਕੱਢ</b> ਵੀ ਸਕਦੇ ਹੋ।</li>
-                        </ul>
-                        `;                        
-                        // Modal content
-                        modal.innerHTML = `
-                        <div class="modal-content">
-                        <span class="close-button">&times;</span>
-                        <div id="modalText">${contentEnglish}</div>
-                        <button id="toggleButton" class="toggle-btn">ਪੰਜਾਬੀ</button>
-                        </div>
-                        `;                        
-                        // Append modal to body
-                        document.body.appendChild(modal);                        
-                        // Toggle functionality
-                        const toggleButton = document.getElementById('toggleButton');
-                        const modalText = document.getElementById('modalText');
-                        let isEnglish = true;                        
-                        toggleButton.addEventListener('click', () => {
-                            if (isEnglish) {
-                                modalText.innerHTML = contentPunjabi;
-                                toggleButton.textContent = 'English';
-                                } else {
-                                modalText.innerHTML = contentEnglish;
-                                toggleButton.textContent = 'Punjabi';
-                            }
-                            isEnglish = !isEnglish;
-                        });                        
-                        // Close functionality
-                        function closeModal() {
-                            modal.classList.add('fade-out');
-                            setTimeout(() => modal.remove(), 300);
-                        }                        
-                        // Close on cross button click
-                        modal.querySelector('.close-button').addEventListener('click', closeModal);                    
-                        // Close on outside click
-                        modal.addEventListener('click', (event) => {
-                            if (event.target === modal) closeModal();
-                        });                        
-                        // Auto close after 
-                        setTimeout(closeModal, 60000);
-                    }                    
-                    
-                    function toggleScrapList() {                        
-                        // Check order list condition and show modal
-                        if (scrapItems.length === 0) {
-                            showOrderListWarning();
-                            return;
-                        }                        
-                        scrapVisible = !scrapVisible;
-                        document.getElementById('scrapList').style.display = scrapVisible ? 'block' : 'none';
-                    }
-                    
-                    function closeScrapList() {
-                        scrapVisible = false;
-                        document.getElementById('scrapList').style.display = 'none';
-                    }
-                    
-                    // Function to trim the first non-English character from a string
-                    function trimLeftNonEnglish(text) {
-                        return text.replace(/^[^A-Za-z]+/, '');
-                    }
-                    
-                    document.getElementById('orderScrap').addEventListener('click', () => {
-                        if (scrapItems.length === 0) {
-                            showOrderListWarning();
-                            return;
-                        }                        
-                        // Group items by name and rate to calculate quantities
-                        const itemMap = new Map();
-                        scrapItems.forEach((item) => {
-                            const trimmedName = trimLeftNonEnglish(item.name); // Trim the name before use
-                            const key = `${trimmedName}-${item.rate}`;
-                            itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, name: trimmedName, qty: 1 });
-                        });                        
-                        const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));                        
-                        // Generate order text with quantities
-                        let orderText = sortedItems.map(item => 
-                        `${item.qty} x ${item.name} @ ₹${item.rate}`
-                        ).join('\n');                        
-                        // Calculate total correctly
-                        let total = sortedItems.reduce((acc, item) => 
-                        acc + (parseFloat(item.rate) * item.qty), 0
-                        );                        
-                        let message = encodeURIComponent(
-                        `*🍵 New Order*\n${'-'.repeat(25)}\n${orderText.split('\n').join('\n\n')}\n${'-'.repeat(25)}\n*Total: ₹${Math.round(total)}* only`
-                        );
-                        
-                        
-                        window.open(`https://wa.me/918968444425?text=${message}`, '_blank');
-                    });
-                    
-                    
-                    function calculateTotal() {
-                        return scrapItems.reduce((total, item) => {
-                            return total + parseFloat(item.rate);
-                        }, 0);
-                    }
-                    
-                    
-                    
-                </script>        
-                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-            </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                        
+        <!-- Search Bar -->
+        <div class="search-container">
+        <div class="search-input-wrapper">
+        <span id="magnifierIcon" class="search-lens">&#128270;</span>
+        <input type="text" id="searchInput" maxlength="10" placeholder="item or rate" />
+        <span id="clearButton" class="clear-btn" style="display: none;">×</span>
+        </div>
+        </div>
+        
+        <!-- Filter Container -->
+        <div id="filterContainer">
+        <div id="filterButtons" style="display: none;">
+        <div class="filter-label">Filter by</div>
+        <div id="threeButtonsContainer">
+        <button class="filter-btn active" data-filter="=">=</button>
+        <button class="filter-btn" data-filter="<="><=</button>
+        <button class="filter-btn" data-filter=">=">>=</button>
+        </div>
+        </div>
+        <div id="total-items-found"></div>
+        </div>
+        
+        <!-- Menu -->
+        <div id="menu"></div>
+        </div>
+        
+        <div class="feedback-message"></div>
+        
+        <!-- Footer Container -->
+        <div class="footer-container">
+        <!-- Footer -->
+        <div class="footer">
+        <div class="color1">Opp. Petrol Pump, Kotkapura Road</div>
+        <div class="color2">Bagha Purana (Moga) Punjab</div>
+        <div class="color3">
+        Ph: <a href="tel:+919112400010">91124-00010</a>, <a href="tel:+919023406002">90234-06002</a>
+        </div>
+        </div>
+        <div id="visitorElement">
+        <!--    <h3>Visitor</h3> -->
+        <a href="https://www.hitwebcounter.com" target="_blank">
+        <img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="0" />
+        </a>
+        </div>
+        <div class="signature">Developed by Komal Brar</div>        
+        </div>
+        
+        <!-- Sidebar -->
+        <div id="sidebar">
+        <a id="delivery-link" href="#"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
+        <a id="whatsapp-link" href="#"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
+        <a id="phone-link" href="#"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
+        <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="sidebar/location.png" alt="Location" class="logo"></a>
+        <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
+        <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
+        </div>
+        
+        
+        
+        <script>
+        function showFeedback(message) {
+        const feedback = document.querySelector('.feedback-message');
+        feedback.textContent = message;
+        feedback.style.display = 'block';
+        setTimeout(() => {
+        feedback.style.display = 'none';
+        }, 1000);
+        }
+        
+        
+        function updateScreenSize() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        
+        const header = document.querySelector('.header');
+        
+        // If width is greater than or equal to height, make header scrollable
+        if (width >= height) {
+        header.classList.add('scrollable'); // Make header scrollable
+        } else {
+        header.classList.remove('scrollable'); // Keep header fixed
+        }
+        }                    
+        // Listen for window resizing
+        window.addEventListener('resize', updateScreenSize);                    
+        // Call the function initially to set the correct behavior based on current screen size
+        updateScreenSize();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        let selectedFilter = "="; // Default to "="                                        
+        function filterMenuItems(searchQuery) {
+        const menuDiv = document.getElementById('menu');
+        if (!menuDiv) return;
+        
+        
+        const menuItems = document.querySelectorAll('.menu-item');
+        const categoryHeaders = document.querySelectorAll('.category-header');
+        const categoryItems = document.querySelectorAll('.category-items');
+        
+        let totalVisibleItems = 0;
+        
+        
+        const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+        const isNumberSearch = /^\d+$/.test(normalizedSearchQuery); // Check if the search query is a number                        
+        
+        // Show/hide filter buttons based on whether the search query is a number
+        const filterButtons = document.getElementById('filterButtons');
+        if (isNumberSearch) {
+        filterButtons.style.display = 'flex'; // Show filter buttons
+        } else {
+        filterButtons.style.display = 'none'; // Hide filter buttons
+        }
+        
+        // Get the selected filter type (=, <=, >=)
+        // Use the globally selected filter type
+        const filterType = selectedFilter;
+        
+        
+        // Convert the search query to a number
+        const searchNumber = isNumberSearch ? parseInt(normalizedSearchQuery, 10) : null;
+        
+        categoryHeaders.forEach((header, index) => {
+        const categoryItem = categoryItems[index];
+        const itemsInCategory = categoryItem.querySelectorAll('.menu-item');
+        
+        // Access the header's left and right parts (columns)
+        const leftPart = header.querySelector('.left')?.textContent.trim().toLowerCase() || '';
+        const rightPart = header.querySelector('.right')?.textContent.trim().toLowerCase() || '';
+        
+        // Combine the header text for searching
+        const headerText = `${leftPart} ${rightPart}`.trim();
+        
+        // Debug: Log the header text and split words
+        console.log("Header Text:", headerText);
+        console.log("Header Words:", headerText.split(/[\s,]+/).filter(word => word.length > 0));
+        
+        // Check if the header matches the search query
+        const headerMatches = headerText.includes('ml') ? false : headerText.split(/[\s,]+/).filter(word => word.length > 0).some(word => {                                
+        const splitWords = word.split('('); 
+        console.log("Header Word:", word, "Split Parts:", splitWords); // Debug: Log each word and its split parts
+        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+        });
+        
+        let hasVisibleItemsInCategory = false;
+        
+        itemsInCategory.forEach(item => {
+        const colABElement = item.querySelector('.colAB');
+        const colCDEElement = item.querySelector('.colCDE');
+        const itemTextAB = colABElement ? colABElement.textContent.trim().toLowerCase() : '';
+        const itemTextCDE = colCDEElement ? colCDEElement.textContent.trim().toLowerCase() : '';
+        
+        let itemMatches = itemTextAB.includes('ml') || itemTextCDE.includes('ml') ? false : false;
+        
+        if (isNumberSearch) {
+        // Extract numbers from the last three columns (colCDE)
+        const numbersInCDE = itemTextCDE.match(/\d+/g) || [];
+        itemMatches = numbersInCDE.some(numberStr => {
+        const number = parseInt(numberStr, 10);
+        switch (filterType) {
+        case '=':
+        return number === searchNumber;
+        case '<=':
+        return number <= searchNumber;
+        case '>=':
+        return number >= searchNumber;
+        default:
+        return false;
+        }
+        
+        });                      
+        } else {
+        // Otherwise, check start-with words from all 5 columns (A, B, C, D, E)
+        itemMatches = itemTextAB.split(' ').some(word => {
+        const splitWords = word.split('('); 
+        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+        }) || itemTextCDE.split(' ').some(word => {
+        const splitWords = word.split('('); 
+        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+        });
+        }
+        
+        if (headerMatches || itemMatches) {
+        totalVisibleItems++;                                    
+        item.style.display = 'block';
+        hasVisibleItemsInCategory = true;
+        hasVisibleItems = true;
+        item.style.borderBottom = ''; // Reset border-bottom for all items
+        
+        } else {
+        item.style.display = 'none';
+        }
+        });
+        
+        // Adjust the header display and styling based on matches
+        if (headerMatches || hasVisibleItemsInCategory) {
+        header.style.display = 'flex';
+        categoryItem.style.display = 'block';
+        header.classList.add('visible-border');
+        categoryItem.classList.add('visible-border');                                
+        header.style.fontSize = '6rem';  // Set font size for expanded header
+        header.querySelector('.right').style.display = 'inline';  // Show second column
+        } else {                                
+        header.style.display = 'none';
+        categoryItem.style.display = 'none';
+        header.classList.remove('visible-border'); // Ensure these lines exist
+        categoryItem.classList.remove('visible-border');
+        header.querySelector('.right').style.display = 'none';  // Hide second column
+        }
+        
+        // Now handle the last visible item in the category
+        const visibleItems = Array.from(itemsInCategory).filter(item => item.style.display === 'block');
+        if (visibleItems.length > 0) {    
+        const lastVisibleItem = visibleItems[visibleItems.length - 1];
+        lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
+        lastVisibleItem.style.marginBottom = '2rem'; // Add this line
+        }
+        });
+        
+        
+        
+        
+        const totalItemsDiv = document.getElementById('total-items-found');
+        
+        if (searchQuery.length === 0) {
+        totalItemsDiv.style.display = 'none'; // Hide when search box is empty
+        } else {
+        if (totalVisibleItems > 0) {
+        // Check if totalVisibleItems is 1 (singular) or more (plural)
+        totalItemsDiv.textContent = `${totalVisibleItems} ${totalVisibleItems === 1 ? 'item' : 'items'}`;
+        totalItemsDiv.style.color = '#00FF00'; // Green for visibility
+        } else {
+        if (filterButtons.style.display === 'none') {
+        totalItemsDiv.textContent = 'No item found';
+        } else {
+        totalItemsDiv.textContent = 'No item';
+        }
+        
+        totalItemsDiv.style.color = '#ff4d4d'; // Red for visibility
+        }
+        totalItemsDiv.style.display = 'block'; // Show only when search is not empty
+        }
+        }
+        
+        // Add event listener to filter buttons
+        document.querySelectorAll('.filter-btn').forEach(button => {
+        button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to the clicked button
+        button.classList.add('active');
+        
+        // Update the selected filter type
+        selectedFilter = button.getAttribute('data-filter');
+        
+        // Trigger filtering
+        const searchQuery = document.getElementById('searchInput').value.trim();
+        filterMenuItems(searchQuery);
+        });
+        });
+        
+        
+        // Function to reset headers and hide the second column when search is cleared
+        function resetHeaders() {
+        document.querySelectorAll('.category-header').forEach(header => {
+        header.style.fontSize = '7rem';  // Reset to collapsed size
+        header.querySelector('.right').style.display = 'none';  // Hide second column
+        header.classList.remove('visible-border'); 
+        });
+        
+        document.querySelectorAll('.category-items').forEach(container => {
+        container.style.display = 'none';  // Collapse all categories
+        container.classList.remove('visible-border'); 
+        });
+        }
+        
+        // Get references to the elements
+        const searchInput = document.getElementById('searchInput');
+        const clearButton = document.getElementById('clearButton');
+        // The magnifierIcon remains always visible, so no toggling is required here
+        
+        searchInput.addEventListener('input', (e) => {
+        const searchQuery = e.target.value.trim();
+        
+        // Show the clear button if there is any input text; otherwise, hide it.
+        if (searchQuery.length > 0) {
+        clearButton.style.display = 'block';
+        } else {
+        clearButton.style.display = 'none';
+        resetHeaders();  // Reset headers when search is cleared
+        }
+        
+        // Validate the input to allow only English or Gurmukhi characters
+        const regex = /^[a-zA-Z0-9\u0A00-\u0A7F]*$/;
+        if (!regex.test(searchQuery)) {
+        e.target.value = searchQuery.slice(0, -1);
+        } else {
+        filterMenuItems(searchQuery);  // Filter items based on search query
+        }
+        
+        // Trigger a reflow for the clear button if necessary
+        clearButton.offsetHeight;
+        });
+        
+        
+        // Clear Button Event Listener
+        clearButton.addEventListener('click', () => {
+        searchInput.value = '';              // Clear input field
+        clearButton.style.display = 'none';  // Hide the clear button
+        
+        // Reset filtering and collapse categories (your existing logic)
+        filterMenuItems('');
+        
+        // Collapse all category items (your existing logic)
+        document.querySelectorAll('.category-items').forEach(container => {
+        container.style.display = 'none';
+        });
+        document.querySelectorAll('.category-header').forEach(header => {
+        header.classList.remove('expanded');
+        });
+        
+        // Focus back on the search box
+        searchInput.focus();
+        resetHeaders();
+        });
+        
+        
+        
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec";
+        
+        // Fetch data from Google Script URL
+        fetch(scriptUrl)
+        .then(response => response.json())
+        .then(data => {
+        const menuDiv = document.getElementById('menu');
+        let currentCategory = null;
+        
+        // Store all category item containers for collapsing
+        const categoryItemsContainers = [];
+        
+        console.log("Fetched data:", data); // Debugging data fetching
+        
+        data.forEach(row => {
+        const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
+        
+        // Apply different colors to column C, D, and E and join them with " / "
+        const mergedcolCDE = [
+        row.columnC ? `<span style="color: #40E0D0   ;">${row.columnC}</span>` : '',
+        row.columnD ? `<span style="color: #00FF7F    ;">${row.columnD}</span>` : '',
+        row.columnE ? `<span style="color: #E6E6FA  ;">${row.columnE}</span>` : ''
+        ].filter(col => col).join(' / ');
+        
+        console.log("Merged colCDE:", mergedcolCDE); // Debugging merged colCDE
+        
+        // Check if columnC is empty or is a category header
+        const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
+        
+        console.log("Is category?", isCategory); // Debugging category check
+        
+        if (isCategory) {
+        const categoryHeaderDiv = document.createElement('div');
+        categoryHeaderDiv.classList.add('category-header');
+        
+        const leftPart = document.createElement('span');
+        leftPart.classList.add('left');
+        leftPart.textContent = mergedColAB;
+        
+        const rightPart = document.createElement('span');
+        rightPart.classList.add('right');
+        rightPart.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
+        
+        categoryHeaderDiv.appendChild(leftPart);
+        categoryHeaderDiv.appendChild(rightPart);
+        
+        const categoryItemsDiv = document.createElement('div');
+        categoryItemsDiv.classList.add('category-items');
+        
+        // Toggle category items visibility on click
+        categoryHeaderDiv.addEventListener('click', () => {
+        // Reset all other headers to default collapsed size and show only the first column
+        document.querySelectorAll('.category-header').forEach(header => {
+        header.style.fontSize = '7rem'; // Set collapsed size
+        header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
+        header.classList.remove('visible-border'); // Add this line
+        });
+        
+        document.querySelectorAll('.category-items').forEach(container => {
+        if (container !== categoryItemsDiv) {
+        container.style.display = 'none';
+        container.classList.remove('visible-border'); // Add this line
+        }
+        });
+        
+        // Toggle visibility and adjust styles accordingly
+        if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
+        categoryItemsDiv.style.display = 'block';
+        categoryHeaderDiv.style.fontSize = '6rem';
+        categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show right column
+        categoryHeaderDiv.classList.add('visible-border');
+        categoryItemsDiv.classList.add('visible-border');
+        } else {
+        categoryItemsDiv.style.display = 'none';
+        categoryHeaderDiv.classList.remove('visible-border');
+        categoryItemsDiv.classList.remove('visible-border');
+        }
+        });
+        
+        // Initial state: Increase font size for collapsed categories and hide second column
+        categoryHeaderDiv.style.fontSize = '7rem';
+        categoryHeaderDiv.querySelector('.right').style.display = 'none';
+        
+        menuDiv.appendChild(categoryHeaderDiv);
+        menuDiv.appendChild(categoryItemsDiv);
+        
+        categoryItemsContainers.push(categoryItemsDiv);                    
+        currentCategory = categoryItemsDiv;
+        } else if (currentCategory) {
+        const menuItemDiv = document.createElement('div');
+        menuItemDiv.classList.add('menu-item');
+        menuItemDiv.style.marginBottom = '0';
+        
+        const lineDiv = document.createElement('div');
+        lineDiv.classList.add('menu-item-line');
+        
+        const colABElement = document.createElement('span');
+        colABElement.classList.add('colAB');
+        colABElement.textContent = mergedColAB;
+        
+        const colCDEElement = document.createElement('span');
+        colCDEElement.classList.add('colCDE');
+        colCDEElement.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
+        
+        lineDiv.appendChild(colABElement);
+        lineDiv.appendChild(colCDEElement);                        
+        menuItemDiv.appendChild(lineDiv);
+        currentCategory.appendChild(menuItemDiv);
+        }
+        });
+        
+        categoryItemsContainers.forEach(container => {
+        container.style.display = 'none';
+        });
+        
+        document.querySelector(".search-container").style.display = "block";
+        
+        document.querySelector('.footer').style.display = 'block'; // Show footer
+        document.getElementById('visitorElement').style.display = 'block'; // Show visitor element}
+        
+        
+        
+        // Remove the loading overlay after the data is fetched and processed
+        document.getElementById('loadingOverlay').style.display = 'none';
+        })
+        .catch(error => {
+        console.error("Error fetching data:", error);
+        document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        let sidebar = document.getElementById('sidebar');
+        let indicator = document.createElement('div');
+        indicator.id = 'sidebar-indicator';
+        document.body.appendChild(indicator);
+        
+        let hoverTimeout;
+        let touchStartX = 0, touchEndX = 0, touchStartY = 0;
+        const swipeThreshold = 80;  // Minimum swipe distance
+        const edgeThreshold = 50;   // Touch must start near the edge
+        const sidebarTop = sidebar.offsetTop;
+        const sidebarBottom = sidebarTop + sidebar.offsetHeight;
+        
+        function disableScroll() {
+        document.body.style.overflow = 'hidden';
+        }
+        
+        function enableScroll() {
+        document.body.style.overflow = 'auto';
+        }
+        
+        // Mouse activation and deactivation
+        indicator.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebar.classList.contains('open') ? disableScroll() : enableScroll();
+        });
+        
+        // Mouse enter/leave logic (unchanged)
+        document.addEventListener('mousemove', (event) => {
+        clearTimeout(hoverTimeout);
+        
+        if (event.clientX > window.innerWidth - 50 && event.clientY > 0 && event.clientY < window.innerHeight) {
+        hoverTimeout = setTimeout(() => {
+        sidebar.classList.add('open');
+        disableScroll();
+        }, 300);
+        } else {
+        hoverTimeout = setTimeout(() => {
+        sidebar.classList.remove('open');
+        enableScroll();
+        }, 300);
+        }
+        });
+        
+        // Deactivate on clicking outside sidebar
+        document.addEventListener('click', (event) => {
+        if (!sidebar.contains(event.target) && !indicator.contains(event.target)) {
+        sidebar.classList.remove('open');
+        enableScroll();
+        }
+        });
+        
+        // Touch gesture handling with improved accuracy
+        document.addEventListener('touchstart', (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+        });
+        
+        document.addEventListener('touchmove', (event) => {
+        touchEndX = event.touches[0].clientX;
+        });
+        
+        document.addEventListener('touchend', () => {
+        if (touchEndX === 0) return;  // Ignore if no movement
+        
+        // **Swipe-in only if touch started within sidebar's vertical range**
+        if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold &&
+        touchStartY >= sidebarTop && touchStartY <= sidebarBottom) {
+        sidebar.classList.add('open');
+        disableScroll();
+        } 
+        // **Swipe-out works anywhere on the sidebar side**
+        else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
+        sidebar.classList.remove('open');
+        enableScroll();
+        }
+        // **Touch outside sidebar closes it**
+        else if (touchStartX > sidebar.offsetWidth + 50) {
+        sidebar.classList.remove('open');
+        enableScroll();
+        }
+        
+        touchStartX = 0;
+        touchEndX = 0;
+        });
+        
+        // Toggle sidebar on indicator tap
+        indicator.addEventListener('touchstart', (event) => {
+        event.preventDefault();
+        sidebar.classList.toggle('open');
+        sidebar.classList.contains('open') ? disableScroll() : enableScroll();
+        });
+        
+        
+        
+        // Blink the touch indicator every 1 second
+        setInterval(() => {
+        indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
+        }, 2500);
+        
+        const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
+        
+        fetch(miscUrl)
+        .then(response => response.json())
+        .then(data => {
+        if (data && data.length >= 2) {
+        // Fetch delivery phone number from B3 cell
+        let deliveryPhone = data[3][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
+        if (deliveryPhone) {
+        deliveryPhone = deliveryPhone.replace(/-/g, ""); // Remove dashes
+        const formattedDeliveryPhone = `tel:+91${deliveryPhone}`; // Add country code
+        
+        // Update the delivery phone link
+        const deliveryLinkElement = document.getElementById('delivery-link');
+        if (deliveryLinkElement) {
+        deliveryLinkElement.href = formattedDeliveryPhone;
+        }
+        }
+        
+        // Fetch WhatsApp phone number from B4 cell (3rd row, 2nd column, 0-indexed)
+        let chatNumber = data[4][1];
+        if (chatNumber) {
+        chatNumber = chatNumber.replace(/-/g, ""); // Remove dashes
+        }
+        
+        // Fetch WhatsApp message from B5 cell (4th row, 2nd column, 0-indexed)
+        let message = data[5][1]; 
+        if (!message || message.trim() === "") {
+        message = "Hello Chai Sutta Bar!"; // Default message
+        }
+        
+        // URL-encode the message for the WhatsApp link
+        const encodedMessage = encodeURIComponent(message);
+        
+        // Construct the full WhatsApp link dynamically
+        const whatsappLink = `https://wa.me/+91${chatNumber}?text=${encodedMessage}`;
+        
+        // Update the href attribute of the anchor tag with the new link
+        const whatsappLinkElement = document.getElementById('whatsapp-link');
+        if (whatsappLinkElement) {
+        whatsappLinkElement.href = whatsappLink;
+        }
+        
+        // Fetch phone number from B6 cell (5th row, 2nd column, 0-indexed)
+        let contactPhone = data[6][1]; 
+        if (contactPhone) {
+        contactPhone = contactPhone.replace(/-/g, ""); // Remove dashes
+        const formattedContactPhone = `tel:+91${contactPhone}`; // Add country code
+        
+        // Update the phone link dynamically
+        const phoneLinkElement = document.getElementById("phone-link");
+        if (phoneLinkElement) {
+        phoneLinkElement.href = formattedContactPhone;
+        }
+        }
+        
+        // Extract Open and Close times from Google Sheets
+        const openTimeStr = data[0][1]; // Example: "09.30am"
+        const closeTimeStr = data[1][1]; // Example: "10.45pm"
+        
+        // Get current date
+        const now = new Date();
+        const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Get today's date without time
+        
+        // Convert the date in data[2][0] to a Date object (assuming it's already in dd/mm/yy format and can be parsed directly)
+        const dataDate = new Date(data[2][0]); // This assumes the date is in a format that JavaScript can parse directly (e.g., mm/dd/yyyy or yyyy/mm/dd)
+        
+        // Check if data[2][0] is today's date and data[2][1] is not empty
+        if (dataDate.getTime() === currentDate.getTime() && data[2][1] !== "") {
+        // If the date is today and data[2][1] is not empty, set statusMessage to data[2][1]
+        statusMessage = `<span style="color: #FFA500;">${data[2][1]}</span>`;
+        } else {
+        // Check if either openTimeStr or closeTimeStr is empty
+        if (!openTimeStr || !closeTimeStr) {
+        // If one or both times are missing, don't display anything
+        const timeElem = document.querySelector('.open-close');
+        if (timeElem) {
+        timeElem.innerHTML = "";
+        }
+        return; // Exit the function
+        }
+        
+        // Add validation for time format
+        if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
+        console.error('Invalid time format detected');
+        return;
+        }
+        
+        // Convert Open and Close times to Date objects
+        const openTime = parseCustomTime(openTimeStr);
+        const closeTime = parseCustomTime(closeTimeStr);
+        
+        // Get current time
+        const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
+        
+        // Convert Open and Close times to minutes since midnight
+        const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
+        const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
+        
+        // Compare times based on minutes from midnight
+        if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
+        statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
+        } else {
+        statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
+        }
+        }
+        
+        
+        // Update the display
+        const timeElem = document.querySelector('.open-close');
+        if (timeElem) {
+        timeElem.innerHTML = statusMessage;
+        }
+        
+        }                
+        })
+        .catch(error => {
+        console.error("Error fetching Misc data:", error);
+        });
+        
+        // Function to parse custom time format (hh.mmap)
+        function parseCustomTime(timeStr) {
+        // Extract hour, minute, and period using regex
+        const match = timeStr.match(/(\d{1,2})\.(\d{2})(am|pm)/i);
+        if (!match) {
+        console.error('Invalid time format:', timeStr);
+        return new Date(); // Handle error appropriately
+        }
+        
+        let hour = parseInt(match[1], 10);
+        const minute = parseInt(match[2], 10);
+        const period = match[3].toLowerCase();
+        
+        // Convert to 24-hour format
+        if (period === 'pm' && hour !== 12) {
+        hour += 12;
+        } else if (period === 'am' && hour === 12) {
+        hour = 0;
+        }
+        
+        return new Date(0, 0, 0, hour, minute);
+        }
+        
+        // Function to format time in hh:mm am/pm format
+        function formatTime(date) {
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const period = hours >= 12 ? "pm" : "am";
+        const formattedHours = hours % 12 || 12;  // Convert to 12-hour format
+        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+        return `${formattedHours}:${formattedMinutes} ${period}`;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function setupHamburgerMenu() {
+        // Create Hamburger Button
+        const hamburgerButton = document.createElement('div');
+        hamburgerButton.id = 'hamburger-button';
+        hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
+        
+        // Append it to the header
+        document.querySelector('.header').appendChild(hamburgerButton);
+        
+        // Create Sidebar
+        const hsidebar = document.createElement('div');
+        hsidebar.id = 'hsidebar';
+        hsidebar.innerHTML = `
+        <div class="hsidebar-content">
+        <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
+        <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
+        <div class="hsidebar-option" id="install-app">⚙️ Install CSB App</div>
+        <div class="hsidebar-option" id="show-qrcode">🔗 App QR Code</div>
+        <div class="hsidebar-option" id="copy-app-link">📋 Copy App Link</div>
+        <div class="hsidebar-option" id="device-screen-info">📱 Screen Info</div> <!-- New option -->
+        <!-- Close button -->
+        <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->                    
+        <!-- Footer text -->
+        <div class="footer-text" id="footer-info">
+        <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
+        </div>
+        </div>
+        `;
+        document.body.appendChild(hsidebar);
+        
+        // Create Backdrop
+        const overlay = document.createElement('div');
+        overlay.id = 'sidebar-overlay';
+        document.body.appendChild(overlay);
+        
+        // Create QR Code Modal
+        const qrCodeModal = document.createElement('div');
+        qrCodeModal.id = 'qr-code-modal';
+        qrCodeModal.innerHTML = `
+        <div class="modal-content">
+        <span id="close-modal">&times;</span>
+        <img src="qrcode.png" alt="QR Code">
+        </div>
+        `;
+        document.body.appendChild(qrCodeModal);
+        
+        // Open Sidebar
+        hamburgerButton.addEventListener('click', () => {
+        hsidebar.classList.add('open');
+        overlay.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Lock scrolling on body
+        document.documentElement.style.overflow = 'hidden'; // Lock scrolling on html
+        document.body.style.height = '100%'; // Prevent body from resizing while locked
+        document.documentElement.style.height = '100%'; // Prevent html from resizing
+        });
+        
+        // Close Sidebar when clicking outside
+        overlay.addEventListener('click', () => {
+        hsidebar.classList.remove('open');
+        overlay.style.display = 'none';
+        document.body.style.overflow = ''; // Unlock scrolling on body
+        document.documentElement.style.overflow = ''; // Unlock scrolling on html
+        document.body.style.height = ''; // Allow body resizing again
+        document.documentElement.style.height = ''; // Allow html resizing
+        });
+        
+        // Close Sidebar on Escape Key
+        document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+        hsidebar.classList.remove('open');
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = ''; // Unlock scrolling on html
+        document.body.style.height = ''; // Allow body resizing again
+        document.documentElement.style.height = ''; // Allow html resizing
+        }
+        });
+        
+        // Close Sidebar when clicking on the cross button
+        document.getElementById('close-sidebar').addEventListener('click', () => {
+        hsidebar.classList.remove('open');
+        overlay.style.display = 'none';
+        document.body.style.overflow = ''; // Unlock scrolling
+        document.documentElement.style.overflow = ''; // Unlock scrolling
+        document.body.style.height = ''; // Allow body resizing
+        document.documentElement.style.height = ''; // Allow html resizing
+        });
+        
+        // Install App
+        document.getElementById('install-app').addEventListener('click', () => {
+        if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+        console.log(choiceResult.outcome === 'accepted' ? 'User accepted' : 'User dismissed');
+        deferredPrompt = null;
+        });
+        }
+        });
+        
+        // Show QR Code
+        document.getElementById('show-qrcode').addEventListener('click', () => {
+        // Hide the sidebar when showing the modal
+        const hsidebar = document.getElementById('hsidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        hsidebar.classList.remove('open');
+        overlay.style.display = 'none';
+        qrCodeModal.style.display = 'block';
+        document.body.style.overflow = ''; 
+        document.documentElement.style.overflow = ''; 
+        document.body.style.height = ''; 
+        document.documentElement.style.height = '';
+        });
+        
+        // Close QR Code Modal
+        document.getElementById('close-modal').addEventListener('click', () => {
+        qrCodeModal.style.display = 'none';
+        });
+        
+        // Close QR Code Modal on Click Outside
+        window.addEventListener('click', (event) => {
+        if (event.target === qrCodeModal) {
+        qrCodeModal.style.display = 'none';
+        }
+        });
+        
+        // Copy App Link
+        document.getElementById('copy-app-link').addEventListener('click', () => {
+        const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
+        navigator.clipboard.writeText(appLink).then(() => {
+        
+        
+        // Create feedback element
+        const feedback = document.createElement('div');
+        feedback.textContent = 'Link copied';
+        feedback.style.position = 'fixed';
+        feedback.style.bottom = '20px';
+        feedback.style.left = '50%';
+        feedback.style.transform = 'translateX(-50%)';
+        feedback.style.background = '#333';
+        feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
+        feedback.style.color = '#fff';
+        feedback.style.padding = '8px 16px';
+        feedback.style.borderRadius = '4px';
+        feedback.style.zIndex = '2000';
+        document.body.appendChild(feedback);
+        
+        // Remove feedback after 2 seconds
+        setTimeout(() => {
+        if (document.body.contains(feedback)) {
+        document.body.removeChild(feedback);
+        }
+        }, 2000);
+        });
+        });
+        
+        // Show Device Screen Info
+        document.getElementById('device-screen-info').addEventListener('click', function() {
+        showDeviceInfoModal();
+        });
+        
+        
+        // Swipe Left to Close Sidebar (Mobile Gesture)
+        let startX;
+        let startY;
+        
+        hsidebar.addEventListener('touchstart', (e) => {
+        const touchStart = e.touches[0];
+        startX = touchStart.clientX;
+        startY = touchStart.clientY;
+        });
+        
+        hsidebar.addEventListener('touchend', (e) => {
+        const touchEnd = e.changedTouches[0];
+        const deltaX = touchEnd.clientX - startX;
+        const deltaY = touchEnd.clientY - startY;
+        
+        if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
+        hsidebar.classList.remove('open');
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        document.body.style.height = '';
+        document.documentElement.style.height = '';
+        }
+        });
+        }
+        
+        // Call the setup function
+        setupHamburgerMenu();
+        
+        
+        
+        
+        
+        
+        
+        
+        function showDeviceInfoModal() {
+        // Hide the sidebar when showing the modal
+        const hsidebar = document.getElementById('hsidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        hsidebar.classList.remove('open');
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        
+        document.body.style.height = ''; 
+        document.documentElement.style.height = '';
+        
+        // Gather device info
+        const screenWidth = window.screen.width;
+        const screenHeight = window.screen.height;
+        const innerWidth = window.innerWidth;
+        const innerHeight = window.innerHeight;
+        const pixelRatio = window.devicePixelRatio;
+        const userAgent = navigator.userAgent;
+        const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
+        
+        // Create modal content with updated font size and styles
+        const modalContent = `
+        <div style="padding: 20px; font-family: Arial, sans-serif; background-color: #fff; color: #333; border-radius: 8px; width: 80%; max-width: 500px; font-size: 13px; position: relative; text-align: center;">
+        <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
+        <p style="line-height: 1.5;"><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
+        <p style="line-height: 1.5;"><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
+        <p style="line-height: 1.5;"><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
+        <p style="line-height: 1.5;"><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
+        <p style="line-height: 1.5;"><strong>Device Type:</strong> ${deviceType}</p>
+        <p style="line-height: 1.5;"><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
+        <p style="line-height: 1.5;"><strong>User Agent:</strong> ${userAgent}</p>
+        <p style="line-height: 1.5;"><strong>Time Zone:</strong> ${timeZone}</p>
+        <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
+        <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
+        </div>
+        `;
+        
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.style.position = 'fixed';
+        modalContainer.style.top = '0';
+        modalContainer.style.left = '0';
+        modalContainer.style.width = '100%';
+        modalContainer.style.height = '100%';
+        modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modalContainer.style.display = 'flex';
+        modalContainer.style.justifyContent = 'center';
+        modalContainer.style.alignItems = 'center';
+        modalContainer.style.zIndex = '1000';
+        modalContainer.innerHTML = modalContent;
+        
+        // Append modal to body
+        document.body.appendChild(modalContainer);
+        
+        // Add event listener for the close button
+        const closeModalButton = modalContainer.querySelector('#close-modal');
+        closeModalButton.addEventListener('click', function() {
+        document.body.removeChild(modalContainer);
+        document.body.style.overflow = ''; 
+        document.documentElement.style.overflow = ''; 
+        
+        
+        });
+        
+        // Add event listener for the copy button
+        const copyButton = modalContainer.querySelector('#copy-button');
+        copyButton.addEventListener('click', function() {
+        // Get all text content from h3 and p elements
+        const contentDiv = modalContainer.querySelector('div');
+        const elements = contentDiv.querySelectorAll('h3, p');
+        let text = Array.from(elements).map(el => el.textContent).join('\n');
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(text).then(() => {
+        // Create feedback element
+        const feedback = document.createElement('div');
+        feedback.textContent = 'Text copied';
+        feedback.style.position = 'fixed';
+        feedback.style.bottom = '20px';
+        feedback.style.left = '50%';
+        feedback.style.transform = 'translateX(-50%)';
+        feedback.style.background = '#333';
+        feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
+        feedback.style.color = '#fff';
+        feedback.style.padding = '8px 16px';
+        feedback.style.borderRadius = '4px';
+        feedback.style.zIndex = '2000';
+        document.body.appendChild(feedback);
+        
+        // Remove feedback after 2 seconds
+        setTimeout(() => {
+        if (document.body.contains(feedback)) {
+        document.body.removeChild(feedback);
+        }
+        }, 2000);
+        }).catch(err => {
+        console.error('Failed to copy:', err);
+        });
+        });
+        
+        // Close modal when clicking outside
+        modalContainer.addEventListener('click', function(event) {
+        if (event.target === modalContainer) {
+        document.body.removeChild(modalContainer);
+        document.body.style.overflow = ''; 
+        document.documentElement.style.overflow = ''; 
+        
+        }
+        });
+        
+        // Close modal on Escape key
+        window.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+        document.body.removeChild(modalContainer);
+        document.body.style.overflow = ''; 
+        document.documentElement.style.overflow = ''; 
+        
+        }
+        });
+        
+        // Close modal on back button
+        window.addEventListener('popstate', function() {
+        document.body.removeChild(modalContainer);
+        document.body.style.overflow = ''; 
+        document.documentElement.style.overflow = ''; 
+        
+        });
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        let deferredPrompt; // Variable to hold the deferred prompt event
+        
+        // Listen for the beforeinstallprompt event
+        window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault(); // Prevent the default prompt from showing automatically
+        deferredPrompt = e; // Store the event so we can trigger it later
+        
+        // Optionally, show a custom install button here if needed
+        // document.getElementById('install-button').style.display = 'block'; 
+        
+        // Automatically trigger the prompt after a delay
+        setTimeout(() => {
+        deferredPrompt.prompt(); // Show the install prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+        // Handle the user's response
+        if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the install prompt");
+        } else {
+        console.log("User dismissed the install prompt");
+        }
+        deferredPrompt = null; // Reset the deferred prompt
+        });
+        }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        let scrapItems = [];
+        let scrapVisible = false;
+        
+        // Scrap Button Functionality
+        document.getElementById('scrapButton').addEventListener('click', toggleScrapList);
+        
+        // Close scrap list when clicking outside
+        document.addEventListener('click', (e) => {
+        const scrapList = document.getElementById('scrapList');
+        const scrapButton = document.getElementById('scrapButton');
+        if (scrapVisible && !scrapList.contains(e.target) && e.target !== scrapButton) {
+        closeScrapList();
+        }
+        });
+        
+        // Close scrap list when clicking close button
+        document.getElementById('closeScrap').addEventListener('click', closeScrapList);                    
+        document.getElementById('clearScrap').addEventListener('click', () => {
+        if (!scrapList) return; // Safety check                        
+        // Add wash-out animation class
+        scrapList.classList.add('wash-out-animation');                        
+        // Wait for animation to complete before clearing
+        setTimeout(() => {
+        scrapItems = []; // Clear the list after animation
+        updateScrapListDisplay(); // Refresh UI
+        showFeedback("Order list cleared"); // Show feedback message
+        closeScrapList(); // Close the scrap list if needed                            
+        // Reset for future use
+        scrapList.classList.remove('wash-out-animation');
+        }, 800); // Match CSS animation duration
+        });
+        
+        // Add items to scrap list when clicking rates
+        document.getElementById('menu').addEventListener('click', (e) => {
+        const rateElement = e.target.closest('.colCDE span, .colCDE');
+        if (rateElement && rateElement.textContent.match(/₹?\d+/)) {
+        const menuItemLine = rateElement.closest('.menu-item-line');
+        
+        // Get raw item name and trim second column
+        let itemNameFull = menuItemLine.querySelector('.colAB').textContent.trim();
+        let itemName = itemNameFull.split('(')[0].trim();
+        
+        // Get category name and trim second column
+        const categoryHeader = menuItemLine.closest('.menu-item')
+        .closest('.category-items')
+        .previousElementSibling;
+        const categoryNameFull = categoryHeader.querySelector('.left').textContent.trim();
+        const categoryName = categoryNameFull.split('(')[0].trim();
+        
+        // Combine cleaned names
+        const combinedName = `${categoryName} - ${itemName}`;
+        
+        const clickedRate = rateElement.textContent.replace('₹', '').trim();
+        if (clickedRate.includes('/')) {
+        showToggleButtonFeedback('❌', 'red');
+        return;
+        }
+        
+        animateRateMovement(rateElement);
+        
+        // Push to scrap list with cleaned names
+        scrapItems.push({ 
+        name: combinedName, 
+        rate: clickedRate 
+        });
+        
+        showToggleButtonFeedback('✅', '#00FF00');
+        updateScrapListDisplay();
+        }
+        });
+        
+        function animateRateMovement(sourceElement) {
+        const scrapButton = document.getElementById('scrapButton');                        
+        // Get positions of the source element and the scrap button
+        const sourceRect = sourceElement.getBoundingClientRect();
+        const targetRect = scrapButton.getBoundingClientRect();                        
+        // Create a floating clone of the rate element
+        const floatingClone = document.createElement('div');
+        floatingClone.textContent = sourceElement.textContent;
+        floatingClone.style.position = 'fixed';
+        floatingClone.style.left = `${sourceRect.left}px`;
+        floatingClone.style.top = `${sourceRect.top}px`;
+        floatingClone.style.fontSize = '16px';
+        floatingClone.style.fontWeight = 'bold';
+        floatingClone.style.background = '#ffcc00';
+        floatingClone.style.padding = '5px 10px';
+        floatingClone.style.borderRadius = '5px';
+        floatingClone.style.boxShadow = '0px 2px 5px rgba(0,0,0,0.2)';
+        floatingClone.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+        floatingClone.style.zIndex = '1000';
+        
+        document.body.appendChild(floatingClone);                        
+        // Force repaint before moving
+        requestAnimationFrame(() => {
+        floatingClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px) scale(0.5)`;
+        floatingClone.style.opacity = '0';
+        });                        
+        // Remove the element after animation
+        setTimeout(() => {
+        floatingClone.remove();
+        }, 500);
+        }
+        
+        let feedbackTimeout; // Store the timeout reference
+        let originalContent; // Store original content persistently                    
+        function showToggleButtonFeedback(symbol, color) {
+        const scrapButton = document.getElementById('scrapButton');                        
+        // Store original content only if it's not already replaced
+        if (!originalContent) {
+        originalContent = scrapButton.innerHTML;
+        }                        
+        // Clear any existing timeout to prevent overlapping animations
+        clearTimeout(feedbackTimeout);                        
+        // Set the feedback symbol with drop shadow
+        scrapButton.innerHTML = `<span style="filter: drop-shadow(0 0 2px ${color});">${symbol}</span>`;
+        scrapButton.disabled = true; // Disable the button temporarily                        
+        // Ensure the button resets correctly
+        feedbackTimeout = setTimeout(() => {
+        scrapButton.innerHTML = originalContent;
+        scrapButton.disabled = false;
+        originalContent = null; // Reset originalContent after restoring
+        }, 250);
+        }
+        
+        function updateScrapListDisplay() {
+        const scrapContainer = document.getElementById('scrapItems');
+        
+        // Step 1: Combine duplicate items and calculate quantities
+        const itemMap = new Map();
+        scrapItems.forEach((item) => {
+        const key = `${item.name}-${item.rate}`;
+        if (itemMap.has(key)) {
+        itemMap.get(key).qty++;
+        } else {
+        itemMap.set(key, { ...item, qty: 1 });
+        }
+        });
+        
+        // Step 2: Convert map values to array and sort alphabetically by item name
+        const sortedItems = Array.from(itemMap.values()).sort((a, b) => 
+        trimLeftNonEnglish(a.name).localeCompare(trimLeftNonEnglish(b.name))
+        );
+        
+        
+        // Step 3: Generate HTML for sorted items
+        scrapContainer.innerHTML = sortedItems.map((groupedItem) => `
+        <div class="scrap-item">
+        <div class="scrap-item-name"><strong>${groupedItem.name}</strong></div>
+        <div class="scrap-item-rate"><span style="color: #666;">${groupedItem.qty} @</span> ₹${groupedItem.rate}</div>
+        <span class="delete-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">✕</span>
+        </div>
+        `).join('');
+        
+        // Step 4: Update total price
+        const totalPriceElement = document.getElementById('totalPrice');
+        const total = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
+        totalPriceElement.textContent = `Total: ₹${total.toFixed(2)}`;
+        
+        // Step 5: Add delete button handlers (delete ALL instances of the item)
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const name = e.target.dataset.name;
+        const rate = e.target.dataset.rate;
+        // Remove ALL items matching this name and rate
+        scrapItems = scrapItems.filter(item => item.name !== name || item.rate !== rate);
+        updateScrapListDisplay();
+        });
+        });
+        }
+        
+        function showOrderListWarning() {                            
+        // Check if modal already exists, if not, create one
+        let existingModal = document.getElementById('orderListWarningModal');
+        if (existingModal) {
+        existingModal.remove(); // Remove existing modal if any
+        }                        
+        // Create modal container
+        let modal = document.createElement('div');
+        modal.id = 'orderListWarningModal';
+        modal.className = 'modal-overlay';                        
+        // Initial content in English
+        let contentEnglish = `
+        <p><strong>Order list is empty.</strong></p>
+        <ul>
+        <li>Touch any <b>rate</b> to add an item.</li>
+        <li>To add <b>quantity</b>, touch rate multiple times.</li>
+        <li>View <b>'Order List'</b> and <b>'Total'</b> any time.</li>
+        <li>You can <b>remove</b> items also from order list.</li>
+        </ul>
+        `;                        
+        // Content in Punjabi
+        let contentPunjabi = `
+        <p><strong>ਆਰਡਰ ਸੂਚੀ ਅਜੇ ਖਾਲੀ ਹੈ।</strong></p>
+        <ul>
+        <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ ਕੋਈ ਵੀ <b>ਰੇਟ</b> ਛੂਹੋ।</li>
+        <li><b>ਮਾਤਰਾ</b> ਵਧਾਉਣ ਲਈ, ਇੱਕੋ ਰੇਟ ਨੂੰ ਵਾਰ-ਵਾਰ ਛੂਹੋ।</li>
+        <li>ਕਿਸੇ ਵੀ ਸਮੇਂ <b>'ਆਰਡਰ ਸੂਚੀ'</b> ਅਤੇ <b>'ਕੁੱਲ ਬਿੱਲ'</b> ਦੇਖ ਸਕਦੇ ਹੋ।</li>
+        <li>ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਕੱਢ</b> ਵੀ ਸਕਦੇ ਹੋ।</li>
+        </ul>
+        `;                        
+        // Modal content
+        modal.innerHTML = `
+        <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div id="modalText">${contentEnglish}</div>
+        <button id="toggleButton" class="toggle-btn">ਪੰਜਾਬੀ</button>
+        </div>
+        `;                        
+        // Append modal to body
+        document.body.appendChild(modal);                        
+        // Toggle functionality
+        const toggleButton = document.getElementById('toggleButton');
+        const modalText = document.getElementById('modalText');
+        let isEnglish = true;                        
+        toggleButton.addEventListener('click', () => {
+        if (isEnglish) {
+        modalText.innerHTML = contentPunjabi;
+        toggleButton.textContent = 'English';
+        } else {
+        modalText.innerHTML = contentEnglish;
+        toggleButton.textContent = 'Punjabi';
+        }
+        isEnglish = !isEnglish;
+        });                        
+        // Close functionality
+        function closeModal() {
+        modal.classList.add('fade-out');
+        setTimeout(() => modal.remove(), 300);
+        }                        
+        // Close on cross button click
+        modal.querySelector('.close-button').addEventListener('click', closeModal);                    
+        // Close on outside click
+        modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+        });                        
+        // Auto close after 
+        setTimeout(closeModal, 60000);
+        }                    
+        
+        function toggleScrapList() {                        
+        // Check order list condition and show modal
+        if (scrapItems.length === 0) {
+        showOrderListWarning();
+        return;
+        }                        
+        scrapVisible = !scrapVisible;
+        document.getElementById('scrapList').style.display = scrapVisible ? 'block' : 'none';
+        }
+        
+        function closeScrapList() {
+        scrapVisible = false;
+        document.getElementById('scrapList').style.display = 'none';
+        }
+        
+        // Function to trim the first non-English character from a string
+        function trimLeftNonEnglish(text) {
+        return text.replace(/^[^A-Za-z]+/, '');
+        }
+        
+        document.getElementById('orderScrap').addEventListener('click', () => {
+        if (scrapItems.length === 0) {
+        showOrderListWarning();
+        return;
+        }                        
+        // Group items by name and rate to calculate quantities
+        const itemMap = new Map();
+        scrapItems.forEach((item) => {
+        const trimmedName = trimLeftNonEnglish(item.name); // Trim the name before use
+        const key = `${trimmedName}-${item.rate}`;
+        itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, name: trimmedName, qty: 1 });
+        });                        
+        const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));                        
+        // Generate order text with quantities
+        let orderText = sortedItems.map(item => 
+        `${item.qty} x ${item.name} @ ₹${item.rate}`
+        ).join('\n');                        
+        // Calculate total correctly
+        let total = sortedItems.reduce((acc, item) => 
+        acc + (parseFloat(item.rate) * item.qty), 0
+        );                        
+        let message = encodeURIComponent(
+        `*🍵 New Order*\n${'-'.repeat(25)}\n${orderText.split('\n').join('\n\n')}\n${'-'.repeat(25)}\n*Total: ₹${Math.round(total)}* only`
+        );
+        
+        
+        window.open(`https://wa.me/918968444425?text=${message}`, '_blank');
+        });
+        
+        
+        function calculateTotal() {
+        return scrapItems.reduce((total, item) => {
+        return total + parseFloat(item.rate);
+        }, 0);
+        }
+        
+        
+        
+        </script>        
+        <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+        </body>
+        </html>                                                                                                                                                                                                                                                                                                                                                                                
