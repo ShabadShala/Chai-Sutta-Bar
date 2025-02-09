@@ -161,7 +161,7 @@
             transform: translateX(-50%);
             background-color: #212121; /* Match the body background */
             z-index: 1001; /* Ensure the header stays above other content */
-            padding: 2rem; /* Adjust padding as needed */
+            padding: 1.5rem; /* Adjust padding as needed */
             box-shadow: 0 0.4rem 3rem rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
             border-bottom: 1px solid #fae68e; /* Adds a border */                    
             }
@@ -225,7 +225,6 @@
             margin: 0 auto;
             position: relative;
             display: none;
-            margin-top: 1rem;
             }
             
             /* Flex container for input and clear button */
@@ -576,7 +575,7 @@
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
             transition: left 0.3s ease;
             z-index: 1002;
-            padding-top: 60px;
+            padding-top: 40px;
             border-radius: 0 15px 15px 0;
             color: #e0e0e0; /* Soft white text */
             }
@@ -591,10 +590,10 @@
             }
             
             .hsidebar-option {
-            padding: 2rem;
-            margin: 0;
+            padding: 1rem;
+            margin: 3rem 0;
             cursor: pointer;
-            font-size: 6rem;
+            font-size: 5rem;
             font-weight: 500;
             text-align: left;
             
@@ -686,12 +685,13 @@
             .footer-text {
             position: absolute;
             bottom: 6rem; /* Position the footer text at the bottom */
-            left: 40%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust for perfect centering */
+       
+          
             font-size: 4rem; /* Font size for the footer text */
             color: #f1f1f1; /* Light color for visibility */
             text-align: left; /* Center the text */
             line-height: 1.5;
+             margin-left: 5rem;
             }
             
             /* Close button */
@@ -710,7 +710,43 @@
             }
             
             
+            .menu-icon {
+            width: 1em;
+            height: 1em;
+            margin-right: 4rem;
             
+            vertical-align: middle;
+            }
+            
+            .invert-icon {
+            filter: invert(1); /* Inverts black to white */
+            }
+            
+            .green-icon {
+            /* For <img> tag */
+            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+            
+            /* For inline SVG */
+            fill: green;
+            }
+            
+            .menu-icon-container {
+            text-align: center;
+            margin-bottom:10rem;
+            }
+            
+            .menu-icon-container img {
+            width: 15rem; /* Set the width to 128px */
+            height: 15rem; /* Set the height to 128px */
+            object-fit: contain; /* Ensures the image scales proportionally */
+            border-radius: 15px; /* Optional: Adds rounded corners */
+            }
+            
+            /* Options alignment */
+            .hsidebar-option {
+            display: flex;
+            align-items: center;
+            }
             
             
             
@@ -791,233 +827,236 @@
             
             
             
-/* Scrap Button Styles */
-#scrapButton {
-  position: fixed;
-  bottom: 7rem; /* Position at the bottom */
-  right: 7rem; /* Position at the right */
-  width: 15rem; /* Fixed width */
-  height: 15rem; /* Fixed height */
-  background: linear-gradient(145deg, #ff5722, #e64a19); /* Gradient background */
-  border: none;
-  border-radius: 50%; /* Make it circular */
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.1); /* 3D shadow effect */
-  color: white;
-  font-size: 7rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: grab; /* Cursor indicates it can be grabbed */
-  transition: transform 0.2s ease-in-out;
-  user-select: none; /* Prevent text selection */
-  z-index: 1001; /* Ensure it stays on top */
-}
-
-/* Hover effect */
-#scrapButton:hover {
-  transform: scale(1.1); /* Slightly enlarge on hover */
-}
-
-/* Active effect */
-#scrapButton:active {
-  cursor: grabbing; /* Change cursor to grabbing when clicked */
-}
-
-/* Scrap List Modal */
-#scrapList {
-  display: none;
-  position: fixed;
-  top: 10% !important;
-  left: 50% !important;
-  transform: translateX(-50%);
-  width: 350px;
-  max-width: 90vw;
-  max-height: 80vh;
-  background: rgba(255, 255, 255, 0.95);
-  z-index: 2000;
-  border-radius: 1rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Scrap Content - Fields inside scrap list */
-.scrap-content {
-  position: relative;
-  background: #f5f5f5;
-  width: 100%;
-  max-width: 350px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 1rem;
-  color: #333;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-#scrapItems {
-  max-height: 85vh;
-  overflow-y: auto;
-}
-
-/* Scrap Items Container */
-#scrapItemsContainer {
-  width: 100%;
-  overflow-x: hidden;
-}
-
-/* Scrap Item Row */
-.scrap-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
-  font-size: 4rem;
-  color: #333;
-  width: 100%;
-  gap: 1rem;
-}
-
-/* Item Name */
-.scrap-item-name {
-  flex: 3;
-  overflow: hidden;
-  word-wrap: break-word;
-  white-space: normal;
-  min-width: 100px;
-}
-
-/* Rate Container */
-.scrap-item-rate {
-  flex: 2;
-  text-align: right;
-  padding: 0 1rem;
-  min-width: 50px;
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-/* Updated Title Style */
-.scrap-content h2 {
-  text-align: center;
-  margin: 2rem 0;
-}
-
-/* Total Price Alignment */
-#totalPrice {
-  text-align: right;
-  padding-right: 2rem;
-  font-size: 4rem;
-  font-weight: bold;
-  color: #333;
-}
-
-#pinScrap {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  font-size: 4rem;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  z-index: 1;
-  color: #333;
-}
-
-/* Close Button of scrap list */
-#closeScrap {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 6rem;
-  cursor: pointer;
-  color: #333;
-}
-
-/* Delete Button */
-.delete-btn {
-  cursor: pointer;
-  color: #cc0000;
-  font-size: 4rem;
-  margin-left: 1rem;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  gap: 4rem;
-}
-
-#orderScrap, #clearScrap {
-  display: inline-block;
-  padding: 1rem 3rem;
-  background-color: #cc0000;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 4rem;
-  cursor: pointer;
-}
-
-#orderScrap {
-  background-color: #28a745;
-}
-
-#orderScrap:hover {
-  background-color: #218838;
-}
-
-@keyframes washOutEffect {
-  0% { opacity: 1; transform: translateX(0) skewX(0deg); filter: blur(0px); }
-  30% { opacity: 0.8; transform: translateX(-10px) skewX(-5deg); filter: blur(2px); }
-  60% { opacity: 0.5; transform: translateX(-30px) skewX(-10deg); filter: blur(4px); }
-  100% { opacity: 0; transform: translateX(-100px) skewX(-15deg); filter: blur(8px); }
-}
-
-.wash-out-animation {
-  animation: washOutEffect 0.8s ease-in-out forwards;
-}
-
-.qty-stepper {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: #f5f5f5;
-  border: 1px solid red;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  margin-right: auto;
-}
-
-.decrement-btn, .increment-btn {
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-size: 4rem;
-  padding: 0 1rem;
-  color: #333;
-  transition: background-color 0.2s ease;
-}
-
-.decrement-btn:hover, .increment-btn:hover {
-  background-color: #ddd;
-}
-
-.qty-display {
-  font-size: 4rem;
-  min-width: 2rem;
-  text-align: center;
-  color: #333;
-}
-
-/* Rate Text */
-.scrap-item-rate > span {
-  white-space: nowrap;
-  margin-left: auto;
-}       
+            /* Scrap Button Styles */
+            #scrapButton {
+            position: fixed;
+            bottom: 7rem; /* Position at the bottom */
+            right: 7rem; /* Position at the right */
+            width: 8rem; /* Fixed width */
+            height: 8rem; /* Fixed height */
+            background: linear-gradient(145deg, #ff5722, #e64a19); /* Gradient background */
+            border: none;
+            border-radius: 50%; /* Make it circular */
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.1); /* 3D shadow effect */
+            color: white;
+            font-size: 4rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab; /* Cursor indicates it can be grabbed */
+            transition: transform 0.2s ease-in-out;
+            user-select: none; /* Prevent text selection */
+            z-index: 1001; /* Ensure it stays on top */
+            }
+            
+            /* Hover effect */
+            #scrapButton:hover {
+            transform: scale(1.1); /* Slightly enlarge on hover */
+            }
+            
+            /* Active effect */
+            #scrapButton:active {
+            cursor: grabbing; /* Change cursor to grabbing when clicked */
+            }
+            
+            /* Scrap List Modal */
+            #scrapList {
+            display: none;
+            position: fixed;
+            top: 9% !important;
+            left: 50% !important;
+            transform: translateX(-50%);
+            width: 350px;
+            max-width: 90vw;
+            max-height: 90vh;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 2000;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            /* Remove overflow: auto; */
+            }
+            
+            /* Scrap Content - Fields inside scrap list */
+            .scrap-content {
+            position: relative;
+            background: #f5f5f5;
+            width: 100%;
+            max-width: 350px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            /* Scrap Items Container */
+            #scrapItemsContainer {
+            width: 100%;
+            overflow-x: hidden;
+            }
+            
+            /* Scrap Items */
+            #scrapItems {
+            max-height: 60vh; /* Adjust this value as needed */
+            overflow-y: auto; /* Only this container will scroll */
+            }
+            
+            /* Scrap Item Row */
+            .scrap-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+            font-size: 4rem;
+            color: #333;
+            width: 100%;
+            gap: 1rem;
+            }
+            
+            /* Item Name */
+            .scrap-item-name {
+            flex: 3;
+            overflow: hidden;
+            word-wrap: break-word;
+            white-space: normal;
+            min-width: 100px;
+            }
+            
+            /* Rate Container */
+            .scrap-item-rate {
+            flex: 2;
+            text-align: right;
+            padding: 0 1rem;
+            min-width: 50px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            }
+            
+            /* Updated Title Style */
+            .scrap-content h2 {
+            text-align: center;
+            margin: 2rem 0;
+            }
+            
+            /* Total Price Alignment */
+            #totalPrice {
+            text-align: right;
+            padding-right: 2rem;
+            font-size: 5rem;
+            font-weight: bold;
+            color: #333;
+            }
+            
+            #pinScrap {
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            font-size: 4rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            z-index: 1;
+            color: #333;
+            }
+            
+            /* Close Button of scrap list */
+            #closeScrap {
+            position: absolute;
+            top: 0;
+            right: 1rem;
+            font-size: 6rem;
+            cursor: pointer;
+            color: #333;
+            }
+            
+            /* Delete Button */
+            .delete-btn {
+            cursor: pointer;
+            color: #cc0000;
+            font-size: 4rem;
+            margin-left: 1rem;
+            }
+            
+            .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            }
+            
+            #orderScrap, #clearScrap {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background-color: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 4rem;
+            cursor: pointer;
+            }
+            
+            #orderScrap {
+            background-color: #28a745;
+            }
+            
+            #orderScrap:hover {
+            background-color: #218838;
+            }
+            
+            @keyframes washOutEffect {
+            0% { opacity: 1; transform: translateX(0) skewX(0deg); filter: blur(0px); }
+            30% { opacity: 0.8; transform: translateX(-10px) skewX(-5deg); filter: blur(2px); }
+            60% { opacity: 0.5; transform: translateX(-30px) skewX(-10deg); filter: blur(4px); }
+            100% { opacity: 0; transform: translateX(-100px) skewX(-15deg); filter: blur(8px); }
+            }
+            
+            .wash-out-animation {
+            animation: washOutEffect 0.8s ease-in-out forwards;
+            }
+            
+            .qty-stepper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #f5f5f5;
+            border: 1px solid red;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin-right: auto;
+            }
+            
+            .decrement-btn, .increment-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 5rem;
+            padding: 0 1rem;
+            color: #333;
+            transition: background-color 0.2s ease;
+            }
+            
+            .decrement-btn:hover, .increment-btn:hover {
+            background-color: #ddd;
+            }
+            
+            .qty-display {
+            font-size: 4rem;
+            min-width: 2rem;
+            text-align: center;
+            color: #333;
+            }
+            
+            /* Rate Text */
+            .scrap-item-rate > span {
+            white-space: nowrap;
+            margin-left: auto;
+            }
+            
             
             
             /* Modal Overlay, when order list empty */
@@ -1038,6 +1077,8 @@
             
             /* Modal Box */
             .modal-content {
+            width: 90%;
+            margin: 0 auto;
             background: white;
             padding: 8rem 5rem;
             border-radius: 10px;
@@ -1116,7 +1157,7 @@
             
             
             
-
+            
         </style>
     </head>
     <body>
@@ -1143,24 +1184,24 @@
             </div>
         </div>
         
-                    <button id="scrapButton">📝</button>
-            <div id="scrapList">
-                <div class="scrap-content">
-                    <button id="pinScrap">📌</button>
-                    <div id="closeScrap">×</div>
-                    <h2 style="font-size: 6rem;">CSB Order List</h2>
-                    <div id="scrapItemsContainer">
-                        <div id="scrapItems"></div>
-                        <!-- Total price aligned below the rate column -->
-                        <div id="totalPrice" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total: ₹0</div>
-                    </div>
-                    <div class="button-container">
-                        <button id="orderScrap">Order</button>
-                        <button id="clearScrap">Clear</button>
-                    </div>
-                    
+        <button id="scrapButton">📝</button>
+        <div id="scrapList">
+            <div class="scrap-content">
+                <button id="pinScrap">📌</button>
+                <div id="closeScrap">×</div>
+                <h2 style="font-size: 6rem;">Order List</h2>
+                <div id="scrapItemsContainer">
+                    <div id="scrapItems"></div>
+                    <!-- Total price aligned below the rate column -->
+                    <div id="totalPrice" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total: ₹0</div>
                 </div>
-            </div> 
+                <div class="button-container">
+                    <button id="orderScrap">Order</button>
+                    <button id="clearScrap">Clear</button>
+                </div>
+                
+            </div>
+        </div> 
         
         
         
@@ -1310,11 +1351,13 @@
                             console.log("Header Words:", headerText.split(/[\s,]+/).filter(word => word.length > 0));
                             
                             // Check if the header matches the search query
-                            const headerMatches = headerText.includes('ml') ? false : headerText.split(/[\s,]+/).filter(word => word.length > 0).some(word => {                                
+                            const isNumeric = !isNaN(normalizedSearchQuery); // Check if the search query is numeric
+                            
+                            const headerMatches = !isNumeric && headerText.split(' ').some(word => {
                                 const splitWords = word.split('('); 
-                                console.log("Header Word:", word, "Split Parts:", splitWords); // Debug: Log each word and its split parts
                                 return splitWords.some(part => part.startsWith(normalizedSearchQuery));
                             });
+                            
                             
                             let hasVisibleItemsInCategory = false;
                             
@@ -1649,6 +1692,11 @@
                     
                     
                     
+                    
+                    
+                    
+                    
+                    
                     let sidebar = document.getElementById('sidebar');
                     let indicator = document.createElement('div');
                     indicator.id = 'sidebar-indicator';
@@ -1670,27 +1718,17 @@
                     }
                     
                     // Mouse activation and deactivation
-                    indicator.addEventListener('click', () => {
+                    // Mouse and Touch activation for the sidebar
+                    indicator.addEventListener('click', toggleSidebar);
+                    indicator.addEventListener('touchstart', toggleSidebar, { passive: true });
+                    
+                    function toggleSidebar() {
                         sidebar.classList.toggle('open');
                         sidebar.classList.contains('open') ? disableScroll() : enableScroll();
-                    });
+                    }
                     
-                    // Mouse enter/leave logic (unchanged)
-                    document.addEventListener('mousemove', (event) => {
-                        clearTimeout(hoverTimeout);
-                        
-                        if (event.clientX > window.innerWidth - 50 && event.clientY > 0 && event.clientY < window.innerHeight) {
-                            hoverTimeout = setTimeout(() => {
-                                sidebar.classList.add('open');
-                                disableScroll();
-                            }, 300);
-                            } else {
-                            hoverTimeout = setTimeout(() => {
-                                sidebar.classList.remove('open');
-                                enableScroll();
-                            }, 300);
-                        }
-                    });
+                    
+                    
                     
                     // Deactivate on clicking outside sidebar
                     document.addEventListener('click', (event) => {
@@ -1700,39 +1738,7 @@
                         }
                     });
                     
-                    // Touch gesture handling with improved accuracy
-                    document.addEventListener('touchstart', (event) => {
-                        touchStartX = event.touches[0].clientX;
-                        touchStartY = event.touches[0].clientY;
-                    });
                     
-                    document.addEventListener('touchmove', (event) => {
-                        touchEndX = event.touches[0].clientX;
-                    });
-                    
-                    document.addEventListener('touchend', () => {
-                        if (touchEndX === 0) return;  // Ignore if no movement
-                        
-                        // **Swipe-in only if touch started within sidebar's vertical range**
-                        if (touchStartX < edgeThreshold && touchEndX > touchStartX + swipeThreshold &&
-                        touchStartY >= sidebarTop && touchStartY <= sidebarBottom) {
-                            sidebar.classList.add('open');
-                            disableScroll();
-                        } 
-                        // **Swipe-out works anywhere on the sidebar side**
-                        else if (touchStartX > window.innerWidth - edgeThreshold && touchEndX < touchStartX - swipeThreshold) {
-                            sidebar.classList.remove('open');
-                            enableScroll();
-                        }
-                        // **Touch outside sidebar closes it**
-                        else if (touchStartX > sidebar.offsetWidth + 50) {
-                            sidebar.classList.remove('open');
-                            enableScroll();
-                        }
-                        
-                        touchStartX = 0;
-                        touchEndX = 0;
-                    });
                     
                     // Toggle sidebar on indicator tap
                     indicator.addEventListener('touchstart', (event) => {
@@ -1924,24 +1930,39 @@
                         document.querySelector('.header').appendChild(hamburgerButton);
                         
                         // Create Sidebar
+                        // Create Sidebar (fixed missing close button and footer)
                         const hsidebar = document.createElement('div');
                         hsidebar.id = 'hsidebar';
                         hsidebar.innerHTML = `
                         <div class="hsidebar-content">
-                        <div class="sidebar-title" id="current-date"></div> <!-- Date will be here -->
-                        <div class="sidebar-title" id="digital-clock"></div> <!-- Digital clock will be here -->
-                        <div class="hsidebar-option" id="install-app">⚙️ Install CSB App</div>
-                        <div class="hsidebar-option" id="show-qrcode">🔗 App QR Code</div>
-                        <div class="hsidebar-option" id="copy-app-link">📋 Copy App Link</div>
-                        <div class="hsidebar-option" id="device-screen-info">📱 Screen Info</div> <!-- New option -->
-                        <!-- Close button -->
-                        <div id="close-sidebar" class="close-btn">&times;</div> <!-- Cross symbol -->                    
-                        <!-- Footer text -->
+                        <div class="menu-icon-container">
+                        <img src="icon-192.png" alt="App Icon">
+                        </div>
+                        <div id="close-sidebar" class="close-btn">&times;</div>
+                        <div class="hsidebar-option" id="install-app">
+                        <img src="icons/install.svg" alt="Install Icon" class="menu-icon invert-icon">
+                        Install CSB App
+                        </div>
+                        <div class="hsidebar-option" id="share-app-link">
+                        <img src="icons/share.svg" alt="Share Icon" class="menu-icon green-icon">
+                        Share App Link
+                        </div>
+                        <div class="hsidebar-option" id="copy-app-link">
+                        <img src="icons/copy-link.svg" alt="Install Icon" class="menu-icon invert-icon">
+                        Copy App Link
+                        </div>
+                        <div class="hsidebar-option" id="show-qrcode">
+                        <img src="icons/qr-code.svg" alt="Install Icon" class="menu-icon green-icon">
+                        App QR Code
+                        </div>
+                        <div class="hsidebar-option" id="device-screen-info">
+                        <img src="icons/display.svg" alt="Install Icon" class="menu-icon invert-icon">
+                        Screen Info
+                        </div>
                         <div class="footer-text" id="footer-info">
                         <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
                         </div>
-                        </div>
-                        `;
+                        </div>`;
                         document.body.appendChild(hsidebar);
                         
                         // Create Backdrop
@@ -1959,6 +1980,21 @@
                         </div>
                         `;
                         document.body.appendChild(qrCodeModal);
+                        
+                        // Add Share functionality
+                        document.getElementById('share-app-link').addEventListener('click', () => {
+                            const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
+                            if (navigator.share) {
+                                navigator.share({
+                                    title: 'Chai Sutta Bar',
+                                    url: appLink
+                                }).catch(console.error);
+                                } else {
+                                navigator.clipboard.writeText(appLink).then(() => {
+                                    showFeedback('Link copied');
+                                });
+                            }
+                        });
                         
                         // Open Sidebar
                         hamburgerButton.addEventListener('click', () => {
@@ -2013,18 +2049,12 @@
                             }
                         });
                         
-                        // Show QR Code
+                        // Fixed QR Code handler
                         document.getElementById('show-qrcode').addEventListener('click', () => {
-                            // Hide the sidebar when showing the modal
-                            const hsidebar = document.getElementById('hsidebar');
-                            const overlay = document.getElementById('sidebar-overlay');
                             hsidebar.classList.remove('open');
                             overlay.style.display = 'none';
+                            const qrCodeModal = document.getElementById('qr-code-modal');
                             qrCodeModal.style.display = 'block';
-                            document.body.style.overflow = ''; 
-                            document.documentElement.style.overflow = ''; 
-                            document.body.style.height = ''; 
-                            document.documentElement.style.height = '';
                         });
                         
                         // Close QR Code Modal
@@ -2039,33 +2069,11 @@
                             }
                         });
                         
-                        // Copy App Link
+                        // Fixed Copy Link handler
                         document.getElementById('copy-app-link').addEventListener('click', () => {
                             const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
                             navigator.clipboard.writeText(appLink).then(() => {
-                                
-                                
-                                // Create feedback element
-                                const feedback = document.createElement('div');
-                                feedback.textContent = 'Link copied';
-                                feedback.style.position = 'fixed';
-                                feedback.style.bottom = '20px';
-                                feedback.style.left = '50%';
-                                feedback.style.transform = 'translateX(-50%)';
-                                feedback.style.background = '#333';
-                                feedback.style.fontSize = '4rem';  // 👈 Adjust this value (e.g., 14px, 16px, 18px)
-                                feedback.style.color = '#fff';
-                                feedback.style.padding = '8px 16px';
-                                feedback.style.borderRadius = '4px';
-                                feedback.style.zIndex = '2000';
-                                document.body.appendChild(feedback);
-                                
-                                // Remove feedback after 2 seconds
-                                setTimeout(() => {
-                                    if (document.body.contains(feedback)) {
-                                        document.body.removeChild(feedback);
-                                    }
-                                }, 2000);
+                                showFeedback('Link copied'); // Use the shared feedback function
                             });
                         });
                         
@@ -2252,6 +2260,7 @@
                     
                     
                     
+                    
                     let deferredPrompt; // Variable to hold the deferred prompt event
                     
                     // Listen for the beforeinstallprompt event
@@ -2341,19 +2350,25 @@
                     // Close scrap list when clicking close button
                     document.getElementById('closeScrap').addEventListener('click', closeScrapList);                    
                     document.getElementById('clearScrap').addEventListener('click', () => {
-                        if (!scrapList) return; // Safety check                        
+                        if (!scrapList) return; // Safety check    
+                        
+                        isScrapListPinned = false; // Unlock the scrap list
+                        
                         // Add wash-out animation class
-                        scrapList.classList.add('wash-out-animation');                        
+                        scrapList.classList.add('wash-out-animation');
+                        
                         // Wait for animation to complete before clearing
                         setTimeout(() => {
                             scrapItems = []; // Clear the list after animation
                             updateScrapListDisplay(); // Refresh UI
                             showFeedback("Order list cleared"); // Show feedback message
-                            closeScrapList(); // Close the scrap list if needed                            
+                            closeScrapList(); // Close the scrap list
+                            
                             // Reset for future use
                             scrapList.classList.remove('wash-out-animation');
                         }, 800); // Match CSS animation duration
                     });
+                    
                     
                     // Add items to scrap list when clicking rates
                     document.getElementById('menu').addEventListener('click', (e) => {
@@ -2475,8 +2490,9 @@
                         
                         // Step 2: Convert map values to array and sort alphabetically by item name
                         const sortedItems = Array.from(itemMap.values()).sort((a, b) => 
-                        trimLeftNonEnglish(a.name).localeCompare(trimLeftNonEnglish(b.name))
+                        a.name.localeCompare(b.name)
                         );
+                        
                         
                         // Step 3: Generate HTML for sorted items with quantity stepper
                         scrapContainer.innerHTML = sortedItems.map((groupedItem) => `
@@ -2497,7 +2513,7 @@
                         // Step 4: Update total price
                         const totalPriceElement = document.getElementById('totalPrice');
                         const total = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
-                        totalPriceElement.textContent = `Total: ₹${total.toFixed(2)}`;
+                        totalPriceElement.textContent = `TOTAL: ₹${total.toFixed(2)}`;
                         
                         // Step 5: Add event listeners for quantity controls
                         document.querySelectorAll('.increment-btn').forEach(btn => {
@@ -2545,12 +2561,21 @@
                                 e.stopPropagation();
                                 const name = e.target.dataset.name;
                                 const rate = e.target.dataset.rate;
-                                scrapItems = scrapItems.filter(item => 
-                                item.name !== name || item.rate !== rate
-                                );
+                                
+                                // Remove the item from scrapItems
+                                scrapItems = scrapItems.filter(item => item.name !== name || item.rate !== rate);
+                                
+                                // Check if scrapItems is empty
+                                if (scrapItems.length === 0) {
+                                    isScrapListPinned = false;
+                                    closeScrapList();
+                                    showFeedback("Order list cleared"); // Show feedback message
+                                }
+                                
                                 updateScrapListDisplay();
                             });
                         });
+                        
                     }
                     
                     function showOrderListWarning() {                            
@@ -2628,6 +2653,8 @@
                             return;
                         }
                         
+                        
+                        
                         if (!scrapVisible) {
                             scrapVisible = true;
                             document.getElementById('scrapList').style.display = 'block';
@@ -2640,6 +2667,7 @@
                         if (!isScrapListPinned) {
                             scrapVisible = false;
                             document.getElementById('scrapList').style.display = 'none';
+                            resetPinStatus();
                         }
                     }
                     
@@ -2656,10 +2684,10 @@
                         // Group items by name and rate to calculate quantities
                         const itemMap = new Map();
                         scrapItems.forEach((item) => {
-                            const trimmedName = trimLeftNonEnglish(item.name); // Trim the name before use
-                            const key = `${trimmedName}-${item.rate}`;
-                            itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, name: trimmedName, qty: 1 });
-                        });                        
+                            const key = `${item.name}-${item.rate}`;
+                            itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
+                        });
+                        
                         const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));                        
                         // Generate order text with quantities
                         let orderText = sortedItems.map(item => 
@@ -2685,6 +2713,16 @@
                     }
                     
                     
+                    function resetPinStatus() {
+                        isScrapListPinned = false;
+                        const pinButton = document.getElementById('pinScrap');
+                        pinButton.textContent = '📌';
+                        showFeedback("List unpinned");
+                        
+                        const closeButton = document.getElementById('closeScrap');
+                        closeButton.disabled = false;
+                        closeButton.style.color = ''; 
+                    }
                     
                     
                     
@@ -2697,9 +2735,13 @@
                         isScrapListPinned = !isScrapListPinned;
                         this.textContent = isScrapListPinned ? '🔒' : '📌';
                         showFeedback(isScrapListPinned ? "List pinned" : "List unpinned");
+                        // New lines below
+                        const closeButton = document.getElementById('closeScrap');
+                        closeButton.disabled = isScrapListPinned;
+                        closeButton.style.color = isScrapListPinned ? 'gray' : '';
                     });
                     
                 </script>        
                 <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
             </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                        
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                
