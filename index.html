@@ -61,8 +61,14 @@
             min-height: 100vh;
             overflow-x: hidden;
             max-width: 100vw;
-            padding:2rem;              
+            padding:2rem;       
+             user-select: none; /* Prevents text selection */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
             }
+            
+
             
             /* Feedback Message */
             .feedback-message {
@@ -166,6 +172,9 @@
             border-bottom: 1px solid #fae68e; /* Adds a border */                    
             }
             
+            
+            
+            
             .scrollable {
             position: absolute; /* Fix the header at the top */
             }
@@ -206,12 +215,19 @@
             font-size: 5rem;            
             }
             
-            
+                          @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .blink {
+    animation: blink 1s infinite;
+  }
             
             
             #main-content {
             flex: 1; /* Grow to fill remaining space */
-            padding-top: 20rem; /* Add padding equal to the header height */
+            padding-top: 16rem; /* Add padding equal to the header height */
             scroll-padding-top: 20rem;
             overflow-y: auto; /* Allow scrolling for content */
             }
@@ -371,6 +387,80 @@
             text-align: left; /* Ensures right alignment */
             }
             
+            
+            
+            /* Offers Button Styles */
+            #offers-button {
+            position: relative;
+            margin: 3rem auto;
+            width: fit-content;
+            background: #fae68e;
+            color: #212121;
+            border: none;
+            border-radius: 5rem;
+            padding: 1rem 3rem;
+            font-size: 5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: none; /* Hidden by default */
+            z-index: 500;
+            }
+            
+            #offers-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            
+            display: none;
+            text-align: center;
+            }
+            
+            /* Offer Section Styles */
+            .offer-container {
+            
+            margin: 2rem auto;
+            max-width: 600px;
+            }
+            
+            .offer-item {
+            background: #333;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.2s ease;
+            }
+            
+            .offer-item:hover {
+            transform: translateY(-3px);
+            }
+            
+            .offer-title {
+            color: #fae68e;
+            font-size: 6rem;
+            margin-bottom: 1rem;
+            }
+            
+            .offer-dates {
+            color: #40E0D0;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            }
+            
+            .offer-description {
+            color: #ccc;
+            font-size: 4.5rem;
+            line-height: 1.4;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
             #menu {
             margin: 0 auto; /* Centers the menu */            
             width: 100%; /* Default width for small screens */
@@ -389,6 +479,10 @@
             justify-content: space-between;
             color: #fae68e;
             align-items: center;            
+            }
+            
+            .category-header:hover {
+            transform: translateY(-3px);
             }
             
             .category-header .left {
@@ -554,8 +648,7 @@
             font-size: 5rem;
             cursor: pointer;
             z-index: 1001;
-            color: #FFFFFF; /* Lighter text for visibility */
-            
+            color: #FFFFFF; /* Lighter text for visibility */            
             transition: transform 0.3s ease, background 0.3s ease;
             }
             
@@ -563,21 +656,36 @@
             transform: scale(1.1); /* Zoom in the button by 10% */
             }
             
-            /* Sidebar */
-            #hsidebar {
+            /* Add container styling */
+            .hsidebar-container {
             position: fixed;
             top: 0;
-            left: -80%; /* Adjust this to move the sidebar off-screen initially */
-            width: 70vw; /* Set the width to 50% of the viewport width */
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 600px;
+            width: 100%;
+            height: 75%;
+            z-index: 1002;
+            overflow: hidden;
+            pointer-events: none; /* Allow clicks through container when closed */
+            }
+            
+            /* Update existing #hsidebar styling */
+            #hsidebar {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 75%;
             height: 100%;
-            background: #1c1c1c; /* Dark gray for better contrast */
+            background: #1c1c1c;
             backdrop-filter: blur(8px);
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
             transition: left 0.3s ease;
             z-index: 1002;
             padding-top: 40px;
             border-radius: 0 15px 15px 0;
-            color: #e0e0e0; /* Soft white text */
+            color: #e0e0e0;
+            pointer-events: auto; /* Enable clicks when visible */
             }
             
             #hsidebar.open {
@@ -586,7 +694,7 @@
             
             /* Sidebar Content */
             .hsidebar-content {
-            padding: 20px;
+            padding: 0;
             }
             
             .hsidebar-option {
@@ -595,10 +703,8 @@
             cursor: pointer;
             font-size: 5rem;
             font-weight: 500;
-            text-align: left;
-            
-            color: #e0e0e0;
-            
+            text-align: left;            
+            color: #e0e0e0;            
             transition: background 0.3s ease, transform 0.3s ease;
             }
             
@@ -655,8 +761,7 @@
             max-width: 100%;  /* Prevents overflow */
             object-fit: contain; /* Ensure the whole image is visible */
             }
-            
-            
+                        
             #close-modal {
             position: absolute;
             top: 10px;
@@ -678,20 +783,16 @@
             color: white; /* Change to your preferred color */
             margin-bottom: 20px; /* Optional: Adds space below the CSB text */
             }
-            
-            
-            
+                                
             /* Style for the footer text */
             .footer-text {
             position: absolute;
             bottom: 6rem; /* Position the footer text at the bottom */
-       
-          
             font-size: 4rem; /* Font size for the footer text */
             color: #f1f1f1; /* Light color for visibility */
             text-align: left; /* Center the text */
             line-height: 1.5;
-             margin-left: 5rem;
+            margin-left: 5rem;
             }
             
             /* Close button */
@@ -708,13 +809,11 @@
             #close-sidebar:hover {
             color: #ff5555; /* Change to red on hover */
             }
-            
-            
+                        
             .menu-icon {
             width: 1em;
             height: 1em;
-            margin-right: 4rem;
-            
+            margin-right: 4rem;            
             vertical-align: middle;
             }
             
@@ -724,8 +823,7 @@
             
             .green-icon {
             /* For <img> tag */
-            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
-            
+            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);            
             /* For inline SVG */
             fill: green;
             }
@@ -825,29 +923,34 @@
             
             
             
+#scrapButton {
+  all: unset; /* Reset all styles */
+  
+  /* Reapply only the necessary styles */
+  position: fixed;
+  bottom: 5rem;
+  right: calc(50% - 300px + 4rem); /* Align with 600px centered menu */
+  font-size: 5rem;
+  
+  /* Add any other styles you want to keep */
+  cursor: pointer; /* Change from grab to pointer for better UX */
+  z-index: 1001;
+}
+
+#scrapButton img {
+  transition: opacity 0.3s ease, filter 0.3s ease;
+  pointer-events: none; /* Ensure this remains */
+}
+
+#scrapButton img.dimmed {
+  opacity: 0.5;
+  filter: grayscale(50%);
+}
             
-            
-            /* Scrap Button Styles */
+            @media (max-width: 600px) {
             #scrapButton {
-            position: fixed;
-            bottom: 7rem; /* Position at the bottom */
-            right: 7rem; /* Position at the right */
-            width: 8rem; /* Fixed width */
-            height: 8rem; /* Fixed height */
-            background: linear-gradient(145deg, #ff5722, #e64a19); /* Gradient background */
-            border: none;
-            border-radius: 50%; /* Make it circular */
-            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.1); /* 3D shadow effect */
-            color: white;
-            font-size: 4rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: grab; /* Cursor indicates it can be grabbed */
-            transition: transform 0.2s ease-in-out;
-            user-select: none; /* Prevent text selection */
-            z-index: 1001; /* Ensure it stays on top */
+            right: 5rem; /* Default positioning for mobile */
+            }
             }
             
             /* Hover effect */
@@ -1156,7 +1259,7 @@
             
             
             
-            
+
             
         </style>
     </head>
@@ -1184,7 +1287,8 @@
             </div>
         </div>
         
-        <button id="scrapButton">📝</button>
+        
+        
         <div id="scrapList">
             <div class="scrap-content">
                 <button id="pinScrap">📌</button>
@@ -1207,6 +1311,8 @@
         
         <!-- Main Content Wrapper -->
         <div id="main-content">
+            <button id="offers-button"></button>
+            <div id="offers-container" class="offer-container"></div>
             <!-- Search Bar -->
             <div class="search-container">
                 <div class="search-input-wrapper">
@@ -1215,6 +1321,8 @@
                     <span id="clearButton" class="clear-btn" style="display: none;">×</span>
                 </div>
             </div>
+            
+            
             
             <!-- Filter Container -->
             <div id="filterContainer">
@@ -1230,7 +1338,13 @@
                     </div>
                     
                     <!-- Menu -->
-                    <div id="menu"></div>
+                    <div id="menu">
+<button id="scrapButton">
+  <img src="icons/food.svg" class="invert-icon" alt="Edit Icon" width="40" height="40">
+</button>
+
+
+                    </div>
                 </div>
                 
                 <div class="feedback-message"></div>
@@ -1254,6 +1368,8 @@
                     <div class="signature">Developed by Komal Brar</div>        
                 </div>
                 
+                
+                
                 <!-- Sidebar -->
                 <div id="sidebar">
                     <a id="delivery-link" href="#"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
@@ -1267,6 +1383,15 @@
                 
                 
                 <script>
+          
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.addEventListener('copy', event => event.preventDefault());
+  document.addEventListener('cut', event => event.preventDefault());
+  document.addEventListener('paste', event => event.preventDefault());
+
+
+
+                
                     function showFeedback(message) {
                         const feedback = document.querySelector('.feedback-message');
                         feedback.textContent = message;
@@ -1544,7 +1669,7 @@
                     
                     
                     
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbxuUPspmNOLZQqAPJqjksNyJvkXIcUXHdwQpBrr-vnapqBoUV6nEeMM82RZcNsDdKD3MA/exec";
+                    const scriptUrl = "https://script.google.com/macros/s/AKfycbzaPg6k8q2MDqo_itlCt-pQD55bADdif2M8W2m4YrMsTc9xb-FnIVeVETKEIORD5yn4kA/exec";
                     
                     // Fetch data from Google Script URL
                     fetch(scriptUrl)
@@ -1854,11 +1979,15 @@
                                 const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
                                 
                                 // Compare times based on minutes from midnight
-                                if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
-                                    statusMessage = `<span style="color: #00FF00;">Open</span> ⋅ Closes ${formatTime(closeTime)}`;
-                                    } else {
-                                    statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ Opens ${formatTime(openTime)}`;
-                                }
+if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
+    const timeLeft = closeTimeInMinutes - currentTime;
+    const blinkClass = timeLeft <= 30 ? 'blink' : '';
+    statusMessage = `<span style="color: #00FF00; font-weight: bold;">Open</span> <span class="${blinkClass}">until ${formatTime(closeTime)}</span>`;
+} else {
+    const timeUntilOpen = openTimeInMinutes - currentTime;
+    const blinkClass = timeUntilOpen <= 30 ? 'blink' : '';
+    statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ <span class="${blinkClass}">Opens ${formatTime(openTime)}</span>`;
+}
                             }
                             
                             
@@ -1926,17 +2055,20 @@
                         hamburgerButton.id = 'hamburger-button';
                         hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
                         
+                        // Create hsidebar container
+                        const hsidebarContainer = document.createElement('div');
+                        hsidebarContainer.className = 'hsidebar-container';
+                        
                         // Append it to the header
                         document.querySelector('.header').appendChild(hamburgerButton);
                         
-                        // Create Sidebar
                         // Create Sidebar (fixed missing close button and footer)
                         const hsidebar = document.createElement('div');
                         hsidebar.id = 'hsidebar';
                         hsidebar.innerHTML = `
                         <div class="hsidebar-content">
                         <div class="menu-icon-container">
-                        <img src="icon-192.png" alt="App Icon">
+                        <img src="icon-192.png" alt="CSB Logo">
                         </div>
                         <div id="close-sidebar" class="close-btn">&times;</div>
                         <div class="hsidebar-option" id="install-app">
@@ -1963,7 +2095,9 @@
                         <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
                         </div>
                         </div>`;
-                        document.body.appendChild(hsidebar);
+                        
+                        hsidebarContainer.appendChild(hsidebar);
+                        document.body.appendChild(hsidebarContainer);
                         
                         // Create Backdrop
                         const overlay = document.createElement('div');
@@ -2334,18 +2468,27 @@
                     let scrapVisible = false;
                     
                     // Scrap Button Functionality
-                    document.getElementById('scrapButton').addEventListener('click', toggleScrapList);
+                   // Scrap Button Functionality
+document.getElementById('scrapButton').addEventListener('click', function(e) {
+  // Prevent event from bubbling up to document listener
+  e.stopPropagation();
+  toggleScrapList();
+});
                     
-                    // Close scrap list when clicking outside
-                    document.addEventListener('click', (e) => {
-                        const scrapList = document.getElementById('scrapList');
-                        const scrapButton = document.getElementById('scrapButton');
-                        if (scrapVisible && !scrapList.contains(e.target) && e.target !== scrapButton) {
-                            if (!isScrapListPinned) {
-                                closeScrapList();
-                            }
-                        }
-                    });
+// Close scrap list when clicking outside
+document.addEventListener('click', (e) => {
+  const scrapList = document.getElementById('scrapList');
+  const scrapButton = document.getElementById('scrapButton');
+  
+  // Check if click is outside both scrap list and scrap button
+  if (scrapVisible && 
+      !scrapList.contains(e.target) && 
+      !scrapButton.contains(e.target)) {
+    if (!isScrapListPinned) {
+      closeScrapList();
+    }
+  }
+});
                     
                     // Close scrap list when clicking close button
                     document.getElementById('closeScrap').addEventListener('click', closeScrapList);                    
@@ -2583,7 +2726,9 @@
                         let existingModal = document.getElementById('orderListWarningModal');
                         if (existingModal) {
                             existingModal.remove(); // Remove existing modal if any
-                        }                        
+                            isWarningVisible = false;
+                            return;
+                        }                       
                         // Create modal container
                         let modal = document.createElement('div');
                         modal.id = 'orderListWarningModal';
@@ -2632,29 +2777,53 @@
                             }
                             isEnglish = !isEnglish;
                         });                        
-                        // Close functionality
+                        // ======== CLOSE HANDLERS START ======== //
                         function closeModal() {
-                            modal.classList.add('fade-out');
-                            setTimeout(() => modal.remove(), 300);
-                        }                        
+                            modal.remove();
+                            isWarningVisible = false;
+                        }
+                        
+                        // Auto-close after 60 seconds
+                        const autoCloseTimer = setTimeout(closeModal, 60000);
+                        
                         // Close on cross button click
-                        modal.querySelector('.close-button').addEventListener('click', closeModal);                    
+                        modal.querySelector('.close-button').addEventListener('click', () => {
+                            clearTimeout(autoCloseTimer);
+                            closeModal();
+                        });                    
+                        
                         // Close on outside click
                         modal.addEventListener('click', (event) => {
-                            if (event.target === modal) closeModal();
-                        });                        
-                        // Auto close after 
-                        setTimeout(closeModal, 60000);
+                            if (event.target === modal) {
+                                clearTimeout(autoCloseTimer);
+                                closeModal();
+                            }
+                        });
+                        // ======== CLOSE HANDLERS END ======== //
+                        
+                        isWarningVisible = true;
                     }                    
                     
+                    // Add variable to track warning visibility
+                    let isWarningVisible = false;
+                    
+                    // Modified toggleScrapList function
                     function toggleScrapList() {                        
                         if (scrapItems.length === 0) {
-                            showOrderListWarning();
+                            const existingModal = document.getElementById('orderListWarningModal');
+                            if (existingModal) {
+                                // If modal exists, close it
+                                existingModal.remove();
+                                isWarningVisible = false;
+                                } else {
+                                // If modal doesn't exist, show it
+                                showOrderListWarning();
+                                isWarningVisible = true;
+                            }
                             return;
                         }
                         
-                        
-                        
+                        // Existing logic for non-empty scrap list
                         if (!scrapVisible) {
                             scrapVisible = true;
                             document.getElementById('scrapList').style.display = 'block';
@@ -2691,7 +2860,7 @@
                         const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));                        
                         // Generate order text with quantities
                         let orderText = sortedItems.map(item => 
-                        `${item.qty} x ${item.name} @ ₹${item.rate}`
+                        `${item.qty} x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate}`
                         ).join('\n');                        
                         // Calculate total correctly
                         let total = sortedItems.reduce((acc, item) => 
@@ -2706,42 +2875,122 @@
                     });
                     
                     
-                    function calculateTotal() {
-                        return scrapItems.reduce((total, item) => {
-                            return total + parseFloat(item.rate);
-                        }, 0);
-                    }
-                    
-                    
-                    function resetPinStatus() {
-                        isScrapListPinned = false;
-                        const pinButton = document.getElementById('pinScrap');
-                        pinButton.textContent = '📌';
-                        showFeedback("List unpinned");
-                        
-                        const closeButton = document.getElementById('closeScrap');
-                        closeButton.disabled = false;
-                        closeButton.style.color = ''; 
-                    }
-                    
-                    
-                    
-                    // Add these JavaScript modifications
-                    let isScrapListPinned = false;
-                    
-                    // Add pin button functionality
-                    document.getElementById('pinScrap').addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        isScrapListPinned = !isScrapListPinned;
-                        this.textContent = isScrapListPinned ? '🔒' : '📌';
-                        showFeedback(isScrapListPinned ? "List pinned" : "List unpinned");
-                        // New lines below
-                        const closeButton = document.getElementById('closeScrap');
-                        closeButton.disabled = isScrapListPinned;
-                        closeButton.style.color = isScrapListPinned ? 'gray' : '';
-                    });
-                    
+                function calculateTotal() {
+                return scrapItems.reduce((total, item) => {
+                return total + parseFloat(item.rate);
+                }, 0);
+                }
+                
+                
+                function resetPinStatus() {
+                isScrapListPinned = false;
+                const pinButton = document.getElementById('pinScrap');
+                pinButton.textContent = '📌';
+               
+                
+                const closeButton = document.getElementById('closeScrap');
+                closeButton.disabled = false;
+                closeButton.style.color = ''; 
+                }
+                
+                
+                
+                // Add these JavaScript modifications
+                let isScrapListPinned = false;
+                
+                // Add pin button functionality
+document.getElementById('pinScrap').addEventListener('click', function(e) {
+  e.stopPropagation();
+  isScrapListPinned = !isScrapListPinned;
+  this.textContent = isScrapListPinned ? '🔒' : '📌';
+  showFeedback(isScrapListPinned ? "List pinned" : "List unpinned");
+  
+  // Toggle dimmed class on scrap button image
+  const scrapButtonImg = document.querySelector('#scrapButton img');
+  scrapButtonImg.classList.toggle('dimmed', isScrapListPinned);
+  
+  // Existing close button handling
+  const closeButton = document.getElementById('closeScrap');
+  closeButton.disabled = isScrapListPinned;
+  closeButton.style.color = isScrapListPinned ? 'gray' : '';
+});
+                
+                
+                
+                
+                
+                
+                // Fetch and display offers with collapsible button
+                function formatDate(dateString) {
+                const date = new Date(dateString);
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = date.toLocaleString('en-US', { month: 'short' });
+                const year = date.getFullYear().toString().slice(-2);
+                return `${day}-${month}-${year}`;
+                }
+                
+                // Offer elements
+                const offersButton = document.getElementById('offers-button');
+                const offersContainer = document.getElementById('offers-container');
+                
+                fetch(scriptUrl + "?sheet=offer")
+                .then(response => response.json())
+                .then(offerData => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                // Filter valid offers
+                const validOffers = offerData.filter(offer => {
+                const startDate = new Date(offer[0]);
+                startDate.setHours(0, 0, 0, 0);
+                return startDate >= today;
+                });
+                
+                // Update offers button
+                if (validOffers.length > 0) {
+                offersButton.innerHTML = `${validOffers.length} Offer${validOffers.length > 1 ? 's' : ''} Available <span class="arrow">▼</span>`;
+                offersButton.style.display = 'block';
+                
+                // Add toggle functionality
+                offersButton.addEventListener('click', () => {
+                const isVisible = offersContainer.style.display === 'block';
+                offersContainer.style.display = isVisible ? 'none' : 'block';
+                offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
+                });
+                } /* else {
+                offersButton.textContent = 'No offer available';
+                offersButton.style.display = 'block';
+                offersButton.style.cursor = 'default';
+                } */
+                
+                
+                // Populate offers
+                offersContainer.innerHTML = validOffers.map(offer => `
+                <div class="offer-item">
+                <h2 class="offer-title">${offer[1]}</h2>
+                <p class="offer-dates">${formatDate(offer[0])} to ${formatDate(offer[3])}</p>
+                <p class="offer-description">${offer[2]}</p>
+                </div>
+                `).join('');
+                
+                })
+                .catch(error => {
+                console.error('Error loading offers:', error);
+                offersButton.textContent = 'Offers unavailable';
+                offersButton.style.display = 'block';
+                });
+                
+                // Close offers when clicking outside
+                document.addEventListener('click', (e) => {
+                if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
+                offersContainer.style.display = 'none';
+                const arrow = offersButton.querySelector('.arrow');
+                if (arrow) arrow.textContent = '▼';
+                }
+                });
+                
+                
                 </script>        
                 <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-            </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                </body>
+                </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
