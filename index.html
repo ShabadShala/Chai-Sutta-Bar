@@ -425,7 +425,7 @@
             
             .offer-item {
             background: #333;
-            border-radius: 1rem;
+            border-radius: 3rem;
             padding: 2rem;
             margin-bottom: 2rem;
             transition: transform 0.2s ease;
@@ -937,11 +937,22 @@
             #scrapButton img {
             transition: opacity 0.3s ease, filter 0.3s ease;
             pointer-events: none; /* Ensure this remains */
-            }
+            }            
             
             #scrapButton img.dimmed {
             opacity: 0.5;
             filter: grayscale(50%);
+            }
+            
+            /* Green when items present */
+            #scrapButton.has-items img {
+            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%) !important;
+            }
+            
+            @keyframes pulse-green {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
             }
             
             @media (max-width: 600px) {
@@ -953,6 +964,11 @@
             /* Hover effect */
             #scrapButton:hover {
             transform: scale(1.1); /* Slightly enlarge on hover */
+            }
+            
+            #scrapButton.anti-hover:hover {
+            transform: none; /* Prevents scaling */
+            pointer-events: none; /* Optional: Prevents any interaction */
             }
             
             /* Active effect */
@@ -1666,7 +1682,7 @@
                     
                     
                     
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbzaPg6k8q2MDqo_itlCt-pQD55bADdif2M8W2m4YrMsTc9xb-FnIVeVETKEIORD5yn4kA/exec";
+                    const scriptUrl = "https://script.google.com/macros/s/AKfycbz-7gsoV7OoDuiSENqIJ2MgR-VB7eei29SbYbuOkxz0oV7-LrDeoG5-mkYcnuvTbRQFAA/exec";
                     
                     // Fetch data from Google Script URL
                     fetch(scriptUrl)
@@ -1981,7 +1997,16 @@
                                     const blinkClass = timeLeft <= 30 ? 'blink' : '';
                                     statusMessage = `<span style="color: #00FF00; font-weight: bold;">Open</span> <span class="${blinkClass}">until ${formatTime(closeTime)}</span>`;
                                     } else {
-                                    const timeUntilOpen = openTimeInMinutes - currentTime;
+                                    let timeUntilOpen = openTimeInMinutes - currentTime;
+                                    
+                                    // Check if the opening time is on the next day
+                                    if (timeUntilOpen < 0) {
+                                        // Calculate the time difference until the next day's opening
+                                        const minutesInDay = 24 * 60;
+                                        timeUntilOpen = minutesInDay + timeUntilOpen; // Add a full day's worth of minutes
+                                    }
+                                    
+                                    
                                     const blinkClass = timeUntilOpen <= 30 ? 'blink' : '';
                                     statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ <span class="${blinkClass}">Opens ${formatTime(openTime)}</span>`;
                                 }
@@ -2076,10 +2101,6 @@
                         <img src="icons/share.svg" alt="Share Icon" class="menu-icon green-icon">
                         Share App Link
                         </div>
-                        <div class="hsidebar-option" id="copy-app-link">
-                        <img src="icons/copy-link.svg" alt="Install Icon" class="menu-icon invert-icon">
-                        Copy App Link
-                        </div>
                         <div class="hsidebar-option" id="show-qrcode">
                         <img src="icons/qr-code.svg" alt="Install Icon" class="menu-icon green-icon">
                         App QR Code
@@ -2095,6 +2116,13 @@
                         
                         hsidebarContainer.appendChild(hsidebar);
                         document.body.appendChild(hsidebarContainer);
+                        
+                        // Komal
+                        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                            document.getElementById('install-app').style.display = 'none';
+                        }
+                        
+                        
                         
                         // Create Backdrop
                         const overlay = document.createElement('div');
@@ -2200,13 +2228,6 @@
                             }
                         });
                         
-                        // Fixed Copy Link handler
-                        document.getElementById('copy-app-link').addEventListener('click', () => {
-                            const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
-                            navigator.clipboard.writeText(appLink).then(() => {
-                                showFeedback('Link copied'); // Use the shared feedback function
-                            });
-                        });
                         
                         // Show Device Screen Info
                         document.getElementById('device-screen-info').addEventListener('click', function() {
@@ -2435,42 +2456,49 @@
                     
                     
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     let scrapItems = [];
-                    let scrapVisible = false;
+                    let scrapVisible = false;                                                        
+                    // Add these JavaScript modifications
+                    let isScrapListPinned = false;                                        
+                    // Add variable to track warning visibility
+                    let isWarningVisible = false;
                     
-                    // Scrap Button Functionality
                     // Scrap Button Functionality
                     document.getElementById('scrapButton').addEventListener('click', function(e) {
                         // Prevent event from bubbling up to document listener
                         e.stopPropagation();
                         toggleScrapList();
                     });
+                    
+                    function updateScrapButtonStatus() {
+                        const scrapButton = document.getElementById('scrapButton');
+                        scrapButton.classList.toggle('has-items', scrapItems.length > 0);
+                        
+                        
+                        const scrapButtonImg = document.querySelector('#scrapButton img');
+                        if (isScrapListPinned) {
+                            scrapButton.classList.remove('invert-icon');
+                            scrapButtonImg.classList.add('dimmed');    
+                            scrapButton.classList.add('anti-hover');
+                            } else {
+                            scrapButton.classList.add('invert-icon');                            
+                            scrapButtonImg.classList.remove('dimmed');                            
+                            scrapButton.classList.remove('anti-hover');
+                        }
+                        
+                        
+                        // Optional: Add subtle pulse animation when items are added
+                        if (scrapItems.length > 0) {
+                            scrapButton.style.animation = 'pulse-green 1s ease';
+                            setTimeout(() => scrapButton.style.animation = '', 1000);
+                        }
+                    }
+                    
+                    function handleScrapItemsChange() {
+                        updateScrapListDisplay();
+                        updateScrapButtonStatus(); // Add this line
+                        saveScrapState(); // If you have persistence
+                    }
                     
                     // Close scrap list when clicking outside
                     document.addEventListener('click', (e) => {
@@ -2488,7 +2516,8 @@
                     });
                     
                     // Close scrap list when clicking close button
-                    document.getElementById('closeScrap').addEventListener('click', closeScrapList);                    
+                    document.getElementById('closeScrap').addEventListener('click', closeScrapList);
+                    
                     document.getElementById('clearScrap').addEventListener('click', () => {
                         if (!scrapList) return; // Safety check    
                         
@@ -2507,11 +2536,13 @@
                             // Reset for future use
                             scrapList.classList.remove('wash-out-animation');
                         }, 800); // Match CSS animation duration
-                    });
-                    
+                        scrapItems = [];
+                        handleScrapItemsChange();
+                    });                    
                     
                     // Add items to scrap list when clicking rates
                     document.getElementById('menu').addEventListener('click', (e) => {
+                        
                         const rateElement = e.target.closest('.colCDE span, .colCDE');
                         if (rateElement && rateElement.textContent.match(/₹?\d+/)) {
                             const menuItemLine = rateElement.closest('.menu-item-line');
@@ -2543,29 +2574,31 @@
                             
                             // Rest of your existing click handling code...
                             const clickedRate = rateElement.textContent.replace('₹', '').trim();
+                            
                             if (clickedRate.includes('/')) {
-                                showToggleButtonFeedback('❌', 'red');
-                                return;
+                                showTapFeedbackInCenter('❌');
+                                playBeep(600, 0.15);
+                                } else {
+                                animateRateMovement(rateElement);                                
+                                scrapItems.push({ 
+                                    name: combinedName, 
+                                    rate: clickedRate 
+                                });
                             }
                             
-                            animateRateMovement(rateElement);
                             
-                            scrapItems.push({ 
-                                name: combinedName, 
-                                rate: clickedRate 
-                            });
-                            
-                            showToggleButtonFeedback('✅', '#00FF00');
                             updateScrapListDisplay();
                         }
+                        handleScrapItemsChange();
                     });
-                    
                     
                     function animateRateMovement(sourceElement) {
                         const scrapButton = document.getElementById('scrapButton');                        
+                        
                         // Get positions of the source element and the scrap button
                         const sourceRect = sourceElement.getBoundingClientRect();
                         const targetRect = scrapButton.getBoundingClientRect();                        
+                        
                         // Create a floating clone of the rate element
                         const floatingClone = document.createElement('div');
                         floatingClone.textContent = sourceElement.textContent;
@@ -2582,42 +2615,96 @@
                         floatingClone.style.zIndex = '1000';
                         
                         document.body.appendChild(floatingClone);                        
+                        
                         // Force repaint before moving
                         requestAnimationFrame(() => {
                             floatingClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px) scale(0.5)`;
                             floatingClone.style.opacity = '0';
                         });                        
+                        
                         // Remove the element after animation
                         setTimeout(() => {
                             floatingClone.remove();
                         }, 500);
                     }
                     
-                    let feedbackTimeout; // Store the timeout reference
-                    let originalContent; // Store original content persistently                    
-                    function showToggleButtonFeedback(symbol, color) {
-                        const scrapButton = document.getElementById('scrapButton');                        
-                        // Store original content only if it's not already replaced
-                        if (!originalContent) {
-                            originalContent = scrapButton.innerHTML;
-                        }                        
-                        // Clear any existing timeout to prevent overlapping animations
-                        clearTimeout(feedbackTimeout);                        
-                        // Set the feedback symbol with drop shadow
-                        scrapButton.innerHTML = `<span style="filter: drop-shadow(0 0 2px ${color});">${symbol}</span>`;
-                        scrapButton.disabled = true; // Disable the button temporarily                        
-                        // Ensure the button resets correctly
-                        feedbackTimeout = setTimeout(() => {
-                            scrapButton.innerHTML = originalContent;
-                            scrapButton.disabled = false;
-                            originalContent = null; // Reset originalContent after restoring
-                        }, 250);
+                    //Komal
+                    function showTapFeedback(symbol, x, y) {
+                        const feedbackElement = document.createElement('div');
+                        feedbackElement.textContent = symbol;
+                        feedbackElement.style.position = 'fixed';
+                        feedbackElement.style.left = `${x}px`;  // Exact tap position
+                        feedbackElement.style.top = `${y}px`;
+                        feedbackElement.style.fontSize = '6rem';
+                        feedbackElement.style.fontWeight = 'bold';
+                        feedbackElement.style.color = 'red';
+                        feedbackElement.style.transition = 'transform 0.3s ease-out, opacity 0.5s ease-out';
+                        feedbackElement.style.zIndex = '1000';
+                        feedbackElement.style.transform = 'scale(0)';
+                        
+                        document.body.appendChild(feedbackElement);
+                        
+                        // Trigger zoom-in effect
+                        requestAnimationFrame(() => {
+                            feedbackElement.style.transform = 'scale(2)';
+                        });
+                        
+                        // Remove feedback after animation
+                        setTimeout(() => {
+                            feedbackElement.remove();
+                        }, 500);
                     }
+                    
+                    function showTapFeedbackInCenter(symbol) {
+                        const feedbackElement = document.createElement('div');
+                        feedbackElement.textContent = symbol;
+                        feedbackElement.style.position = 'fixed';
+                        
+                        // Center horizontally and vertically
+                        feedbackElement.style.left = `${window.innerWidth / 2}px`;
+                        feedbackElement.style.top = `${window.innerHeight / 2}px`;
+                        
+                        feedbackElement.style.transform = 'translate(-50%, -50%) scale(0)'; // Center and start small
+                        feedbackElement.style.fontSize = '6rem';
+                        feedbackElement.style.fontWeight = 'bold';
+                        feedbackElement.style.color = 'red';
+                        feedbackElement.style.transition = 'transform 0.3s ease-out, opacity 0.5s ease-out';
+                        feedbackElement.style.zIndex = '1000';
+                        
+                        document.body.appendChild(feedbackElement);
+                        
+                        // Trigger zoom-in effect
+                        requestAnimationFrame(() => {
+                            feedbackElement.style.transform = 'translate(-50%, -50%) scale(2)';
+                        });
+                        
+                        // Remove feedback after animation
+                        setTimeout(() => {
+                            feedbackElement.remove();
+                        }, 500);
+                    }
+                    
+                    function playBeep(frequency, duration) {
+                        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        const oscillator = audioCtx.createOscillator();
+                        const gainNode = audioCtx.createGain();
+                        
+                        oscillator.type = 'sine'; // Standard beep tone
+                        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // Volume
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioCtx.destination);
+                        
+                        oscillator.start();
+                        setTimeout(() => {
+                            oscillator.stop();
+                        }, duration * 1000); // Convert to milliseconds
+                    }
+                    
                     
                     function updateScrapListDisplay() {
                         const scrapContainer = document.getElementById('scrapItems');
-                        
-                        
                         
                         // Step 1: Combine duplicate items and calculate quantities
                         const itemMap = new Map();
@@ -2634,7 +2721,6 @@
                         const sortedItems = Array.from(itemMap.values()).sort((a, b) => 
                         a.name.localeCompare(b.name)
                         );
-                        
                         
                         // Step 3: Generate HTML for sorted items with quantity stepper
                         scrapContainer.innerHTML = sortedItems.map((groupedItem) => `
@@ -2713,11 +2799,12 @@
                                     closeScrapList();
                                     showFeedback("Order list cleared"); // Show feedback message
                                 }
-                                
+                                handleScrapItemsChange();
                                 updateScrapListDisplay();
                             });
                         });
                     }
+                    
                     
                     function showOrderListWarning() {                            
                         // Check if modal already exists, if not, create one
@@ -2797,13 +2884,9 @@
                                 closeModal();
                             }
                         });
-                        // ======== CLOSE HANDLERS END ======== //
-                        
+                        // ======== CLOSE HANDLERS END ======== //                        
                         isWarningVisible = true;
                     }                    
-                    
-                    // Add variable to track warning visibility
-                    let isWarningVisible = false;
                     
                     // Modified toggleScrapList function
                     function toggleScrapList() {                        
@@ -2865,13 +2948,10 @@
                         acc + (parseFloat(item.rate) * item.qty), 0
                         );                        
                         let message = encodeURIComponent(
-                        `*🍵 New Order*\n${'-'.repeat(25)}\n${orderText.split('\n').join('\n\n')}\n${'-'.repeat(25)}\n*Total: ₹${Math.round(total)}* only`
+                        `*🍵 My Order*\n${'-'.repeat(25)}\n${orderText.split('\n').join('\n\n')}\n${'-'.repeat(25)}\n*Total: ₹${Math.round(total)}* only`
                         );
-                        
-                        
                         window.open(`https://wa.me/918968444425?text=${message}`, '_blank');
-                    });
-                    
+                    });                    
                     
                     function calculateTotal() {
                         return scrapItems.reduce((total, item) => {
@@ -2879,22 +2959,15 @@
                         }, 0);
                     }
                     
-                    
                     function resetPinStatus() {
                         isScrapListPinned = false;
                         const pinButton = document.getElementById('pinScrap');
                         pinButton.textContent = '📌';
                         
-                        
                         const closeButton = document.getElementById('closeScrap');
                         closeButton.disabled = false;
                         closeButton.style.color = ''; 
                     }
-                    
-                    
-                    
-                    // Add these JavaScript modifications
-                    let isScrapListPinned = false;
                     
                     // Add pin button functionality
                     document.getElementById('pinScrap').addEventListener('click', function(e) {
@@ -2903,15 +2976,29 @@
                         this.textContent = isScrapListPinned ? '🔒' : '📌';
                         showFeedback(isScrapListPinned ? "List pinned" : "List unpinned");
                         
-                        // Toggle dimmed class on scrap button image
-                        const scrapButtonImg = document.querySelector('#scrapButton img');
-                        scrapButtonImg.classList.toggle('dimmed', isScrapListPinned);
+                        
+                        
                         
                         // Existing close button handling
                         const closeButton = document.getElementById('closeScrap');
                         closeButton.disabled = isScrapListPinned;
                         closeButton.style.color = isScrapListPinned ? 'gray' : '';
+                        updateScrapButtonStatus();
                     });
+                    
+                    
+                    // Check existing items when page loads
+                    document.addEventListener('DOMContentLoaded', () => {
+                        loadScrapState(); // If you have persistence
+                        updateScrapButtonStatus();
+                    });   
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     
                     
                     
@@ -2965,11 +3052,14 @@
                         // Populate offers
                         offersContainer.innerHTML = validOffers.map(offer => `
                         <div class="offer-item">
-                        <h2 class="offer-title">${offer[1]}</h2>
-                        <p class="offer-dates">${formatDate(offer[0])} to ${formatDate(offer[3])}</p>
-                        <p class="offer-description">${offer[2]}</p>
+                        <h2 class="offer-title">${offer[1]}</h2> 
+                        <p class="offer-dates">
+                        ${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}
+                        </p> 
+                        <p class="offer-description">${offer[2]}</p> 
                         </div>
                         `).join('');
+                        
                         
                     })
                     .catch(error => {
@@ -2988,7 +3078,24 @@
                     });
                     
                     
+                    
+                    
+                    
+                    
+                    
+                    async function updateViewCounter() {
+                        try {
+                            await fetch(`${scriptUrl}?sheet=counter&action=updateViews`);
+                            } catch (error) {
+                            console.error("Error updating view counter:", error);
+                        }
+                    }
+                    
+                    // Call the function on page load
+                    updateViewCounter();
+                    
+                    
                 </script>        
                 <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
             </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
