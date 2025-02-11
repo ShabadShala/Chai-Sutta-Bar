@@ -845,16 +845,16 @@
             align-items: center;
             }
             
-           .hsidebar-option.disabled-option {
-    color: #666 !important;
-    opacity: 0.7;
-    cursor: default;
-    pointer-events: none;
-}
-
-.hsidebar-option.disabled-option .menu-icon {
-    filter: grayscale(100%) brightness(0.5);
-} 
+            .hsidebar-option.disabled-option {
+            color: #666 !important;
+            opacity: 0.7;
+            cursor: default;
+            pointer-events: none;
+            }
+            
+            .hsidebar-option.disabled-option .menu-icon {
+            filter: grayscale(100%) brightness(0.5);
+            } 
             
             
             
@@ -1283,6 +1283,51 @@
             
             
             
+            
+            /* Like Button Styles */
+            #likeButton {
+            position: absolute;
+            right: 3rem;
+            top: 3rem;
+            font-size: 6rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            color: #666; /* Default gray color */
+            z-index: 1001;
+            }
+            
+            #likeButton.liked {
+            color: #ff4444; /* Liked color */
+            animation: pulse 0.5s ease;
+            }
+            
+            @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+            }
+            
+            /* Visitor Counter Styles */
+            #visitorCounter {
+            font-size: 4rem;
+            color: #fae68e;
+            text-align: center;
+            margin: 1rem 0;
+            }
+            
+            
+            #likeCounter {
+            font-size: 4rem;
+            font-weight: bold;
+            
+            text-align: center;
+            margin-top: 10px;
+            }
+            
+            
         </style>
     </head>
     <body>
@@ -1304,9 +1349,13 @@
                 <span class="chai">CHAI</span>
                 <span class="sutta">SUTTA</span>
                 <span class="bar">BAR</span>
+                
                 <span class="bpa-logo">BPA</span>
-                <div class="open-close"></div>
+                <div class="open-close"></div>               
             </div>
+            <button id="likeButton">👍</button>
+            <div id="likeCounter"></div>
+            <div id="feedback"></div>
         </div>
         
         
@@ -1387,7 +1436,8 @@
                             <img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="0" />
                         </a>
                     </div>
-                    <div class="signature">Developed by Komal Brar</div>        
+                    <div class="signature">Developed by Komal Brar</div>     
+                    <div id="visitorCounter">Visitors: Loading...</div>
                 </div>
                 
                 
@@ -1691,7 +1741,7 @@
                     
                     
                     
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbz-7gsoV7OoDuiSENqIJ2MgR-VB7eei29SbYbuOkxz0oV7-LrDeoG5-mkYcnuvTbRQFAA/exec";
+                    const scriptUrl = "https://script.google.com/macros/s/AKfycbzuaBx_2P3j7mwoAmGwIc01dOkTJUnmCCKMhmCL7Aa9svAlnTfdG92SJJAViOOVgu3X/exec";
                     
                     // Fetch data from Google Script URL
                     fetch(scriptUrl)
@@ -2126,12 +2176,12 @@
                         hsidebarContainer.appendChild(hsidebar);
                         document.body.appendChild(hsidebarContainer);
                         
-// pwa
-if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-    const installOption = document.getElementById('install-app');
-    installOption.classList.add('disabled-option');
-    installOption.onclick = null;  // Remove click handler
-}
+                        // pwa
+                        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                            const installOption = document.getElementById('install-app');
+                            installOption.classList.add('disabled-option');
+                            installOption.onclick = null;  // Remove click handler
+                        }
                         
                         
                         
@@ -2961,6 +3011,7 @@ if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.
                         let message = encodeURIComponent(
                         `*🍵 My Order*\n${'-'.repeat(25)}\n${orderText.split('\n').join('\n\n')}\n${'-'.repeat(25)}\n*Total: ₹${Math.round(total)}* only`
                         );
+                        updateCounter('updateOrders'); // Add this line
                         window.open(`https://wa.me/918968444425?text=${message}`, '_blank');
                     });                    
                     
@@ -3106,7 +3157,139 @@ if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.
                     updateViewCounter();
                     
                     
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    // Counters
+                    
+                    async function updateCounter(type) {
+                        try {
+                            const response = await fetch(`${scriptUrl}?sheet=counter&action=${type}`);
+                            return await response.json();
+                            } catch (error) {
+                            console.error(`Error updating ${type} counter:`, error);
+                        }
+                    }
+                    
+                    function setupVisitorCounter() {
+                        if (typeof Storage !== 'undefined') {
+                            const visitorKey = 'csb_visitor';
+                            if (!localStorage.getItem(visitorKey)) {
+                                localStorage.setItem(visitorKey, '1');
+                                updateCounter('updateVisitors').then(data => {
+                                    document.getElementById('visitorCounter').textContent = `Visitors: ${data.count}`;
+                                });
+                                } else {
+                                updateCounter('getVisitors').then(data => {
+                                    document.getElementById('visitorCounter').textContent = `Visitors: ${data.count}`;
+                                });
+                            }
+                        }
+                    }
+                    
+                    // Client-side JavaScript
+                    function setupLikeButton() {
+                        const likeButton = document.getElementById('likeButton');
+                        const likeCounterElement = document.getElementById('likeCounter');
+                        const feedbackElement = document.getElementById('feedback');
+                        const likeKey = 'csb_like';
+                        
+                        // Initialize like count and button state
+                        updateCounter('getLikes').then(data => {
+                            likeCounterElement.textContent = `Likes: ${data.count}`;
+                        });
+                        
+                        if (localStorage.getItem(likeKey)) {
+                            likeButton.style.backgroundColor = '#ffeb3b'; // Yellow for liked
+                        }
+                        
+                        likeButton.addEventListener('click', () => {
+                            if (!localStorage.getItem(likeKey)) {
+                                // Like action
+                                updateCounter('incrementLikes').then(data => {
+                                    localStorage.setItem(likeKey, 'true');
+                                    likeButton.style.backgroundColor = '#ffeb3b';
+                                    likeCounterElement.textContent = `Likes: ${data.count}`;
+                                    showFeedback('Thank you for liking!');
+                                });
+                                } else {
+                                // Dislike action
+                                updateCounter('decrementLikes').then(data => {
+                                    localStorage.removeItem(likeKey);
+                                    likeButton.style.backgroundColor = '#cccccc';
+                                    likeCounterElement.textContent = `Likes: ${data.count}`;
+                                    showFeedback('Like removed');
+                                });
+                            }
+                        });
+                    }
+                    
+                    function showFeedback(message) {
+                        const feedbackElement = document.getElementById('feedback');
+                        feedbackElement.textContent = message;
+                        setTimeout(() => feedbackElement.textContent = '', 2000);
+                    }
+                    
+                    
+                    
+                    
+                    // Initialize counters when the page loads
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Update view counter silently
+                        updateCounter('updateViews');
+                        
+                        // Setup visitor counter
+                        setupVisitorCounter();
+                        
+                        // Setup like button
+                        setupLikeButton();
+                    });
+                    
+                    
                 </script>        
                 <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
             </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
