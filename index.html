@@ -481,7 +481,7 @@
             }
             
             .category-header:hover {
-            transform: translateY(-3px);
+            transform: translateY(3px);
             }
             
             .category-header .left {
@@ -667,6 +667,7 @@
             z-index: 1002;
             overflow: hidden;
             pointer-events: none; /* Allow clicks through container when closed */
+            
             }
             
             /* Update existing #hsidebar styling */
@@ -685,6 +686,7 @@
             border-radius: 0 15px 15px 0;
             color: #e0e0e0;
             pointer-events: auto; /* Enable clicks when visible */
+            padding:5rem;
             }
             
             #hsidebar.open {
@@ -693,12 +695,12 @@
             
             /* Sidebar Content */
             .hsidebar-content {
-            padding: 0;
+            
             }
             
             .hsidebar-option {
             padding: 1rem;
-            margin: 3rem 0;
+            margin: 3rem;
             cursor: pointer;
             font-size: 5rem;
             font-weight: 500;
@@ -783,16 +785,31 @@
             margin-bottom: 20px; /* Optional: Adds space below the CSB text */
             }
             
-            /* Style for the footer text */
             .footer-text {
             position: absolute;
-            bottom: 6rem; /* Position the footer text at the bottom */
-            font-size: 4rem; /* Font size for the footer text */
-            color: #f1f1f1; /* Light color for visibility */
-            text-align: left; /* Center the text */
+            bottom: 6rem;
+            font-size: 4rem;
+            color: #f1f1f1;
+            text-align: left;
             line-height: 1.5;
             margin-left: 5rem;
             }
+            
+            /* New styles for flex alignment */
+            .footer-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem; /* Space between icon and text */
+            }
+            
+            /* Style for the icon */
+            .footer-logo {
+            width: 8rem; /* Adjust size as needed */
+            height: 8rem;
+            object-fit: contain;
+            border-radius: 15px; /* Optional: rounded corners */
+            }
+            
             
             /* Close button */
             #close-sidebar {
@@ -827,17 +844,7 @@
             fill: green;
             }
             
-            .menu-icon-container {
-            text-align: center;
-            margin-bottom:10rem;
-            }
             
-            .menu-icon-container img {
-            width: 15rem; /* Set the width to 128px */
-            height: 15rem; /* Set the height to 128px */
-            object-fit: contain; /* Ensures the image scales proportionally */
-            border-radius: 15px; /* Optional: Adds rounded corners */
-            }
             
             /* Options alignment */
             .hsidebar-option {
@@ -943,6 +950,8 @@
             z-index: 1001;
             }
             
+            
+            
             #scrapButton img {
             transition: opacity 0.3s ease, filter 0.3s ease;
             pointer-events: none; /* Ensure this remains */
@@ -984,6 +993,24 @@
             #scrapButton:active {
             cursor: grabbing; /* Change cursor to grabbing when clicked */
             }
+            
+#scrapButton .counter-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    background: none;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    border-radius: 0;
+}
+
             
             /* Scrap List Modal */
             #scrapList {
@@ -1169,6 +1196,15 @@
             background-color: #ddd;
             }
             
+.decrement-btn:disabled {
+    background-color: #ccc !important; /* Gray background */
+    color: transparent !important; /* Transparent text color */
+    cursor: not-allowed !important; /* Change cursor */
+    opacity: 0; /* Set opacity to 0 */
+    pointer-events: none; /* Disable hover effect */
+}
+
+            
             .qty-display {
             font-size: 4rem;
             min-width: 2rem;
@@ -1284,31 +1320,6 @@
             
             
             
-            /* Like Button Styles */
-            #likeButton {
-            position: absolute;
-            right: 3rem;
-            top: 3rem;
-            font-size: 6rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            background: none;
-            border: none;
-            padding: 0;
-            color: #666; /* Default gray color */
-            z-index: 1001;
-            }
-            
-            #likeButton.liked {
-            color: #ff4444; /* Liked color */
-            animation: pulse 0.5s ease;
-            }
-            
-            @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-            }
             
             /* Visitor Counter Styles */
             #visitorCounter {
@@ -1319,13 +1330,38 @@
             }
             
             
-            #likeCounter {
-            font-size: 4rem;
-            font-weight: bold;
             
-            text-align: center;
-            margin-top: 10px;
+            
+            #likeContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+            width:40%;
+            border: 2px solid #fae68e; /* Border color */
+            border-radius: 2rem; /* Optional: rounded corners */
+            font-size: 8rem;
+            font-weight: bold;
+            color: #fae68e;
+            margin: 5rem auto;
             }
+            
+            #likeIcon {
+            width: 10rem;
+            height: 10rem;
+            filter: invert(0.8);
+            transition: filter 0.3s ease;
+            }
+            
+            #likeIcon.liked {
+            filter: invert(70%) sepia(90%) saturate(400%) hue-rotate(360deg);
+            }
+            
+            #likeCounter {
+            
+            }
+            
             
             
         </style>
@@ -1353,9 +1389,8 @@
                 <span class="bpa-logo">BPA</span>
                 <div class="open-close"></div>               
             </div>
-            <button id="likeButton">👍</button>
-            <div id="likeCounter"></div>
-            <div id="feedback"></div>
+            
+            
         </div>
         
         
@@ -1412,6 +1447,7 @@
                     <div id="menu">
                         <button id="scrapButton">
                             <img src="icons/food.svg" class="invert-icon" alt="Edit Icon" width="40" height="40">
+                            <div class="counter-badge"></div>
                         </button>
                         
                         
@@ -2148,10 +2184,19 @@
                         hsidebar.id = 'hsidebar';
                         hsidebar.innerHTML = `
                         <div class="hsidebar-content">
-                        <div class="menu-icon-container">
-                        <img src="icon-192.png" alt="CSB Logo">
-                        </div>
+                        
                         <div id="close-sidebar" class="close-btn">&times;</div>
+                        
+                        <div class="hsidebar-option" id="likeContainer">
+                        <div style="display: flex; align-items: center; gap: 3rem;">
+                        <img src="icons/like.svg" alt="Like Icon" class="menu-icon invert-icon" id="likeIcon">
+                        <span id="likeCounter"></span>
+                        </div>
+                        <div id="feedback"></div>
+                        </div>
+                        
+                        
+                        
                         <div class="hsidebar-option" id="install-app">
                         <img src="icons/install.svg" alt="Install Icon" class="menu-icon invert-icon">
                         Install CSB App
@@ -2168,9 +2213,16 @@
                         <img src="icons/display.svg" alt="Install Icon" class="menu-icon invert-icon">
                         Screen Info
                         </div>
+                        
                         <div class="footer-text" id="footer-info">
+                        <div class="footer-content">
+                        <img src="icon-192.png" alt="CSB Logo" class="footer-logo">
+                        <div>
                         <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
                         </div>
+                        </div>
+                        </div>
+                        
                         </div>`;
                         
                         hsidebarContainer.appendChild(hsidebar);
@@ -2558,6 +2610,7 @@
                     function handleScrapItemsChange() {
                         updateScrapListDisplay();
                         updateScrapButtonStatus(); // Add this line
+                        updateScrapCounter(); // Add this line
                         saveScrapState(); // If you have persistence
                     }
                     
@@ -2745,14 +2798,20 @@
                         }, 500);
                     }
                     
+                    let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    let oscillator;
+                    
                     function playBeep(frequency, duration) {
-                        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                        const oscillator = audioCtx.createOscillator();
-                        const gainNode = audioCtx.createGain();
+                        if (oscillator) {
+                            oscillator.stop(); // Stop previous beep before starting a new one
+                        }
                         
-                        oscillator.type = 'sine'; // Standard beep tone
+                        oscillator = audioCtx.createOscillator();
+                        let gainNode = audioCtx.createGain();
+                        
+                        oscillator.type = 'sine';
                         oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-                        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // Volume
+                        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
                         
                         oscillator.connect(gainNode);
                         gainNode.connect(audioCtx.destination);
@@ -2760,8 +2819,9 @@
                         oscillator.start();
                         setTimeout(() => {
                             oscillator.stop();
-                        }, duration * 1000); // Convert to milliseconds
+                        }, duration * 1000);
                     }
+                    
                     
                     
                     function updateScrapListDisplay() {
@@ -2812,37 +2872,44 @@
                                 const rate = e.target.dataset.rate;
                                 scrapItems.push({ name, rate });
                                 updateScrapListDisplay();
+                                 updateScrapCounter();
                             });
                         });
                         
-                        document.querySelectorAll('.decrement-btn').forEach(btn => {
-                            btn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                const name = e.target.dataset.name;
-                                const rate = e.target.dataset.rate;
-                                const currentCount = scrapItems.filter(item => 
-                                item.name === name && item.rate === rate
-                                ).length;
-                                
-                                if (currentCount === 1) {
-                                    // Remove all instances if quantity is 1
-                                    scrapItems = scrapItems.filter(item => 
-                                    item.name !== name || item.rate !== rate
-                                    );
-                                    } else {
-                                    // Remove last instance of this item
-                                    let lastIndex = -1;
-                                    for (let i = scrapItems.length - 1; i >= 0; i--) {
-                                        if (scrapItems[i].name === name && scrapItems[i].rate === rate) {
-                                            lastIndex = i;
-                                            break;
-                                        }
-                                    }
-                                    if (lastIndex !== -1) scrapItems.splice(lastIndex, 1);
-                                }
-                                updateScrapListDisplay();
-                            });
-                        });
+document.querySelectorAll('.decrement-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const name = e.target.dataset.name;
+        const rate = e.target.dataset.rate;
+        const currentCount = scrapItems.filter(item =>
+            item.name === name && item.rate === rate
+        ).length;
+
+        if (currentCount === 1) {
+            // Remove all instances if quantity is 1
+            scrapItems = scrapItems.filter(item =>
+                item.name !== name || item.rate !== rate
+            );
+        } else {
+            // Remove last instance of this item
+            let lastIndex = -1;
+            for (let i = scrapItems.length - 1; i >= 0; i--) {
+                if (scrapItems[i].name === name && scrapItems[i].rate === rate) {
+                    lastIndex = i;
+                    break;
+                }
+            }
+            if (lastIndex !== -1) scrapItems.splice(lastIndex, 1);
+        }
+
+        updateScrapListDisplay();
+        updateScrapCounter();
+        updateDecrementButtonState(name, rate); // Update button state after changes
+    });
+
+    // Initial button state setup (when the list first loads)
+    updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
+});
                         
                         // Existing delete button handlers
                         document.querySelectorAll('.delete-btn').forEach(btn => {
@@ -2866,7 +2933,19 @@
                         });
                     }
                     
-                    
+                    function updateDecrementButtonState(name, rate) {
+    const currentCount = scrapItems.filter(item =>
+        item.name === name && item.rate === rate
+    ).length;
+
+    const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
+
+    decrementButtons.forEach(btn => {
+        btn.disabled = currentCount <= 1;
+    });
+}
+
+
                     function showOrderListWarning() {                            
                         // Check if modal already exists, if not, create one
                         let existingModal = document.getElementById('orderListWarningModal');
@@ -2992,6 +3071,7 @@
                             showOrderListWarning();
                             return;
                         }                        
+                        
                         // Group items by name and rate to calculate quantities
                         const itemMap = new Map();
                         scrapItems.forEach((item) => {
@@ -3000,20 +3080,40 @@
                         });
                         
                         const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));                        
-                        // Generate order text with quantities
-                        let orderText = sortedItems.map(item => 
-                        `${item.qty} x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate}`
-                        ).join('\n');                        
-                        // Calculate total correctly
-                        let total = sortedItems.reduce((acc, item) => 
-                        acc + (parseFloat(item.rate) * item.qty), 0
-                        );                        
+                        
+                        // Generate order text with quantities and total per row
+                        let orderText = sortedItems.map(item => {
+                            let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
+                            return `${item.qty} x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`;
+                        }).join('\n');                        
+                        
+                        // Calculate total cost
+                        let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
+                        
+                        // Calculate total number of items
+                        let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
+                        
+                        // Create the WhatsApp message
+                        // List of food-related emojis
+                        let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿']; 
+                        // Select a random emoji
+                        let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
+                        
                         let message = encodeURIComponent(
-                        `*🍵 My Order*\n${'-'.repeat(25)}\n${orderText.split('\n').join('\n\n')}\n${'-'.repeat(25)}\n*Total: ₹${Math.round(total)}* only`
+                        `${randomEmoji}\n*Order Slip*\n${'-'.repeat(30)}\n` +
+                        `${sortedItems.map(item => {
+                        let itemTotal = item.qty * parseFloat(item.rate);
+                        return `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`;
+                        }).join('\n\n')}\n${'-'.repeat(30)}\n` +
+                        `*${totalItems}* items - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
                         );
-                        updateCounter('updateOrders'); // Add this line
+                        
+                        
+                        
+                        updateCounter('updateOrders'); // Keep this line if needed
                         window.open(`https://wa.me/918968444425?text=${message}`, '_blank');
-                    });                    
+                    });
+                    
                     
                     function calculateTotal() {
                         return scrapItems.reduce((total, item) => {
@@ -3054,6 +3154,30 @@
                         loadScrapState(); // If you have persistence
                         updateScrapButtonStatus();
                     });   
+                    
+                    
+                    // Add this function to update the counter
+                    function updateScrapCounter() {
+                        const counter = document.querySelector('#scrapButton .counter-badge');
+                       counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
+    counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
+
+                        
+                        // Add animation when items are added
+                        if(scrapItems.length > 0) {
+                            counter.style.transform = 'scale(1.2)';
+                            setTimeout(() => counter.style.transform = 'scale(1)', 200);
+                        }
+                    } 
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     
                     
                     
@@ -3232,46 +3356,38 @@
                     
                     // Client-side JavaScript
                     function setupLikeButton() {
-                        const likeButton = document.getElementById('likeButton');
+                        const likeIcon = document.getElementById('likeIcon');
                         const likeCounterElement = document.getElementById('likeCounter');
-                        const feedbackElement = document.getElementById('feedback');
                         const likeKey = 'csb_like';
                         
-                        // Initialize like count and button state
                         updateCounter('getLikes').then(data => {
-                            likeCounterElement.textContent = `Likes: ${data.count}`;
+                            likeCounterElement.textContent = data.count;
                         });
                         
                         if (localStorage.getItem(likeKey)) {
-                            likeButton.style.backgroundColor = '#ffeb3b'; // Yellow for liked
+                            likeIcon.classList.add('liked');
                         }
                         
-                        likeButton.addEventListener('click', () => {
+                        document.getElementById('likeContainer').addEventListener('click', () => {
                             if (!localStorage.getItem(likeKey)) {
-                                // Like action
                                 updateCounter('incrementLikes').then(data => {
                                     localStorage.setItem(likeKey, 'true');
-                                    likeButton.style.backgroundColor = '#ffeb3b';
-                                    likeCounterElement.textContent = `Likes: ${data.count}`;
-                                    showFeedback('Thank you for liking!');
+                                    likeIcon.classList.add('liked');
+                                    likeCounterElement.textContent = data.count;
+                                    showFeedback('Thank you!');
                                 });
                                 } else {
-                                // Dislike action
                                 updateCounter('decrementLikes').then(data => {
                                     localStorage.removeItem(likeKey);
-                                    likeButton.style.backgroundColor = '#cccccc';
-                                    likeCounterElement.textContent = `Likes: ${data.count}`;
-                                    showFeedback('Like removed');
+                                    likeIcon.classList.remove('liked');
+                                    likeCounterElement.textContent = data.count;
+                                    
                                 });
                             }
                         });
                     }
                     
-                    function showFeedback(message) {
-                        const feedbackElement = document.getElementById('feedback');
-                        feedbackElement.textContent = message;
-                        setTimeout(() => feedbackElement.textContent = '', 2000);
-                    }
+                    
                     
                     
                     
@@ -3292,4 +3408,4 @@
                 </script>        
                 <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
             </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
