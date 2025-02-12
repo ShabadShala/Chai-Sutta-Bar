@@ -604,25 +604,7 @@
             padding: 1rem;
             margin-top: auto; /* Ensures it's at the bottom */
             }   
-            
-            #visitorElement {
-            display: none; /* Hidden by default */
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            margin: 2rem 0;
-            text-align: center; /* Center inline elements */
-            }
-            
-            #visitorElement h3 {
-            font-size: 4rem;
-            display: inline-block; /* Make h3 inline */
-            margin-right: 1rem; /* Space between text and image */
-            }
-            
-            #visitorElement a {
-            display: inline-block; /* Keep image inline with text */
-            }
+         
             
             
             
@@ -1316,8 +1298,13 @@
             
             
             
-            
-            
+                /* Views Counter Styles */
+                 #viewsCounter {
+            font-size: 4rem;
+            color: #fae68e;
+            text-align: center;
+            margin: 1rem 0;
+            }
             
             
             
@@ -1466,14 +1453,10 @@
                             Ph: <a href="tel:+919112400010">91124-00010</a>, <a href="tel:+919023406002">90234-06002</a>
                         </div>
                     </div>
-                    <div id="visitorElement">
-                        <!--    <h3>Visitor</h3> -->
-                        <a href="https://www.hitwebcounter.com" target="_blank">
-                            <img src="https://hitwebcounter.com/counter/counter.php?page=18806982&style=0009&nbdigits=5&type=page&initCount=0" title="Counter Widget" alt="Visit counter For Websites" border="0" />
-                        </a>
-                    </div>
+          
                     <div class="signature">Developed by Komal Brar</div>     
-                    <div id="visitorCounter">Visitors: Loading...</div>
+     <div id="visitorCounter">Visitors: Loading...</div>
+                        <div id="viewsCounter">Views: Loading...</div>     
                 </div>
                 
                 
@@ -1497,8 +1480,10 @@
                     document.addEventListener('cut', event => event.preventDefault());
                     document.addEventListener('paste', event => event.preventDefault());
                     
-                    
-                    
+                    // let whatsappOfferNumber = '918968444425'; // Default value as fallback
+                    let cachedOrderNumber = null;
+
+              
                     
                     function showFeedback(message) {
                         const feedback = document.querySelector('.feedback-message');
@@ -1813,7 +1798,7 @@ if (matchedOffers.length > 0) {
                     
                     
                     
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbzuaBx_2P3j7mwoAmGwIc01dOkTJUnmCCKMhmCL7Aa9svAlnTfdG92SJJAViOOVgu3X/exec";
+                    const scriptUrl = "https://script.google.com/macros/s/AKfycbwqXrC-1gFM8eRJrKqOjAzV4hVev4TwaoE8Jj8FDO1ZBnegI9aT_UjrOAvNX6NskN5AEw/exec";
                     
                     // Fetch data from Google Script URL
                     fetch(scriptUrl)
@@ -1941,7 +1926,7 @@ if (matchedOffers.length > 0) {
                         document.querySelector(".search-container").style.display = "block";
                         
                         document.querySelector('.footer').style.display = 'block'; // Show footer
-                        document.getElementById('visitorElement').style.display = 'block'; // Show visitor element}
+
                         
                         
                         
@@ -2079,6 +2064,18 @@ if (matchedOffers.length > 0) {
                                 }
                             }
                             
+                            // Fetch WhatsApp offer number from B8 cell
+let offerWhatsappNumber = data[7][1]; // B8 is 8th row (index 7), 2nd column (index 1)
+if (offerWhatsappNumber) {
+    offerWhatsappNumber = offerWhatsappNumber.replace(/-/g, ""); // Remove dashes
+    whatsappOfferNumber = '+91' + offerWhatsappNumber; // Add country code
+}
+
+
+
+
+
+
                             // Extract Open and Close times from Google Sheets
                             const openTimeStr = data[0][1]; // Example: "09.30am"
                             const closeTimeStr = data[1][1]; // Example: "10.45pm"
@@ -2871,9 +2868,14 @@ if (matchedOffers.length > 0) {
                         `).join('');
                         
                         // Step 4: Update total price
-                        const totalPriceElement = document.getElementById('totalPrice');
-                        const total = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
-                        totalPriceElement.textContent = `TOTAL: ₹${total.toFixed(2)}`;
+        // Step 4: Calculate total quantity and total price
+const totalQuantity = sortedItems.reduce((acc, item) => acc + item.qty, 0); // Total quantity
+const totalPrice = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0); // Total price
+
+// Step 5: Update the total price element to include total quantity
+const totalPriceElement = document.getElementById('totalPrice');
+totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item' : 'items'} - Total: ₹${totalPrice.toFixed(2)}`;
+
                         
                         // Step 5: Add event listeners for quantity controls
                         document.querySelectorAll('.increment-btn').forEach(btn => {
@@ -3077,12 +3079,18 @@ document.querySelectorAll('.decrement-btn').forEach(btn => {
                         return text.replace(/^[^A-Za-z]+/, '');
                     }
                     
-                    document.getElementById('orderScrap').addEventListener('click', () => {
+                    document.getElementById('orderScrap').addEventListener('click', async () => {
                         if (scrapItems.length === 0) {
                             showOrderListWarning();
                             return;
                         }                        
                         
+                        
+                        
+                         
+                          const orderNumber = cachedOrderNumber + 1;
+
+    
                         // Group items by name and rate to calculate quantities
                         const itemMap = new Map();
                         scrapItems.forEach((item) => {
@@ -3111,19 +3119,21 @@ document.querySelectorAll('.decrement-btn').forEach(btn => {
                         // Select a random emoji
                         let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
                         
-                        let message = encodeURIComponent(
-                        `${randomEmoji}\n*Order Slip*\n${'-'.repeat(30)}\n` +
-                        `${sortedItems.map(item => {
-                        let itemTotal = item.qty * parseFloat(item.rate);
-                        return `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`;
-                        }).join('\n\n')}\n${'-'.repeat(30)}\n` +
-                        `*${totalItems}* items - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
-                        );
+
+let message = encodeURIComponent(
+        `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
+        `${sortedItems.map(item => {
+            let itemTotal = item.qty * parseFloat(item.rate);
+            return `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`;
+        }).join('\n\n')}\n${'-'.repeat(30)}\n` +
+        `*${totalItems}* items - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
+    );
                         
-                        
-                        
-                        updateCounter('updateOrders'); // Keep this line if needed
-                        window.open(`https://wa.me/918968444425?text=${message}`, '_blank');
+
+                     window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
+                 
+    updateCounter('updateOrders');
+     cachedOrderNumber = orderNumber;
                     });
                     
                     
@@ -3200,7 +3210,7 @@ document.querySelectorAll('.decrement-btn').forEach(btn => {
                 // Function to send offer data via WhatsApp
 function sendOffer(offerText) {
     offerNsg = decodeURIComponent(offerText);
-    const whatsappUrl = `https://wa.me/918968444425?text=${offerText}`;
+     const whatsappUrl = `https://wa.me/${whatsappOfferNumber}?text=${offerText}`;
     window.open(whatsappUrl, '_blank');
 }
 
@@ -3351,6 +3361,21 @@ document.addEventListener('click', (e) => {
                         }
                     }
                     
+                    
+                    
+async function getViews() {
+    try {
+        const response = await fetch(`${scriptUrl}?sheet=counter&action=getViews`);
+        const data = await response.json();
+        return data.count; // Return the views count
+    } catch (error) {
+        console.error('Error fetching views:', error);
+        return 0; // Fallback to 0 if the request fails
+    }
+}
+
+
+
                     function setupVisitorCounter() {
                         if (typeof Storage !== 'undefined') {
                             const visitorKey = 'csb_visitor';
@@ -3401,20 +3426,53 @@ document.addEventListener('click', (e) => {
                     }
                     
                     
+
                     
-                    
-                    
+      async function initializeOrderNumber() {
+    try {
+        const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
+        const data = await response.json();
+        cachedOrderNumber = data.count; // Store the current order number
+    } catch (error) {
+        console.error('Failed to fetch order number:', error);
+        cachedOrderNumber = 0; // Fallback to 0 if the request fails
+    }
+}
+
+function setupViewsCounter() {
+    if (typeof Storage !== 'undefined') {
+        const viewsKey = 'csb_views';
+        if (!localStorage.getItem(viewsKey)) {
+            // If the user is new, update the views counter
+            localStorage.setItem(viewsKey, '1');
+            updateCounter('updateViews').then(data => {
+                document.getElementById('viewsCounter').textContent = `Views: ${data.count}`;
+            });
+        } else {
+            // If the user is returning, just fetch the current views count
+            updateCounter('getViews').then(data => {
+                document.getElementById('viewsCounter').textContent = `Views: ${data.count}`;
+            });
+        }
+    }
+}
+
+
+      
                     
                     // Initialize counters when the page loads
                     document.addEventListener('DOMContentLoaded', () => {
-                        // Update view counter silently
-                        updateCounter('updateViews');
+        
                         
                         // Setup visitor counter
                         setupVisitorCounter();
                         
                         // Setup like button
                         setupLikeButton();
+                        
+                           initializeOrderNumber();
+                           
+                           setupViewsCounter();
                     });
                     
                     
