@@ -1665,9 +1665,43 @@
                                 lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
                                 lastVisibleItem.style.marginBottom = '2rem'; // Add this line
                             }
+                            
+
+// Offers search code
+const offersContainer = document.getElementById('offers-container');
+offersContainer.innerHTML = ''; // Clear previous results
+
+const searchWords = normalizedSearchQuery.toLowerCase().split(/\s+/); // Split search query into words
+
+const matchedOffers = offersData.filter(offer => {
+    const titleWords = offer[1].toLowerCase().split(/\s+/); // Split Title into words
+    const descWords = offer[2].toLowerCase().split(/\s+/); // Split Description into words
+
+    return searchWords.some(searchWord => 
+        titleWords.some(word => word.startsWith(searchWord)) || 
+        descWords.some(word => word.startsWith(searchWord))
+    );
+});
+
+if (matchedOffers.length > 0) {
+    offersContainer.innerHTML = matchedOffers.map(offer => `
+        <div class="offer-item">
+            <h2 class="offer-title">${offer[1]}</h2>
+            <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
+            <p class="offer-description">${offer[2]}</p>
+        </div>
+    `).join('');
+    offersContainer.style.display = 'block';
+} else {
+    offersContainer.style.display = 'none';
+}
+ 
+                            
+                            
                         });
                         
-                        
+            
+
                         
                         
                         const totalItemsDiv = document.getElementById('total-items-found');
@@ -1690,6 +1724,8 @@
                             }
                             totalItemsDiv.style.display = 'block'; // Show only when search is not empty
                         }
+                        
+                        
                     }
                     
                     // Add event listener to filter buttons
@@ -2742,32 +2778,7 @@
                         }, 500);
                     }
                     
-                    //Komal
-                    function showTapFeedback(symbol, x, y) {
-                        const feedbackElement = document.createElement('div');
-                        feedbackElement.textContent = symbol;
-                        feedbackElement.style.position = 'fixed';
-                        feedbackElement.style.left = `${x}px`;  // Exact tap position
-                        feedbackElement.style.top = `${y}px`;
-                        feedbackElement.style.fontSize = '6rem';
-                        feedbackElement.style.fontWeight = 'bold';
-                        feedbackElement.style.color = 'red';
-                        feedbackElement.style.transition = 'transform 0.3s ease-out, opacity 0.5s ease-out';
-                        feedbackElement.style.zIndex = '1000';
-                        feedbackElement.style.transform = 'scale(0)';
-                        
-                        document.body.appendChild(feedbackElement);
-                        
-                        // Trigger zoom-in effect
-                        requestAnimationFrame(() => {
-                            feedbackElement.style.transform = 'scale(2)';
-                        });
-                        
-                        // Remove feedback after animation
-                        setTimeout(() => {
-                            feedbackElement.remove();
-                        }, 500);
-                    }
+
                     
                     function showTapFeedbackInCenter(symbol) {
                         const feedbackElement = document.createElement('div');
@@ -3095,7 +3106,8 @@ document.querySelectorAll('.decrement-btn').forEach(btn => {
                         
                         // Create the WhatsApp message
                         // List of food-related emojis
-                        let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿']; 
+
+                        let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹'];
                         // Select a random emoji
                         let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
                         
@@ -3185,84 +3197,85 @@ document.querySelectorAll('.decrement-btn').forEach(btn => {
                     
                     
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    // Fetch and display offers with collapsible button
-                    function formatDate(dateString) {
-                        const date = new Date(dateString);
-                        const day = date.getDate().toString().padStart(2, '0');
-                        const month = date.toLocaleString('en-US', { month: 'short' });
-                        const year = date.getFullYear().toString().slice(-2);
-                        return `${day}-${month}-${year}`;
-                    }
-                    
-                    // Offer elements
-                    const offersButton = document.getElementById('offers-button');
-                    const offersContainer = document.getElementById('offers-container');
-                    
-                    fetch(scriptUrl + "?sheet=offer")
-                    .then(response => response.json())
-                    .then(offerData => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        
-                        // Filter valid offers
-                        const validOffers = offerData.filter(offer => {
-                            const startDate = new Date(offer[0]);
-                            startDate.setHours(0, 0, 0, 0);
-                            return startDate >= today;
-                        });
-                        
-                        // Update offers button
-                        if (validOffers.length > 0) {
-                            offersButton.innerHTML = `${validOffers.length} Offer${validOffers.length > 1 ? 's' : ''} Available <span class="arrow">▼</span>`;
-                            offersButton.style.display = 'block';
-                            
-                            // Add toggle functionality
-                            offersButton.addEventListener('click', () => {
-                                const isVisible = offersContainer.style.display === 'block';
-                                offersContainer.style.display = isVisible ? 'none' : 'block';
-                                offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
-                            });
-                            } /* else {
-                            offersButton.textContent = 'No offer available';
-                            offersButton.style.display = 'block';
-                            offersButton.style.cursor = 'default';
-                        } */
-                        
-                        
-                        // Populate offers
-                        offersContainer.innerHTML = validOffers.map(offer => `
-                        <div class="offer-item">
-                        <h2 class="offer-title">${offer[1]}</h2> 
-                        <p class="offer-dates">
-                        ${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}
-                        </p> 
-                        <p class="offer-description">${offer[2]}</p> 
-                        </div>
-                        `).join('');
-                        
-                        
-                    })
-                    .catch(error => {
-                        console.error('Error loading offers:', error);
-                        offersButton.textContent = 'Offers unavailable';
-                        offersButton.style.display = 'block';
-                    });
-                    
-                    // Close offers when clicking outside
-                    document.addEventListener('click', (e) => {
-                        if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
-                            offersContainer.style.display = 'none';
-                            const arrow = offersButton.querySelector('.arrow');
-                            if (arrow) arrow.textContent = '▼';
-                        }
-                    });
-                    
+                // Function to send offer data via WhatsApp
+function sendOffer(offerText) {
+    offerNsg = decodeURIComponent(offerText);
+    const whatsappUrl = `https://wa.me/918968444425?text=${offerText}`;
+    window.open(whatsappUrl, '_blank');
+}
+
+
+// Offers search
+let offersData = [];
+let offerNsg = '';
+
+// Offer Section
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = date.toLocaleString('en-US', { month: 'short' });
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day}-${month}-${year}`;
+}
+
+// Offer elements
+const offersButton = document.getElementById('offers-button');
+const offersContainer = document.getElementById('offers-container');
+
+fetch(scriptUrl + "?sheet=offer")
+.then(response => response.json())
+.then(offerData => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Filter valid offers
+    const validOffers = offerData.filter(offer => {
+        const startDate = new Date(offer[0]);
+        startDate.setHours(0, 0, 0, 0);
+        return startDate >= today;
+    });
+
+    offersData = validOffers;
+
+    if (validOffers.length > 0) {
+        offersButton.innerHTML = `${validOffers.length} Offer${validOffers.length > 1 ? 's' : ''} Available <span class="arrow">▼</span>`;
+        offersButton.style.display = 'block';
+
+        offersButton.addEventListener('click', () => {
+            const isVisible = offersContainer.style.display === 'block';
+            offersContainer.style.display = isVisible ? 'none' : 'block';
+            offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
+        });
+    }
+
+    offersContainer.innerHTML = validOffers.map(offer => {
+
+        const offerText = `🎊\n*${offer[1]}*\n(${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''})\n${offer[2]}\n〰️〰️〰️〰️〰️〰️〰️〰️〰`;
+        return `
+        <div class="offer-item" style="position: relative;">
+        <button class="send-whatsapp" onclick="sendOffer('${encodeURIComponent(offerText)}')" style="position: absolute; top: 2rem; right: 2rem; background: #28a745; color: white; border: none; padding: 1rem 2rem; border-radius: 2rem; font-weight: bold; cursor: pointer;">Order</button>
+            <h2 class="offer-title">${offer[1]}</h2>
+            <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
+            <p class="offer-description">${offer[2]}</p>
+
+        </div>
+        `;
+    }).join('');
+})
+.catch(error => {
+    console.error('Error loading offers:', error);
+    offersButton.textContent = 'Offers unavailable';
+    offersButton.style.display = 'block';
+});
+
+// Close offers when clicking outside
+document.addEventListener('click', (e) => {
+    if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
+        offersContainer.style.display = 'none';
+        const arrow = offersButton.querySelector('.arrow');
+        if (arrow) arrow.textContent = '▼';
+    }
+});
                     
                     
                     
