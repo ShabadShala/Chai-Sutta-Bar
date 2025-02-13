@@ -431,7 +431,7 @@
             
             #offers-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
             margin: 3rem auto;
             display: none;
             text-align: center;
@@ -450,7 +450,7 @@
             padding: 2rem;
             margin-bottom: 2rem;
             transition: transform 0.2s ease;
-            border: 2px solid #F8BBD0;
+            border: 2px solid #CCFFE6;
             }
             
             
@@ -502,7 +502,7 @@
             }
             
             .category-header:hover {
-            transform: translateY(3px);
+            transform: translateY(2px);
             }
             
             .category-header .left {
@@ -623,7 +623,7 @@
             font-size: 4rem;
             text-align: center;
             padding: 1rem;
-            margin-top: auto; /* Ensures it's at the bottom */
+            margin-top: 1rem; /* Ensures it's at the bottom */
             }   
          
             
@@ -1222,38 +1222,43 @@
             margin-left: auto;
             }
             
+          
+          
+          
             
-            
-            /* Modal Overlay, when order list empty */
-            .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 1;
-            transition: opacity 0.3s ease;
-            }
-            
-            /* Modal Box */
-            .modal-content {
-            width: 90%;
-            margin: 0 auto;
-            background: white;
-            padding: 8rem 5rem;
-            border-radius: 10px;
-            max-width: 300px;
-            text-align: left;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            position: relative;
-            font-family: Arial, sans-serif;
-            animation: fadeIn 0.3s ease-in-out;
-            }
+/* Modal Overlay, when order list empty */
+.modal-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Ensures vertical centering */
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Modal Box */
+.modal-content {
+    text-align: justify;
+    min-height: 200px;
+    width: 80%;
+    max-width:300px;    
+    background: white;
+    padding: 5rem; /* Reduced padding */
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    font-family: Arial, sans-serif;
+    animation: fadeIn 0.3s ease-in-out;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; /* Ensures internal content is centered */
+    
+}
+
             
             /* Title Styling */
             .modal-content p {
@@ -1276,7 +1281,7 @@
             
             /* List Styling */
             .modal-content ul {
-            padding-left: 20px;
+            list-style-type: none;
             margin-top: 10px;
             }
             
@@ -1284,6 +1289,7 @@
             margin: 5px 0;
             font-size: 4.5rem;
             color: #444;
+            
             }
             
             /* Fade-out Animation */
@@ -1320,6 +1326,9 @@
             
             
             
+            
+            
+            
 #counterContainer {
     display: flex;
     justify-content: center; /* Centers them */
@@ -1327,14 +1336,23 @@
     gap: 2rem; /* Adds space between them */
 }
 
+
+@import url('https://fonts.cdnfonts.com/css/digital-7'); /* Import Digital-7 Font */
+
+
 #visitorCounter,
 #viewsCounter {
+font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
     font-size: 4rem;
     color: #fae68e;
-    margin: 0;
-      border: 2px solid white;
-    padding: 1rem 2rem;
-    border-radius: 2rem;
+    background-color: black;
+  padding: 1rem 2rem;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+    letter-spacing: 0.2rem;
+    box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.8); /* Glowing effect */
+
 }
 
             
@@ -1345,20 +1363,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
             padding: 2rem;
-            width:40%;
+            width:35%;     
+            min-width:100px;
             border: 2px solid #fae68e; /* Border color */
             border-radius: 2rem; /* Optional: rounded corners */
-            font-size: 8rem;
+            font-size: 7rem;
             font-weight: bold;
             color: #fae68e;
-            margin: 5rem auto;
+            margin: 4rem auto;
             }
             
             #likeIcon {
-            width: 10rem;
-            height: 10rem;
+            width: 8rem;
+            height: 8rem;
             filter: invert(0.8);
             transition: filter 0.3s ease;
             }
@@ -1368,7 +1386,8 @@
             }
             
             #likeCounter {
-            
+             font-size: 7rem;
+             margin-left: -3rem;
             }
             
             
@@ -1382,14 +1401,14 @@
             .toggle-container {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 4rem;
 }
 
 .split-toggle {
     display: flex;
-    width: 140px;
-    height: 40px;
-    border-radius: 20px;
+    width: 35rem;
+    height: 10rem;
+    border-radius: 5rem;
     overflow: hidden;
     cursor: pointer;
     border: 2px solid #888;
@@ -1527,12 +1546,12 @@
                         </div>
                     </div>
           
-                    <div class="signature">Developed by Komal Brar</div>     
+
 <div id="counterContainer">
-    <div id="visitorCounter">👤 Visitors: ...</div>
-    <div id="viewsCounter">👁 Views: ...</div>
+    <div id="visitorCounter">Users: 👤</div>
+    <div id="viewsCounter">Views: 👁</div>
 </div>
-   
+                    <div class="signature">Developed by Komal Brar</div>        
                 </div>
                 
                 
@@ -2732,7 +2751,7 @@ if (offerWhatsappNumber) {
                         updateScrapListDisplay();
                         updateScrapButtonStatus(); // Add this line
                         updateScrapCounter(); // Add this line
-                        saveScrapState(); // If you have persistence
+                    
                     }
                     
                     // Close scrap list when clicking outside
@@ -2894,29 +2913,53 @@ if (offerWhatsappNumber) {
                         }, 500);
                     }
                     
-                    let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    let oscillator;
-                    
-                    function playBeep(frequency, duration) {
-                        if (oscillator) {
-                            oscillator.stop(); // Stop previous beep before starting a new one
-                        }
-                        
-                        oscillator = audioCtx.createOscillator();
-                        let gainNode = audioCtx.createGain();
-                        
-                        oscillator.type = 'sine';
-                        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-                        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-                        
-                        oscillator.connect(gainNode);
-                        gainNode.connect(audioCtx.destination);
-                        
-                        oscillator.start();
-                        setTimeout(() => {
-                            oscillator.stop();
-                        }, duration * 1000);
-                    }
+  let audioCtx; // Declare outside to initialize later
+let oscillator;
+
+document.addEventListener("click", () => {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } else if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+}, { once: true }); // Runs only once
+
+function playBeep(frequency, duration) {
+    if (!audioCtx) {
+        console.warn("AudioContext not initialized yet. User interaction required.");
+        return;
+    }
+
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume().then(() => {
+            generateBeep(frequency, duration);
+        });
+    } else {
+        generateBeep(frequency, duration);
+    }
+}
+
+function generateBeep(frequency, duration) {
+    if (oscillator) {
+        oscillator.stop(); // Stop previous beep before starting a new one
+    }
+
+    oscillator = audioCtx.createOscillator();
+    let gainNode = audioCtx.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    setTimeout(() => {
+        oscillator.stop();
+    }, duration * 1000);
+}
+
                     
                     
                     
@@ -2962,7 +3005,7 @@ const totalPrice = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate
 
 // Step 5: Update the total price element to include total quantity
 const totalPriceElement = document.getElementById('totalPrice');
-totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item' : 'items'} - Total: ₹${totalPrice.toFixed(2)}`;
+totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item' : 'items'} - Total: ₹${totalPrice.toFixed(0)}`;
 
                         
                         // Step 5: Add event listeners for quantity controls
@@ -3062,20 +3105,14 @@ function showOrderListWarning() {
     let contentEnglish = `
         <p><strong>Order list is empty.</strong></p>
         <ul>
-            <li>Touch any <b>rate</b> to add an item.</li>
-            <li>To add <b>quantity</b>, touch rate multiple times.</li>
-            <li>View <b>'Order List'</b> and <b>'Total'</b> any time.</li>
-            <li>You can <b>remove</b> items also from order list.</li>
+            <li>Tap <b>rate</b> to add an item. In the order list, you can <b>increase, decrease or remove</b> items.</li>
         </ul>
     `;
 
     let contentPunjabi = `
-        <p><strong>ਆਰਡਰ ਸੂਚੀ ਅਜੇ ਖਾਲੀ ਹੈ।</strong></p>
+        <p><strong>ਆਰਡਰ ਸੂਚੀ ਖਾਲੀ ਹੈ।</strong></p>
         <ul>
-            <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ ਕੋਈ ਵੀ <b>ਰੇਟ</b> ਛੂਹੋ।</li>
-            <li><b>ਮਾਤਰਾ</b> ਵਧਾਉਣ ਲਈ, ਇੱਕੋ ਰੇਟ ਨੂੰ ਵਾਰ-ਵਾਰ ਛੂਹੋ।</li>
-            <li>ਕਿਸੇ ਵੀ ਸਮੇਂ <b>'ਆਰਡਰ ਸੂਚੀ'</b> ਅਤੇ <b>'ਕੁੱਲ ਬਿੱਲ'</b> ਦੇਖ ਸਕਦੇ ਹੋ।</li>
-            <li>ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਕੱਢ</b> ਵੀ ਸਕਦੇ ਹੋ।</li>
+           <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ <b>ਰੇਟ</b> ਛੂਹੋ। ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ, ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਘਟਾ, ਵਧਾ ਜਾਂ ਕੱਢ</b> ਸਕਦੇ ਹੋ</li>
         </ul>
     `;
 
@@ -3085,7 +3122,7 @@ function showOrderListWarning() {
             <div id="modalText">${contentEnglish}</div>
             <div id="toggleContainer" class="toggle-container">
                 <div id="toggleButton" class="split-toggle">
-                    <div id="englishSide" class="toggle-half active">English</div>
+                    <div id="englishSide" class="toggle-half active">Eng</div>
                     <div id="punjabiSide" class="toggle-half">ਪੰਜਾਬੀ</div>
                 </div>
             </div>
@@ -3194,37 +3231,38 @@ function showOrderListWarning() {
                             itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
                         });
                         
-                        const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));                        
-                        
-                        // Generate order text with quantities and total per row
-                        let orderText = sortedItems.map(item => {
-                            let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
-                            return `${item.qty} x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`;
-                        }).join('\n');                        
-                        
-                        // Calculate total cost
-                        let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
-                        
-                        // Calculate total number of items
-                        let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
-                        
-                        // Create the WhatsApp message
-                        // List of food-related emojis
+const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
 
-                        let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹'];
-                        // Select a random emoji
-                        let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
-                        
+// Generate order text with quantities and total per row
+let orderText = sortedItems.map(item => {
+    let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
+    return item.qty > 1 
+        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+}).join('\n');                        
+
+// Calculate total cost
+let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
+
+// Calculate total number of items
+let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
+
+// List of food-related emojis
+let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹'];
+// Select a random emoji
+let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
 
 let message = encodeURIComponent(
     `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
     `${sortedItems.map(item => {
         let itemTotal = item.qty * parseFloat(item.rate);
-        let itemLabel = item.qty > 1 ? "items" : "item";
-        return `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`;
+        return item.qty > 1 
+            ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+            : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
     }).join('\n\n')}\n${'-'.repeat(30)}\n` +
     `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
 );
+
 
                         
 
@@ -3269,11 +3307,7 @@ let message = encodeURIComponent(
                     });
                     
                     
-                    // Check existing items when page loads
-                    document.addEventListener('DOMContentLoaded', () => {
-                        loadScrapState(); // If you have persistence
-                        updateScrapButtonStatus();
-                    });   
+             
                     
                     
                     // Add this function to update the counter
@@ -3372,8 +3406,6 @@ fetch(scriptUrl + "?sheet=offer")
 })
 .catch(error => {
     console.error('Error loading offers:', error);
-    offersButton.textContent = 'Offers unavailable';
-    offersButton.style.display = 'block';
 });
 
 // Close offers when clicking outside
@@ -3474,21 +3506,22 @@ async function getViews() {
 
 
 
-                    function setupVisitorCounter() {
-                        if (typeof Storage !== 'undefined') {
-                            const visitorKey = 'csb_visitor';
-                            if (!localStorage.getItem(visitorKey)) {
-                                localStorage.setItem(visitorKey, '1');
-                                updateCounter('updateVisitors').then(data => {
-                                    document.getElementById('visitorCounter').textContent = `Visitors: ${data.count}`;
-                                });
-                                } else {
-                                updateCounter('getVisitors').then(data => {
-                                    document.getElementById('visitorCounter').textContent = `Visitors: ${data.count}`;
-                                });
-                            }
-                        }
-                    }
+function setupVisitorCounter() {
+    if (typeof Storage !== 'undefined') {
+        const visitorKey = 'csb_visitor';
+        if (!localStorage.getItem(visitorKey)) {
+            localStorage.setItem(visitorKey, '1');
+            updateCounter('updateVisitors').then(data => {
+                document.getElementById('visitorCounter').textContent = `Users: ${String(data.count).padStart(4, '0')}`;
+            });
+        } else {
+            updateCounter('getVisitors').then(data => {
+                document.getElementById('visitorCounter').textContent = `Users: ${String(data.count).padStart(4, '0')}`;
+            });
+        }
+    }
+}
+
                     
                     // Client-side JavaScript
                     function setupLikeButton() {
@@ -3544,12 +3577,14 @@ function setupViewsCounter() {
             // If the user is new, update the views counter
             localStorage.setItem(viewsKey, '1');
             updateCounter('updateViews').then(data => {
-                document.getElementById('viewsCounter').textContent = `Views: ${data.count}`;
+                document.getElementById('viewsCounter').textContent = `Views: ${String(data.count).padStart(4, '0')}`;
+
             });
         } else {
             // If the user is returning, just fetch the current views count
             updateCounter('getViews').then(data => {
-                document.getElementById('viewsCounter').textContent = `Views: ${data.count}`;
+              document.getElementById('viewsCounter').textContent = `Views: ${String(data.count).padStart(4, '0')}`;
+
             });
         }
     }
