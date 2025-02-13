@@ -390,23 +390,44 @@
             
             
             
-            /* Offers Button Styles */
-            #offers-button {
-            position: relative;
-            margin: 0 auto;
-            width: fit-content;
-            background: #fae68e;
-            color: #212121;
-            border: none;
-            border-radius: 0 0 5rem 5rem;
-            padding: 1rem 3rem;
-            font-size: 5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            display: none; /* Hidden by default */
-            z-index: 500;            
-            }
+/* Offers Button Styles */
+#offers-button {
+    position: relative;
+    margin: 0 auto;
+    width: fit-content;
+    background: linear-gradient(135deg, #fae68e, #ffcc66);
+    color: #212121;
+    border: none;
+    border-radius: 0 0 5rem 5rem;
+    padding: 1rem 3rem;
+    font-size: 5rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: none; /* Hidden by default */
+    z-index: 500;
+    animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+}
+
+/* Floating Animation */
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-0.5rem); }
+    100% { transform: translateY(0); }
+}
+
+/* Glow Effect */
+@keyframes glow {
+    0% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
+    100% { box-shadow: 0 6px 15px rgba(255, 204, 102, 0.7); }
+}
+
+/* Hover Effect */
+#offers-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 204, 102, 0.9);
+}
+
             
             #offers-container {
             width: 100%;
@@ -978,8 +999,9 @@
             
 #scrapButton .counter-badge {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -2rem;
+    left:55%;
+    transform: translateX(-55%);
     color: white;
     font-size: 3rem;
     font-weight: bold;
@@ -1298,23 +1320,23 @@
             
             
             
-                /* Views Counter Styles */
-                 #viewsCounter {
-            font-size: 4rem;
-            color: #fae68e;
-            text-align: center;
-            margin: 1rem 0;
-            }
-            
-            
-            
-            /* Visitor Counter Styles */
-            #visitorCounter {
-            font-size: 4rem;
-            color: #fae68e;
-            text-align: center;
-            margin: 1rem 0;
-            }
+#counterContainer {
+    display: flex;
+    justify-content: center; /* Centers them */
+    align-items: center; /* Aligns vertically */
+    gap: 2rem; /* Adds space between them */
+}
+
+#visitorCounter,
+#viewsCounter {
+    font-size: 4rem;
+    color: #fae68e;
+    margin: 0;
+      border: 2px solid white;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+}
+
             
             
             
@@ -1351,8 +1373,59 @@
             
             
             
+            
+            
+            
+            
+            
+            
+            .toggle-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.split-toggle {
+    display: flex;
+    width: 140px;
+    height: 40px;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #888;
+}
+
+.toggle-half {
+    flex: 1;
+    text-align: center;
+    line-height: 36px;
+     font-size: 4rem;  
+    font-weight: bold;
+    transition: background 0.3s, color 0.3s;
+}
+
+.toggle-half:first-child {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.toggle-half:last-child {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.toggle-half.active {
+    background: #D32F2F;
+    color: white;
+}
+
+.toggle-half:not(.active) {
+    background: #F8D7DA;
+    color: black;
+}
+
         </style>
-    </head>
+        </head>
     <body>
         
         <!-- Loading Overlay -->
@@ -1455,8 +1528,11 @@
                     </div>
           
                     <div class="signature">Developed by Komal Brar</div>     
-     <div id="visitorCounter">Visitors: Loading...</div>
-                        <div id="viewsCounter">Views: Loading...</div>     
+<div id="counterContainer">
+    <div id="visitorCounter">👤 Visitors: ...</div>
+    <div id="viewsCounter">👁 Views: ...</div>
+</div>
+   
                 </div>
                 
                 
@@ -1669,17 +1745,27 @@ const matchedOffers = offersData.filter(offer => {
 });
 
 if (matchedOffers.length > 0) {
-    offersContainer.innerHTML = matchedOffers.map(offer => `
-        <div class="offer-item">
+    offersContainer.innerHTML = matchedOffers.map(offer => {
+        const offerText = `🎊\n*${offer[1]}*\n(${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''})\n${offer[2]}\n〰️〰️〰️〰️〰️〰️〰️〰️〰`;
+
+        return `
+        <div class="offer-item" style="position: relative;">
+            <button class="send-whatsapp" onclick="sendOffer('${encodeURIComponent(offerText)}')" 
+                style="position: absolute; top: 2rem; right: 2rem; background: #28a745; color: white; 
+                border: none; padding: 1rem 2rem; border-radius: 2rem; font-weight: bold; cursor: pointer;">
+                Order
+            </button>
             <h2 class="offer-title">${offer[1]}</h2>
             <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
             <p class="offer-description">${offer[2]}</p>
         </div>
-    `).join('');
+        `;
+    }).join('');
     offersContainer.style.display = 'block';
 } else {
     offersContainer.style.display = 'none';
 }
+
  
                             
                             
@@ -1700,7 +1786,7 @@ if (matchedOffers.length > 0) {
                                 totalItemsDiv.style.color = '#00FF00'; // Green for visibility
                                 } else {
                                 if (filterButtons.style.display === 'none') {
-                                    totalItemsDiv.textContent = 'No item found';
+                                    totalItemsDiv.textContent = 'No menu item found';
                                     } else {
                                     totalItemsDiv.textContent = 'No item';
                                 }
@@ -1820,7 +1906,9 @@ if (matchedOffers.length > 0) {
                             const mergedcolCDE = [
                             row.columnC ? `<span style="color: #40E0D0;" data-column="C">${row.columnC}</span>` : '',
                             row.columnD ? `<span style="color: #00FF7F;" data-column="D">${row.columnD}</span>` : '',
-                            row.columnE ? `<span style="color: #E6E6FA;" data-column="E">${row.columnE}</span>` : ''
+//                            row.columnE ? `<span style="color: #E6E6FA;" data-column="E">${row.columnE}</span>` : ''
+                       row.columnE ? `<span style="color: #F8BBD0;" data-column="E">${row.columnE}</span>` : ''
+
                             ].filter(col => col).join(' / ');
                             
                             const colCDEElement = document.createElement('span');
@@ -2959,87 +3047,95 @@ document.querySelectorAll('.decrement-btn').forEach(btn => {
 }
 
 
-                    function showOrderListWarning() {                            
-                        // Check if modal already exists, if not, create one
-                        let existingModal = document.getElementById('orderListWarningModal');
-                        if (existingModal) {
-                            existingModal.remove(); // Remove existing modal if any
-                            isWarningVisible = false;
-                            return;
-                        }                       
-                        // Create modal container
-                        let modal = document.createElement('div');
-                        modal.id = 'orderListWarningModal';
-                        modal.className = 'modal-overlay';                        
-                        // Initial content in English
-                        let contentEnglish = `
-                        <p><strong>Order list is empty.</strong></p>
-                        <ul>
-                        <li>Touch any <b>rate</b> to add an item.</li>
-                        <li>To add <b>quantity</b>, touch rate multiple times.</li>
-                        <li>View <b>'Order List'</b> and <b>'Total'</b> any time.</li>
-                        <li>You can <b>remove</b> items also from order list.</li>
-                        </ul>
-                        `;                        
-                        // Content in Punjabi
-                        let contentPunjabi = `
-                        <p><strong>ਆਰਡਰ ਸੂਚੀ ਅਜੇ ਖਾਲੀ ਹੈ।</strong></p>
-                        <ul>
-                        <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ ਕੋਈ ਵੀ <b>ਰੇਟ</b> ਛੂਹੋ।</li>
-                        <li><b>ਮਾਤਰਾ</b> ਵਧਾਉਣ ਲਈ, ਇੱਕੋ ਰੇਟ ਨੂੰ ਵਾਰ-ਵਾਰ ਛੂਹੋ।</li>
-                        <li>ਕਿਸੇ ਵੀ ਸਮੇਂ <b>'ਆਰਡਰ ਸੂਚੀ'</b> ਅਤੇ <b>'ਕੁੱਲ ਬਿੱਲ'</b> ਦੇਖ ਸਕਦੇ ਹੋ।</li>
-                        <li>ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਕੱਢ</b> ਵੀ ਸਕਦੇ ਹੋ।</li>
-                        </ul>
-                        `;                        
-                        // Modal content
-                        modal.innerHTML = `
-                        <div class="modal-content">
-                        <span class="close-button">&times;</span>
-                        <div id="modalText">${contentEnglish}</div>
-                        <button id="toggleButton" class="toggle-btn">ਪੰਜਾਬੀ</button>
-                        </div>
-                        `;                        
-                        // Append modal to body
-                        document.body.appendChild(modal);                        
-                        // Toggle functionality
-                        const toggleButton = document.getElementById('toggleButton');
-                        const modalText = document.getElementById('modalText');
-                        let isEnglish = true;                        
-                        toggleButton.addEventListener('click', () => {
-                            if (isEnglish) {
-                                modalText.innerHTML = contentPunjabi;
-                                toggleButton.textContent = 'English';
-                                } else {
-                                modalText.innerHTML = contentEnglish;
-                                toggleButton.textContent = 'Punjabi';
-                            }
-                            isEnglish = !isEnglish;
-                        });                        
-                        // ======== CLOSE HANDLERS START ======== //
-                        function closeModal() {
-                            modal.remove();
-                            isWarningVisible = false;
-                        }
-                        
-                        // Auto-close after 60 seconds
-                        const autoCloseTimer = setTimeout(closeModal, 60000);
-                        
-                        // Close on cross button click
-                        modal.querySelector('.close-button').addEventListener('click', () => {
-                            clearTimeout(autoCloseTimer);
-                            closeModal();
-                        });                    
-                        
-                        // Close on outside click
-                        modal.addEventListener('click', (event) => {
-                            if (event.target === modal) {
-                                clearTimeout(autoCloseTimer);
-                                closeModal();
-                            }
-                        });
-                        // ======== CLOSE HANDLERS END ======== //                        
-                        isWarningVisible = true;
-                    }                    
+function showOrderListWarning() {                            
+    let existingModal = document.getElementById('orderListWarningModal');
+    if (existingModal) {
+        existingModal.remove(); 
+        isWarningVisible = false;
+        return;
+    }
+
+    let modal = document.createElement('div');
+    modal.id = 'orderListWarningModal';
+    modal.className = 'modal-overlay';
+
+    let contentEnglish = `
+        <p><strong>Order list is empty.</strong></p>
+        <ul>
+            <li>Touch any <b>rate</b> to add an item.</li>
+            <li>To add <b>quantity</b>, touch rate multiple times.</li>
+            <li>View <b>'Order List'</b> and <b>'Total'</b> any time.</li>
+            <li>You can <b>remove</b> items also from order list.</li>
+        </ul>
+    `;
+
+    let contentPunjabi = `
+        <p><strong>ਆਰਡਰ ਸੂਚੀ ਅਜੇ ਖਾਲੀ ਹੈ।</strong></p>
+        <ul>
+            <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ ਕੋਈ ਵੀ <b>ਰੇਟ</b> ਛੂਹੋ।</li>
+            <li><b>ਮਾਤਰਾ</b> ਵਧਾਉਣ ਲਈ, ਇੱਕੋ ਰੇਟ ਨੂੰ ਵਾਰ-ਵਾਰ ਛੂਹੋ।</li>
+            <li>ਕਿਸੇ ਵੀ ਸਮੇਂ <b>'ਆਰਡਰ ਸੂਚੀ'</b> ਅਤੇ <b>'ਕੁੱਲ ਬਿੱਲ'</b> ਦੇਖ ਸਕਦੇ ਹੋ।</li>
+            <li>ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਕੱਢ</b> ਵੀ ਸਕਦੇ ਹੋ।</li>
+        </ul>
+    `;
+
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="modalText">${contentEnglish}</div>
+            <div id="toggleContainer" class="toggle-container">
+                <div id="toggleButton" class="split-toggle">
+                    <div id="englishSide" class="toggle-half active">English</div>
+                    <div id="punjabiSide" class="toggle-half">ਪੰਜਾਬੀ</div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const toggleButton = document.getElementById('toggleButton');
+    const modalText = document.getElementById('modalText');
+    const englishSide = document.getElementById('englishSide');
+    const punjabiSide = document.getElementById('punjabiSide');
+    let isEnglish = true;
+
+    toggleButton.addEventListener('click', () => {
+        isEnglish = !isEnglish;
+        if (isEnglish) {
+            modalText.innerHTML = contentEnglish;
+            englishSide.classList.add('active');
+            punjabiSide.classList.remove('active');
+        } else {
+            modalText.innerHTML = contentPunjabi;
+            punjabiSide.classList.add('active');
+            englishSide.classList.remove('active');
+        }
+    });
+
+    function closeModal() {
+        modal.remove();
+        isWarningVisible = false;
+    }
+
+    const autoCloseTimer = setTimeout(closeModal, 60000);
+
+    modal.querySelector('.close-button').addEventListener('click', () => {
+        clearTimeout(autoCloseTimer);
+        closeModal();
+    });
+
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            clearTimeout(autoCloseTimer);
+            closeModal();
+        }
+    });
+
+    isWarningVisible = true;
+}
+
+
                     
                     // Modified toggleScrapList function
                     function toggleScrapList() {                        
@@ -3121,13 +3217,15 @@ document.querySelectorAll('.decrement-btn').forEach(btn => {
                         
 
 let message = encodeURIComponent(
-        `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
-        `${sortedItems.map(item => {
-            let itemTotal = item.qty * parseFloat(item.rate);
-            return `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`;
-        }).join('\n\n')}\n${'-'.repeat(30)}\n` +
-        `*${totalItems}* items - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
-    );
+    `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
+    `${sortedItems.map(item => {
+        let itemTotal = item.qty * parseFloat(item.rate);
+        let itemLabel = item.qty > 1 ? "items" : "item";
+        return `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`;
+    }).join('\n\n')}\n${'-'.repeat(30)}\n` +
+    `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
+);
+
                         
 
                      window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
