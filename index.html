@@ -941,17 +941,26 @@
             
             
             
-            #scrapButton {
-            all: unset; /* Reset all styles */            
-            /* Reapply only the necessary styles */
-            position: fixed;
-            bottom: 5rem;
-            right: calc(50% - 300px + 4rem); /* Align with 600px centered menu */
-            font-size: 5rem;            
-            /* Add any other styles you want to keep */
-            cursor: pointer; /* Change from grab to pointer for better UX */
-            z-index: 1001;
-            }
+#scrapButton {
+    all: unset; /* Reset all styles */
+    position: fixed;
+    bottom: 5rem;
+    right: calc(50% - 300px + 4rem); /* Align with 600px centered menu */
+    font-size: 5rem;
+    cursor: pointer; /* Pointer for better UX */
+    z-index: 1001;
+
+    /* Circular button */
+    width: 14rem;
+    height: 14rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #CD5C5C; /* Single solid color */
+    border-radius: 50%; /* Makes it a circle */
+    box-shadow: 0 0 15px #CD5C5C; /* Glow effect */
+}
+
             
             
             
@@ -999,10 +1008,10 @@
             
 #scrapButton .counter-badge {
     position: absolute;
-    top: -2rem;
-    left:55%;
+    top: 2rem;
+    left:58%;
     transform: translateX(-55%);
-    color: white;
+    color: #4EDC47;
     font-size: 3rem;
     font-weight: bold;
     background: none;
