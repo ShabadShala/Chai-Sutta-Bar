@@ -642,21 +642,62 @@
             
             
             
-            /* Hamburger Button */
-            #hamburger-button {
-            position: absolute; /* Changed from fixed to absolute */
-            top: 3rem; /* Adjust as needed */
-            left: 3rem; /* Adjust as needed */
-            font-size: 5rem;
-            cursor: pointer;
-            z-index: 1001;
-            color: #FFFFFF; /* Lighter text for visibility */            
-            transition: transform 0.3s ease, background 0.3s ease;
-            }
-            
-            #hamburger-button:hover {
-            transform: scale(1.1); /* Zoom in the button by 10% */
-            }
+   /* Hamburger Icon Styling */
+#hamburger-button {
+    position: fixed;
+    top: 2rem;
+    left: 3rem;
+    z-index: 1001;
+    cursor: pointer;
+    padding: 2rem;
+    background: rgba(33, 33, 33, 0.8);
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.hamburger-lines {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.hamburger-lines .line {
+    position: absolute;
+    width: 100%;
+    height: .8rem;
+    background: #fae68e;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.hamburger-lines .line:nth-child(1) {
+    top: 20%;
+    transform: translateY(-50%);
+}
+
+.hamburger-lines .line:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.hamburger-lines .line:nth-child(3) {
+    top: 80%;
+    transform: translateY(-50%);
+}
+
+#hamburger-button:hover {
+    transform: scale(1.1);
+    background: rgba(33, 33, 33, 1);
+}
+
+#hamburger-button:hover .line {
+    background: #ffffff;
+}
             
             /* Add container styling */
             .hsidebar-container {
@@ -911,23 +952,32 @@
             right: 0; /* Show sidebar when open */
             }
             
-            #sidebar-indicator {
-            position: fixed;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 2rem;
-            height: 100px;
-            background-color: rgba(0, 204, 204, 0.5);
-            cursor: pointer;
-            }
-            
-            /* Add styles for touch gestures */
-            @media (pointer: coarse) {
-            #sidebar {
-            touch-action: manipulation;
-            }
-            }        
+  #sidebar-indicator {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4rem;
+    height: 6rem;
+    cursor: pointer;
+    z-index: 999;
+    transition: all 0.3s ease;
+    padding: 1rem;
+    background: rgba(133, 33, 33, 0.8);
+    border-radius: 50% 0 0 50%;
+    filter: invert(1);
+}
+
+#sidebar-indicator:hover {
+    transform: translateY(-50%) scale(1.1);
+    background: rgba(33, 33, 33, 1);
+}
+
+@keyframes pulse {
+    0% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.1); }
+    100% { transform: translateY(-50%) scale(1); }
+}      
             
             
             
@@ -1235,105 +1285,131 @@
           
           
           
-            
-/* Modal Overlay, when order list empty */
+/* Modal Overlay */
 .modal-overlay {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
     display: flex;
     justify-content: center;
-    align-items: center; /* Ensures vertical centering */
-    z-index: 1000;
-    opacity: 1;
-    transition: opacity 0.3s ease;
+    align-items: center;
+    z-index: 10000; /* Ensure it's on top of everything */
+    backdrop-filter: blur(5px); /* Adds a blur effect to the background */
 }
 
-/* Modal Box */
+/* Modal Content */
 .modal-content {
-    text-align: justify;
-    min-height: 200px;
-    width: 80%;
-    max-width:300px;    
-    background: white;
-    padding: 5rem; /* Reduced padding */
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-    font-family: Arial, sans-serif;
-    animation: fadeIn 0.3s ease-in-out;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; /* Ensures internal content is centered */
-    
+    background: #212121; /* Dark background to match your theme */
+    color: #fae68e; /* Accent color for text */
+    padding: 4rem;
+    border-radius: 2rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    border: 2px solid #fae68e; /* Accent border */
+    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
 }
 
-            
-            /* Title Styling */
-            .modal-content p {
-            font-size: 5rem;
-            font-weight: bold;
-            color: Red;
-            margin-bottom: 10px;
-            text-align: center;    
-            }
-            
-            /* Close Button on Order List empty popup*/
-            .close-button {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            font-size: 8rem;
-            cursor: pointer;
-            color: #333;
-            }
-            
-            /* List Styling */
-            .modal-content ul {
-            list-style-type: none;
-            margin-top: 10px;
-            }
-            
-            .modal-content ul li {
-            margin: 5px 0;
-            font-size: 4.5rem;
-            color: #444;
-            
-            }
-            
-            /* Fade-out Animation */
-            .fade-out {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            }
-            
-            /* Fade-in Animation */
-            @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-            }
-            
-            /* Eng-Pbi Toggle Button Styling */
-            .toggle-btn {
-            display: block;      /* Makes it a block element */
-            margin: 20px auto;   /* Centers it horizontally */
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: center;
-            margin-bottom: 0;
-            }
-            
-            .toggle-btn:hover {
-            background-color: #0056b3;
-            }
-            
-            
+/* Title Styling */
+.modal-content p {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #fae68e; /* Accent color */
+    margin-bottom: 3rem;
+}
+
+/* List Styling */
+.modal-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-content ul li {
+    font-size: 4rem;
+    color: #ffffff; /* White text for better readability */
+    margin: 2rem 0;
+    line-height: 1.5;
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 6rem;
+    cursor: pointer;
+    color: #fae68e; /* Accent color */
+    transition: color 0.3s ease;
+}
+
+.close-button:hover {
+    color: #ff4d4d; /* Red color on hover for better feedback */
+}
+
+/* Toggle Button Container */
+.toggle-container {
+    margin-top: 3rem;
+}
+
+/* Split Toggle Button */
+.split-toggle {
+    display: flex;
+    width: 30rem;
+    height: 8rem;
+    border-radius: 5rem;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #fae68e; /* Accent border */
+    margin: 0 auto; /* Center the toggle */
+}
+
+.toggle-half {
+    flex: 1;
+    text-align: center;
+    line-height: 8rem; /* Center text vertically */
+    font-size: 4rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    color: #fae68e; /* Accent color */
+}
+
+.toggle-half:first-child {
+    border-top-left-radius: 5rem;
+    border-bottom-left-radius: 5rem;
+}
+
+.toggle-half:last-child {
+    border-top-right-radius: 5rem;
+    border-bottom-right-radius: 5rem;
+}
+
+.toggle-half.active {
+    background: #fae68e; /* Accent background */
+    color: #212121; /* Dark text for contrast */
+}
+
+.toggle-half:not(.active) {
+    background: transparent;
+    color: #fae68e; /* Accent color */
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
             
             
             
@@ -1369,89 +1445,46 @@ font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
             
             
             
-            #likeContainer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-            width:35%;     
-            min-width:100px;
-            border: 2px solid #fae68e; /* Border color */
-            border-radius: 2rem; /* Optional: rounded corners */
-            font-size: 7rem;
-            font-weight: bold;
-            color: #fae68e;
-            margin: 4rem auto;
-            }
+/* Like Container */
+#likeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem; /* Reduced padding */
+    width: 26.25%; /* 75% of original 35% */
+    min-width: 75px; /* 75% of original 100px */
+    border: 2px solid #fae68e;
+    border-radius: 1.5rem; /* Reduced border radius */
+    font-size: 5.25rem; /* 75% of original 7rem */
+    font-weight: bold;
+    color: #fae68e;
+    margin: 3rem auto; /* Reduced margin */
+      margin-bottom: 5rem;
+}
+
+/* Like Icon */
+#likeIcon {
+    width: 6rem; /* 75% of original 8rem */
+    height: 6rem; /* 75% of original 8rem */
+    filter: invert(0.8);
+    transition: filter 0.3s ease;
+}
+
+/* Like Counter */
+#likeCounter {
+    font-size: 5.25rem; /* 75% of original 7rem */
+    margin-left: -2.25rem; /* 75% of original -3rem */
+}
             
-            #likeIcon {
-            width: 8rem;
-            height: 8rem;
-            filter: invert(0.8);
-            transition: filter 0.3s ease;
-            }
             
-            #likeIcon.liked {
+                    #likeIcon.liked {
             filter: invert(70%) sepia(90%) saturate(400%) hue-rotate(360deg);
             }
             
-            #likeCounter {
-             font-size: 7rem;
-             margin-left: -3rem;
-            }
             
             
             
-            
-            
-            
-            
-            
-            
-            .toggle-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 4rem;
-}
 
-.split-toggle {
-    display: flex;
-    width: 35rem;
-    height: 10rem;
-    border-radius: 5rem;
-    overflow: hidden;
-    cursor: pointer;
-    border: 2px solid #888;
-}
-
-.toggle-half {
-    flex: 1;
-    text-align: center;
-    line-height: 36px;
-     font-size: 4rem;  
-    font-weight: bold;
-    transition: background 0.3s, color 0.3s;
-}
-
-.toggle-half:first-child {
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-}
-
-.toggle-half:last-child {
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.toggle-half.active {
-    background: #D32F2F;
-    color: white;
-}
-
-.toggle-half:not(.active) {
-    background: #F8D7DA;
-    color: black;
-}
 
         </style>
         </head>
@@ -2322,9 +2355,15 @@ if (offerWhatsappNumber) {
                     
                     function setupHamburgerMenu() {
                         // Create Hamburger Button
-                        const hamburgerButton = document.createElement('div');
-                        hamburgerButton.id = 'hamburger-button';
-                        hamburgerButton.innerHTML = '&#9776;'; // Hamburger icon
+      const hamburgerButton = document.createElement('div');
+hamburgerButton.id = 'hamburger-button';
+hamburgerButton.innerHTML = `
+    <div class="hamburger-lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+`;
                         
                         // Create hsidebar container
                         const hsidebarContainer = document.createElement('div');
@@ -3231,12 +3270,8 @@ function showOrderListWarning() {
                             showOrderListWarning();
                             return;
                         }                        
-                        
-                        
-                        
-                         
-                          const orderNumber = cachedOrderNumber + 1;
 
+                          const orderNumber = cachedOrderNumber + 1;
     
                         // Group items by name and rate to calculate quantities
                         const itemMap = new Map();
@@ -3283,6 +3318,15 @@ let message = encodeURIComponent(
 
                      window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
                  
+                 
+   // Clear the scrap list after ordering
+    scrapItems = [];
+    updateScrapListDisplay();
+    handleScrapItemsChange();
+    closeScrapList();
+    showFeedback("Order sent. List cleared!"); // Optional feedback
+                 
+                
     updateCounter('updateOrders');
      cachedOrderNumber = orderNumber;
                     });
