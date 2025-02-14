@@ -944,8 +944,8 @@
 #scrapButton {
     all: unset; /* Reset all styles */
     position: fixed;
-    bottom: 5rem;
-    right: calc(50% - 300px + 4rem); /* Align with 600px centered menu */
+    bottom: 4rem;
+    right: calc(50% - 300px + 3rem); /* Align with 600px centered menu */
     font-size: 5rem;
     cursor: pointer; /* Pointer for better UX */
     z-index: 1001;
@@ -1011,7 +1011,8 @@
     top: 2rem;
     left:58%;
     transform: translateX(-55%);
-    color: #4EDC47;
+    color: white;
+    font-weight: bold;
     font-size: 3rem;
     font-weight: bold;
     background: none;
@@ -1790,8 +1791,10 @@ if (matchedOffers.length > 0) {
         `;
     }).join('');
     offersContainer.style.display = 'block';
+    offersButton.querySelector('.arrow').textContent = '▲';
 } else {
     offersContainer.style.display = 'none';
+    offersButton.querySelector('.arrow').textContent = '▼'
 }
 
  
@@ -1852,11 +1855,13 @@ if (matchedOffers.length > 0) {
                             header.style.fontSize = '7rem';  // Reset to collapsed size
                             header.querySelector('.right').style.display = 'none';  // Hide second column
                             header.classList.remove('visible-border'); 
+                                       
                         });
                         
                         document.querySelectorAll('.category-items').forEach(container => {
                             container.style.display = 'none';  // Collapse all categories
                             container.classList.remove('visible-border'); 
+                           
                         });
                     }
                     
@@ -3257,7 +3262,8 @@ let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate)
 let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
 
 // List of food-related emojis
-let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹'];
+let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '🎊', '💝'];
+
 // Select a random emoji
 let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
 
@@ -3396,6 +3402,7 @@ fetch(scriptUrl + "?sheet=offer")
             const isVisible = offersContainer.style.display === 'block';
             offersContainer.style.display = isVisible ? 'none' : 'block';
             offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
+           
         });
     }
 
