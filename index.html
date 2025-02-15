@@ -390,44 +390,44 @@
             
             
             
-/* Offers Button Styles */
-#offers-button {
-    position: relative;
-    margin: 0 auto;
-    width: fit-content;
-    background: linear-gradient(135deg, #fae68e, #ffcc66);
-    color: #212121;
-    border: none;
-    border-radius: 0 0 5rem 5rem;
-    padding: 1rem 3rem;
-    font-size: 5rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    display: none; /* Hidden by default */
-    z-index: 500;
-    animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
-}
-
-/* Floating Animation */
-@keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-0.5rem); }
-    100% { transform: translateY(0); }
-}
-
-/* Glow Effect */
-@keyframes glow {
-    0% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
-    100% { box-shadow: 0 6px 15px rgba(255, 204, 102, 0.7); }
-}
-
-/* Hover Effect */
-#offers-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(255, 204, 102, 0.9);
-}
-
+            /* Offers Button Styles */
+            #offers-button {
+            position: relative;
+            margin: 0 auto;
+            width: fit-content;
+            background: linear-gradient(135deg, #fae68e, #ffcc66);
+            color: #212121;
+            border: none;
+            border-radius: 0 0 5rem 5rem;
+            padding: 1rem 3rem;
+            font-size: 5rem;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: none; /* Hidden by default */
+            z-index: 500;
+            animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+            }
+            
+            /* Floating Animation */
+            @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-0.5rem); }
+            100% { transform: translateY(0); }
+            }
+            
+            /* Glow Effect */
+            @keyframes glow {
+            0% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
+            100% { box-shadow: 0 6px 15px rgba(255, 204, 102, 0.7); }
+            }
+            
+            /* Hover Effect */
+            #offers-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 204, 102, 0.9);
+            }
+            
             
             #offers-container {
             width: 100%;
@@ -573,7 +573,7 @@
             
             /* Footer Container Styling */
             .footer-container {
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -590,7 +590,7 @@
             color: white;
             margin-top: auto; /* Pushes footer down */
             margin-bottom: 2rem;
-            display: none; 
+        
             }
             
             .footer a {
@@ -617,15 +617,7 @@
             color: blue;
             }
             
-            .signature {
-            background-color: #212121;
-            color: #fae68e; /* Signature text color */
-            font-size: 4rem;
-            text-align: center;
-            padding: 1rem;
-            margin-top: 1rem; /* Ensures it's at the bottom */
-            }   
-         
+      
             
             
             
@@ -642,62 +634,62 @@
             
             
             
-   /* Hamburger Icon Styling */
-#hamburger-button {
-    position: fixed;
-    top: 2rem;
-    left: 3rem;
-    z-index: 1001;
-    cursor: pointer;
-    padding: 2rem;
-    background: rgba(33, 33, 33, 0.8);
-    border-radius: 50%;
-    width: 10rem;
-    height: 10rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.hamburger-lines {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.hamburger-lines .line {
-    position: absolute;
-    width: 100%;
-    height: .8rem;
-    background: #fae68e;
-    border-radius: 1rem;
-    transition: all 0.3s ease;
-}
-
-.hamburger-lines .line:nth-child(1) {
-    top: 20%;
-    transform: translateY(-50%);
-}
-
-.hamburger-lines .line:nth-child(2) {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.hamburger-lines .line:nth-child(3) {
-    top: 80%;
-    transform: translateY(-50%);
-}
-
-#hamburger-button:hover {
-    transform: scale(1.1);
-    background: rgba(33, 33, 33, 1);
-}
-
-#hamburger-button:hover .line {
-    background: #ffffff;
-}
+            /* Hamburger Icon Styling */
+            #hamburger-button {
+            position: fixed;
+            top: 1.5rem;
+            left: 3rem;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 2rem;
+            background: rgba(33, 33, 33, 0.8);
+            border-radius: 50%;
+            width: 10rem;
+            height: 10rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            }
+            
+            .hamburger-lines {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            }
+            
+            .hamburger-lines .line {
+            position: absolute;
+            width: 100%;
+            height: .8rem;
+            background: white;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            }
+            
+            .hamburger-lines .line:nth-child(1) {
+            top: 20%;
+            transform: translateY(-50%);
+            }
+            
+            .hamburger-lines .line:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+            }
+            
+            .hamburger-lines .line:nth-child(3) {
+            top: 80%;
+            transform: translateY(-50%);
+            }
+            
+            #hamburger-button:hover {
+            transform: scale(1.1);
+            background: rgba(33, 33, 33, 1);
+            }
+            
+            #hamburger-button:hover .line {
+            background: #ffffff;
+            }
             
             /* Add container styling */
             .hsidebar-container {
@@ -730,7 +722,7 @@
             border-radius: 0 15px 15px 0;
             color: #e0e0e0;
             pointer-events: auto; /* Enable clicks when visible */
-            padding:5rem;
+            padding:3rem;
             }
             
             #hsidebar.open {
@@ -832,7 +824,7 @@
             .footer-text {
             position: absolute;
             bottom: 6rem;
-            font-size: 4rem;
+            font-size: 3.5rem;
             color: #f1f1f1;
             text-align: left;
             line-height: 1.5;
@@ -915,21 +907,21 @@
             
             
             
-            #sidebar {
-            position: fixed;
-            right: -100px; /* Initially hidden off the screen */
-            top: 50%;
-            transform: translateY(-50%); /* Vertically center the sidebar */
-            width: 60px; /* Set the width to fit the logos */
-            background-color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 0;
-            transition: right 0.3s ease;
-            z-index: 1000; /* Ensure sidebar is on top */
-            box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5); /* Optional shadow for better visibility */
-            }
+#sidebar {
+    position: fixed;
+    right: -100px; /* Off-screen initially */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    transition: right 0.3s ease;
+    z-index: 1000;
+    box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
+}
             
             #sidebar a {
             margin: 10px 0;
@@ -952,32 +944,15 @@
             right: 0; /* Show sidebar when open */
             }
             
-  #sidebar-indicator {
-    position: fixed;
-    right: 0;
+            /* Phone Icon */
+.phone-icon {
+    position: absolute;
+    right: 1rem; /* Adjust distance from the right */
     top: 50%;
-    transform: translateY(-50%);
-    width: 4rem;
-    height: 6rem;
-    cursor: pointer;
-    z-index: 999;
-    transition: all 0.3s ease;
-    padding: 1rem;
-    background: rgba(133, 33, 33, 0.8);
-    border-radius: 50% 0 0 50%;
-    filter: invert(1);
+    transform: translateY(-50%); /* Center vertically */
+    width: 7rem; /* Adjust icon size */
+    height: auto;
 }
-
-#sidebar-indicator:hover {
-    transform: translateY(-50%) scale(1.1);
-    background: rgba(33, 33, 33, 1);
-}
-
-@keyframes pulse {
-    0% { transform: translateY(-50%) scale(1); }
-    50% { transform: translateY(-50%) scale(1.1); }
-    100% { transform: translateY(-50%) scale(1); }
-}      
             
             
             
@@ -985,32 +960,26 @@
             
             
             
+            #scrapButton {
+            all: unset; /* Reset all styles */
+            position: fixed;
+            bottom: 4rem;
+            right: calc(50% - 300px + 3rem); /* Align with 600px centered menu */
+            font-size: 5rem;
+            cursor: pointer; /* Pointer for better UX */
+            z-index: 1001;
             
+            /* Circular button */
+            width: 14rem;
+            height: 14rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #CD5C5C; /* Single solid color */
+            border-radius: 50%; /* Makes it a circle */
+            box-shadow: 0 0 15px #CD5C5C; /* Glow effect */
+            }
             
-            
-            
-            
-            
-#scrapButton {
-    all: unset; /* Reset all styles */
-    position: fixed;
-    bottom: 4rem;
-    right: calc(50% - 300px + 3rem); /* Align with 600px centered menu */
-    font-size: 5rem;
-    cursor: pointer; /* Pointer for better UX */
-    z-index: 1001;
-
-    /* Circular button */
-    width: 14rem;
-    height: 14rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #CD5C5C; /* Single solid color */
-    border-radius: 50%; /* Makes it a circle */
-    box-shadow: 0 0 15px #CD5C5C; /* Glow effect */
-}
-
             
             
             
@@ -1056,25 +1025,25 @@
             cursor: grabbing; /* Change cursor to grabbing when clicked */
             }
             
-#scrapButton .counter-badge {
-    position: absolute;
-    top: 2rem;
-    left:58%;
-    transform: translateX(-55%);
-    color: white;
-    font-weight: bold;
-    font-size: 3rem;
-    font-weight: bold;
-    background: none;
-    width: auto;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: none;
-    border-radius: 0;
-}
-
+            #scrapButton .counter-badge {
+            position: absolute;
+            top: 2rem;
+            left:58%;
+            transform: translateX(-55%);
+            color: white;
+            font-weight: bold;
+            font-size: 3rem;
+            font-weight: bold;
+            background: none;
+            width: auto;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none;
+            border-radius: 0;
+            }
+            
             
             /* Scrap List Modal */
             #scrapList {
@@ -1260,14 +1229,14 @@
             background-color: #ddd;
             }
             
-.decrement-btn:disabled {
-    background-color: #ccc !important; /* Gray background */
-    color: transparent !important; /* Transparent text color */
-    cursor: not-allowed !important; /* Change cursor */
-    opacity: 0; /* Set opacity to 0 */
-    pointer-events: none; /* Disable hover effect */
-}
-
+            .decrement-btn:disabled {
+            background-color: #ccc !important; /* Gray background */
+            color: transparent !important; /* Transparent text color */
+            cursor: not-allowed !important; /* Change cursor */
+            opacity: 0; /* Set opacity to 0 */
+            pointer-events: none; /* Disable hover effect */
+            }
+            
             
             .qty-display {
             font-size: 4rem;
@@ -1282,212 +1251,245 @@
             margin-left: auto;
             }
             
-          
-          
-          
-/* Modal Overlay */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000; /* Ensure it's on top of everything */
-    backdrop-filter: blur(5px); /* Adds a blur effect to the background */
-}
-
-/* Modal Content */
-.modal-content {
-    background: #212121; /* Dark background to match your theme */
-    color: #fae68e; /* Accent color for text */
-    padding: 4rem;
-    border-radius: 2rem;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-    border: 2px solid #fae68e; /* Accent border */
-    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
-}
-
-/* Title Styling */
-.modal-content p {
-    font-size: 5rem;
-    font-weight: bold;
-    color: #fae68e; /* Accent color */
-    margin-bottom: 3rem;
-}
-
-/* List Styling */
-.modal-content ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.modal-content ul li {
-    font-size: 4rem;
-    color: #ffffff; /* White text for better readability */
-    margin: 2rem 0;
-    line-height: 1.5;
-}
-
-/* Close Button */
-.close-button {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    font-size: 6rem;
-    cursor: pointer;
-    color: #fae68e; /* Accent color */
-    transition: color 0.3s ease;
-}
-
-.close-button:hover {
-    color: #ff4d4d; /* Red color on hover for better feedback */
-}
-
-/* Toggle Button Container */
-.toggle-container {
-    margin-top: 3rem;
-}
-
-/* Split Toggle Button */
-.split-toggle {
-    display: flex;
-    width: 30rem;
-    height: 8rem;
-    border-radius: 5rem;
-    overflow: hidden;
-    cursor: pointer;
-    border: 2px solid #fae68e; /* Accent border */
-    margin: 0 auto; /* Center the toggle */
-}
-
-.toggle-half {
-    flex: 1;
-    text-align: center;
-    line-height: 8rem; /* Center text vertically */
-    font-size: 4rem;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    color: #fae68e; /* Accent color */
-}
-
-.toggle-half:first-child {
-    border-top-left-radius: 5rem;
-    border-bottom-left-radius: 5rem;
-}
-
-.toggle-half:last-child {
-    border-top-right-radius: 5rem;
-    border-bottom-right-radius: 5rem;
-}
-
-.toggle-half.active {
-    background: #fae68e; /* Accent background */
-    color: #212121; /* Dark text for contrast */
-}
-
-.toggle-half:not(.active) {
-    background: transparent;
-    color: #fae68e; /* Accent color */
-}
-
-/* Fade-in Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
             
             
             
+            /* Modal Overlay */
+            .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000; /* Ensure it's on top of everything */
+            backdrop-filter: blur(5px); /* Adds a blur effect to the background */
+            }
             
+            /* Modal Content */
+            .modal-content {
+            background: #212121; /* Dark background to match your theme */
+            color: #fae68e; /* Accent color for text */
+            padding: 4rem;
+            border-radius: 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            border: 2px solid #fae68e; /* Accent border */
+            animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+            }
             
-#counterContainer {
-    display: flex;
-    justify-content: center; /* Centers them */
-    align-items: center; /* Aligns vertically */
-    gap: 2rem; /* Adds space between them */
-}
-
-
-@import url('https://fonts.cdnfonts.com/css/digital-7'); /* Import Digital-7 Font */
-
-
-#visitorCounter,
-#viewsCounter {
-font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
-    font-size: 4rem;
-    color: #fae68e;
-    background-color: black;
-  padding: 1rem 2rem;
-    border-radius: 10px;
-    display: inline-block;
-    text-align: center;
-    letter-spacing: 0.2rem;
-    box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.8); /* Glowing effect */
-
-}
-
+            /* Title Styling */
+            .modal-content p {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #fae68e; /* Accent color */
+            margin-bottom: 3rem;
+            }
             
+            /* List Styling */
+            .modal-content ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            }
             
+            .modal-content ul li {
+            font-size: 5rem;
+            color: #ffffff; /* White text for better readability */
+            margin: 2rem 0;
+            line-height: 1.5;
+            }
             
+            /* Close Button */
+            .close-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 6rem;
+            cursor: pointer;
+            color: #fae68e; /* Accent color */
+            transition: color 0.3s ease;
+            }
             
-/* Like Container */
-#likeContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1.5rem; /* Reduced padding */
-    width: 26.25%; /* 75% of original 35% */
-    min-width: 75px; /* 75% of original 100px */
-    border: 2px solid #fae68e;
-    border-radius: 1.5rem; /* Reduced border radius */
-    font-size: 5.25rem; /* 75% of original 7rem */
-    font-weight: bold;
-    color: #fae68e;
-    margin: 3rem auto; /* Reduced margin */
-      margin-bottom: 5rem;
-}
-
-/* Like Icon */
-#likeIcon {
-    width: 6rem; /* 75% of original 8rem */
-    height: 6rem; /* 75% of original 8rem */
-    filter: invert(0.8);
-    transition: filter 0.3s ease;
-}
-
-/* Like Counter */
-#likeCounter {
-    font-size: 5.25rem; /* 75% of original 7rem */
-    margin-left: -2.25rem; /* 75% of original -3rem */
-}
+            .close-button:hover {
+            color: #ff4d4d; /* Red color on hover for better feedback */
+            }
             
+            /* Toggle Button Container */
+            .toggle-container {
+            margin-top: 3rem;
+            }
             
-                    #likeIcon.liked {
-            filter: invert(70%) sepia(90%) saturate(400%) hue-rotate(360deg);
+            /* Split Toggle Button */
+            .split-toggle {
+            display: flex;
+            width: 30rem;
+            height: 8rem;
+            border-radius: 5rem;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #fae68e; /* Accent border */
+            margin: 0 auto; /* Center the toggle */
+            }
+            
+            .toggle-half {
+            flex: 1;
+            text-align: center;
+            line-height: 8rem; /* Center text vertically */
+            font-size: 4rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #fae68e; /* Accent color */
+            }
+            
+            .toggle-half:first-child {
+            border-top-left-radius: 5rem;
+            border-bottom-left-radius: 5rem;
+            }
+            
+            .toggle-half:last-child {
+            border-top-right-radius: 5rem;
+            border-bottom-right-radius: 5rem;
+            }
+            
+            .toggle-half.active {
+            background: #fae68e; /* Accent background */
+            color: #212121; /* Dark text for contrast */
+            }
+            
+            .toggle-half:not(.active) {
+            background: transparent;
+            color: #fae68e; /* Accent color */
+            }
+            
+            /* Fade-in Animation */
+            @keyframes fadeIn {
+            from {
+            opacity: 0;
+            transform: scale(0.9);
+            }
+            to {
+            opacity: 1;
+            transform: scale(1);
+            }
             }
             
             
             
             
+            
+            
+            #counterContainer {
+            display: flex;
+            justify-content: center; /* Centers them */
+            align-items: center; /* Aligns vertically */
+            gap: 2rem; /* Adds space between them */
+            }
+            
+            
+            @import url('https://fonts.cdnfonts.com/css/digital-7'); /* Import Digital-7 Font */
+            
+            
+            #visitorCounter,
+            #viewsCounter {
+            font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
+            font-size: 4rem;
+            color: #fae68e;
+            background-color: black;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+            letter-spacing: 0.2rem;
+            box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.8); /* Glowing effect */
+            
+            }
+            
+            
+            
+            
+            
+            /* Like Container */
+            #likeContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem; /* Reduced padding */
+            width: 26.25%; /* 75% of original 35% */
+            min-width: 100px; /* 75% of original 100px */
+            border: 2px solid #fae68e;
+            border-radius: 1.5rem; /* Reduced border radius */
+            font-size: 5.25rem; /* 75% of original 7rem */
+            font-weight: bold;
+            color: #fae68e;
+            margin: 3rem auto; /* Reduced margin */
+            margin-bottom: 5rem;
+            }
+            
+            /* Like Icon */
+            #likeIcon {
+            width: 6rem; /* 75% of original 8rem */
+            height: 6rem; /* 75% of original 8rem */
+            filter: invert(0.8);
+            transition: filter 0.3s ease;
+            }
+            
+            /* Like Counter */
+            @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+            }
+            
+            .like-animate {
+            animation: pop 0.3s ease-in-out;
+            }
+            
+            /* Update your existing like counter styles */
+            #likeCounter {
+            font-size: 5.25rem;
+            margin-left: -2.25rem;
+            display: inline-block; /* Required for animation */
+            }
+            
+            
+            #likeIcon.liked {
+            filter: invert(70%) sepia(90%) saturate(400%) hue-rotate(360deg);
+            }
+            
+            /* Blinking animation */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
 
+/* Apply blinking effect */
+.blinking {
+    animation: blink 0.7s infinite;
+}
 
+            
+            
+.social {
+    position: fixed; /* Ensures positioning without affecting elements */
+     left: 50%;
+            transform: translateX(-50%);
+            max-width: 600px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+             pointer-events: none;
+    z-index: 1000; /* Keeps sidebar above other content */
+}
+
+            
         </style>
-        </head>
+    </head>
     <body>
         
         <!-- Loading Overlay -->
@@ -1512,7 +1514,7 @@ font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
                 <div class="open-close"></div>               
             </div>
             
-            
+              <img src="icons/phone.svg" class="phone-icon invert-icon" alt="Phone">
         </div>
         
         
@@ -1588,31 +1590,37 @@ font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
                             Ph: <a href="tel:+919112400010">91124-00010</a>, <a href="tel:+919023406002">90234-06002</a>
                         </div>
                     </div>
-          
+                    
+                    
+                    <div id="counterContainer">
+                        <div id="visitorCounter">Users: 👤</div>
+                        <div id="viewsCounter">Views: 👁</div>
+                    </div>
 
-<div id="counterContainer">
-    <div id="visitorCounter">Users: 👤</div>
-    <div id="viewsCounter">Views: 👁</div>
+                </div>
+                
+                
+                
+ <!-- Social Container -->
+<div class="social">
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <a id="delivery-link" href="#"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
+        <a id="whatsapp-link" href="#"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
+        <a id="phone-link" href="#"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
+        <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="sidebar/location.png" alt="Location" class="logo"></a>
+        <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
+        <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
+    </div>
 </div>
-                    <div class="signature">Developed by Komal Brar</div>        
-                </div>
-                
-                
-                
-                <!-- Sidebar -->
-                <div id="sidebar">
-                    <a id="delivery-link" href="#"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
-                    <a id="whatsapp-link" href="#"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
-                    <a id="phone-link" href="#"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
-                    <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="sidebar/location.png" alt="Location" class="logo"></a>
-                    <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
-                    <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
-                </div>
+
                 
                 
                 
                 <script>
-                    
+                     const scriptUrl = "https://script.google.com/macros/s/AKfycbwqXrC-1gFM8eRJrKqOjAzV4hVev4TwaoE8Jj8FDO1ZBnegI9aT_UjrOAvNX6NskN5AEw/exec";
+                     
+                     
                     document.addEventListener('contextmenu', event => event.preventDefault());
                     document.addEventListener('copy', event => event.preventDefault());
                     document.addEventListener('cut', event => event.preventDefault());
@@ -1620,8 +1628,8 @@ font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
                     
                     // let whatsappOfferNumber = '918968444425'; // Default value as fallback
                     let cachedOrderNumber = null;
-
-              
+                    
+                    
                     
                     function showFeedback(message) {
                         const feedback = document.querySelector('.feedback-message');
@@ -1652,11 +1660,61 @@ font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
                     updateScreenSize();
                     
                     
-                    
-                    
-                    
-                    
-                    
+let SEARCH_REPLACEMENTS = {
+    // Fallback values (will be overwritten if fetch succeeds)
+    'tea': 'chai',
+    'chai': 'tea',
+    'cofee': 'coffee',
+    'coofe': 'coffee'
+};
+
+async function loadReplacements() {
+    try {
+        const response = await fetch(`${scriptUrl}?sheet=replace`);
+        const data = await response.json();
+        
+        SEARCH_REPLACEMENTS = data.slice(1).reduce((acc, row) => {
+            if (row.length >= 2) {
+                // Handle Gurmukhi differently
+                const isGurmukhi = /[\u0A00-\u0A7F]/.test(row[0]);
+                
+                const original = isGurmukhi 
+                    ? String(row[0]).trim()          // Preserve exact Gurmukhi
+                    : String(row[0]).toLowerCase().trim();
+                
+                const replacement = isGurmukhi 
+                    ? String(row[1]).trim()          // Preserve exact Gurmukhi
+                    : String(row[1]).toLowerCase().trim();
+
+                if (original && replacement) {
+                    acc[original] = replacement;
+                }
+            }
+            return acc;
+        }, {});
+
+        console.log('Final replacements:', SEARCH_REPLACEMENTS);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        SEARCH_REPLACEMENTS = {
+            'tea': 'chai',
+            'chai': 'tea',
+            'cofee': 'coffee',
+            'coofe': 'coffee',
+            'ਸ਼': 'ਸ਼',
+            'ਖ਼': 'ਖ਼',
+            'ਗ਼': 'ਗ਼',
+            'ਜ਼': 'ਜ਼',
+            'ਫ਼': 'ਫ਼',
+            'ਲ਼': 'ਲ਼'
+        };
+    }
+}
+
+// Initialize when page loads
+loadReplacements();
+
                     
                     
                     let selectedFilter = "="; // Default to "="                                        
@@ -1789,54 +1847,54 @@ font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
                                 lastVisibleItem.style.marginBottom = '2rem'; // Add this line
                             }
                             
-
-// Offers search code
-const offersContainer = document.getElementById('offers-container');
-offersContainer.innerHTML = ''; // Clear previous results
-
-const searchWords = normalizedSearchQuery.toLowerCase().split(/\s+/); // Split search query into words
-
-const matchedOffers = offersData.filter(offer => {
-    const titleWords = offer[1].toLowerCase().split(/\s+/); // Split Title into words
-    const descWords = offer[2].toLowerCase().split(/\s+/); // Split Description into words
-
-    return searchWords.some(searchWord => 
-        titleWords.some(word => word.startsWith(searchWord)) || 
-        descWords.some(word => word.startsWith(searchWord))
-    );
-});
-
-if (matchedOffers.length > 0) {
-    offersContainer.innerHTML = matchedOffers.map(offer => {
-        const offerText = `🎊\n*${offer[1]}*\n(${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''})\n${offer[2]}\n〰️〰️〰️〰️〰️〰️〰️〰️〰`;
-
-        return `
-        <div class="offer-item" style="position: relative;">
-            <button class="send-whatsapp" onclick="sendOffer('${encodeURIComponent(offerText)}')" 
-                style="position: absolute; top: 2rem; right: 2rem; background: #28a745; color: white; 
-                border: none; padding: 1rem 2rem; border-radius: 2rem; font-weight: bold; cursor: pointer;">
-                Order
-            </button>
-            <h2 class="offer-title">${offer[1]}</h2>
-            <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
-            <p class="offer-description">${offer[2]}</p>
-        </div>
-        `;
-    }).join('');
-    offersContainer.style.display = 'block';
-    offersButton.querySelector('.arrow').textContent = '▲';
-} else {
-    offersContainer.style.display = 'none';
-    offersButton.querySelector('.arrow').textContent = '▼'
-}
-
- 
+                            
+                            // Offers search code
+                            const offersContainer = document.getElementById('offers-container');
+                            offersContainer.innerHTML = ''; // Clear previous results
+                            
+                            const searchWords = normalizedSearchQuery.toLowerCase().split(/\s+/); // Split search query into words
+                            
+                            const matchedOffers = offersData.filter(offer => {
+                                const titleWords = offer[1].toLowerCase().split(/\s+/); // Split Title into words
+                                const descWords = offer[2].toLowerCase().split(/\s+/); // Split Description into words
+                                
+                                return searchWords.some(searchWord => 
+                                titleWords.some(word => word.startsWith(searchWord)) || 
+                                descWords.some(word => word.startsWith(searchWord))
+                                );
+                            });
+                            
+                            if (matchedOffers.length > 0) {
+                                offersContainer.innerHTML = matchedOffers.map(offer => {
+                                    const offerText = `🎊\n*${offer[1]}*\n(${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''})\n${offer[2]}\n〰️〰️〰️〰️〰️〰️〰️〰️〰`;
+                                    
+                                    return `
+                                    <div class="offer-item" style="position: relative;">
+                                    <button class="send-whatsapp" onclick="sendOffer('${encodeURIComponent(offerText)}')" 
+                                    style="position: absolute; top: 2rem; right: 2rem; background: #28a745; color: white; 
+                                    border: none; padding: 1rem 2rem; border-radius: 2rem; font-weight: bold; cursor: pointer;">
+                                    Order
+                                    </button>
+                                    <h2 class="offer-title">${offer[1]}</h2>
+                                    <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
+                                    <p class="offer-description">${offer[2]}</p>
+                                    </div>
+                                    `;
+                                }).join('');
+                                offersContainer.style.display = 'block';
+                                offersButton.querySelector('.arrow').textContent = '▲';
+                                } else {
+                                offersContainer.style.display = 'none';
+                                offersButton.querySelector('.arrow').textContent = '▼'
+                            }
+                            
+                            
                             
                             
                         });
                         
-            
-
+                        
+                        
                         
                         
                         const totalItemsDiv = document.getElementById('total-items-found');
@@ -1888,13 +1946,13 @@ if (matchedOffers.length > 0) {
                             header.style.fontSize = '7rem';  // Reset to collapsed size
                             header.querySelector('.right').style.display = 'none';  // Hide second column
                             header.classList.remove('visible-border'); 
-                                       
+                            
                         });
                         
                         document.querySelectorAll('.category-items').forEach(container => {
                             container.style.display = 'none';  // Collapse all categories
                             container.classList.remove('visible-border'); 
-                           
+                            
                         });
                     }
                     
@@ -1903,29 +1961,35 @@ if (matchedOffers.length > 0) {
                     const clearButton = document.getElementById('clearButton');
                     // The magnifierIcon remains always visible, so no toggling is required here
                     
-                    searchInput.addEventListener('input', (e) => {
-                        const searchQuery = e.target.value.trim();
-                        
-                        // Show the clear button if there is any input text; otherwise, hide it.
-                        if (searchQuery.length > 0) {
-                            clearButton.style.display = 'block';
-                            } else {
-                            clearButton.style.display = 'none';
-                            resetHeaders();  // Reset headers when search is cleared
-                        }
-                        
-                        // Validate the input to allow only English or Gurmukhi characters
-                        const regex = /^[a-zA-Z0-9\u0A00-\u0A7F]*$/;
-                        if (!regex.test(searchQuery)) {
-                            e.target.value = searchQuery.slice(0, -1);
-                            } else {
-                            filterMenuItems(searchQuery);  // Filter items based on search query
-                        }
-                        
-                        // Trigger a reflow for the clear button if necessary
-                        clearButton.offsetHeight;
-                    });
-                    
+// Modify the input handler like this
+// Modify the search handler like this
+searchInput.addEventListener('input', (e) => {
+    let query = e.target.value;
+    
+    // 1. Convert replacements to array and sort by key length (longest first)
+    const sortedReplacements = Object.entries(SEARCH_REPLACEMENTS)
+        .sort((a, b) => b[0].length - a[0].length);
+    
+    // 2. Process replacements in sorted order
+    sortedReplacements.forEach(([original, replacement]) => {
+        const escapedOriginal = original.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        query = query.replace(
+            new RegExp(escapedOriginal, 'g'), 
+            replacement
+        );
+    });
+    
+    // 3. Pass to filter
+    filterMenuItems(query);
+    
+    // Existing clear button logic
+    if (query.length > 0) {
+        clearButton.style.display = 'block';
+    } else {
+        clearButton.style.display = 'none';
+        resetHeaders();
+    }
+});             
                     
                     // Clear Button Event Listener
                     clearButton.addEventListener('click', () => {
@@ -1950,7 +2014,7 @@ if (matchedOffers.length > 0) {
                     
                     
                     
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbwqXrC-1gFM8eRJrKqOjAzV4hVev4TwaoE8Jj8FDO1ZBnegI9aT_UjrOAvNX6NskN5AEw/exec";
+                   
                     
                     // Fetch data from Google Script URL
                     fetch(scriptUrl)
@@ -1972,9 +2036,9 @@ if (matchedOffers.length > 0) {
                             const mergedcolCDE = [
                             row.columnC ? `<span style="color: #40E0D0;" data-column="C">${row.columnC}</span>` : '',
                             row.columnD ? `<span style="color: #00FF7F;" data-column="D">${row.columnD}</span>` : '',
-//                            row.columnE ? `<span style="color: #E6E6FA;" data-column="E">${row.columnE}</span>` : ''
-                       row.columnE ? `<span style="color: #F8BBD0;" data-column="E">${row.columnE}</span>` : ''
-
+                            //                            row.columnE ? `<span style="color: #E6E6FA;" data-column="E">${row.columnE}</span>` : ''
+                            row.columnE ? `<span style="color: #F8BBD0;" data-column="E">${row.columnE}</span>` : ''
+                            
                             ].filter(col => col).join(' / ');
                             
                             const colCDEElement = document.createElement('span');
@@ -2079,8 +2143,8 @@ if (matchedOffers.length > 0) {
                         
                         document.querySelector(".search-container").style.display = "block";
                         
-                        document.querySelector('.footer').style.display = 'block'; // Show footer
-
+                        document.querySelector('.footer-container').style.display = 'block'; // Show footer
+                        
                         
                         
                         
@@ -2103,64 +2167,34 @@ if (matchedOffers.length > 0) {
                     
                     
                     
+// Get references to sidebar and phone icon
+let sidebar = document.getElementById('sidebar');
+let phoneIcon = document.createElement('img');
+phoneIcon.src = 'icons/phone.svg'; // Set phone icon source
+phoneIcon.classList.add('invert-icon', 'phone-icon'); // Apply classes
+// Add event listeners
+phoneIcon.addEventListener('click', toggleSidebar);
+document.addEventListener('click', closeSidebar);
+
+// Append phone icon to the header
+document.querySelector('.header').appendChild(phoneIcon);
+
+// Function to toggle sidebar
+function toggleSidebar() {
+    sidebar.classList.toggle('open'); // Toggle 'open' class
+}
+
+// Add click event listener to phone icon
+phoneIcon.addEventListener('click', toggleSidebar);
+
+// Function to close sidebar when clicking outside
+function closeSidebar(event) {
+    if (!sidebar.contains(event.target) && event.target !== phoneIcon) {
+        sidebar.classList.remove('open');
+    }
+}
                     
-                    
-                    let sidebar = document.getElementById('sidebar');
-                    let indicator = document.createElement('div');
-                    indicator.id = 'sidebar-indicator';
-                    document.body.appendChild(indicator);
-                    
-                    let hoverTimeout;
-                    let touchStartX = 0, touchEndX = 0, touchStartY = 0;
-                    const swipeThreshold = 80;  // Minimum swipe distance
-                    const edgeThreshold = 50;   // Touch must start near the edge
-                    const sidebarTop = sidebar.offsetTop;
-                    const sidebarBottom = sidebarTop + sidebar.offsetHeight;
-                    
-                    function disableScroll() {
-                        document.body.style.overflow = 'hidden';
-                    }
-                    
-                    function enableScroll() {
-                        document.body.style.overflow = 'auto';
-                    }
-                    
-                    // Mouse activation and deactivation
-                    // Mouse and Touch activation for the sidebar
-                    indicator.addEventListener('click', toggleSidebar);
-                    indicator.addEventListener('touchstart', toggleSidebar, { passive: true });
-                    
-                    function toggleSidebar() {
-                        sidebar.classList.toggle('open');
-                        sidebar.classList.contains('open') ? disableScroll() : enableScroll();
-                    }
-                    
-                    
-                    
-                    
-                    // Deactivate on clicking outside sidebar
-                    document.addEventListener('click', (event) => {
-                        if (!sidebar.contains(event.target) && !indicator.contains(event.target)) {
-                            sidebar.classList.remove('open');
-                            enableScroll();
-                        }
-                    });
-                    
-                    
-                    
-                    // Toggle sidebar on indicator tap
-                    indicator.addEventListener('touchstart', (event) => {
-                        event.preventDefault();
-                        sidebar.classList.toggle('open');
-                        sidebar.classList.contains('open') ? disableScroll() : enableScroll();
-                    });
-                    
-                    
-                    
-                    // Blink the touch indicator every 1 second
-                    setInterval(() => {
-                        indicator.style.opacity = (indicator.style.opacity === "1") ? "0.3" : "1";
-                    }, 2500);
+     
                     
                     const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
                     
@@ -2219,17 +2253,17 @@ if (matchedOffers.length > 0) {
                             }
                             
                             // Fetch WhatsApp offer number from B8 cell
-let offerWhatsappNumber = data[7][1]; // B8 is 8th row (index 7), 2nd column (index 1)
-if (offerWhatsappNumber) {
-    offerWhatsappNumber = offerWhatsappNumber.replace(/-/g, ""); // Remove dashes
-    whatsappOfferNumber = '+91' + offerWhatsappNumber; // Add country code
-}
-
-
-
-
-
-
+                            let offerWhatsappNumber = data[7][1]; // B8 is 8th row (index 7), 2nd column (index 1)
+                            if (offerWhatsappNumber) {
+                                offerWhatsappNumber = offerWhatsappNumber.replace(/-/g, ""); // Remove dashes
+                                whatsappOfferNumber = '+91' + offerWhatsappNumber; // Add country code
+                            }
+                            
+                            
+                            
+                            
+                            
+                            
                             // Extract Open and Close times from Google Sheets
                             const openTimeStr = data[0][1]; // Example: "09.30am"
                             const closeTimeStr = data[1][1]; // Example: "10.45pm"
@@ -2355,15 +2389,15 @@ if (offerWhatsappNumber) {
                     
                     function setupHamburgerMenu() {
                         // Create Hamburger Button
-      const hamburgerButton = document.createElement('div');
-hamburgerButton.id = 'hamburger-button';
-hamburgerButton.innerHTML = `
-    <div class="hamburger-lines">
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-    </div>
-`;
+                        const hamburgerButton = document.createElement('div');
+                        hamburgerButton.id = 'hamburger-button';
+                        hamburgerButton.innerHTML = `
+                        <div class="hamburger-lines">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        </div>
+                        `;
                         
                         // Create hsidebar container
                         const hsidebarContainer = document.createElement('div');
@@ -2411,7 +2445,7 @@ hamburgerButton.innerHTML = `
                         <div class="footer-content">
                         <img src="icon-192.png" alt="CSB Logo" class="footer-logo">
                         <div>
-                        <strong>Chai Sutta Bar</strong><br>Version 1.20.3 x64
+                        Chai Sutta Bar<br>Version 1.20.3 x64<br>Developed by Brar
                         </div>
                         </div>
                         </div>
@@ -2804,7 +2838,7 @@ hamburgerButton.innerHTML = `
                         updateScrapListDisplay();
                         updateScrapButtonStatus(); // Add this line
                         updateScrapCounter(); // Add this line
-                    
+                        
                     }
                     
                     // Close scrap list when clicking outside
@@ -2935,7 +2969,7 @@ hamburgerButton.innerHTML = `
                         }, 500);
                     }
                     
-
+                    
                     
                     function showTapFeedbackInCenter(symbol) {
                         const feedbackElement = document.createElement('div');
@@ -2966,53 +3000,53 @@ hamburgerButton.innerHTML = `
                         }, 500);
                     }
                     
-  let audioCtx; // Declare outside to initialize later
-let oscillator;
-
-document.addEventListener("click", () => {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    } else if (audioCtx.state === "suspended") {
-        audioCtx.resume();
-    }
-}, { once: true }); // Runs only once
-
-function playBeep(frequency, duration) {
-    if (!audioCtx) {
-        console.warn("AudioContext not initialized yet. User interaction required.");
-        return;
-    }
-
-    if (audioCtx.state === "suspended") {
-        audioCtx.resume().then(() => {
-            generateBeep(frequency, duration);
-        });
-    } else {
-        generateBeep(frequency, duration);
-    }
-}
-
-function generateBeep(frequency, duration) {
-    if (oscillator) {
-        oscillator.stop(); // Stop previous beep before starting a new one
-    }
-
-    oscillator = audioCtx.createOscillator();
-    let gainNode = audioCtx.createGain();
-
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator.start();
-    setTimeout(() => {
-        oscillator.stop();
-    }, duration * 1000);
-}
-
+                    let audioCtx; // Declare outside to initialize later
+                    let oscillator;
+                    
+                    document.addEventListener("click", () => {
+                        if (!audioCtx) {
+                            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                            } else if (audioCtx.state === "suspended") {
+                            audioCtx.resume();
+                        }
+                    }, { once: true }); // Runs only once
+                    
+                    function playBeep(frequency, duration) {
+                        if (!audioCtx) {
+                            console.warn("AudioContext not initialized yet. User interaction required.");
+                            return;
+                        }
+                        
+                        if (audioCtx.state === "suspended") {
+                            audioCtx.resume().then(() => {
+                                generateBeep(frequency, duration);
+                            });
+                            } else {
+                            generateBeep(frequency, duration);
+                        }
+                    }
+                    
+                    function generateBeep(frequency, duration) {
+                        if (oscillator) {
+                            oscillator.stop(); // Stop previous beep before starting a new one
+                        }
+                        
+                        oscillator = audioCtx.createOscillator();
+                        let gainNode = audioCtx.createGain();
+                        
+                        oscillator.type = "sine";
+                        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioCtx.destination);
+                        
+                        oscillator.start();
+                        setTimeout(() => {
+                            oscillator.stop();
+                        }, duration * 1000);
+                    }
+                    
                     
                     
                     
@@ -3052,14 +3086,14 @@ function generateBeep(frequency, duration) {
                         `).join('');
                         
                         // Step 4: Update total price
-        // Step 4: Calculate total quantity and total price
-const totalQuantity = sortedItems.reduce((acc, item) => acc + item.qty, 0); // Total quantity
-const totalPrice = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0); // Total price
-
-// Step 5: Update the total price element to include total quantity
-const totalPriceElement = document.getElementById('totalPrice');
-totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item' : 'items'} - Total: ₹${totalPrice.toFixed(0)}`;
-
+                        // Step 4: Calculate total quantity and total price
+                        const totalQuantity = sortedItems.reduce((acc, item) => acc + item.qty, 0); // Total quantity
+                        const totalPrice = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0); // Total price
+                        
+                        // Step 5: Update the total price element to include total quantity
+                        const totalPriceElement = document.getElementById('totalPrice');
+                        totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item' : 'items'} - Total: ₹${totalPrice.toFixed(0)}`;
+                        
                         
                         // Step 5: Add event listeners for quantity controls
                         document.querySelectorAll('.increment-btn').forEach(btn => {
@@ -3069,44 +3103,44 @@ totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item'
                                 const rate = e.target.dataset.rate;
                                 scrapItems.push({ name, rate });
                                 updateScrapListDisplay();
-                                 updateScrapCounter();
+                                updateScrapCounter();
                             });
                         });
                         
-document.querySelectorAll('.decrement-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const name = e.target.dataset.name;
-        const rate = e.target.dataset.rate;
-        const currentCount = scrapItems.filter(item =>
-            item.name === name && item.rate === rate
-        ).length;
-
-        if (currentCount === 1) {
-            // Remove all instances if quantity is 1
-            scrapItems = scrapItems.filter(item =>
-                item.name !== name || item.rate !== rate
-            );
-        } else {
-            // Remove last instance of this item
-            let lastIndex = -1;
-            for (let i = scrapItems.length - 1; i >= 0; i--) {
-                if (scrapItems[i].name === name && scrapItems[i].rate === rate) {
-                    lastIndex = i;
-                    break;
-                }
-            }
-            if (lastIndex !== -1) scrapItems.splice(lastIndex, 1);
-        }
-
-        updateScrapListDisplay();
-        updateScrapCounter();
-        updateDecrementButtonState(name, rate); // Update button state after changes
-    });
-
-    // Initial button state setup (when the list first loads)
-    updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
-});
+                        document.querySelectorAll('.decrement-btn').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const name = e.target.dataset.name;
+                                const rate = e.target.dataset.rate;
+                                const currentCount = scrapItems.filter(item =>
+                                item.name === name && item.rate === rate
+                                ).length;
+                                
+                                if (currentCount === 1) {
+                                    // Remove all instances if quantity is 1
+                                    scrapItems = scrapItems.filter(item =>
+                                    item.name !== name || item.rate !== rate
+                                    );
+                                    } else {
+                                    // Remove last instance of this item
+                                    let lastIndex = -1;
+                                    for (let i = scrapItems.length - 1; i >= 0; i--) {
+                                        if (scrapItems[i].name === name && scrapItems[i].rate === rate) {
+                                            lastIndex = i;
+                                            break;
+                                        }
+                                    }
+                                    if (lastIndex !== -1) scrapItems.splice(lastIndex, 1);
+                                }
+                                
+                                updateScrapListDisplay();
+                                updateScrapCounter();
+                                updateDecrementButtonState(name, rate); // Update button state after changes
+                            });
+                            
+                            // Initial button state setup (when the list first loads)
+                            updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
+                        });
                         
                         // Existing delete button handlers
                         document.querySelectorAll('.delete-btn').forEach(btn => {
@@ -3131,101 +3165,101 @@ document.querySelectorAll('.decrement-btn').forEach(btn => {
                     }
                     
                     function updateDecrementButtonState(name, rate) {
-    const currentCount = scrapItems.filter(item =>
-        item.name === name && item.rate === rate
-    ).length;
-
-    const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
-
-    decrementButtons.forEach(btn => {
-        btn.disabled = currentCount <= 1;
-    });
-}
-
-
-function showOrderListWarning() {                            
-    let existingModal = document.getElementById('orderListWarningModal');
-    if (existingModal) {
-        existingModal.remove(); 
-        isWarningVisible = false;
-        return;
-    }
-
-    let modal = document.createElement('div');
-    modal.id = 'orderListWarningModal';
-    modal.className = 'modal-overlay';
-
-    let contentEnglish = `
-        <p><strong>Order list is empty.</strong></p>
-        <ul>
-            <li>Tap <b>rate</b> to add an item. In the order list, you can <b>increase, decrease or remove</b> items.</li>
-        </ul>
-    `;
-
-    let contentPunjabi = `
-        <p><strong>ਆਰਡਰ ਸੂਚੀ ਖਾਲੀ ਹੈ।</strong></p>
-        <ul>
-           <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ <b>ਰੇਟ</b> ਛੂਹੋ। ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ, ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਘਟਾ, ਵਧਾ ਜਾਂ ਕੱਢ</b> ਸਕਦੇ ਹੋ</li>
-        </ul>
-    `;
-
-    modal.innerHTML = `
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div id="modalText">${contentEnglish}</div>
-            <div id="toggleContainer" class="toggle-container">
-                <div id="toggleButton" class="split-toggle">
-                    <div id="englishSide" class="toggle-half active">Eng</div>
-                    <div id="punjabiSide" class="toggle-half">ਪੰਜਾਬੀ</div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    const toggleButton = document.getElementById('toggleButton');
-    const modalText = document.getElementById('modalText');
-    const englishSide = document.getElementById('englishSide');
-    const punjabiSide = document.getElementById('punjabiSide');
-    let isEnglish = true;
-
-    toggleButton.addEventListener('click', () => {
-        isEnglish = !isEnglish;
-        if (isEnglish) {
-            modalText.innerHTML = contentEnglish;
-            englishSide.classList.add('active');
-            punjabiSide.classList.remove('active');
-        } else {
-            modalText.innerHTML = contentPunjabi;
-            punjabiSide.classList.add('active');
-            englishSide.classList.remove('active');
-        }
-    });
-
-    function closeModal() {
-        modal.remove();
-        isWarningVisible = false;
-    }
-
-    const autoCloseTimer = setTimeout(closeModal, 60000);
-
-    modal.querySelector('.close-button').addEventListener('click', () => {
-        clearTimeout(autoCloseTimer);
-        closeModal();
-    });
-
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            clearTimeout(autoCloseTimer);
-            closeModal();
-        }
-    });
-
-    isWarningVisible = true;
-}
-
-
+                        const currentCount = scrapItems.filter(item =>
+                        item.name === name && item.rate === rate
+                        ).length;
+                        
+                        const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
+                        
+                        decrementButtons.forEach(btn => {
+                            btn.disabled = currentCount <= 1;
+                        });
+                    }
+                    
+                    
+                    function showOrderListWarning() {                            
+                        let existingModal = document.getElementById('orderListWarningModal');
+                        if (existingModal) {
+                            existingModal.remove(); 
+                            isWarningVisible = false;
+                            return;
+                        }
+                        
+                        let modal = document.createElement('div');
+                        modal.id = 'orderListWarningModal';
+                        modal.className = 'modal-overlay';
+                        
+                        let contentEnglish = `
+                        <p><strong>Order list is empty.</strong></p>
+                        <ul>
+                        <li>Tap <b>rate</b> to add an item. In the order list, you can <b>increase, decrease or remove</b> items.</li>
+                        </ul>
+                        `;
+                        
+                        let contentPunjabi = `
+                        <p><strong>ਆਰਡਰ ਸੂਚੀ ਖਾਲੀ ਹੈ।</strong></p>
+                        <ul>
+                        <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ <b>ਰੇਟ</b> ਛੂਹੋ। ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ, ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਘਟਾ, ਵਧਾ ਜਾਂ ਕੱਢ</b> ਸਕਦੇ ਹੋ</li>
+                        </ul>
+                        `;
+                        
+                        modal.innerHTML = `
+                        <div class="modal-content">
+                        <span class="close-button">&times;</span>
+                        <div id="modalText">${contentEnglish}</div>
+                        <div id="toggleContainer" class="toggle-container">
+                        <div id="toggleButton" class="split-toggle">
+                        <div id="englishSide" class="toggle-half active">Eng</div>
+                        <div id="punjabiSide" class="toggle-half">ਪੰਜਾਬੀ</div>
+                        </div>
+                        </div>
+                        </div>
+                        `;
+                        
+                        document.body.appendChild(modal);
+                        
+                        const toggleButton = document.getElementById('toggleButton');
+                        const modalText = document.getElementById('modalText');
+                        const englishSide = document.getElementById('englishSide');
+                        const punjabiSide = document.getElementById('punjabiSide');
+                        let isEnglish = true;
+                        
+                        toggleButton.addEventListener('click', () => {
+                            isEnglish = !isEnglish;
+                            if (isEnglish) {
+                                modalText.innerHTML = contentEnglish;
+                                englishSide.classList.add('active');
+                                punjabiSide.classList.remove('active');
+                                } else {
+                                modalText.innerHTML = contentPunjabi;
+                                punjabiSide.classList.add('active');
+                                englishSide.classList.remove('active');
+                            }
+                        });
+                        
+                        function closeModal() {
+                            modal.remove();
+                            isWarningVisible = false;
+                        }
+                        
+                        const autoCloseTimer = setTimeout(closeModal, 60000);
+                        
+                        modal.querySelector('.close-button').addEventListener('click', () => {
+                            clearTimeout(autoCloseTimer);
+                            closeModal();
+                        });
+                        
+                        modal.addEventListener('click', (event) => {
+                            if (event.target === modal) {
+                                clearTimeout(autoCloseTimer);
+                                closeModal();
+                            }
+                        });
+                        
+                        isWarningVisible = true;
+                    }
+                    
+                    
                     
                     // Modified toggleScrapList function
                     function toggleScrapList() {                        
@@ -3270,9 +3304,9 @@ function showOrderListWarning() {
                             showOrderListWarning();
                             return;
                         }                        
-
-                          const orderNumber = cachedOrderNumber + 1;
-    
+                        
+                        const orderNumber = cachedOrderNumber + 1;
+                        
                         // Group items by name and rate to calculate quantities
                         const itemMap = new Map();
                         scrapItems.forEach((item) => {
@@ -3280,55 +3314,55 @@ function showOrderListWarning() {
                             itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
                         });
                         
-const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
-
-// Generate order text with quantities and total per row
-let orderText = sortedItems.map(item => {
-    let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
-    return item.qty > 1 
-        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-}).join('\n');                        
-
-// Calculate total cost
-let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
-
-// Calculate total number of items
-let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
-
-// List of food-related emojis
-let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '🎊', '💝'];
-
-// Select a random emoji
-let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
-
-let message = encodeURIComponent(
-    `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
-    `${sortedItems.map(item => {
-        let itemTotal = item.qty * parseFloat(item.rate);
-        return item.qty > 1 
-            ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-            : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-    }).join('\n\n')}\n${'-'.repeat(30)}\n` +
-    `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
-);
-
-
+                        const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
                         
-
-                     window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
-                 
-                 
-   // Clear the scrap list after ordering
-    scrapItems = [];
-    updateScrapListDisplay();
-    handleScrapItemsChange();
-    closeScrapList();
-    showFeedback("Order sent. List cleared!"); // Optional feedback
-                 
-                
-    updateCounter('updateOrders');
-     cachedOrderNumber = orderNumber;
+                        // Generate order text with quantities and total per row
+                        let orderText = sortedItems.map(item => {
+                            let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
+                            return item.qty > 1 
+                            ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                            : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                        }).join('\n');                        
+                        
+                        // Calculate total cost
+                        let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
+                        
+                        // Calculate total number of items
+                        let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
+                        
+                        // List of food-related emojis
+                        let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '🎊', '💝'];
+                        
+                        // Select a random emoji
+                        let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
+                        
+                        let message = encodeURIComponent(
+                        `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
+                        `${sortedItems.map(item => {
+                        let itemTotal = item.qty * parseFloat(item.rate);
+                        return item.qty > 1 
+                        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                        }).join('\n\n')}\n${'-'.repeat(30)}\n` +
+                        `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
+                        );
+                        
+                        
+                        
+                        
+                        window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
+                        
+                        
+                        // Clear the scrap list after ordering
+                        scrapItems = [];
+                        updateScrapListDisplay();
+                        handleScrapItemsChange();
+                        closeScrapList();
+                        showFeedback("Order sent. List cleared!"); // Optional feedback
+                        
+                        
+                        updateCounter('updateOrders');
+                        cachedOrderNumber = orderNumber;
                     });
                     
                     
@@ -3366,15 +3400,15 @@ let message = encodeURIComponent(
                     });
                     
                     
-             
+                    
                     
                     
                     // Add this function to update the counter
                     function updateScrapCounter() {
                         const counter = document.querySelector('#scrapButton .counter-badge');
-                       counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
-    counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
-
+                        counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
+                        counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
+                        
                         
                         // Add animation when items are added
                         if(scrapItems.length > 0) {
@@ -3398,84 +3432,84 @@ let message = encodeURIComponent(
                     
                     
                     
-                // Function to send offer data via WhatsApp
-function sendOffer(offerText) {
-    offerNsg = decodeURIComponent(offerText);
-     const whatsappUrl = `https://wa.me/${whatsappOfferNumber}?text=${offerText}`;
-    window.open(whatsappUrl, '_blank');
-}
-
-
-// Offers search
-let offersData = [];
-let offerNsg = '';
-
-// Offer Section
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = date.toLocaleString('en-US', { month: 'short' });
-    const year = date.getFullYear().toString().slice(-2);
-    return `${day}-${month}-${year}`;
-}
-
-// Offer elements
-const offersButton = document.getElementById('offers-button');
-const offersContainer = document.getElementById('offers-container');
-
-fetch(scriptUrl + "?sheet=offer")
-.then(response => response.json())
-.then(offerData => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Filter valid offers
-    const validOffers = offerData.filter(offer => {
-        const startDate = new Date(offer[0]);
-        startDate.setHours(0, 0, 0, 0);
-        return startDate >= today;
-    });
-
-    offersData = validOffers;
-
-    if (validOffers.length > 0) {
-        offersButton.innerHTML = `${validOffers.length} Offer${validOffers.length > 1 ? 's' : ''} Available <span class="arrow">▼</span>`;
-        offersButton.style.display = 'block';
-
-        offersButton.addEventListener('click', () => {
-            const isVisible = offersContainer.style.display === 'block';
-            offersContainer.style.display = isVisible ? 'none' : 'block';
-            offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
-           
-        });
-    }
-
-    offersContainer.innerHTML = validOffers.map(offer => {
-
-        const offerText = `🎊\n*${offer[1]}*\n(${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''})\n${offer[2]}\n〰️〰️〰️〰️〰️〰️〰️〰️〰`;
-        return `
-        <div class="offer-item" style="position: relative;">
-        <button class="send-whatsapp" onclick="sendOffer('${encodeURIComponent(offerText)}')" style="position: absolute; top: 2rem; right: 2rem; background: #28a745; color: white; border: none; padding: 1rem 2rem; border-radius: 2rem; font-weight: bold; cursor: pointer;">Order</button>
-            <h2 class="offer-title">${offer[1]}</h2>
-            <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
-            <p class="offer-description">${offer[2]}</p>
-
-        </div>
-        `;
-    }).join('');
-})
-.catch(error => {
-    console.error('Error loading offers:', error);
-});
-
-// Close offers when clicking outside
-document.addEventListener('click', (e) => {
-    if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
-        offersContainer.style.display = 'none';
-        const arrow = offersButton.querySelector('.arrow');
-        if (arrow) arrow.textContent = '▼';
-    }
-});
+                    // Function to send offer data via WhatsApp
+                    function sendOffer(offerText) {
+                        offerNsg = decodeURIComponent(offerText);
+                        const whatsappUrl = `https://wa.me/${whatsappOfferNumber}?text=${offerText}`;
+                        window.open(whatsappUrl, '_blank');
+                    }
+                    
+                    
+                    // Offers search
+                    let offersData = [];
+                    let offerNsg = '';
+                    
+                    // Offer Section
+                    function formatDate(dateString) {
+                        const date = new Date(dateString);
+                        const day = date.getDate().toString().padStart(2, '0');
+                        const month = date.toLocaleString('en-US', { month: 'short' });
+                        const year = date.getFullYear().toString().slice(-2);
+                        return `${day}-${month}-${year}`;
+                    }
+                    
+                    // Offer elements
+                    const offersButton = document.getElementById('offers-button');
+                    const offersContainer = document.getElementById('offers-container');
+                    
+                    fetch(scriptUrl + "?sheet=offer")
+                    .then(response => response.json())
+                    .then(offerData => {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        
+                        // Filter valid offers
+                        const validOffers = offerData.filter(offer => {
+                            const startDate = new Date(offer[0]);
+                            startDate.setHours(0, 0, 0, 0);
+                            return startDate >= today;
+                        });
+                        
+                        offersData = validOffers;
+                        
+                        if (validOffers.length > 0) {
+                            offersButton.innerHTML = `${validOffers.length} Offer${validOffers.length > 1 ? 's' : ''} Available <span class="arrow">▼</span>`;
+                            offersButton.style.display = 'block';
+                            
+                            offersButton.addEventListener('click', () => {
+                                const isVisible = offersContainer.style.display === 'block';
+                                offersContainer.style.display = isVisible ? 'none' : 'block';
+                                offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
+                                
+                            });
+                        }
+                        
+                        offersContainer.innerHTML = validOffers.map(offer => {
+                            
+                            const offerText = `🎊\n*${offer[1]}*\n(${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''})\n${offer[2]}\n〰️〰️〰️〰️〰️〰️〰️〰️〰`;
+                            return `
+                            <div class="offer-item" style="position: relative;">
+                            <button class="send-whatsapp" onclick="sendOffer('${encodeURIComponent(offerText)}')" style="position: absolute; top: 2rem; right: 2rem; background: #28a745; color: white; border: none; padding: 1rem 2rem; border-radius: 2rem; font-weight: bold; cursor: pointer;">Order</button>
+                            <h2 class="offer-title">${offer[1]}</h2>
+                            <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
+                            <p class="offer-description">${offer[2]}</p>
+                            
+                            </div>
+                            `;
+                        }).join('');
+                    })
+                    .catch(error => {
+                        console.error('Error loading offers:', error);
+                    });
+                    
+                    // Close offers when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
+                            offersContainer.style.display = 'none';
+                            const arrow = offersButton.querySelector('.arrow');
+                            if (arrow) arrow.textContent = '▼';
+                        }
+                    });
                     
                     
                     
@@ -3553,83 +3587,108 @@ document.addEventListener('click', (e) => {
                     
                     
                     
-async function getViews() {
-    try {
-        const response = await fetch(`${scriptUrl}?sheet=counter&action=getViews`);
-        const data = await response.json();
-        return data.count; // Return the views count
-    } catch (error) {
-        console.error('Error fetching views:', error);
-        return 0; // Fallback to 0 if the request fails
-    }
-}
-
-
-
+                    async function getViews() {
+                        try {
+                            const response = await fetch(`${scriptUrl}?sheet=counter&action=getViews`);
+                            const data = await response.json();
+                            return data.count; // Return the views count
+                            } catch (error) {
+                            console.error('Error fetching views:', error);
+                            return 0; // Fallback to 0 if the request fails
+                        }
+                    }
+                    
+                    
+                    
 function setupVisitorCounter() {
     if (typeof Storage !== 'undefined') {
         const visitorKey = 'csb_visitor';
         if (!localStorage.getItem(visitorKey)) {
             localStorage.setItem(visitorKey, '1');
             updateCounter('updateVisitors').then(data => {
-                document.getElementById('visitorCounter').textContent = `Users: ${String(data.count).padStart(4, '0')}`;
+                document.getElementById('visitorCounter').innerHTML = `Users:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
             });
         } else {
             updateCounter('getVisitors').then(data => {
-                document.getElementById('visitorCounter').textContent = `Users: ${String(data.count).padStart(4, '0')}`;
+                document.getElementById('visitorCounter').innerHTML = `Users:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
             });
         }
     }
 }
 
                     
+                    
                     // Client-side JavaScript
-                    function setupLikeButton() {
-                        const likeIcon = document.getElementById('likeIcon');
-                        const likeCounterElement = document.getElementById('likeCounter');
-                        const likeKey = 'csb_like';
-                        
-                        updateCounter('getLikes').then(data => {
-                            likeCounterElement.textContent = data.count;
-                        });
-                        
-                        if (localStorage.getItem(likeKey)) {
-                            likeIcon.classList.add('liked');
-                        }
-                        
-                        document.getElementById('likeContainer').addEventListener('click', () => {
-                            if (!localStorage.getItem(likeKey)) {
-                                updateCounter('incrementLikes').then(data => {
-                                    localStorage.setItem(likeKey, 'true');
-                                    likeIcon.classList.add('liked');
-                                    likeCounterElement.textContent = data.count;
-                                    showFeedback('Thank you!');
-                                });
-                                } else {
-                                updateCounter('decrementLikes').then(data => {
-                                    localStorage.removeItem(likeKey);
-                                    likeIcon.classList.remove('liked');
-                                    likeCounterElement.textContent = data.count;
-                                    
-                                });
-                            }
-                        });
-                    }
-                    
-                    
+                  function setupLikeButton() {
+    const likeIcon = document.getElementById('likeIcon');
+    const likeCounterElement = document.getElementById('likeCounter');
+    const likeKey = 'csb_like';
 
-                    
-      async function initializeOrderNumber() {
-    try {
-        const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
-        const data = await response.json();
-        cachedOrderNumber = data.count; // Store the current order number
-    } catch (error) {
-        console.error('Failed to fetch order number:', error);
-        cachedOrderNumber = 0; // Fallback to 0 if the request fails
+    updateCounter('getLikes').then(data => {
+        likeCounterElement.textContent = String(data.count).padStart(3, '0');
+    });
+
+    if (localStorage.getItem(likeKey)) {
+        likeIcon.classList.add('liked');
     }
+
+    document.getElementById('likeContainer').addEventListener('click', () => {
+        if (!localStorage.getItem(likeKey)) {
+            localStorage.setItem(likeKey, 'true');
+            likeIcon.classList.add('liked');
+            startBlinking(likeCounterElement);
+
+            updateCounter('incrementLikes').then(data => {
+                stopBlinking(likeCounterElement);
+                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                showFeedback('Thank you!');
+            });
+        } else {
+            localStorage.removeItem(likeKey);
+            likeIcon.classList.remove('liked');
+            startBlinking(likeCounterElement);
+
+            updateCounter('decrementLikes').then(data => {
+                stopBlinking(likeCounterElement);
+                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+            });
+        }
+    });
 }
 
+// Apply existing pop animation
+function animateCounter(element, newValue) {
+    element.classList.remove('like-animate');
+    void element.offsetWidth; // Trigger reflow
+    element.textContent = newValue;
+    element.classList.add('like-animate');
+}
+
+// Start blinking animation
+function startBlinking(element) {
+    element.classList.add('blinking');
+}
+
+// Stop blinking animation
+function stopBlinking(element) {
+    element.classList.remove('blinking');
+}
+
+                    
+                    
+                    
+                    
+                    async function initializeOrderNumber() {
+                        try {
+                            const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
+                            const data = await response.json();
+                            cachedOrderNumber = data.count; // Store the current order number
+                            } catch (error) {
+                            console.error('Failed to fetch order number:', error);
+                            cachedOrderNumber = 0; // Fallback to 0 if the request fails
+                        }
+                    }
+                    
 function setupViewsCounter() {
     if (typeof Storage !== 'undefined') {
         const viewsKey = 'csb_views';
@@ -3637,25 +3696,24 @@ function setupViewsCounter() {
             // If the user is new, update the views counter
             localStorage.setItem(viewsKey, '1');
             updateCounter('updateViews').then(data => {
-                document.getElementById('viewsCounter').textContent = `Views: ${String(data.count).padStart(4, '0')}`;
-
+                document.getElementById('viewsCounter').innerHTML = `Views:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
             });
         } else {
             // If the user is returning, just fetch the current views count
             updateCounter('getViews').then(data => {
-              document.getElementById('viewsCounter').textContent = `Views: ${String(data.count).padStart(4, '0')}`;
-
+                document.getElementById('viewsCounter').innerHTML = `Views:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
             });
         }
     }
 }
 
-
-      
+                    
+                    
+                    
                     
                     // Initialize counters when the page loads
                     document.addEventListener('DOMContentLoaded', () => {
-        
+                        
                         
                         // Setup visitor counter
                         setupVisitorCounter();
@@ -3663,13 +3721,13 @@ function setupViewsCounter() {
                         // Setup like button
                         setupLikeButton();
                         
-                           initializeOrderNumber();
-                           
-                           setupViewsCounter();
+                        initializeOrderNumber();
+                        
+                        setupViewsCounter();
                     });
                     
                     
-                </script>        
-                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-            </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                    </script>        
+                    <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+                    </body>
+                    </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
