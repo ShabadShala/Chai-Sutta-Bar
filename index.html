@@ -68,6 +68,18 @@
             -ms-user-select: none; /* Internet Explorer/Edge */
             }
             
+            .rectangle {
+            width: 600px;
+            height: 100vh; /* Ensure it covers the full viewport */
+            position: fixed;
+            top: 0; /* Align to the top */
+            left: calc(50% - 300px); 
+            border-left: 1px solid rgba(255, 255, 255, 0.1); /* 50% transparent */
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 9999; /* Ensure it is above all elements */
+            pointer-events: none; /* Prevents blocking interactions */
+            }
+            
             
             
             /* Feedback Message */
@@ -580,6 +592,7 @@
             width: 90%;
             max-width: 500px;
             margin: 3rem auto;
+            
             }            
             
             /* Footer styling */
@@ -590,7 +603,7 @@
             color: white;
             margin-top: auto; /* Pushes footer down */
             margin-bottom: 2rem;
-        
+            
             }
             
             .footer a {
@@ -617,7 +630,7 @@
             color: blue;
             }
             
-      
+            
             
             
             
@@ -638,14 +651,14 @@
             #hamburger-button {
             position: fixed;
             top: 1.5rem;
-            left: 3rem;
+            left: 2rem;
             z-index: 1001;
             cursor: pointer;
             padding: 2rem;
             background: rgba(33, 33, 33, 0.8);
             border-radius: 50%;
-            width: 10rem;
-            height: 10rem;
+            width: 9rem;
+            height: 9rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -711,7 +724,7 @@
             position: absolute;
             top: 0;
             left: -100%;
-            width: 75%;
+            width: 65%;
             height: 100%;
             background: #1c1c1c;
             backdrop-filter: blur(8px);
@@ -907,22 +920,22 @@
             
             
             
-#sidebar {
-    position: fixed;
-    right: -100px; /* Off-screen initially */
-    top: 50%;
-    transform: translateY(-50%);
-    width: 60px;
-    background-color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 0;
-    transition: right 0.3s ease;
-    z-index: 1000;
-    box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
-      pointer-events: none;
-}
+            #sidebar {
+            position: fixed;
+            right: -100px; /* Off-screen initially */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            transition: right 0.3s ease;
+            z-index: 1000;
+            box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            }
             
             #sidebar a {
             margin: 10px 0;
@@ -947,15 +960,18 @@
             }
             
             /* Phone Icon */
-.phone-icon {
-    position: absolute;
-    right: 1rem; /* Adjust distance from the right */
-    top: 50%;
-    transform: translateY(-50%); /* Center vertically */
-    width: 7rem; /* Adjust icon size */
-    height: auto;
-}
+            .phone-icon {
+            position: absolute;
+            right: 2rem; /* Adjust distance from the right */
+            top: 6rem;
+            transform: translateY(-50%) scaleX(-1); /* Center vertically */
+            width: 6rem; /* Adjust icon size */
+            height: auto;
+   
+            }
             
+            
+       
             
             
             
@@ -1231,7 +1247,7 @@
             background-color: #ddd;
             }
             
-            .decrement-btn:disabled {
+            .decrement-btn:disabled, .increment-btn:disabled {
             background-color: #ccc !important; /* Gray background */
             color: transparent !important; /* Transparent text color */
             cursor: not-allowed !important; /* Change cursor */
@@ -1273,6 +1289,7 @@
             
             /* Modal Content */
             .modal-content {
+            position: relative;
             background: #212121; /* Dark background to match your theme */
             color: #fae68e; /* Accent color for text */
             padding: 4rem;
@@ -1310,7 +1327,7 @@
             /* Close Button */
             .close-button {
             position: absolute;
-            top: 2rem;
+            top: 1rem;
             right: 2rem;
             font-size: 6rem;
             cursor: pointer;
@@ -1465,34 +1482,35 @@
             }
             
             /* Blinking animation */
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
-
-/* Apply blinking effect */
-.blinking {
-    animation: blink 0.7s infinite;
-}
-
+            @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+            }
+            
+            /* Apply blinking effect */
+            .blinking {
+            animation: blink 0.7s infinite;
+            }
             
             
-.social {
-    position: fixed; /* Ensures positioning without affecting elements */
-     left: 50%;
+            
+            .social {
+            position: fixed; /* Ensures positioning without affecting elements */
+            left: 50%;
             transform: translateX(-50%);
             max-width: 600px;
             width: 100%;
             height: 100%;
             overflow: hidden;
-             pointer-events: none;
-    z-index: 1000; /* Keeps sidebar above other content */
-}
-
+            pointer-events: none;
+            z-index: 1000; /* Keeps sidebar above other content */
+            }
+            
             
         </style>
     </head>
     <body>
+        <div class="rectangle"></div>
         
         <!-- Loading Overlay -->
         <div id="loadingOverlay">
@@ -1516,7 +1534,7 @@
                 <div class="open-close"></div>               
             </div>
             
-              <img src="icons/phone.svg" class="phone-icon invert-icon" alt="Phone">
+            <img src="icons/phone.svg" class="phone-icon invert-icon" alt="Phone">
         </div>
         
         
@@ -1598,31 +1616,31 @@
                         <div id="visitorCounter">Users: 👤</div>
                         <div id="viewsCounter">Views: 👁</div>
                     </div>
-
+                    
                 </div>
                 
                 
                 
- <!-- Social Container -->
-<div class="social">
-    <div id="sidebar">
-        <a id="delivery-link" href="#" target="_blank"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
-        <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
-        <a id="phone-link" href="#" target="_blank"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
-        <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA" target="_blank"><img src="sidebar/location.png" alt="Location" class="logo"></a>
-        <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
-        <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
-    </div>
-</div>
-
-
+                <!-- Social Container -->
+                <div class="social">
+                    <div id="sidebar">
+                        <a id="delivery-link" href="#" target="_blank"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
+                        <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
+                        <a id="phone-link" href="#" target="_blank"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
+                        <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA" target="_blank"><img src="sidebar/location.png" alt="Location" class="logo"></a>
+                        <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
+                        <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
+                    </div>
+                </div>
+                
+                
                 
                 
                 
                 <script>
-                     const scriptUrl = "https://script.google.com/macros/s/AKfycbwqXrC-1gFM8eRJrKqOjAzV4hVev4TwaoE8Jj8FDO1ZBnegI9aT_UjrOAvNX6NskN5AEw/exec";
-                     
-                     
+                    const scriptUrl = "https://script.google.com/macros/s/AKfycbwqXrC-1gFM8eRJrKqOjAzV4hVev4TwaoE8Jj8FDO1ZBnegI9aT_UjrOAvNX6NskN5AEw/exec";
+                    
+                    
                     document.addEventListener('contextmenu', event => event.preventDefault());
                     document.addEventListener('copy', event => event.preventDefault());
                     document.addEventListener('cut', event => event.preventDefault());
@@ -1662,61 +1680,61 @@
                     updateScreenSize();
                     
                     
-let SEARCH_REPLACEMENTS = {
-    // Fallback values (will be overwritten if fetch succeeds)
-    'tea': 'chai',
-    'chai': 'tea',
-    'cofee': 'coffee',
-    'coofe': 'coffee'
-};
-
-async function loadReplacements() {
-    try {
-        const response = await fetch(`${scriptUrl}?sheet=replace`);
-        const data = await response.json();
-        
-        SEARCH_REPLACEMENTS = data.slice(1).reduce((acc, row) => {
-            if (row.length >= 2) {
-                // Handle Gurmukhi differently
-                const isGurmukhi = /[\u0A00-\u0A7F]/.test(row[0]);
-                
-                const original = isGurmukhi 
-                    ? String(row[0]).trim()          // Preserve exact Gurmukhi
-                    : String(row[0]).toLowerCase().trim();
-                
-                const replacement = isGurmukhi 
-                    ? String(row[1]).trim()          // Preserve exact Gurmukhi
-                    : String(row[1]).toLowerCase().trim();
-
-                if (original && replacement) {
-                    acc[original] = replacement;
-                }
-            }
-            return acc;
-        }, {});
-
-        console.log('Final replacements:', SEARCH_REPLACEMENTS);
-        
-    } catch (error) {
-        console.error('Error:', error);
-        SEARCH_REPLACEMENTS = {
-            'tea': 'chai',
-            'chai': 'tea',
-            'cofee': 'coffee',
-            'coofe': 'coffee',
-            'ਸ਼': 'ਸ਼',
-            'ਖ਼': 'ਖ਼',
-            'ਗ਼': 'ਗ਼',
-            'ਜ਼': 'ਜ਼',
-            'ਫ਼': 'ਫ਼',
-            'ਲ਼': 'ਲ਼'
-        };
-    }
-}
-
-// Initialize when page loads
-loadReplacements();
-
+                    let SEARCH_REPLACEMENTS = {
+                        // Fallback values (will be overwritten if fetch succeeds)
+                        'tea': 'chai',
+                        'chai': 'tea',
+                        'cofee': 'coffee',
+                        'coofe': 'coffee'
+                    };
+                    
+                    async function loadReplacements() {
+                        try {
+                            const response = await fetch(`${scriptUrl}?sheet=replace`);
+                            const data = await response.json();
+                            
+                            SEARCH_REPLACEMENTS = data.slice(1).reduce((acc, row) => {
+                                if (row.length >= 2) {
+                                    // Handle Gurmukhi differently
+                                    const isGurmukhi = /[\u0A00-\u0A7F]/.test(row[0]);
+                                    
+                                    const original = isGurmukhi 
+                                    ? String(row[0]).trim()          // Preserve exact Gurmukhi
+                                    : String(row[0]).toLowerCase().trim();
+                                    
+                                    const replacement = isGurmukhi 
+                                    ? String(row[1]).trim()          // Preserve exact Gurmukhi
+                                    : String(row[1]).toLowerCase().trim();
+                                    
+                                    if (original && replacement) {
+                                        acc[original] = replacement;
+                                    }
+                                }
+                                return acc;
+                            }, {});
+                            
+                            console.log('Final replacements:', SEARCH_REPLACEMENTS);
+                            
+                            } catch (error) {
+                            console.error('Error:', error);
+                            SEARCH_REPLACEMENTS = {
+                                'tea': 'chai',
+                                'chai': 'tea',
+                                'cofee': 'coffee',
+                                'coofe': 'coffee',
+                                'ਸ਼': 'ਸ਼',
+                                'ਖ਼': 'ਖ਼',
+                                'ਗ਼': 'ਗ਼',
+                                'ਜ਼': 'ਜ਼',
+                                'ਫ਼': 'ਫ਼',
+                                'ਲ਼': 'ਲ਼'
+                            };
+                        }
+                    }
+                    
+                    // Initialize when page loads
+                    loadReplacements();
+                    
                     
                     
                     let selectedFilter = "="; // Default to "="                                        
@@ -1963,35 +1981,35 @@ loadReplacements();
                     const clearButton = document.getElementById('clearButton');
                     // The magnifierIcon remains always visible, so no toggling is required here
                     
-// Modify the input handler like this
-// Modify the search handler like this
-searchInput.addEventListener('input', (e) => {
-    let query = e.target.value;
-    
-    // 1. Convert replacements to array and sort by key length (longest first)
-    const sortedReplacements = Object.entries(SEARCH_REPLACEMENTS)
-        .sort((a, b) => b[0].length - a[0].length);
-    
-    // 2. Process replacements in sorted order
-    sortedReplacements.forEach(([original, replacement]) => {
-        const escapedOriginal = original.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        query = query.replace(
-            new RegExp(escapedOriginal, 'g'), 
-            replacement
-        );
-    });
-    
-    // 3. Pass to filter
-    filterMenuItems(query);
-    
-    // Existing clear button logic
-    if (query.length > 0) {
-        clearButton.style.display = 'block';
-    } else {
-        clearButton.style.display = 'none';
-        resetHeaders();
-    }
-});             
+                    // Modify the input handler like this
+                    // Modify the search handler like this
+                    searchInput.addEventListener('input', (e) => {
+                        let query = e.target.value;
+                        
+                        // 1. Convert replacements to array and sort by key length (longest first)
+                        const sortedReplacements = Object.entries(SEARCH_REPLACEMENTS)
+                        .sort((a, b) => b[0].length - a[0].length);
+                        
+                        // 2. Process replacements in sorted order
+                        sortedReplacements.forEach(([original, replacement]) => {
+                            const escapedOriginal = original.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            query = query.replace(
+                            new RegExp(escapedOriginal, 'g'), 
+                            replacement
+                            );
+                        });
+                        
+                        // 3. Pass to filter
+                        filterMenuItems(query);
+                        
+                        // Existing clear button logic
+                        if (query.length > 0) {
+                            clearButton.style.display = 'block';
+                            } else {
+                            clearButton.style.display = 'none';
+                            resetHeaders();
+                        }
+                    });             
                     
                     // Clear Button Event Listener
                     clearButton.addEventListener('click', () => {
@@ -2016,7 +2034,7 @@ searchInput.addEventListener('input', (e) => {
                     
                     
                     
-                   
+                    
                     
                     // Fetch data from Google Script URL
                     fetch(scriptUrl)
@@ -2168,35 +2186,35 @@ searchInput.addEventListener('input', (e) => {
                     
                     
                     
-// Get references to sidebar and phone icon
-let sidebar = document.getElementById('sidebar');
-let phoneIcon = document.querySelector('.phone-icon'); // Select existing phone.svg icon
-
-// Function to toggle sidebar
-function toggleSidebar(event) {
-    event.stopPropagation(); // Prevent immediate closing when clicking phone icon
-    sidebar.classList.toggle('open');
-}
-
-// Function to close sidebar when clicking outside
-function closeSidebar(event) {
-    // Ensure sidebar stays open when clicking inside it
-    if (!sidebar.contains(event.target) && !phoneIcon.contains(event.target)) {
-        sidebar.classList.remove('open');
-    }
-}
-
-// Stop click inside the sidebar from closing it
-sidebar.addEventListener('click', function(event) {
-    event.stopPropagation(); // Prevent bubbling up to document click event
-});
-
-// Add event listeners
-phoneIcon.addEventListener('click', toggleSidebar);
-document.addEventListener('click', closeSidebar);
-
-              
-     
+                    // Get references to sidebar and phone icon
+                    let sidebar = document.getElementById('sidebar');
+                    let phoneIcon = document.querySelector('.phone-icon'); // Select existing phone.svg icon
+                    
+                    // Function to toggle sidebar
+                    function toggleSidebar(event) {
+                        event.stopPropagation(); // Prevent immediate closing when clicking phone icon
+                        sidebar.classList.toggle('open');
+                    }
+                    
+                    // Function to close sidebar when clicking outside
+                    function closeSidebar(event) {
+                        // Ensure sidebar stays open when clicking inside it
+                        if (!sidebar.contains(event.target) && !phoneIcon.contains(event.target)) {
+                            sidebar.classList.remove('open');
+                        }
+                    }
+                    
+                    // Stop click inside the sidebar from closing it
+                    sidebar.addEventListener('click', function(event) {
+                        event.stopPropagation(); // Prevent bubbling up to document click event
+                    });
+                    
+                    // Add event listeners
+                    phoneIcon.addEventListener('click', toggleSidebar);
+                    document.addEventListener('click', closeSidebar);
+                    
+                    
+                    
                     
                     const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
                     
@@ -2471,6 +2489,58 @@ document.addEventListener('click', closeSidebar);
                         overlay.id = 'sidebar-overlay';
                         document.body.appendChild(overlay);
                         
+                        
+                        // Open Sidebar
+hamburgerButton.addEventListener('click', () => {
+    hsidebar.classList.add('open');
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden'; 
+    document.documentElement.style.overflow = 'hidden'; 
+    // Remove the next two lines
+});
+                        // Close Sidebar when clicking outside
+                        document.addEventListener(
+                        'click',
+                        (event) => {
+                            if (!hsidebar.contains(event.target) && !hamburgerButton.contains(event.target)) {
+                                hsidebar.classList.remove('open');
+                                overlay.style.display = 'none';
+                                document.body.style.overflow = ''; // Unlock scrolling
+                                document.documentElement.style.overflow = ''; // Unlock scrolling
+                                document.body.style.height = ''; // Allow body resizing
+                                document.documentElement.style.height = ''; // Allow html resizing
+                            }
+                        },
+                        true // Use capture phase
+                        );
+                        
+                        
+                        // Close Sidebar on Escape Key
+                        document.addEventListener('keydown', (e) => {
+                            if (e.key === "Escape") {
+                                hsidebar.classList.remove('open');
+                                overlay.style.display = 'none';
+                                document.body.style.overflow = '';
+                                document.documentElement.style.overflow = ''; // Unlock scrolling on html
+                                document.body.style.height = ''; // Allow body resizing again
+                                document.documentElement.style.height = ''; // Allow html resizing
+                            }
+                        });
+                        
+                        // Close Sidebar when clicking on the cross button
+                        document.getElementById('close-sidebar').addEventListener('click', () => {
+                            hsidebar.classList.remove('open');
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = ''; // Unlock scrolling
+                            document.documentElement.style.overflow = ''; // Unlock scrolling
+                            document.body.style.height = ''; // Allow body resizing
+                            document.documentElement.style.height = ''; // Allow html resizing
+                        });
+                        
+                        
+                        
+                        
+                        
                         // Create QR Code Modal
                         const qrCodeModal = document.createElement('div');
                         qrCodeModal.id = 'qr-code-modal';
@@ -2497,47 +2567,6 @@ document.addEventListener('click', closeSidebar);
                             }
                         });
                         
-                        // Open Sidebar
-                        hamburgerButton.addEventListener('click', () => {
-                            hsidebar.classList.add('open');
-                            overlay.style.display = 'block';
-                            document.body.style.overflow = 'hidden'; // Lock scrolling on body
-                            document.documentElement.style.overflow = 'hidden'; // Lock scrolling on html
-                            document.body.style.height = '100%'; // Prevent body from resizing while locked
-                            document.documentElement.style.height = '100%'; // Prevent html from resizing
-                        });
-                        
-                        // Close Sidebar when clicking outside
-                        overlay.addEventListener('click', () => {
-                            hsidebar.classList.remove('open');
-                            overlay.style.display = 'none';
-                            document.body.style.overflow = ''; // Unlock scrolling on body
-                            document.documentElement.style.overflow = ''; // Unlock scrolling on html
-                            document.body.style.height = ''; // Allow body resizing again
-                            document.documentElement.style.height = ''; // Allow html resizing
-                        });
-                        
-                        // Close Sidebar on Escape Key
-                        document.addEventListener('keydown', (e) => {
-                            if (e.key === "Escape") {
-                                hsidebar.classList.remove('open');
-                                overlay.style.display = 'none';
-                                document.body.style.overflow = '';
-                                document.documentElement.style.overflow = ''; // Unlock scrolling on html
-                                document.body.style.height = ''; // Allow body resizing again
-                                document.documentElement.style.height = ''; // Allow html resizing
-                            }
-                        });
-                        
-                        // Close Sidebar when clicking on the cross button
-                        document.getElementById('close-sidebar').addEventListener('click', () => {
-                            hsidebar.classList.remove('open');
-                            overlay.style.display = 'none';
-                            document.body.style.overflow = ''; // Unlock scrolling
-                            document.documentElement.style.overflow = ''; // Unlock scrolling
-                            document.body.style.height = ''; // Allow body resizing
-                            document.documentElement.style.height = ''; // Allow html resizing
-                        });
                         
                         // Install App
                         document.getElementById('install-app').addEventListener('click', () => {
@@ -3103,11 +3132,36 @@ document.addEventListener('click', closeSidebar);
                                 e.stopPropagation();
                                 const name = e.target.dataset.name;
                                 const rate = e.target.dataset.rate;
-                                scrapItems.push({ name, rate });
-                                updateScrapListDisplay();
-                                updateScrapCounter();
+                                const currentCount = scrapItems.filter(item =>
+                                item.name === name && item.rate === rate
+                                ).length;
+                                
+                                if (currentCount < 99) {
+                                    scrapItems.push({ name, rate });
+                                    updateScrapListDisplay();
+                                    updateScrapCounter();
+                                    updateIncrementButtonState(name, rate); // Update increment button state
+                                    updateDecrementButtonState(name, rate); // Ensure decrement button updates as well
+                                }
                             });
+                            
+                            // Initial button state setup (when the list first loads)
+                            updateIncrementButtonState(btn.dataset.name, btn.dataset.rate);
                         });
+                        
+                        function updateIncrementButtonState(name, rate) {
+                            const currentCount = scrapItems.filter(item =>
+                            item.name === name && item.rate === rate
+                            ).length;
+                            
+                            const incrementButtons = document.querySelectorAll(`.increment-btn[data-name="${name}"][data-rate="${rate}"]`);
+                            
+                            incrementButtons.forEach(btn => {
+                                btn.disabled = currentCount >= 99;
+                            });
+
+                            
+                        }
                         
                         document.querySelectorAll('.decrement-btn').forEach(btn => {
                             btn.addEventListener('click', (e) => {
@@ -3144,6 +3198,19 @@ document.addEventListener('click', closeSidebar);
                             updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
                         });
                         
+                        function updateDecrementButtonState(name, rate) {
+                            const currentCount = scrapItems.filter(item =>
+                            item.name === name && item.rate === rate
+                            ).length;
+                            
+                            const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
+                            
+                            decrementButtons.forEach(btn => {
+                                btn.disabled = currentCount <= 1;
+                            });
+                        }
+                        
+                        
                         // Existing delete button handlers
                         document.querySelectorAll('.delete-btn').forEach(btn => {
                             btn.addEventListener('click', (e) => {
@@ -3166,17 +3233,6 @@ document.addEventListener('click', closeSidebar);
                         });
                     }
                     
-                    function updateDecrementButtonState(name, rate) {
-                        const currentCount = scrapItems.filter(item =>
-                        item.name === name && item.rate === rate
-                        ).length;
-                        
-                        const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
-                        
-                        decrementButtons.forEach(btn => {
-                            btn.disabled = currentCount <= 1;
-                        });
-                    }
                     
                     
                     function showOrderListWarning() {                            
@@ -3518,6 +3574,50 @@ document.addEventListener('click', closeSidebar);
                     
                     
                     
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     async function updateViewCounter() {
                         try {
                             await fetch(`${scriptUrl}?sheet=counter&action=updateViews`);
@@ -3528,50 +3628,6 @@ document.addEventListener('click', closeSidebar);
                     
                     // Call the function on page load
                     updateViewCounter();
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     
                     
                     
@@ -3602,80 +3658,80 @@ document.addEventListener('click', closeSidebar);
                     
                     
                     
-function setupVisitorCounter() {
-    if (typeof Storage !== 'undefined') {
-        const visitorKey = 'csb_visitor';
-        if (!localStorage.getItem(visitorKey)) {
-            localStorage.setItem(visitorKey, '1');
-            updateCounter('updateVisitors').then(data => {
-                document.getElementById('visitorCounter').innerHTML = `Users:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
-            });
-        } else {
-            updateCounter('getVisitors').then(data => {
-                document.getElementById('visitorCounter').innerHTML = `Users:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
-            });
-        }
-    }
-}
-
+                    function setupVisitorCounter() {
+                        if (typeof Storage !== 'undefined') {
+                            const visitorKey = 'csb_visitor';
+                            if (!localStorage.getItem(visitorKey)) {
+                                localStorage.setItem(visitorKey, '1');
+                                updateCounter('updateVisitors').then(data => {
+                                    document.getElementById('visitorCounter').innerHTML = `Users:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
+                                });
+                                } else {
+                                updateCounter('getVisitors').then(data => {
+                                    document.getElementById('visitorCounter').innerHTML = `Users:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
+                                });
+                            }
+                        }
+                    }
+                    
                     
                     
                     // Client-side JavaScript
-                  function setupLikeButton() {
-    const likeIcon = document.getElementById('likeIcon');
-    const likeCounterElement = document.getElementById('likeCounter');
-    const likeKey = 'csb_like';
-
-    updateCounter('getLikes').then(data => {
-        likeCounterElement.textContent = String(data.count).padStart(3, '0');
-    });
-
-    if (localStorage.getItem(likeKey)) {
-        likeIcon.classList.add('liked');
-    }
-
-    document.getElementById('likeContainer').addEventListener('click', () => {
-        if (!localStorage.getItem(likeKey)) {
-            localStorage.setItem(likeKey, 'true');
-            likeIcon.classList.add('liked');
-            startBlinking(likeCounterElement);
-
-            updateCounter('incrementLikes').then(data => {
-                stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                showFeedback('Thank you!');
-            });
-        } else {
-            localStorage.removeItem(likeKey);
-            likeIcon.classList.remove('liked');
-            startBlinking(likeCounterElement);
-
-            updateCounter('decrementLikes').then(data => {
-                stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-            });
-        }
-    });
-}
-
-// Apply existing pop animation
-function animateCounter(element, newValue) {
-    element.classList.remove('like-animate');
-    void element.offsetWidth; // Trigger reflow
-    element.textContent = newValue;
-    element.classList.add('like-animate');
-}
-
-// Start blinking animation
-function startBlinking(element) {
-    element.classList.add('blinking');
-}
-
-// Stop blinking animation
-function stopBlinking(element) {
-    element.classList.remove('blinking');
-}
-
+                    function setupLikeButton() {
+                        const likeIcon = document.getElementById('likeIcon');
+                        const likeCounterElement = document.getElementById('likeCounter');
+                        const likeKey = 'csb_like';
+                        
+                        updateCounter('getLikes').then(data => {
+                            likeCounterElement.textContent = String(data.count).padStart(3, '0');
+                        });
+                        
+                        if (localStorage.getItem(likeKey)) {
+                            likeIcon.classList.add('liked');
+                        }
+                        
+                        document.getElementById('likeContainer').addEventListener('click', () => {
+                            if (!localStorage.getItem(likeKey)) {
+                                localStorage.setItem(likeKey, 'true');
+                                likeIcon.classList.add('liked');
+                                startBlinking(likeCounterElement);
+                                
+                                updateCounter('incrementLikes').then(data => {
+                                    stopBlinking(likeCounterElement);
+                                    animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                                    showFeedback('Thank you!');
+                                });
+                                } else {
+                                localStorage.removeItem(likeKey);
+                                likeIcon.classList.remove('liked');
+                                startBlinking(likeCounterElement);
+                                
+                                updateCounter('decrementLikes').then(data => {
+                                    stopBlinking(likeCounterElement);
+                                    animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                                });
+                            }
+                        });
+                    }
+                    
+                    // Apply existing pop animation
+                    function animateCounter(element, newValue) {
+                        element.classList.remove('like-animate');
+                        void element.offsetWidth; // Trigger reflow
+                        element.textContent = newValue;
+                        element.classList.add('like-animate');
+                    }
+                    
+                    // Start blinking animation
+                    function startBlinking(element) {
+                        element.classList.add('blinking');
+                    }
+                    
+                    // Stop blinking animation
+                    function stopBlinking(element) {
+                        element.classList.remove('blinking');
+                    }
+                    
                     
                     
                     
@@ -3691,24 +3747,24 @@ function stopBlinking(element) {
                         }
                     }
                     
-function setupViewsCounter() {
-    if (typeof Storage !== 'undefined') {
-        const viewsKey = 'csb_views';
-        if (!localStorage.getItem(viewsKey)) {
-            // If the user is new, update the views counter
-            localStorage.setItem(viewsKey, '1');
-            updateCounter('updateViews').then(data => {
-                document.getElementById('viewsCounter').innerHTML = `Views:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
-            });
-        } else {
-            // If the user is returning, just fetch the current views count
-            updateCounter('getViews').then(data => {
-                document.getElementById('viewsCounter').innerHTML = `Views:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
-            });
-        }
-    }
-}
-
+                    function setupViewsCounter() {
+                        if (typeof Storage !== 'undefined') {
+                            const viewsKey = 'csb_views';
+                            if (!localStorage.getItem(viewsKey)) {
+                                // If the user is new, update the views counter
+                                localStorage.setItem(viewsKey, '1');
+                                updateCounter('updateViews').then(data => {
+                                    document.getElementById('viewsCounter').innerHTML = `Views:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
+                                });
+                                } else {
+                                // If the user is returning, just fetch the current views count
+                                updateCounter('getViews').then(data => {
+                                    document.getElementById('viewsCounter').innerHTML = `Views:<span style="color: white;">${String(data.count).padStart(4, '0')}</span>`;
+                                });
+                            }
+                        }
+                    }
+                    
                     
                     
                     
@@ -3729,7 +3785,7 @@ function setupViewsCounter() {
                     });
                     
                     
-                    </script>        
-                    <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-                    </body>
-                    </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                </script>        
+                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+            </body>
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
