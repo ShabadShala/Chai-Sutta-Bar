@@ -759,7 +759,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.6); /* Slightly darker backdrop */
-            z-index: 1001;
+            z-index: 100;
             }
             
             /* QR Code Modal */
@@ -921,6 +921,7 @@
     transition: right 0.3s ease;
     z-index: 1000;
     box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
+      pointer-events: none;
 }
             
             #sidebar a {
@@ -942,6 +943,7 @@
             
             #sidebar.open {
             right: 0; /* Show sidebar when open */
+            pointer-events: auto;
             }
             
             /* Phone Icon */
@@ -1603,16 +1605,16 @@
                 
  <!-- Social Container -->
 <div class="social">
-    <!-- Sidebar -->
     <div id="sidebar">
-        <a id="delivery-link" href="#"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
-        <a id="whatsapp-link" href="#"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
-        <a id="phone-link" href="#"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
-        <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA"><img src="sidebar/location.png" alt="Location" class="logo"></a>
-        <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
-        <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
+        <a id="delivery-link" href="#" target="_blank"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
+        <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
+        <a id="phone-link" href="#" target="_blank"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
+        <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA" target="_blank"><img src="sidebar/location.png" alt="Location" class="logo"></a>
+        <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
+        <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
     </div>
 </div>
+
 
                 
                 
@@ -2166,34 +2168,34 @@ searchInput.addEventListener('input', (e) => {
                     
                     
                     
-                    
 // Get references to sidebar and phone icon
 let sidebar = document.getElementById('sidebar');
-let phoneIcon = document.createElement('img');
-phoneIcon.src = 'icons/phone.svg'; // Set phone icon source
-phoneIcon.classList.add('invert-icon', 'phone-icon'); // Apply classes
+let phoneIcon = document.querySelector('.phone-icon'); // Select existing phone.svg icon
+
+// Function to toggle sidebar
+function toggleSidebar(event) {
+    event.stopPropagation(); // Prevent immediate closing when clicking phone icon
+    sidebar.classList.toggle('open');
+}
+
+// Function to close sidebar when clicking outside
+function closeSidebar(event) {
+    // Ensure sidebar stays open when clicking inside it
+    if (!sidebar.contains(event.target) && !phoneIcon.contains(event.target)) {
+        sidebar.classList.remove('open');
+    }
+}
+
+// Stop click inside the sidebar from closing it
+sidebar.addEventListener('click', function(event) {
+    event.stopPropagation(); // Prevent bubbling up to document click event
+});
+
 // Add event listeners
 phoneIcon.addEventListener('click', toggleSidebar);
 document.addEventListener('click', closeSidebar);
 
-// Append phone icon to the header
-document.querySelector('.header').appendChild(phoneIcon);
-
-// Function to toggle sidebar
-function toggleSidebar() {
-    sidebar.classList.toggle('open'); // Toggle 'open' class
-}
-
-// Add click event listener to phone icon
-phoneIcon.addEventListener('click', toggleSidebar);
-
-// Function to close sidebar when clicking outside
-function closeSidebar(event) {
-    if (!sidebar.contains(event.target) && event.target !== phoneIcon) {
-        sidebar.classList.remove('open');
-    }
-}
-                    
+              
      
                     
                     const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
