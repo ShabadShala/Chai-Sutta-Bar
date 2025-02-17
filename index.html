@@ -29,6 +29,7 @@
                 "author": {
                     "@type": "Person",
                     "name": "Shabad Shala"
+                    "name": "Shabad Shala"
                 },
                 "image": "https://shabadshala.github.io/Chai-Sutta-Bar/icon-512.png",
                 "mainEntityOfPage": "https://shabadshala.github.io/Chai-Sutta-Bar/"
@@ -281,7 +282,7 @@
             color: #888;
             }
             
-            .clear-btn {
+            .search-clear-btn {
             position: absolute;
             right: 2.5rem;
             top: 50%;
@@ -292,7 +293,7 @@
             z-index: 10;
             }
             
-            .clear-btn:hover {
+            .search-clear-btn:hover {
             color: red;
             }
             
@@ -1565,9 +1566,6 @@
             cursor: not-allowed;
             }
             
-            
-            
-            
             #toggle-cart {
             position: fixed;
             bottom: 15rem;
@@ -1581,96 +1579,117 @@
             cursor: pointer;
             }
             
+            /* Updated Offer Cart */
             #offer-cart {
             position: fixed;
-            bottom: 25rem;
-            right: calc(50% - 300px + 3rem);
-            width: 300px;
-            background: #333;
-            padding: 2rem;
+            top: 9% !important;
+            left: 50% !important;
+            transform: translateX(-50%);
+            width: 350px;
+            max-width: 90vw;
+            max-height: 90vh;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 2000;
             border-radius: 1rem;
-            z-index: 499;
-            font-size:4rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             }
             
+            #cart-items {
+            max-height: 60vh;
+            overflow-y: auto;
+            }
             
-            
-            
-            
+            /* Cart Item Styling */
             .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 1rem;
-            border-bottom: 1px solid #444;
-            }
-            
-            .cart-item-title {
-            font-size: 4.5rem;
-            color: #fae68e;
-            }
-            
-            .cart-item-dates {
+            border-bottom: 1px solid #ddd;
             font-size: 4rem;
-            color: #40E0D0;
-            margin-top: 0.5rem;
-            }
-            
-            
-            
-            .offer-count {
-            color: #FF6B6B;
-            font-size: 0.8em;
-            margin-left: 0.5rem;
-            }
-            
-            .cart-item {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #444;
+            color: #333;
+            width: 100%;
+            gap: 1rem;
             }
             
             .cart-item:last-child {
             border-bottom: none;
             margin-bottom: 0;
             }
-            .cart-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            }
             
-            .cart-item-count {
-            color: #4CAF50;
+            .cart-item-title {
             font-size: 4.5rem;
-            margin-left: auto; /* Pushes count to right edge */
-            padding-left: 2rem;
+            color: #2c3e50;
+            font-weight: bold;
+            flex: 2;
             }
             
             .cart-item-date {
             font-size: 4rem;
-            color: #40E0D0;
+            color: #666;
             margin-top: 0.5rem;
             }
             
+            .cart-item-header {
+            flex: 3;
+            overflow: hidden;
+            word-wrap: break-word;
+            white-space: normal;
+            min-width: 100px;
+            }
             
+            .cart-item-description {
+            font-size: 3.5rem;
+            color: #666;
+            margin-top: 0.5rem;
+            }
             
-            
-            
-            
+            /* Stepper Styling */
             .stepper-container {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.5rem;
             margin-left: auto;
             }
             
+            
+            .offer-stepper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #f5f5f5;
+            border: 1px solid red;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin-right: auto;
+            }
+            
+            .offer-stepper button {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 5rem;
+            padding: 0 1rem;
+            color: #333;
+            transition: background-color 0.2s ease;
+            }
+            
+            .offer-stepper button:disabled {
+            background-color: #ccc !important;
+            color: transparent !important;
+            cursor: not-allowed !important;
+            opacity: 0;
+            pointer-events: none;
+            }
+            
             .stepper-btn {
-            width: 8rem;
-            height: 8rem;
+            width: 6rem;
+            height: 6rem;
             border: none;
             border-radius: 50%;
-            background: #4CAF50;
+            background: #40E0D0 !important;
             color: white;
-            font-size: 6rem;
+            font-size: 4rem;
             line-height: 1;
             cursor: pointer;
             display: flex;
@@ -1684,198 +1703,85 @@
             }
             
             .stepper-count {
-            font-size: 5rem;
+            font-size: 4rem;
             min-width: 8rem;
             text-align: center;
-            color: #fae68e;
+            color: #333;
             }
             
+            .offer-qty-display {
+            font-size: 4rem;
+            min-width: 2rem;
+            text-align: center;
+            color: #333;
+            }
             
-            
-            
-            
-            
+            /* Cart Header */
             .cart-header {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            }
+            
+            /* Cart Footer */
+            .cart-footer {
+            display: flex;
+            gap: 2rem;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ddd;
+            position: sticky;
+            bottom: 0;
+            background: #f5f5f5;
+            }
+            
+            /* Empty Cart */
+            .empty-cart {
+            color: #888;
+            font-size: 4.5rem;
+            text-align: center;
+            padding: 3rem 0;
+            }
+            
+            /* Order & Clear Button */
+            .order-btn, .clear-btn {
+            border-radius: 0.5rem !important;
+            padding: 1rem 2rem !important;
+            color: white !important;
             }
             
             .clear-btn {
-            background: #ff4444;
-            color: white;
-            border: none;
-            border-radius: 2rem;
-            padding: 1rem 2rem;
             font-size: 4rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
+            }
+            
+            .order-btn {
+            background: #28a745 !important;
+            }
+            
+            .order-btn:hover {
+            background: #45a049;
+            }
+            
+            .clear-btn {
+            background: #cc0000 !important;
             }
             
             .clear-btn:hover {
-            background: #cc0000;
+            background: #ff4444;
             }
             
-            .empty-cart {
-  color: #888;
-  font-size: 4.5rem;
-  text-align: center;
-  padding: 3rem 0;
-}
-
-/* Add new CSS */
-.cart-footer {
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #444;
-  position: sticky;
-  bottom: 0;
-  background: #333;
-}
-
-.order-btn {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 2rem;
-  padding: 1rem 2rem;
-  font-size: 4rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.order-btn:hover {
-  background: #45a049;
-}
-
-
-
-
-
-
-
-
-
-
-
-/* Update offer-cart styles */
-#offer-cart {
-  position: fixed;
-  bottom: 25rem;
-  right: calc(50% - 300px + 3rem);
-  width: 350px;
-  background: #f5f5f5;
-  padding: 2rem;
-  border-radius: 1rem;
-  z-index: 499;
-  font-size: 4rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  color: #333;
-  max-height: 70vh;
-  display: none;
-  flex-direction: column;
-}
-
-#cart-items {
-  max-height: 50vh;
-  overflow-y: auto;
-  padding: 1rem;
-}
-
-.cart-item {
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 1rem;
-}
-
-.cart-item:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-}
-
-.cart-header {
-  font-size: 6rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.cart-item-title {
-  font-size: 4.5rem;
-  color: #2c3e50;
-  font-weight: bold;
-  flex: 2;
-}
-
-.cart-item-date {
-  font-size: 4rem;
-  color: #666;
-  margin-top: 0.5rem;
-}
-
-.cart-footer {
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #ddd;
-  position: sticky;
-  bottom: 0;
-  background: #f5f5f5;
-}
-
-.empty-cart {
-  color: #888;
-  font-size: 4.5rem;
-  text-align: center;
-  padding: 3rem 0;
-}
-
-/* Update button styles to match scrap list */
-.order-btn {
-  background: #28a745 !important;
-  color: white !important;
-  border-radius: 0.5rem !important;
-  padding: 1rem 2rem !important;
-}
-
-.clear-btn {
-  background: #cc0000 !important;
-  color: white !important;
-  border-radius: 0.5rem !important;
-  padding: 1rem 2rem !important;
-}
-
-/* Stepper adjustments to match scrap list */
-.stepper-container {
-  gap: 0.5rem;
-}
-
-.stepper-btn {
-  width: 6rem;
-  height: 6rem;
-  font-size: 4rem;
-  background: #40E0D0 !important;
-}
-
-.stepper-count {
-  font-size: 4rem;
-  color: #333;
-}
-
-/* Price alignment adjustments */
-.cart-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
+            
+            
+            
+            
+            
+            
         </style>
     </head>
     <body>
@@ -1930,20 +1836,20 @@
         
         <!-- Main Content Wrapper -->
         <div id="main-content">
-            
-            <button id="offers-button"></button>
-            <div id="offers-container" class="offer-container"></div>
+
+
             
             <!-- Search Bar -->
             <div class="search-container">
                 <div class="search-input-wrapper">
                     <span id="magnifierIcon" class="search-lens">&#128270;</span>
                     <input type="text" id="searchInput" maxlength="10" placeholder="item or rate" />
-                    <span id="clearButton" class="clear-btn" style="display: none;">×</span>
+                    <span id="clearButton" class="search-clear-btn" style="display: none;">×</span>
                 </div>
             </div>
             
-            
+                        <button id="offers-button"></button>
+            <div id="offers-container" class="offer-container"></div>
             
             <!-- Filter Container -->
             <div id="filterContainer">
@@ -2005,18 +1911,24 @@
                     </div>
                 </div>
                 
+                
+                            
+
+            
                 <button id="toggle-cart">Offer Cart (0)</button>
-      <!-- Update offer-cart HTML -->
-<div id="offer-cart" style="display: none;">
-  <div class="cart-header">
-    <h2>Selected Offers</h2>
-  </div>
-  <div id="cart-items"></div>
-  <div class="cart-footer">
-    <button id="order-offers" class="order-btn">Order via WhatsApp</button>
-    <button id="clear-offers" class="clear-btn">Clear All</button>
-  </div>
-</div>
+                <div id="offer-cart" style="display: none;">
+                    <div class="scrap-content">
+                        <button id="pinOffer">📌</button>
+                        <div id="closeOffer">×</div>
+                        <h2 style="font-size: 6rem;">Selected Offers</h2>
+                        <div id="cart-items"></div>
+                        <div id="totalOffers" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total Offers: 0</div>
+                        <div class="button-container">
+                            <button id="order-offers" class="order-btn">Order</button>
+                            <button id="clear-offers" class="clear-btn">Clear</button>
+                        </div>
+                    </div>
+                </div>
                 
                 
                 <script>
@@ -3264,26 +3176,26 @@
                     }
                     
                     
-// Add this to your existing handleScrapItemsChange function
-function handleScrapItemsChange() {
-  updateScrapListDisplay();
-  updateScrapButtonStatus();
-  updateScrapCounter();
-  updateOfferAddButtons();
-  
-  // New: Remove dependent offers when scrap is empty
-  if (scrapItems.length === 0) {
-    const dependentOffersRemoved = offerCart.filter(group => group.dependent);
-    offerCart = offerCart.filter(group => !group.dependent);
-    
-    if (dependentOffersRemoved.length > 0) {
-      showFeedback('Dependent offers removed');
-      updateCartDisplay();
-      updateOfferAddButtons();
-      updateScrapButtonStatus();
-    }
-  }
-}
+                    // Add this to your existing handleScrapItemsChange function
+                    function handleScrapItemsChange() {
+                        updateScrapListDisplay();
+                        updateScrapButtonStatus();
+                        updateScrapCounter();
+                        updateOfferAddButtons();
+                        
+                        // New: Remove dependent offers when scrap is empty
+                        if (scrapItems.length === 0) {
+                            const dependentOffersRemoved = offerCart.filter(group => group.dependent);
+                            offerCart = offerCart.filter(group => !group.dependent);
+                            
+                            if (dependentOffersRemoved.length > 0) {
+                                showFeedback('Dependent offers removed');
+                                updateCartDisplay();
+                                updateOfferAddButtons();
+                                updateScrapButtonStatus();
+                            }
+                        }
+                    }
                     
                     // Close scrap list when clicking outside
                     document.addEventListener('click', (e) => {
@@ -4003,8 +3915,8 @@ function handleScrapItemsChange() {
                             const button = e.target;
                             const offerItem = button.closest('.offer-item');
                             const offerTitle = offerItem.querySelector('.offer-title').textContent;
-                             const offerDescription = offerItem.querySelector('.offer-description').textContent;
-                              const dependencies = button.dataset.dependencies === 'Yes';
+                            const offerDescription = offerItem.querySelector('.offer-description').textContent;
+                            const dependencies = button.dataset.dependencies === 'Yes';
                             const startDate = formatDate(button.dataset.start);
                             const endDate = button.dataset.end ? formatDate(button.dataset.end) : null;
                             const allowOnce = button.dataset.allowOnce === 'Yes';
@@ -4031,7 +3943,7 @@ function handleScrapItemsChange() {
                                     description: offerDescription,
                                     dates: [dateString],
                                     count: 1,
-                                     dependent: dependencies // Store dependency status
+                                    dependent: dependencies // Store dependency status
                                 });
                             }
                             
@@ -4051,36 +3963,53 @@ function handleScrapItemsChange() {
                     });
                     
                     // Update cart display with stepper
-                    function updateCartDisplay() {
-                        const cartItems = document.getElementById('cart-items');
-                        const toggleBtn = document.getElementById('toggle-cart');
-                        
-                          if (offerCart.length === 0) {
-                              cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
-    toggleBtn.textContent = 'Toggle Offer Cart (0)';
+ function updateCartDisplay() {
+  const cartItems = document.getElementById('cart-items');
+  const totalOffers = document.getElementById('totalOffers');
+  const toggleBtn = document.getElementById('toggle-cart');
+  
+  if (offerCart.length === 0) {
+    cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
+    totalOffers.textContent = 'Total Offers: 0';
+    toggleBtn.textContent = 'Offer Cart (0)';
     return;
   }
-                        
-                        cartItems.innerHTML = offerCart.map((group, index) => `
-                        <div class="cart-item">
-                        <div class="cart-item-header">
-                        <div class="cart-item-title">${group.title}</div>
-                        <div class="stepper-container">
-                        <button class="stepper-btn" onclick="adjustOfferQuantity(${index}, -1)">−</button>
-                        <span class="stepper-count">${group.count}</span>
-                        <button class="stepper-btn" onclick="adjustOfferQuantity(${index}, 1)">+</button>
-                        </div>
-                        </div>
-                        ${group.dates.map(date => `
-                    <div class="cart-item-date">(${date})</div>
-                    `).join('')}
-                </div>
-                `).join('');
-                
-                const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
-                toggleBtn.textContent = `Offer Cart (${totalItems})`;
-                }
-                
+
+  cartItems.innerHTML = offerCart.map((group, index) => `
+    <div class="scrap-item">
+      <div class="scrap-item-name">
+        <strong>${group.title}</strong>
+        <div class="cart-item-description">${group.description}</div>
+      </div>
+      <div class="scrap-item-rate">
+        <div class="offer-stepper">
+          <button class="decrement-btn" onclick="adjustOfferQuantity(${index}, -1)">-</button>
+          <span class="offer-qty-display">${group.count}</span>
+          <button class="increment-btn" onclick="adjustOfferQuantity(${index}, 1)">+</button>
+        </div>
+        <span>${group.dates.join(', ')}</span>
+      </div>
+    </div>
+  `).join('');
+
+  const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
+  totalOffers.textContent = `Total Offers: ${totalItems}`;
+  toggleBtn.textContent = `Offer Cart (${totalItems})`;
+}
+        
+        document.getElementById('pinOffer').addEventListener('click', function(e) {
+            e.stopPropagation();
+  isOfferPinned = !isOfferPinned;
+  this.textContent = isOfferPinned ? '🔒' : '📌';
+  showFeedback(isOfferPinned ? "Offers pinned" : "Offers unpinned");
+});
+
+document.getElementById('closeOffer').addEventListener('click', () => {
+  if (!isOfferPinned) {
+    document.getElementById('offer-cart').style.display = 'none';
+  }
+});
+        
                 
                 // Add quantity adjustment function
                 function adjustOfferQuantity(index, delta) {
@@ -4113,25 +4042,25 @@ function handleScrapItemsChange() {
                 
                 
                 // Add order functionality
-document.getElementById('order-offers').addEventListener('click', sendOfferCart);
-
-function sendOfferCart() {
-  if (offerCart.length === 0) {
-    showFeedback('Cart is empty!');
-    return;
-  }
-
-  let message = '🎊\n';
-  offerCart.forEach((group, index) => {
-    group.dates.forEach(date => {
-      message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
-    });
-  });
-  
-  message += '\nPlease confirm these offers!';
-  const encodedMessage = encodeURIComponent(message);
-  window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
-}
+                document.getElementById('order-offers').addEventListener('click', sendOfferCart);
+                
+                function sendOfferCart() {
+                if (offerCart.length === 0) {
+                showFeedback('Cart is empty!');
+                return;
+                }
+                
+                let message = '🎊\n';
+                offerCart.forEach((group, index) => {
+                    group.dates.forEach(date => {
+                message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
+                });
+                });
+                
+                message += '\nPlease confirm these offers!';
+                const encodedMessage = encodeURIComponent(message);
+                window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
+                }
                 
                 
                 
@@ -4209,196 +4138,196 @@ function sendOfferCart() {
                 if (!localStorage.getItem(visitorKey)) {
                 localStorage.setItem(visitorKey, '1');
                 updateCounter('updateVisitors').then(data => {
-                    document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
-                    
-                    });
-                    } else {
-                    updateCounter('getVisitors').then(data => {
-                    document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
-                    
-                    });
-                    }
-                    }
-                    }
-                    
-                    
-                    
-                    // Client-side JavaScript
-                    function setupLikeButton() {
-                    const likeIcon = document.getElementById('likeIcon');
-                    const likeCounterElement = document.getElementById('likeCounter');
-                    const likeKey = 'csb_like';
-                    
-                    updateCounter('getLikes').then(data => {
-                    likeCounterElement.textContent = String(data.count).padStart(3, '0');
-                    });
-                    
-                    if (localStorage.getItem(likeKey)) {
-                    likeIcon.classList.add('liked');
-                    }
-                    
-                    document.getElementById('likeContainer').addEventListener('click', () => {
-                    if (!localStorage.getItem(likeKey)) {
-                    localStorage.setItem(likeKey, 'true');
-                    likeIcon.classList.add('liked');
-                    startBlinking(likeCounterElement);
-                    
-                    updateCounter('incrementLikes').then(data => {
-                    stopBlinking(likeCounterElement);
-                    animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                    showFeedback('Thank you!');
-                    });
-                    } else {
-                    localStorage.removeItem(likeKey);
-                    likeIcon.classList.remove('liked');
-                    startBlinking(likeCounterElement);
-                    
-                    updateCounter('decrementLikes').then(data => {
-                    stopBlinking(likeCounterElement);
-                    animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                    });
-                    }
-                    });
-                    }
-                    
-                    // Apply existing pop animation
-                    function animateCounter(element, newValue) {
-                    element.classList.remove('like-animate');
-                    void element.offsetWidth; // Trigger reflow
-                    element.textContent = newValue;
-                    element.classList.add('like-animate');
-                    }
-                    
-                    // Start blinking animation
-                    function startBlinking(element) {
-                    element.classList.add('blinking');
-                    }
-                    
-                    // Stop blinking animation
-                    function stopBlinking(element) {
-                    element.classList.remove('blinking');
-                    }
-                    
-                    
-                    
-                    
-                    
-                    async function initializeOrderNumber() {
-                    try {
-                    const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
-                    const data = await response.json();
-                    cachedOrderNumber = data.count; // Store the current order number
-                    } catch (error) {
-                    console.error('Failed to fetch order number:', error);
-                    cachedOrderNumber = 0; // Fallback to 0 if the request fails
-                    }
-                    }
-                    
-                    function setupViewsCounter() {
-                    if (typeof Storage !== 'undefined') {
-                    const viewsKey = 'csb_views';
-                    if (!localStorage.getItem(viewsKey)) {
-                    // If the user is new, update the views counter
-                    localStorage.setItem(viewsKey, '1');
-                    updateCounter('updateViews').then(data => {
-                    document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
-                    
-                    });
-                    } else {
-                    // If the user is returning, just fetch the current views count
-                    updateCounter('getViews').then(data => {
-                    document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
-                    
-                    });
-                    }
-                    }
-                    }
-                    
-                    
-                    
-                    // Initialize counters when the page loads
-                    document.addEventListener('DOMContentLoaded', () => {
-                    
-                    
-                    // Setup visitor counter
-                    setupVisitorCounter();
-                    
-                    // Setup like button
-                    setupLikeButton();
-                    
-                    initializeOrderNumber();
-                    
-                    setupViewsCounter();
-                    });
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    // Touch cheat: Triple-tap
-                    let lastTap = 0;
-                    let tapCount = 0;
-                    
-                    document.addEventListener('touchstart', (e) => {
-                    const now = Date.now();
-                    if (now - lastTap < 500) { // 500ms between taps
-                    tapCount++;
-                    if(tapCount === 3) {
-                    activateCheatMode();
-                    tapCount = 0;
-                    }
-                    } else {
-                    tapCount = 1;
-                    }
-                    lastTap = now;
-                    });
-                    
-                    // Keyboard cheat: Ctrl + Shift + E
-                    document.addEventListener('keydown', (e) => {
-                        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
-                        e.preventDefault(); // Prevent browser conflicts
-                        activateCheatMode();
-                        }
-                        });
-                        
-                        // Cheat activation function
-                        function activateCheatMode() {
-                        // 1. Expand all categories
-                        document.querySelectorAll('.category-header').forEach(header => {
-                        const items = header.nextElementSibling;
-                        header.style.fontSize = '6rem';
-                        header.querySelector('.right').style.display = 'inline';
-                        items.style.display = 'block';
-                        });
-                        
-                        // 2. Expand offers
-                        offersContainer.style.display = 'block';
-                        offersButton.querySelector('.arrow').textContent = '▲';
-                        }
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                    </script>        
-                    <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+                document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
+                
+                });
+                } else {
+                updateCounter('getVisitors').then(data => {
+                document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
+                
+                });
+                }
+                }
+                }
+                
+                
+                
+                // Client-side JavaScript
+                function setupLikeButton() {
+                const likeIcon = document.getElementById('likeIcon');
+                const likeCounterElement = document.getElementById('likeCounter');
+                const likeKey = 'csb_like';
+                
+                updateCounter('getLikes').then(data => {
+                likeCounterElement.textContent = String(data.count).padStart(3, '0');
+                });
+                
+                if (localStorage.getItem(likeKey)) {
+                likeIcon.classList.add('liked');
+                }
+                
+                document.getElementById('likeContainer').addEventListener('click', () => {
+                if (!localStorage.getItem(likeKey)) {
+                localStorage.setItem(likeKey, 'true');
+                likeIcon.classList.add('liked');
+                startBlinking(likeCounterElement);
+                
+                updateCounter('incrementLikes').then(data => {
+                stopBlinking(likeCounterElement);
+                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                showFeedback('Thank you!');
+                });
+                } else {
+                localStorage.removeItem(likeKey);
+                likeIcon.classList.remove('liked');
+                startBlinking(likeCounterElement);
+                
+                updateCounter('decrementLikes').then(data => {
+                stopBlinking(likeCounterElement);
+                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                });
+                }
+                });
+                }
+                
+                // Apply existing pop animation
+                function animateCounter(element, newValue) {
+                element.classList.remove('like-animate');
+                void element.offsetWidth; // Trigger reflow
+                element.textContent = newValue;
+                element.classList.add('like-animate');
+                }
+                
+                // Start blinking animation
+                function startBlinking(element) {
+                element.classList.add('blinking');
+                }
+                
+                // Stop blinking animation
+                function stopBlinking(element) {
+                element.classList.remove('blinking');
+                }
+                
+                
+                
+                
+                
+                async function initializeOrderNumber() {
+                try {
+                const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
+                const data = await response.json();
+                cachedOrderNumber = data.count; // Store the current order number
+                } catch (error) {
+                console.error('Failed to fetch order number:', error);
+                cachedOrderNumber = 0; // Fallback to 0 if the request fails
+                }
+                }
+                
+                function setupViewsCounter() {
+                if (typeof Storage !== 'undefined') {
+                const viewsKey = 'csb_views';
+                if (!localStorage.getItem(viewsKey)) {
+                // If the user is new, update the views counter
+                localStorage.setItem(viewsKey, '1');
+                updateCounter('updateViews').then(data => {
+                document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
+                
+                });
+                } else {
+                // If the user is returning, just fetch the current views count
+                updateCounter('getViews').then(data => {
+                document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
+                
+                });
+                }
+                }
+                }
+                
+                
+                
+                // Initialize counters when the page loads
+                document.addEventListener('DOMContentLoaded', () => {
+                
+                
+                // Setup visitor counter
+                setupVisitorCounter();
+                
+                // Setup like button
+                setupLikeButton();
+                
+                initializeOrderNumber();
+                
+                setupViewsCounter();
+                });
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                // Touch cheat: Triple-tap
+                let lastTap = 0;
+                let tapCount = 0;
+                
+                document.addEventListener('touchstart', (e) => {
+                const now = Date.now();
+                if (now - lastTap < 500) { // 500ms between taps
+                tapCount++;
+                if(tapCount === 3) {
+                activateCheatMode();
+                tapCount = 0;
+                }
+                } else {
+                tapCount = 1;
+                }
+                lastTap = now;
+                });
+                
+                // Keyboard cheat: Ctrl + Shift + E
+                document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
+                e.preventDefault(); // Prevent browser conflicts
+                activateCheatMode();
+                }
+                });
+                
+                // Cheat activation function
+                function activateCheatMode() {
+                // 1. Expand all categories
+                document.querySelectorAll('.category-header').forEach(header => {
+                const items = header.nextElementSibling;
+                header.style.fontSize = '6rem';
+                header.querySelector('.right').style.display = 'inline';
+                items.style.display = 'block';
+                });
+                
+                // 2. Expand offers
+                offersContainer.style.display = 'block';
+                offersButton.querySelector('.arrow').textContent = '▲';
+                }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                </script>        
+                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
                 </body>
-            </html>                                                                                                         
+                </html>                                                                                                                         
