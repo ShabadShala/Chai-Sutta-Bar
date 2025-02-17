@@ -452,9 +452,28 @@
             
             /* Offer Section Styles */
             .offer-container {
-            
             margin: 2rem auto;
             max-width: 600px;
+            }
+            
+            #offers-container.offer-container {
+            
+            display: none;
+            
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            justify-content: center;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            }
+            
+            /* Center the last item if it's alone in the last row */
+            #offers-container.offer-container > *:nth-last-child(1):nth-child(odd) {
+            grid-column: span 2; /* Make it span both columns */
+            justify-self: center; /* Center it within the grid */
+            max-width: 400px; /* Restrict max width to 400px */
+            width: 100%; /* Ensure it doesn't stretch too much */
             }
             
             .offer-item {
@@ -478,6 +497,7 @@
             color: #40E0D0;
             font-size: 5rem;
             margin-bottom: 1rem;
+            
             }
             
             .offer-description {
@@ -826,7 +846,7 @@
             position: absolute;
             top: 0;
             left: -100%;
-            width: 65%;
+            width: 70%;
             height: 100%;
             background: #1c1c1c;
             backdrop-filter: blur(8px);
@@ -1217,18 +1237,6 @@
             color: #333;
             }
             
-            #pinScrap {
-            position: absolute;
-            top: 0;
-            left: 1rem;
-            font-size: 4rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
-            z-index: 1;
-            color: #333;
-            }
             
             /* Close Button of scrap list */
             #closeScrap {
@@ -1582,9 +1590,9 @@
             /* Updated Offer Cart */
             #offer-cart {
             position: fixed;
-            top: 9% !important;
-            left: 50% !important;
-            transform: translateX(-50%);
+            bottom: 10rem; /* Position 10rem from the bottom of the viewport */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Center horizontally */
             width: 350px;
             max-width: 90vw;
             max-height: 90vh;
@@ -1626,7 +1634,7 @@
             
             .cart-item-date {
             font-size: 4rem;
-            color: #666;
+            color: #2c3e50;
             margin-top: 0.5rem;
             }
             
@@ -1647,7 +1655,7 @@
             /* Stepper Styling */
             .stepper-container {
             display: flex;
-            align-items: center;
+            align-items: right;
             gap: 0.5rem;
             margin-left: auto;
             }
@@ -1816,7 +1824,7 @@
         
         <div id="scrapList">
             <div class="scrap-content">
-                <button id="pinScrap">📌</button>
+                
                 <div id="closeScrap">×</div>
                 <h2 style="font-size: 6rem;">Order List</h2>
                 <div id="scrapItemsContainer">
@@ -1836,8 +1844,8 @@
         
         <!-- Main Content Wrapper -->
         <div id="main-content">
-
-
+            
+            
             
             <!-- Search Bar -->
             <div class="search-container">
@@ -1848,7 +1856,7 @@
                 </div>
             </div>
             
-                        <button id="offers-button"></button>
+            <button id="offers-button"></button>
             <div id="offers-container" class="offer-container"></div>
             
             <!-- Filter Container -->
@@ -1912,13 +1920,13 @@
                 </div>
                 
                 
-                            
-
-            
+                
+                
+                
                 <button id="toggle-cart">Offer Cart (0)</button>
                 <div id="offer-cart" style="display: none;">
                     <div class="scrap-content">
-                        <button id="pinOffer">📌</button>
+                        
                         <div id="closeOffer">×</div>
                         <h2 style="font-size: 6rem;">Selected Offers</h2>
                         <div id="cart-items"></div>
@@ -2171,10 +2179,12 @@
                                     return `
                                     <div class="offer-item" style="position: relative;">
                                     
-                                    <button class="send-whatsapp" onclick="sendOffer('${encodeURIComponent(offerText)}')" 
-                                    style="position: absolute; top: 2rem; right: 2rem; background: #28a745; color: white; 
-                                    border: none; padding: 1rem 2rem; border-radius: 2rem; font-weight: bold; cursor: pointer;">
-                                    Order
+                                    <button class="add-offer-btn" 
+                                    data-start="${offer[0]}" 
+                                    data-end="${offer[3] || ''}"
+                                    data-allow-once="${offer[4] || 'No'}" 
+                                    data-dependencies="${offer[5] || 'No'}">
+                                    Add
                                     </button>
                                     <h2 class="offer-title">${offer[1]}</h2>
                                     <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
@@ -2182,7 +2192,7 @@
                                     </div>
                                     `;
                                 }).join('');
-                                offersContainer.style.display = 'block';
+                                offersContainer.style.display = 'grid';
                                 offersButton.querySelector('.arrow').textContent = '▲';
                                 } else {
                                 offersContainer.style.display = 'none';
@@ -2202,6 +2212,7 @@
                         
                         if (searchQuery.length === 0) {
                             totalItemsDiv.style.display = 'none'; // Hide when search box is empty
+                            updateOfferAddButtons();
                             } else {
                             if (totalVisibleItems > 0) {
                                 // Check if totalVisibleItems is 1 (singular) or more (plural)
@@ -2257,6 +2268,7 @@
                         });
                     }
                     
+                    
                     // Get references to the elements
                     const searchInput = document.getElementById('searchInput');
                     const clearButton = document.getElementById('clearButton');
@@ -2301,7 +2313,7 @@
                         }
                         
                         // NEW FIX (add these 4 lines at the very end):
-                        if (e.target.value === '' && offersContainer.style.display === 'block') {
+                        if (e.target.value === '' && offersContainer.style.display === 'grid') {
                             offersContainer.style.display = 'none';
                             offersButton.querySelector('.arrow').textContent = '▼';
                         }
@@ -3138,7 +3150,7 @@
                     let scrapItems = [];
                     let scrapVisible = false;                                                        
                     // Add these JavaScript modifications
-                    let isScrapListPinned = false;                                        
+                    
                     // Add variable to track warning visibility
                     let isWarningVisible = false;
                     
@@ -3158,15 +3170,7 @@
                         
                         scrapButton.classList.toggle('has-items', hasItems);
                         
-                        if (isScrapListPinned) {
-                            scrapButton.classList.remove('invert-icon');
-                            scrapButtonImg.classList.add('dimmed');    
-                            scrapButton.classList.add('anti-hover');
-                            } else {
-                            scrapButton.classList.add('invert-icon');                            
-                            scrapButtonImg.classList.remove('dimmed');                            
-                            scrapButton.classList.remove('anti-hover');
-                        }
+                        
                         
                         // Optional: Add subtle pulse animation when items are added
                         if (hasItems) {
@@ -3176,7 +3180,7 @@
                     }
                     
                     
-                    // Add this to your existing handleScrapItemsChange function
+                    // Add this to your existing function
                     function handleScrapItemsChange() {
                         updateScrapListDisplay();
                         updateScrapButtonStatus();
@@ -3195,22 +3199,10 @@
                                 updateScrapButtonStatus();
                             }
                         }
+                        updateCartDisplay(); 
                     }
                     
-                    // Close scrap list when clicking outside
-                    document.addEventListener('click', (e) => {
-                        const scrapList = document.getElementById('scrapList');
-                        const scrapButton = document.getElementById('scrapButton');
-                        
-                        // Check if click is outside both scrap list and scrap button
-                        if (scrapVisible && 
-                        !scrapList.contains(e.target) && 
-                        !scrapButton.contains(e.target)) {
-                            if (!isScrapListPinned) {
-                                closeScrapList();
-                            }
-                        }
-                    });
+                    
                     
                     // Close scrap list when clicking close button
                     document.getElementById('closeScrap').addEventListener('click', closeScrapList);
@@ -3218,7 +3210,7 @@
                     document.getElementById('clearScrap').addEventListener('click', () => {
                         if (!scrapList) return; // Safety check    
                         
-                        isScrapListPinned = false; // Unlock the scrap list
+                        
                         
                         // Add wash-out animation class
                         scrapList.classList.add('wash-out-animation');
@@ -3548,7 +3540,7 @@
                                 
                                 // Check if scrapItems is empty
                                 if (scrapItems.length === 0) {
-                                    isScrapListPinned = false;
+                                    
                                     closeScrapList();
                                     showFeedback("Order list cleared"); // Show feedback message
                                 }
@@ -3664,17 +3656,17 @@
                         if (!scrapVisible) {
                             scrapVisible = true;
                             document.getElementById('scrapList').style.display = 'block';
-                            } else if (!isScrapListPinned) {
+                            } else {
                             closeScrapList();
                         }
                     }
                     
                     function closeScrapList() {
-                        if (!isScrapListPinned) {
-                            scrapVisible = false;
-                            document.getElementById('scrapList').style.display = 'none';
-                            resetPinStatus();
-                        }
+                        
+                        scrapVisible = false;
+                        document.getElementById('scrapList').style.display = 'none';
+                        
+                        
                     }
                     
                     // Function to trim the first non-English character from a string
@@ -3753,32 +3745,8 @@
                         }, 0);
                     }
                     
-                    function resetPinStatus() {
-                        isScrapListPinned = false;
-                        const pinButton = document.getElementById('pinScrap');
-                        pinButton.textContent = '📌';
-                        
-                        const closeButton = document.getElementById('closeScrap');
-                        closeButton.disabled = false;
-                        closeButton.style.color = ''; 
-                    }
                     
-                    // Add pin button functionality
-                    document.getElementById('pinScrap').addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        isScrapListPinned = !isScrapListPinned;
-                        this.textContent = isScrapListPinned ? '🔒' : '📌';
-                        showFeedback(isScrapListPinned ? "List pinned" : "List unpinned");
-                        
-                        
-                        
-                        
-                        // Existing close button handling
-                        const closeButton = document.getElementById('closeScrap');
-                        closeButton.disabled = isScrapListPinned;
-                        closeButton.style.color = isScrapListPinned ? 'gray' : '';
-                        updateScrapButtonStatus();
-                    });
+                    
                     
                     
                     // Add this function to update the counter
@@ -3820,6 +3788,8 @@
                     let offersData = [];
                     let offerNsg = '';
                     let offerCart = [];
+                    // Add these variables at the top with other cart variables
+                    let offerCartVisible = false;
                     
                     // Offer Section
                     function formatDate(dateString) {
@@ -3854,8 +3824,8 @@
                             offersButton.style.display = 'block';
                             
                             offersButton.addEventListener('click', () => {
-                                const isVisible = offersContainer.style.display === 'block';
-                                offersContainer.style.display = isVisible ? 'none' : 'block';
+                                const isVisible = offersContainer.style.display === 'grid';
+                                offersContainer.style.display = isVisible ? 'none' : 'grid';
                                 offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
                                 
                             });
@@ -3938,129 +3908,184 @@
                                 existingGroup.count++;
                                 } else {
                                 // Create new group
+                                // When adding offers to the cart
                                 offerCart.push({
                                     title: offerTitle,
                                     description: offerDescription,
                                     dates: [dateString],
                                     count: 1,
-                                    dependent: dependencies // Store dependency status
+                                    dependent: dependencies,
+                                    allowOnce: allowOnce // Add allowOnce flag
                                 });
                             }
-                            
+                            animateRateMovement(offerItem);
                             showFeedback('Offer added!');
                             updateOfferAddButtons();
                             updateScrapButtonStatus();
                             updateCartDisplay();
+           
                         }
                     });                  
                     
                     
                     
-                    // New cart toggle functionality
-                    document.getElementById('toggle-cart').addEventListener('click', () => {
-                        const cart = document.getElementById('offer-cart');
-                        cart.style.display = cart.style.display === 'none' ? 'block' : 'none';
+                    // Modified toggle cart event listener
+                    document.getElementById('toggle-cart').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (offerCart.length === 0) {
+                            showOrderListWarning();
+                            return;
+                        }
+                        toggleOfferCart();
                     });
                     
+                    
+                    
+                    
+                    
+                    // Modified toggle cart function
+                    function toggleOfferCart() {
+                        const offerCart = document.getElementById('offer-cart');
+                        
+                        if (offerCart.length === 0) {
+                            showOrderListWarning();
+                            offerCart.style.display = 'none';
+                            offerCartVisible = false;
+                            return;
+                        }
+                        
+                        offerCartVisible = !offerCartVisible;
+                        offerCart.style.display = offerCartVisible ? 'block' : 'none';
+                    }
+                    
+                    // New function to close offer cart
+                    function closeOfferCart() {
+                        const offerCart = document.getElementById('offer-cart');
+                        offerCart.style.display = 'none';
+                        offerCartVisible = false;
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     // Update cart display with stepper
- function updateCartDisplay() {
-  const cartItems = document.getElementById('cart-items');
-  const totalOffers = document.getElementById('totalOffers');
-  const toggleBtn = document.getElementById('toggle-cart');
-  
-  if (offerCart.length === 0) {
-    cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
-    totalOffers.textContent = 'Total Offers: 0';
-    toggleBtn.textContent = 'Offer Cart (0)';
-    return;
-  }
+function updateCartDisplay() {
+    const cartItems = document.getElementById('cart-items');
+    const totalOffers = document.getElementById('totalOffers');
+    const toggleBtn = document.getElementById('toggle-cart');
 
-  cartItems.innerHTML = offerCart.map((group, index) => `
-    <div class="scrap-item">
-      <div class="scrap-item-name">
-        <strong>${group.title}</strong>
-        <div class="cart-item-description">${group.description}</div>
-      </div>
-      <div class="scrap-item-rate">
-        <div class="offer-stepper">
-          <button class="decrement-btn" onclick="adjustOfferQuantity(${index}, -1)">-</button>
-          <span class="offer-qty-display">${group.count}</span>
-          <button class="increment-btn" onclick="adjustOfferQuantity(${index}, 1)">+</button>
+    if (offerCart.length === 0) {
+        cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
+        totalOffers.textContent = 'Total Offers: 0';
+        toggleBtn.textContent = 'Offer Cart (0)';
+        closeOfferCart();
+        return;
+    }
+
+    cartItems.innerHTML = offerCart.map((group, index) => `
+        <div class="scrap-item">
+            <div class="cart-item-header">
+                <div class="cart-item-title">${group.title}</div>
+                <div class="cart-item-date">${group.dates.join(', ')}</div>
+                <div class="cart-item-description">${group.description}</div>
+            </div>
+            <div class="offer-stepper">
+                <button class="decrement-btn" 
+                    onclick="adjustOfferQuantity(${index}, -1)"
+                    ${group.count <= 1 ? 'disabled' : ''}>-</button>
+                <span class="offer-qty-display">${group.count}</span>
+                <button class="increment-btn" 
+                    onclick="adjustOfferQuantity(${index}, 1)"
+                    ${(group.allowOnce && group.count >= 1) || 
+                     (group.dependent && scrapItems.length === 0) ? 'disabled' : ''}>+</button>
+            </div>
         </div>
-        <span>${group.dates.join(', ')}</span>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
 
-  const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
-  totalOffers.textContent = `Total Offers: ${totalItems}`;
-  toggleBtn.textContent = `Offer Cart (${totalItems})`;
+    const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
+    totalOffers.textContent = `Total Offers: ${totalItems}`;
+    toggleBtn.textContent = `Offer Cart (${totalItems})`;
 }
-        
-        document.getElementById('pinOffer').addEventListener('click', function(e) {
-            e.stopPropagation();
-  isOfferPinned = !isOfferPinned;
-  this.textContent = isOfferPinned ? '🔒' : '📌';
-  showFeedback(isOfferPinned ? "Offers pinned" : "Offers unpinned");
-});
+                    
+                    
+                    
+                    // Update close button handler
+                    document.getElementById('closeOffer').addEventListener('click', closeOfferCart);
+                    
+                    
+                    // Add quantity adjustment function
+function adjustOfferQuantity(index, delta) {
+    const group = offerCart[index];
+    const maxLimit = group.allowOnce ? 1 : Infinity;
 
-document.getElementById('closeOffer').addEventListener('click', () => {
-  if (!isOfferPinned) {
-    document.getElementById('offer-cart').style.display = 'none';
-  }
-});
-        
-                
-                // Add quantity adjustment function
-                function adjustOfferQuantity(index, delta) {
-                const group = offerCart[index];
-                group.count += delta;
-                
-                // Remove group if count reaches 0
-                if (group.count < 1) {
-                offerCart.splice(index, 1);
-                }
-                
-                // Update dependent elements
-                updateCartDisplay();
-                updateOfferAddButtons();
-                updateScrapButtonStatus();
-                }                  
-                
-                
-                
-                // Add event listener for clear button
-                document.getElementById('clear-offers').addEventListener('click', clearOfferCart);
-                
-                function clearOfferCart() {
-                offerCart = [];
-                updateCartDisplay();
-                updateOfferAddButtons();
-                updateScrapButtonStatus();
-                showFeedback('Offer cart cleared!');
-                }
+    // Validation checks
+    if (delta === 1) {
+        if (group.dependent && scrapItems.length === 0) {
+            showFeedback('Requires menu items!');
+            return;
+        }
+        if (group.count >= maxLimit) {
+            showFeedback('Can only add once!');
+            return;
+        }
+    }
+
+    group.count += delta;
+    
+    if (group.count < 1) {
+        offerCart.splice(index, 1);
+    }
+    
+    updateCartDisplay();
+    updateOfferAddButtons();
+    updateScrapButtonStatus();
+}                 
+                    
+                    
+                    
+                    // Add event listener for clear button
+                    document.getElementById('clear-offers').addEventListener('click', clearOfferCart);
+                    
+                    function clearOfferCart() {
+                        offerCart = [];
+                        updateCartDisplay();
+                        updateOfferAddButtons();
+                        updateScrapButtonStatus();
+                        showFeedback('Offer cart cleared!');
+                        closeOfferCart();
+                    }
                 
                 
                 // Add order functionality
                 document.getElementById('order-offers').addEventListener('click', sendOfferCart);
                 
-                function sendOfferCart() {
-                if (offerCart.length === 0) {
-                showFeedback('Cart is empty!');
-                return;
-                }
-                
-                let message = '🎊\n';
-                offerCart.forEach((group, index) => {
-                    group.dates.forEach(date => {
-                message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
-                });
-                });
-                
-                message += '\nPlease confirm these offers!';
-                const encodedMessage = encodeURIComponent(message);
-                window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
-                }
+function sendOfferCart() {
+    if (offerCart.length === 0) {
+        showFeedback('Cart is empty!');
+        return;
+    }
+
+    let message = '🎊\n';
+    offerCart.forEach((group, index) => {
+        group.dates.forEach(date => {
+            message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
+        });
+    });
+
+    message += '\nPlease confirm these offers!';
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
+
+    // Clear the cart after ordering
+    offerCart = [];
+    updateCartDisplay();
+    showFeedback('Offers sent! Cart cleared');
+    closeOfferCart();
+    updateScrapButtonStatus();
+}
                 
                 
                 
@@ -4314,7 +4339,7 @@ document.getElementById('closeOffer').addEventListener('click', () => {
                 });
                 
                 // 2. Expand offers
-                offersContainer.style.display = 'block';
+                offersContainer.style.display = 'grid';
                 offersButton.querySelector('.arrow').textContent = '▲';
                 }
                 
@@ -4330,4 +4355,4 @@ document.getElementById('closeOffer').addEventListener('click', () => {
                 </script>        
                 <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
                 </body>
-                </html>                                                                                                                         
+                </html>                                                                                                                                                                                     
