@@ -456,25 +456,26 @@
             max-width: 600px;
             }
             
-            #offers-container.offer-container {
-            
-            display: none;
-            
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            justify-content: center;
-            max-width: 600px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            }
-            
-            /* Center the last item if it's alone in the last row */
-            #offers-container.offer-container > *:nth-last-child(1):nth-child(odd) {
-            grid-column: span 2; /* Make it span both columns */
-            justify-self: center; /* Center it within the grid */
-            max-width: 400px; /* Restrict max width to 400px */
-            width: 100%; /* Ensure it doesn't stretch too much */
-            }
+@media (min-width: 451px) {
+    #offers-container.offer-container {            
+        display: none;            
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        justify-content: center;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    /* Center the last item if it's alone in the last row */
+    #offers-container.offer-container > *:nth-last-child(1):nth-child(odd) {
+        grid-column: span 2; /* Make it span both columns */
+        justify-self: center; /* Center it within the grid */
+        max-width: 400px; /* Restrict max width to 400px */
+        width: 100%; /* Ensure it doesn't stretch too much */
+    }
+}
+
             
             .offer-item {
             background: #333;
@@ -728,19 +729,24 @@
             pointer-events: auto;
             }
             
-            /* Phone Icon */
-            .phone-icon {
-            position: absolute;
-            right: 2rem; /* Adjust distance from the right */
-            top: 6rem;
-            transform: translateY(-50%) scaleX(-1); /* Center vertically */
-            width: 5rem; /* Adjust icon size */
-            height: auto;   
-            }
-            
-            
-            
-            
+  /* Phone Icon */
+.phone-icon {
+    position: absolute;
+    right: 2rem; /* Adjust distance from the right */
+    top: 6rem;
+    transform: translateY(-50%) scaleX(-1); /* Center vertically */
+    width: 5rem; /* Adjust icon size */
+    height: auto;
+    cursor: pointer; /* Set pointer on hover */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect */
+.phone-icon:hover {
+    transform: translateY(-50%) scaleX(-1) scale(1.1); /* Slightly enlarge */
+    opacity: 0.8; /* Reduce opacity */
+}
+
             
             
             
@@ -1724,6 +1730,30 @@
             color: #333;
             }
             
+            .off-decrement-btn, .off-increment-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 5rem;
+            padding: 0 1rem;
+            color: #333;
+            transition: background-color 0.2s ease;
+            }
+            
+            .off-decrement-btn:hover, .off-increment-btn:hover {
+            background-color: #ddd;
+            }
+            
+            .off-decrement-btn:disabled, .off-increment-btn:disabled {
+            background-color: #ccc !important; /* Gray background */
+            color: transparent !important; /* Transparent text color */
+            cursor: not-allowed !important; /* Change cursor */
+            opacity: 0; /* Set opacity to 0 */
+            pointer-events: none; /* Disable hover effect */
+            }
+            
+            
+            
             /* Cart Header */
             .cart-header {
             font-size: 6rem;
@@ -1788,6 +1818,21 @@
             
             
             
+            
+            
+            
+            
+            
+            #scrapList {
+            top: 10%;
+            z-index: 2001; /* Higher than offer-cart */
+            }
+            
+            #offer-cart {
+            top: 40%;
+            z-index: 2000;
+            max-height: 50vh;
+            }
             
             
         </style>
@@ -3155,10 +3200,10 @@
                     let isWarningVisible = false;
                     
                     // Scrap Button Functionality
+                    // Replace existing scrapButton click handler
                     document.getElementById('scrapButton').addEventListener('click', function(e) {
-                        // Prevent event from bubbling up to document listener
                         e.stopPropagation();
-                        toggleScrapList();
+                        toggleOrderLists();
                     });
                     
                     function updateScrapButtonStatus() {
@@ -3184,7 +3229,7 @@
                     function handleScrapItemsChange() {
                         updateScrapListDisplay();
                         updateScrapButtonStatus();
-                        updateScrapCounter();
+                        updateCounterBadge();
                         updateOfferAddButtons();
                         
                         // New: Remove dependent offers when scrap is empty
@@ -3200,6 +3245,7 @@
                             }
                         }
                         updateCartDisplay(); 
+                        
                     }
                     
                     
@@ -3456,7 +3502,7 @@
                                 if (currentCount < 99) {
                                     scrapItems.push({ name, rate });
                                     updateScrapListDisplay();
-                                    updateScrapCounter();
+                                    updateCounterBadge();
                                     updateIncrementButtonState(name, rate); // Update increment button state
                                     updateDecrementButtonState(name, rate); // Ensure decrement button updates as well
                                 }
@@ -3507,7 +3553,7 @@
                                 }
                                 
                                 updateScrapListDisplay();
-                                updateScrapCounter();
+                                updateCounterBadge();
                                 updateDecrementButtonState(name, rate); // Update button state after changes
                             });
                             
@@ -3548,6 +3594,7 @@
                                 updateScrapListDisplay();
                             });
                         });
+                        updateCounterBadge();
                     }
                     
                     
@@ -3923,7 +3970,7 @@
                             updateOfferAddButtons();
                             updateScrapButtonStatus();
                             updateCartDisplay();
-           
+                            updateCounterBadge();
                         }
                     });                  
                     
@@ -3972,43 +4019,43 @@
                     
                     
                     // Update cart display with stepper
-function updateCartDisplay() {
-    const cartItems = document.getElementById('cart-items');
-    const totalOffers = document.getElementById('totalOffers');
-    const toggleBtn = document.getElementById('toggle-cart');
-
-    if (offerCart.length === 0) {
-        cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
-        totalOffers.textContent = 'Total Offers: 0';
-        toggleBtn.textContent = 'Offer Cart (0)';
-        closeOfferCart();
-        return;
-    }
-
-    cartItems.innerHTML = offerCart.map((group, index) => `
-        <div class="scrap-item">
-            <div class="cart-item-header">
-                <div class="cart-item-title">${group.title}</div>
-                <div class="cart-item-date">${group.dates.join(', ')}</div>
-                <div class="cart-item-description">${group.description}</div>
-            </div>
-            <div class="offer-stepper">
-                <button class="decrement-btn" 
-                    onclick="adjustOfferQuantity(${index}, -1)"
-                    ${group.count <= 1 ? 'disabled' : ''}>-</button>
-                <span class="offer-qty-display">${group.count}</span>
-                <button class="increment-btn" 
-                    onclick="adjustOfferQuantity(${index}, 1)"
-                    ${(group.allowOnce && group.count >= 1) || 
-                     (group.dependent && scrapItems.length === 0) ? 'disabled' : ''}>+</button>
-            </div>
-        </div>
-    `).join('');
-
-    const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
-    totalOffers.textContent = `Total Offers: ${totalItems}`;
-    toggleBtn.textContent = `Offer Cart (${totalItems})`;
-}
+                    function updateCartDisplay() {
+                        const cartItems = document.getElementById('cart-items');
+                        const totalOffers = document.getElementById('totalOffers');
+                        const toggleBtn = document.getElementById('toggle-cart');
+                        
+                        if (offerCart.length === 0) {
+                            cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
+                            totalOffers.textContent = 'Total Offers: 0';
+                            toggleBtn.textContent = 'Offer Cart (0)';
+                            closeOfferCart();
+                            return;
+                        }
+                        
+                        cartItems.innerHTML = offerCart.map((group, index) => `
+                        <div class="scrap-item">
+                        <div class="cart-item-header">
+                        <div class="cart-item-title">${group.title}</div>
+                        <div class="cart-item-date">${group.dates.join(', ')}</div>
+                        <div class="cart-item-description">${group.description}</div>
+                        </div>
+                        <div class="offer-stepper">
+                        <button class="off-decrement-btn" 
+                        onclick="adjustOfferQuantity(${index}, -1)"
+                       ${group.count < 1 ? 'disabled' : ''}>-</button> <!-- Only check count -->
+                        <span class="offer-qty-display">${group.count}</span>
+                        <button class="off-increment-btn" 
+                        onclick="adjustOfferQuantity(${index}, 1)"
+                        ${(group.allowOnce && group.count >= 1) || 
+                        (group.dependent && scrapItems.length === 0) ? 'disabled' : ''}>+</button>
+                        </div>
+                        </div>
+                        `).join('');
+                        
+                        const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
+                        totalOffers.textContent = `Total Offers: ${totalItems}`;
+                        toggleBtn.textContent = `Offer Cart (${totalItems})`;
+                    }
                     
                     
                     
@@ -4017,32 +4064,33 @@ function updateCartDisplay() {
                     
                     
                     // Add quantity adjustment function
-function adjustOfferQuantity(index, delta) {
-    const group = offerCart[index];
-    const maxLimit = group.allowOnce ? 1 : Infinity;
-
-    // Validation checks
-    if (delta === 1) {
-        if (group.dependent && scrapItems.length === 0) {
-            showFeedback('Requires menu items!');
-            return;
-        }
-        if (group.count >= maxLimit) {
-            showFeedback('Can only add once!');
-            return;
-        }
-    }
-
-    group.count += delta;
-    
-    if (group.count < 1) {
-        offerCart.splice(index, 1);
-    }
-    
-    updateCartDisplay();
-    updateOfferAddButtons();
-    updateScrapButtonStatus();
-}                 
+                    function adjustOfferQuantity(index, delta) {
+                        const group = offerCart[index];
+                        const maxLimit = group.allowOnce ? 1 : Infinity;
+                        
+                    // Validation checks
+                    if (delta === 1) {
+                    if (group.dependent && scrapItems.length === 0) {
+                    showFeedback('Requires menu items!');
+                    return;
+                    }
+                    if (group.count >= maxLimit) {
+                    showFeedback('Can only add once!');
+                    return;
+                    }
+                    }
+                    
+                    group.count += delta;
+                    
+                    if (group.count < 1) {
+                    offerCart.splice(index, 1);
+                    }
+                    
+                    updateCartDisplay();
+                    updateOfferAddButtons();
+                    updateScrapButtonStatus();
+                    updateCounterBadge();
+                    }                 
                     
                     
                     
@@ -4050,309 +4098,369 @@ function adjustOfferQuantity(index, delta) {
                     document.getElementById('clear-offers').addEventListener('click', clearOfferCart);
                     
                     function clearOfferCart() {
-                        offerCart = [];
-                        updateCartDisplay();
-                        updateOfferAddButtons();
-                        updateScrapButtonStatus();
-                        showFeedback('Offer cart cleared!');
-                        closeOfferCart();
+                    offerCart = [];
+                    updateCartDisplay();
+                    updateOfferAddButtons();
+                    updateScrapButtonStatus();
+                    showFeedback('Offer cart cleared!');
+                    closeOfferCart();
+                    updateCounterBadge();
                     }
-                
-                
-                // Add order functionality
-                document.getElementById('order-offers').addEventListener('click', sendOfferCart);
-                
-function sendOfferCart() {
-    if (offerCart.length === 0) {
-        showFeedback('Cart is empty!');
-        return;
-    }
-
-    let message = '🎊\n';
-    offerCart.forEach((group, index) => {
-        group.dates.forEach(date => {
-            message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
-        });
-    });
-
-    message += '\nPlease confirm these offers!';
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
-
-    // Clear the cart after ordering
-    offerCart = [];
-    updateCartDisplay();
-    showFeedback('Offers sent! Cart cleared');
-    closeOfferCart();
-    updateScrapButtonStatus();
-}
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                async function updateViewCounter() {
-                try {
-                await fetch(`${scriptUrl}?sheet=counter&action=updateViews`);
-                } catch (error) {
-                console.error("Error updating view counter:", error);
-                }
-                }
-                
-                // Call the function on page load
-                updateViewCounter();
-                
-                
-                
-                
-                // Counters
-                
-                async function updateCounter(type) {
-                try {
-                const response = await fetch(`${scriptUrl}?sheet=counter&action=${type}`);
-                return await response.json();
-                } catch (error) {
-                console.error(`Error updating ${type} counter:`, error);
-                }
-                }
-                
-                
-                
-                async function getViews() {
-                try {
-                const response = await fetch(`${scriptUrl}?sheet=counter&action=getViews`);
-                const data = await response.json();
-                return data.count; // Return the views count
-                } catch (error) {
-                console.error('Error fetching views:', error);
-                return 0; // Fallback to 0 if the request fails
-                }
-                }
-                
-                
-                
-                function setupVisitorCounter() {
-                if (typeof Storage !== 'undefined') {
-                const visitorKey = 'csb_visitor';
-                if (!localStorage.getItem(visitorKey)) {
-                localStorage.setItem(visitorKey, '1');
-                updateCounter('updateVisitors').then(data => {
-                document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
-                
-                });
-                } else {
-                updateCounter('getVisitors').then(data => {
-                document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
-                
-                });
-                }
-                }
-                }
-                
-                
-                
-                // Client-side JavaScript
-                function setupLikeButton() {
-                const likeIcon = document.getElementById('likeIcon');
-                const likeCounterElement = document.getElementById('likeCounter');
-                const likeKey = 'csb_like';
-                
-                updateCounter('getLikes').then(data => {
-                likeCounterElement.textContent = String(data.count).padStart(3, '0');
-                });
-                
-                if (localStorage.getItem(likeKey)) {
-                likeIcon.classList.add('liked');
-                }
-                
-                document.getElementById('likeContainer').addEventListener('click', () => {
-                if (!localStorage.getItem(likeKey)) {
-                localStorage.setItem(likeKey, 'true');
-                likeIcon.classList.add('liked');
-                startBlinking(likeCounterElement);
-                
-                updateCounter('incrementLikes').then(data => {
-                stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                showFeedback('Thank you!');
-                });
-                } else {
-                localStorage.removeItem(likeKey);
-                likeIcon.classList.remove('liked');
-                startBlinking(likeCounterElement);
-                
-                updateCounter('decrementLikes').then(data => {
-                stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                });
-                }
-                });
-                }
-                
-                // Apply existing pop animation
-                function animateCounter(element, newValue) {
-                element.classList.remove('like-animate');
-                void element.offsetWidth; // Trigger reflow
-                element.textContent = newValue;
-                element.classList.add('like-animate');
-                }
-                
-                // Start blinking animation
-                function startBlinking(element) {
-                element.classList.add('blinking');
-                }
-                
-                // Stop blinking animation
-                function stopBlinking(element) {
-                element.classList.remove('blinking');
-                }
-                
-                
-                
-                
-                
-                async function initializeOrderNumber() {
-                try {
-                const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
-                const data = await response.json();
-                cachedOrderNumber = data.count; // Store the current order number
-                } catch (error) {
-                console.error('Failed to fetch order number:', error);
-                cachedOrderNumber = 0; // Fallback to 0 if the request fails
-                }
-                }
-                
-                function setupViewsCounter() {
-                if (typeof Storage !== 'undefined') {
-                const viewsKey = 'csb_views';
-                if (!localStorage.getItem(viewsKey)) {
-                // If the user is new, update the views counter
-                localStorage.setItem(viewsKey, '1');
-                updateCounter('updateViews').then(data => {
-                document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
-                
-                });
-                } else {
-                // If the user is returning, just fetch the current views count
-                updateCounter('getViews').then(data => {
-                document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
-                
-                });
-                }
-                }
-                }
-                
-                
-                
-                // Initialize counters when the page loads
-                document.addEventListener('DOMContentLoaded', () => {
-                
-                
-                // Setup visitor counter
-                setupVisitorCounter();
-                
-                // Setup like button
-                setupLikeButton();
-                
-                initializeOrderNumber();
-                
-                setupViewsCounter();
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                // Touch cheat: Triple-tap
-                let lastTap = 0;
-                let tapCount = 0;
-                
-                document.addEventListener('touchstart', (e) => {
-                const now = Date.now();
-                if (now - lastTap < 500) { // 500ms between taps
-                tapCount++;
-                if(tapCount === 3) {
-                activateCheatMode();
-                tapCount = 0;
-                }
-                } else {
-                tapCount = 1;
-                }
-                lastTap = now;
-                });
-                
-                // Keyboard cheat: Ctrl + Shift + E
-                document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
-                e.preventDefault(); // Prevent browser conflicts
-                activateCheatMode();
-                }
-                });
-                
-                // Cheat activation function
-                function activateCheatMode() {
-                // 1. Expand all categories
-                document.querySelectorAll('.category-header').forEach(header => {
-                const items = header.nextElementSibling;
-                header.style.fontSize = '6rem';
-                header.querySelector('.right').style.display = 'inline';
-                items.style.display = 'block';
-                });
-                
-                // 2. Expand offers
-                offersContainer.style.display = 'grid';
-                offersButton.querySelector('.arrow').textContent = '▲';
-                }
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                </script>        
-                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-                </body>
-                </html>                                                                                                                                                                                     
+                    
+                    
+                    // Add order functionality
+                    document.getElementById('order-offers').addEventListener('click', sendOfferCart);
+                    
+                    function sendOfferCart() {
+                    if (offerCart.length === 0) {
+                    showFeedback('Cart is empty!');
+                    return;
+                    }
+                    
+                    let message = '🎊\n';
+                    offerCart.forEach((group, index) => {
+                    group.dates.forEach(date => {
+                    message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
+                    });
+                    });
+                    
+                    message += '\nPlease confirm these offers!';
+                    const encodedMessage = encodeURIComponent(message);
+                    window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
+                    
+                    // Clear the cart after ordering
+                    offerCart = [];
+                    updateCartDisplay();
+                    showFeedback('Offers sent! Cart cleared');
+                    closeOfferCart();
+                    updateScrapButtonStatus();
+                    updateCounterBadge();
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    let areListsVisible = false;
+                    let totalCartItems = 0;   
+                    
+                    // Modify the toggle function
+                    function toggleOrderLists() {
+                    const totalScrap = scrapItems.length;
+                    const totalOffers = offerCart.reduce((acc, group) => acc + group.count, 0);
+                    totalCartItems = totalScrap + totalOffers;
+                    
+                    // Always toggle visibility state first
+                    areListsVisible = !areListsVisible;
+                    
+                    if (totalCartItems === 0) {
+                    areListsVisible = false;
+                    const existingModal = document.getElementById('orderListWarningModal');
+                    if (existingModal) {
+                    existingModal.remove();
+                    isWarningVisible = false;
+                    } else {
+                    showOrderListWarning();
+                    isWarningVisible = true;
+                    }
+                    return;
+                    }
+                    
+                    // Always update display based on current state
+                    const showScrap = totalScrap > 0 && areListsVisible;
+                    const showOffer = totalOffers > 0 && areListsVisible;
+                    
+                    document.getElementById('scrapList').style.display = showScrap ? 'block' : 'none';
+                    document.getElementById('offer-cart').style.display = showOffer ? 'block' : 'none';
+                    }        
+                    
+                    
+                    
+                    function updateCounterBadge() {
+                    const totalScrap = scrapItems.length;
+                    const totalOffers = offerCart.reduce((acc, group) => acc + group.count, 0);
+                    totalCartItems = totalScrap + totalOffers;
+                    
+                    const counter = document.querySelector('#scrapButton .counter-badge');
+                    counter.textContent = totalCartItems > 0 ? totalCartItems : '';
+                    counter.style.display = totalCartItems > 0 ? 'inline-block' : 'none';
+                    
+                    }            
+                    
+                    
+                    // Update close function to reset state
+                    function closeAllLists() {
+                    areListsVisible = false;
+                    document.getElementById('scrapList').style.display = 'none';
+                    document.getElementById('offer-cart').style.display = 'none';
+                    }
+                    
+                    // Update existing close handlers
+                    document.getElementById('closeScrap').addEventListener('click', closeAllLists);
+                    document.getElementById('closeOffer').addEventListener('click', closeAllLists);            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    async function updateViewCounter() {
+                    try {
+                    await fetch(`${scriptUrl}?sheet=counter&action=updateViews`);
+                    } catch (error) {
+                    console.error("Error updating view counter:", error);
+                    }
+                    }
+                    
+                    // Call the function on page load
+                    updateViewCounter();
+                    
+                    
+                    
+                    
+                    // Counters
+                    
+                    async function updateCounter(type) {
+                    try {
+                    const response = await fetch(`${scriptUrl}?sheet=counter&action=${type}`);
+                    return await response.json();
+                    } catch (error) {
+                    console.error(`Error updating ${type} counter:`, error);
+                    }
+                    }
+                    
+                    
+                    
+                    async function getViews() {
+                    try {
+                    const response = await fetch(`${scriptUrl}?sheet=counter&action=getViews`);
+                    const data = await response.json();
+                    return data.count; // Return the views count
+                    } catch (error) {
+                    console.error('Error fetching views:', error);
+                    return 0; // Fallback to 0 if the request fails
+                    }
+                    }
+                    
+                    
+                    
+                    function setupVisitorCounter() {
+                    if (typeof Storage !== 'undefined') {
+                    const visitorKey = 'csb_visitor';
+                    if (!localStorage.getItem(visitorKey)) {
+                    localStorage.setItem(visitorKey, '1');
+                    updateCounter('updateVisitors').then(data => {
+                    document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
+                    
+                    });
+                    } else {
+                    updateCounter('getVisitors').then(data => {
+                    document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
+                    
+                    });
+                    }
+                    }
+                    }
+                    
+                    
+                    
+                    // Client-side JavaScript
+                    function setupLikeButton() {
+                    const likeIcon = document.getElementById('likeIcon');
+                    const likeCounterElement = document.getElementById('likeCounter');
+                    const likeKey = 'csb_like';
+                    
+                    updateCounter('getLikes').then(data => {
+                    likeCounterElement.textContent = String(data.count).padStart(3, '0');
+                    });
+                    
+                    if (localStorage.getItem(likeKey)) {
+                    likeIcon.classList.add('liked');
+                    }
+                    
+                    document.getElementById('likeContainer').addEventListener('click', () => {
+                    if (!localStorage.getItem(likeKey)) {
+                    localStorage.setItem(likeKey, 'true');
+                    likeIcon.classList.add('liked');
+                    startBlinking(likeCounterElement);
+                    
+                    updateCounter('incrementLikes').then(data => {
+                    stopBlinking(likeCounterElement);
+                    animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                    showFeedback('Thank you!');
+                    });
+                    } else {
+                    localStorage.removeItem(likeKey);
+                    likeIcon.classList.remove('liked');
+                    startBlinking(likeCounterElement);
+                    
+                    updateCounter('decrementLikes').then(data => {
+                    stopBlinking(likeCounterElement);
+                    animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                    });
+                    }
+                    });
+                    }
+                    
+                    // Apply existing pop animation
+                    function animateCounter(element, newValue) {
+                    element.classList.remove('like-animate');
+                    void element.offsetWidth; // Trigger reflow
+                    element.textContent = newValue;
+                    element.classList.add('like-animate');
+                    }
+                    
+                    // Start blinking animation
+                    function startBlinking(element) {
+                    element.classList.add('blinking');
+                    }
+                    
+                    // Stop blinking animation
+                    function stopBlinking(element) {
+                    element.classList.remove('blinking');
+                    }
+                    
+                    
+                    
+                    
+                    
+                    async function initializeOrderNumber() {
+                    try {
+                    const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
+                    const data = await response.json();
+                    cachedOrderNumber = data.count; // Store the current order number
+                    } catch (error) {
+                    console.error('Failed to fetch order number:', error);
+                    cachedOrderNumber = 0; // Fallback to 0 if the request fails
+                    }
+                    }
+                    
+                    function setupViewsCounter() {
+                    if (typeof Storage !== 'undefined') {
+                    const viewsKey = 'csb_views';
+                    if (!localStorage.getItem(viewsKey)) {
+                    // If the user is new, update the views counter
+                    localStorage.setItem(viewsKey, '1');
+                    updateCounter('updateViews').then(data => {
+                    document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
+                    
+                    });
+                    } else {
+                    // If the user is returning, just fetch the current views count
+                    updateCounter('getViews').then(data => {
+                    document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
+                    
+                    });
+                    }
+                    }
+                    }
+                    
+                    
+                    
+                    // Initialize counters when the page loads
+                    document.addEventListener('DOMContentLoaded', () => {
+                    
+                    
+                    // Setup visitor counter
+                    setupVisitorCounter();
+                    
+                    // Setup like button
+                    setupLikeButton();
+                    
+                    initializeOrderNumber();
+                    
+                    setupViewsCounter();
+                    });
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    // Touch cheat: Triple-tap
+                    let lastTap = 0;
+                    let tapCount = 0;
+                    
+                    document.addEventListener('touchstart', (e) => {
+                    const now = Date.now();
+                    if (now - lastTap < 500) { // 500ms between taps
+                    tapCount++;
+                    if(tapCount === 3) {
+                    activateCheatMode();
+                    tapCount = 0;
+                    }
+                    } else {
+                    tapCount = 1;
+                    }
+                    lastTap = now;
+                    });
+                    
+                    // Keyboard cheat: Ctrl + Shift + E
+                    document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
+                    e.preventDefault(); // Prevent browser conflicts
+                    activateCheatMode();
+                    }
+                    });
+                    
+                    // Cheat activation function
+                    function activateCheatMode() {
+                    // 1. Expand all categories
+                    document.querySelectorAll('.category-header').forEach(header => {
+                    const items = header.nextElementSibling;
+                    header.style.fontSize = '6rem';
+                    header.querySelector('.right').style.display = 'inline';
+                    items.style.display = 'block';
+                    });
+                    
+                    // 2. Expand offers
+                    offersContainer.style.display = 'grid';
+                    offersButton.querySelector('.arrow').textContent = '▲';
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    </script>        
+                    <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+                    </body>
+                    </html>                                                                                                                                                                                                                 
