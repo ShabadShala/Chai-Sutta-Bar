@@ -508,7 +508,18 @@
             
             
             
+            .offer-delete-btn {
+            cursor: pointer;
+            color: #ff4444; /* Different color from scrap list */
+            font-size: 4rem;
+            margin-left: 1rem;
+            transition: transform 0.2s ease;
+            }
             
+            .offer-delete-btn:hover {
+            transform: scale(1.2);
+            color: #cc0000;
+            }
             
             
             
@@ -1154,14 +1165,12 @@
             transform: translateX(-50%);
             width: 350px;
             max-width: 90vw;
-            max-height: 50vh !important;
-            height: auto !important;
-            transition: max-height 0.3s ease;
+            max-height: 40vh;
             background: rgba(255, 255, 255, 0.95);
             z-index: 2000;
             border-radius: 1rem;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            overflow-y: auto;
+            /* Remove overflow: auto; */
             }
             
             /* Scrap Content - Fields inside scrap list */
@@ -1180,14 +1189,13 @@
             /* Scrap Items Container */
             #scrapItemsContainer {
             width: 100%;
-            overflow: visible; /* Remove internal scrolling */
-            max-height: none !important; 
+            overflow-x: hidden;
             }
             
             /* Scrap Items */
             #scrapItems {
-            max-height: none !important; /* Remove internal scroll limit */
-            overflow-y: visible;
+            max-height: 30vh; /* Adjust this value as needed */
+            overflow-y: auto; /* Only this container will scroll */
             }
             
             /* Scrap Item Row */
@@ -1251,12 +1259,19 @@
             color: #333;
             }
             
+            
+            
             /* Delete Button */
             .delete-btn {
             cursor: pointer;
             color: #cc0000;
             font-size: 4rem;
             margin-left: 1rem;
+            }
+            
+            .delete-btn:hover {
+            transform: scale(1.2);
+            color: #cc0000;
             }
             
             .button-container {
@@ -1586,27 +1601,25 @@
             border: none;
             border-radius: 2rem;
             cursor: pointer;
+            
             }
             
             
             /* Updated Offer Cart */
             #offer-cart {
             position: fixed;
-            bottom: 10rem; /* Position from bottom */
+            bottom: 10%; /* Position from bottom */
             left: 50%;
-            transform: translateX(-50%);
-            
+            transform: translateX(-50%);            
             width: 350px;
-            max-width: 90vw;
-            
+            max-width: 90vw;            
+            max-height: 25vh; /* Limit height */
             background: rgba(255, 255, 255, 0.95);
             z-index: 2000;
             border-radius: 1rem;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            overflow-y: auto; /* Enable scrolling only when needed */
-            
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);            
             transition: top 0.3s ease; /* Smooth position transition */
-            max-height: 40vh; /* Limit height */
+            overflow-y: auto; /* Enable scrolling only when needed */
             }
             
             
@@ -1972,7 +1985,7 @@
                 
                 
                 <script>
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbwqXrC-1gFM8eRJrKqOjAzV4hVev4TwaoE8Jj8FDO1ZBnegI9aT_UjrOAvNX6NskN5AEw/exec";
+                    const scriptUrl = "https://script.google.com/macros/s/AKfycbzEjqDlAhzGNmTn7M81p6_POCCvhgbT1UlCQKJIPZ9TNgdGGTikxB8EDnNSc99LMym5Qg/exec";
                     
                     
                     document.addEventListener('contextmenu', event => event.preventDefault());
@@ -3240,26 +3253,21 @@
                     document.getElementById('closeScrap').addEventListener('click', closeScrapList);
                     
                     document.getElementById('clearScrap').addEventListener('click', () => {
-                        if (!scrapList) return; // Safety check    
+                        const scrapList = document.getElementById('scrapList'); // Define scrapList properly
                         
+                        if (!scrapList) return; // Safety check
                         
-                        
-                        // Add wash-out animation class
-                        scrapList.classList.add('wash-out-animation');
-                        
-                        // Wait for animation to complete before clearing
-                        setTimeout(() => {
-                            scrapItems = []; // Clear the list after animation
-                            updateScrapListDisplay(); // Refresh UI
-                            showFeedback("Order list cleared"); // Show feedback message
-                            closeScrapList(); // Close the scrap list
-                            
-                            // Reset for future use
-                            scrapList.classList.remove('wash-out-animation');
-                        }, 800); // Match CSS animation duration
+                        // Clear items immediately
                         scrapItems = [];
+                        
+                        // Update UI
+                        updateScrapListDisplay();
+                        showFeedback("Order list cleared");
+                        closeScrapList();
+                        
+                        // Update dependencies
                         handleScrapItemsChange();
-                    });                    
+                    });               
                     
                     // Add items to scrap list when clicking rates
                     document.getElementById('menu').addEventListener('click', (e) => {
@@ -3276,44 +3284,44 @@
                             .closest('.category-items')
                             .previousElementSibling;
                             
-                            // Get the specific column value from category header
-                            const columnValue = categoryHeader.dataset[`column${column}`]?.trim();
-                            
-                            // Build category name (without column value)
-                            const categoryName = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
-                            
-                            // Build item name
-                            let itemName = menuItemLine.querySelector('.colAB').textContent.split('(')[0].trim();
-                            
-                            // Add column value to item name if it exists
-                            if (columnValue) {
-                                itemName += ` (${columnValue})`;
-                            }
-                            
-                            // Combine names
-                            const combinedName = `${categoryName} - ${itemName}`;
-                            
-                            // Rest of your existing click handling code...
-                            const clickedRate = rateElement.textContent.replace('₹', '').trim();
-                            
-                            if (clickedRate.includes('/')) {
-                                showTapFeedbackInCenter('❌');
-                                playBeep(600, 0.15);
-                                } else {
-                                animateRateMovement(rateElement);                                
-                                scrapItems.push({ 
-                                    name: combinedName, 
-                                    rate: clickedRate 
-                                });
-                            }
-                            
-                            
-                            updateScrapListDisplay();
+                        // Get the specific column value from category header
+                        const columnValue = categoryHeader.dataset[`column${column}`]?.trim();
+                        
+                        // Build category name (without column value)
+                        const categoryName = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
+                        
+                        // Build item name
+                        let itemName = menuItemLine.querySelector('.colAB').textContent.split('(')[0].trim();
+                        
+                        // Add column value to item name if it exists
+                        if (columnValue) {
+                        itemName += ` (${columnValue})`;
+                        }
+                        
+                        // Combine names
+                        const combinedName = `${categoryName} - ${itemName}`;
+                        
+                        // Rest of your existing click handling code...
+                        const clickedRate = rateElement.textContent.replace('₹', '').trim();
+                        
+                        if (clickedRate.includes('/')) {
+                        showTapFeedbackInCenter('❌');
+                        playBeep(600, 0.15);
+                        } else {
+                        animateRateMovement(rateElement);                                
+                        scrapItems.push({ 
+                        name: combinedName, 
+                        rate: clickedRate 
+                        });
+                        }
+                        
+                        
+                        updateScrapListDisplay();
                         }
                         handleScrapItemsChange();
-                    });
-                    
-                    function animateRateMovement(sourceElement) {
+                        });
+                        
+                        function animateRateMovement(sourceElement) {
                         const scrapButton = document.getElementById('scrapButton');                        
                         
                         // Get positions of the source element and the scrap button
@@ -3339,19 +3347,19 @@
                         
                         // Force repaint before moving
                         requestAnimationFrame(() => {
-                            floatingClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px) scale(0.5)`;
-                            floatingClone.style.opacity = '0';
+                        floatingClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px) scale(0.5)`;
+                        floatingClone.style.opacity = '0';
                         });                        
                         
                         // Remove the element after animation
                         setTimeout(() => {
-                            floatingClone.remove();
+                        floatingClone.remove();
                         }, 500);
-                    }
-                    
-                    
-                    
-                    function showTapFeedbackInCenter(symbol) {
+                        }
+                        
+                        
+                        
+                        function showTapFeedbackInCenter(symbol) {
                         const feedbackElement = document.createElement('div');
                         feedbackElement.textContent = symbol;
                         feedbackElement.style.position = 'fixed';
@@ -3371,44 +3379,44 @@
                         
                         // Trigger zoom-in effect
                         requestAnimationFrame(() => {
-                            feedbackElement.style.transform = 'translate(-50%, -50%) scale(2)';
+                        feedbackElement.style.transform = 'translate(-50%, -50%) scale(2)';
                         });
                         
                         // Remove feedback after animation
                         setTimeout(() => {
-                            feedbackElement.remove();
+                        feedbackElement.remove();
                         }, 500);
-                    }
-                    
-                    let audioCtx; // Declare outside to initialize later
-                    let oscillator;
-                    
-                    document.addEventListener("click", () => {
-                        if (!audioCtx) {
-                            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                            } else if (audioCtx.state === "suspended") {
-                            audioCtx.resume();
                         }
-                    }, { once: true }); // Runs only once
-                    
-                    function playBeep(frequency, duration) {
+                        
+                        let audioCtx; // Declare outside to initialize later
+                        let oscillator;
+                        
+                        document.addEventListener("click", () => {
                         if (!audioCtx) {
-                            console.warn("AudioContext not initialized yet. User interaction required.");
-                            return;
+                        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        } else if (audioCtx.state === "suspended") {
+                        audioCtx.resume();
+                        }
+                        }, { once: true }); // Runs only once
+                        
+                        function playBeep(frequency, duration) {
+                        if (!audioCtx) {
+                        console.warn("AudioContext not initialized yet. User interaction required.");
+                        return;
                         }
                         
                         if (audioCtx.state === "suspended") {
-                            audioCtx.resume().then(() => {
-                                generateBeep(frequency, duration);
-                            });
-                            } else {
-                            generateBeep(frequency, duration);
+                        audioCtx.resume().then(() => {
+                        generateBeep(frequency, duration);
+                        });
+                        } else {
+                        generateBeep(frequency, duration);
                         }
-                    }
-                    
-                    function generateBeep(frequency, duration) {
+                        }
+                        
+                        function generateBeep(frequency, duration) {
                         if (oscillator) {
-                            oscillator.stop(); // Stop previous beep before starting a new one
+                        oscillator.stop(); // Stop previous beep before starting a new one
                         }
                         
                         oscillator = audioCtx.createOscillator();
@@ -3423,25 +3431,25 @@
                         
                         oscillator.start();
                         setTimeout(() => {
-                            oscillator.stop();
+                        oscillator.stop();
                         }, duration * 1000);
-                    }
-                    
-                    
-                    
-                    
-                    function updateScrapListDisplay() {
+                        }
+                        
+                        
+                        
+                        
+                        function updateScrapListDisplay() {
                         const scrapContainer = document.getElementById('scrapItems');
                         
                         // Step 1: Combine duplicate items and calculate quantities
                         const itemMap = new Map();
                         scrapItems.forEach((item) => {
-                            const key = `${item.name}-${item.rate}`;
-                            if (itemMap.has(key)) {
-                                itemMap.get(key).qty++;
-                                } else {
-                                itemMap.set(key, { ...item, qty: 1 });
-                            }
+                        const key = `${item.name}-${item.rate}`;
+                        if (itemMap.has(key)) {
+                        itemMap.get(key).qty++;
+                        } else {
+                        itemMap.set(key, { ...item, qty: 1 });
+                        }
                         });
                         
                         // Step 2: Convert map values to array and sort alphabetically by item name
@@ -3477,126 +3485,126 @@
                         
                         // Step 5: Add event listeners for quantity controls
                         document.querySelectorAll('.increment-btn').forEach(btn => {
-                            btn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                const name = e.target.dataset.name;
-                                const rate = e.target.dataset.rate;
-                                const currentCount = scrapItems.filter(item =>
-                                item.name === name && item.rate === rate
-                                ).length;
-                                
-                                if (currentCount < 99) {
-                                    scrapItems.push({ name, rate });
-                                    updateScrapListDisplay();
-                                    updateScrapCounter();
-                                    updateIncrementButtonState(name, rate); // Update increment button state
-                                    updateDecrementButtonState(name, rate); // Ensure decrement button updates as well
-                                }
-                            });
-                            
-                            // Initial button state setup (when the list first loads)
-                            updateIncrementButtonState(btn.dataset.name, btn.dataset.rate);
+                        btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const name = e.target.dataset.name;
+                        const rate = e.target.dataset.rate;
+                        const currentCount = scrapItems.filter(item =>
+                        item.name === name && item.rate === rate
+                        ).length;
+                        
+                        if (currentCount < 99) {
+                        scrapItems.push({ name, rate });
+                        updateScrapListDisplay();
+                        updateScrapCounter();
+                        updateIncrementButtonState(name, rate); // Update increment button state
+                        updateDecrementButtonState(name, rate); // Ensure decrement button updates as well
+                        }
+                        });
+                        
+                        // Initial button state setup (when the list first loads)
+                        updateIncrementButtonState(btn.dataset.name, btn.dataset.rate);
                         });
                         
                         function updateIncrementButtonState(name, rate) {
-                            const currentCount = scrapItems.filter(item =>
-                            item.name === name && item.rate === rate
-                            ).length;
-                            
-                            const incrementButtons = document.querySelectorAll(`.increment-btn[data-name="${name}"][data-rate="${rate}"]`);
-                            
-                            incrementButtons.forEach(btn => {
-                                btn.disabled = currentCount >= 99;
-                            });
-                            
-                            
+                        const currentCount = scrapItems.filter(item =>
+                        item.name === name && item.rate === rate
+                        ).length;
+                        
+                        const incrementButtons = document.querySelectorAll(`.increment-btn[data-name="${name}"][data-rate="${rate}"]`);
+                        
+                        incrementButtons.forEach(btn => {
+                        btn.disabled = currentCount >= 99;
+                        });
+                        
+                        
                         }
                         
                         document.querySelectorAll('.decrement-btn').forEach(btn => {
-                            btn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                const name = e.target.dataset.name;
-                                const rate = e.target.dataset.rate;
-                                const currentCount = scrapItems.filter(item =>
-                                item.name === name && item.rate === rate
-                                ).length;
-                                
-                                if (currentCount === 1) {
-                                    // Remove all instances if quantity is 1
-                                    scrapItems = scrapItems.filter(item =>
-                                    item.name !== name || item.rate !== rate
-                                    );
-                                    } else {
-                                    // Remove last instance of this item
-                                    let lastIndex = -1;
-                                    for (let i = scrapItems.length - 1; i >= 0; i--) {
-                                        if (scrapItems[i].name === name && scrapItems[i].rate === rate) {
-                                            lastIndex = i;
-                                            break;
-                                        }
-                                    }
-                                    if (lastIndex !== -1) scrapItems.splice(lastIndex, 1);
-                                }
-                                
-                                updateScrapListDisplay();
-                                updateScrapCounter();
-                                updateDecrementButtonState(name, rate); // Update button state after changes
-                            });
-                            
-                            // Initial button state setup (when the list first loads)
-                            updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
+                        btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const name = e.target.dataset.name;
+                        const rate = e.target.dataset.rate;
+                        const currentCount = scrapItems.filter(item =>
+                        item.name === name && item.rate === rate
+                        ).length;
+                        
+                        if (currentCount === 1) {
+                        // Remove all instances if quantity is 1
+                        scrapItems = scrapItems.filter(item =>
+                        item.name !== name || item.rate !== rate
+                        );
+                        } else {
+                        // Remove last instance of this item
+                        let lastIndex = -1;
+                        for (let i = scrapItems.length - 1; i >= 0; i--) {
+                        if (scrapItems[i].name === name && scrapItems[i].rate === rate) {
+                        lastIndex = i;
+                        break;
+                        }
+                        }
+                        if (lastIndex !== -1) scrapItems.splice(lastIndex, 1);
+                        }
+                        
+                        updateScrapListDisplay();
+                        updateScrapCounter();
+                        updateDecrementButtonState(name, rate); // Update button state after changes
+                        });
+                        
+                        // Initial button state setup (when the list first loads)
+                        updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
                         });
                         
                         function updateDecrementButtonState(name, rate) {
-                            const currentCount = scrapItems.filter(item =>
-                            item.name === name && item.rate === rate
-                            ).length;
-                            
-                            const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
-                            
-                            decrementButtons.forEach(btn => {
-                                btn.disabled = currentCount <= 1;
-                            });
+                        const currentCount = scrapItems.filter(item =>
+                        item.name === name && item.rate === rate
+                        ).length;
+                        
+                        const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
+                        
+                        decrementButtons.forEach(btn => {
+                        btn.disabled = currentCount <= 1;
+                        });
                         }
                         
                         
                         // Existing delete button handlers
                         document.querySelectorAll('.delete-btn').forEach(btn => {
-                            btn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                const name = e.target.dataset.name;
-                                const rate = e.target.dataset.rate;
-                                
-                                // Remove the item from scrapItems
-                                scrapItems = scrapItems.filter(item => item.name !== name || item.rate !== rate);
-                                
-                                // Check if scrapItems is empty
-                                if (scrapItems.length === 0) {
-                                    
-                                    closeScrapList();
-                                    showFeedback("Order list cleared"); // Show feedback message
-                                }
-                                handleScrapItemsChange();
-                                updateScrapListDisplay();
-                            });
+                        btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const name = e.target.dataset.name;
+                        const rate = e.target.dataset.rate;
+                        
+                        // Remove the item from scrapItems
+                        scrapItems = scrapItems.filter(item => item.name !== name || item.rate !== rate);
+                        
+                        // Check if scrapItems is empty
+                        if (scrapItems.length === 0) {
+                        
+                        closeScrapList();
+                        showFeedback("Order list cleared"); // Show feedback message
+                        }
+                        handleScrapItemsChange();
+                        updateScrapListDisplay();
+                        });
                         });
                         updateCartPosition(); 
-                    }
-                    
-                    // Add ResizeObserver to track scrap list size changes
-                    const scrapListObserver = new ResizeObserver(() => {
-                        if (scrapVisible) {
-                            updateCartPosition();
                         }
-                    });
-                    
-                    
-                    function showOrderListWarning() {                            
+                        
+                        // Add ResizeObserver to track scrap list size changes
+                        const scrapListObserver = new ResizeObserver(() => {
+                        if (scrapVisible) {
+                        updateCartPosition();
+                        }
+                        });
+                        
+                        
+                        function showOrderListWarning() {                            
                         let existingModal = document.getElementById('orderListWarningModal');
                         if (existingModal) {
-                            existingModal.remove(); 
-                            isWarningVisible = false;
-                            return;
+                        existingModal.remove(); 
+                        isWarningVisible = false;
+                        return;
                         }
                         
                         let modal = document.createElement('div');
@@ -3639,813 +3647,853 @@
                         let isEnglish = true;
                         
                         toggleButton.addEventListener('click', () => {
-                            isEnglish = !isEnglish;
-                            if (isEnglish) {
-                                modalText.innerHTML = contentEnglish;
-                                englishSide.classList.add('active');
-                                punjabiSide.classList.remove('active');
-                                } else {
-                                modalText.innerHTML = contentPunjabi;
-                                punjabiSide.classList.add('active');
-                                englishSide.classList.remove('active');
-                            }
+                        isEnglish = !isEnglish;
+                        if (isEnglish) {
+                        modalText.innerHTML = contentEnglish;
+                        englishSide.classList.add('active');
+                        punjabiSide.classList.remove('active');
+                        } else {
+                        modalText.innerHTML = contentPunjabi;
+                        punjabiSide.classList.add('active');
+                        englishSide.classList.remove('active');
+                        }
                         });
                         
                         function closeModal() {
-                            modal.remove();
-                            isWarningVisible = false;
+                        modal.remove();
+                        isWarningVisible = false;
                         }
                         
                         const autoCloseTimer = setTimeout(closeModal, 60000);
                         
                         modal.querySelector('.close-button').addEventListener('click', () => {
-                            clearTimeout(autoCloseTimer);
-                            closeModal();
+                        clearTimeout(autoCloseTimer);
+                        closeModal();
                         });
                         
                         modal.addEventListener('click', (event) => {
-                            if (event.target === modal) {
-                                clearTimeout(autoCloseTimer);
-                                closeModal();
-                            }
+                        if (event.target === modal) {
+                        clearTimeout(autoCloseTimer);
+                        closeModal();
+                        }
                         });
                         
                         isWarningVisible = true;
-                    }
-                    
-                    
-                    
-                    // Modify toggleScrapList function
-function toggleScrapList() {
-    const scrapList = document.getElementById('scrapList');
-    const offerCartElement = document.getElementById('offer-cart');
-    
-    // Determine which lists have content
-    const hasScrapItems = scrapItems.length > 0;
-    const hasCartItems = offerCart.length > 0;
-
-    // If both are empty, show warning
-    if (!hasScrapItems && !hasCartItems) {
-        const existingModal = document.getElementById('orderListWarningModal');
-        if (!existingModal) showOrderListWarning();
-        return;
-    }
-
-    // Toggle visibility based on content
-    scrapVisible = !scrapVisible;
-    
-    // Show/hide scrap list only if it has items
-    scrapList.style.display = hasScrapItems && scrapVisible ? 'block' : 'none';
-    
-    // Show/hide offer cart only if it has items
-    offerCartElement.style.display = hasCartItems && scrapVisible ? 'block' : 'none';
-
-    // Update positions if showing
-    if (scrapVisible) {
-        updateCartPosition();
-        scrapListObserver.observe(scrapList);
-    } else {
-        scrapListObserver.unobserve(scrapList);
-    }
+                        }
+                        
+                        
+                        
+                        // Modify toggleScrapList function
+                        function toggleScrapList() {
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCartElement = document.getElementById('offer-cart');
+                        
+                        // Determine which lists have content
+                        const hasScrapItems = scrapItems.length > 0;
+                        const hasCartItems = offerCart.length > 0;
+                        
+                        // If both are empty, show warning
+                        if (!hasScrapItems && !hasCartItems) {
+                        const existingModal = document.getElementById('orderListWarningModal');
+                        if (!existingModal) showOrderListWarning();
+                        return;
+                        }
+                        
+                        // Toggle visibility based on content
+                        scrapVisible = !scrapVisible;
+                        
+                        // Show/hide scrap list only if it has items
+                        scrapList.style.display = hasScrapItems && scrapVisible ? 'block' : 'none';
+                        
+                        // Show/hide offer cart only if it has items
+                        offerCartElement.style.display = hasCartItems && scrapVisible ? 'block' : 'none';
+                        
+                        // Update positions if showing
+                        if (scrapVisible) {
+                        updateCartPosition();
+                        scrapListObserver.observe(scrapList);
+                        } else {
+                        scrapListObserver.unobserve(scrapList);
+                        }
+                        }
+                        
+                        // Update on window resize
+                        // Update on window resize
+                        window.addEventListener('resize', () => {
+                        if (scrapVisible) {
+                        updateCartPosition();
+                        }
+                        });
+                        
+                        // Add this function to update positions
+                        function updateCartPosition() {
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCart = document.getElementById('offer-cart');
+                        
+                        if (scrapVisible) {
+                        // Get positions of both elements
+                        const scrapVisible = scrapList.style.display === 'block';
+                        const cartVisible = offerCart.style.display === 'block';
+                        
+                        if (scrapVisible && cartVisible) {
+                        // Both visible - stack them
+                        const scrapListRect = scrapList.getBoundingClientRect();
+                        offerCart.style.top = `${scrapListRect.bottom + 10}px`;
+                        offerCart.style.bottom = 'auto';
+                        } else if (cartVisible) {
+                        // Only cart visible - position at bottom
+                        offerCart.style.top = 'auto';
+                        offerCart.style.bottom = '10rem';
+                        }
+                        }
+                        }
+                        
+                        
+                        function closeScrapList() {
+                        
+                        scrapVisible = false;
+                        document.getElementById('scrapList').style.display = 'none';
+                        
+                        
+                        }
+                        
+                        // Function to trim the first non-English character from a string
+                        function trimLeftNonEnglish(text) {
+                        return text.replace(/^[^A-Za-z]+/, '');
+                        }
+                        
+                        document.getElementById('orderScrap').addEventListener('click', async () => {
+                        if (scrapItems.length === 0) {
+                        showOrderListWarning();
+                        return;
+                        }                        
+                        
+                        const orderNumber = cachedOrderNumber + 1;
+                        
+                        // Group items by name and rate to calculate quantities
+                        const itemMap = new Map();
+                        scrapItems.forEach((item) => {
+                        const key = `${item.name}-${item.rate}`;
+                        itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
+                        });
+                        
+                        const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+                        
+                        // Generate order text with quantities and total per row
+                        let orderText = sortedItems.map(item => {
+                        let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
+                        return item.qty > 1 
+                        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                        }).join('\n');                        
+                        
+                        // Calculate total cost
+                        let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
+                        
+                        // Calculate total number of items
+                        let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
+                        
+                        // List of food-related emojis
+                        let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '🎊', '💝'];
+                        
+                        // Select a random emoji
+                        let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
+                        
+                        let message = encodeURIComponent(
+                        `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
+                        `${sortedItems.map(item => {
+                        let itemTotal = item.qty * parseFloat(item.rate);
+                        return item.qty > 1 
+                        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                        }).join('\n\n')}\n${'-'.repeat(30)}\n` +
+                        `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
+                        );
+                        
+                        
+                        window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
+                        
+                        
+                        // Clear the scrap list after ordering
+                        scrapItems = [];
+                        updateScrapListDisplay();
+                        handleScrapItemsChange();
+                        closeScrapList();
+                        showFeedback("Order sent. List cleared!"); // Optional feedback
+                        
+                        
+                        updateCounter('updateOrders');
+                        cachedOrderNumber = orderNumber;
+                        });
+                        
+                        
+                        function calculateTotal() {
+                        return scrapItems.reduce((total, item) => {
+                        return total + parseFloat(item.rate);
+                        }, 0);
+                        }
+                        
+                        
+                        
+                        
+                        
+                        // Add this function to update the counter
+                        function updateScrapCounter() {
+                        const counter = document.querySelector('#scrapButton .counter-badge');
+                        counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
+                        counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
+                        
+                        
+                        // Add animation when items are added
+                        if(scrapItems.length > 0) {
+                        counter.style.transform = 'scale(1.2)';
+                        setTimeout(() => counter.style.transform = 'scale(1)', 200);
+                        }
+                        } 
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        // Offers search
+                        let offersData = [];
+                        let offerNsg = '';
+                        let offerCart = [];
+                        // Add these variables at the top with other cart variables
+                        let offerCartVisible = false;
+                        
+                        // Offer Section
+                        function formatDate(dateString) {
+                        const date = new Date(dateString);
+                        const day = date.getDate().toString().padStart(2, '0');
+                        const month = date.toLocaleString('en-US', { month: 'short' });
+                        const year = date.getFullYear().toString().slice(-2);
+                        return `${day}-${month}-${year}`;
+                        }
+                        
+                        // Offer elements
+                        const offersButton = document.getElementById('offers-button');
+                        const offersContainer = document.getElementById('offers-container');
+                        
+                        fetch(scriptUrl + "?sheet=offer")
+                        .then(response => response.json())
+                        .then(offerData => {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        
+                        // Filter valid offers
+                        const validOffers = offerData.filter(offer => {
+                        const startDate = new Date(offer[0]);
+                        const endDate = new Date(offer[3]);
+                        
+                        // Normalize time to ensure date-only comparison
+                        startDate.setHours(0, 0, 0, 0);
+                        endDate.setHours(23, 59, 59, 999); // Include the full end day
+                        
+                        return today >= startDate && today <= endDate;
+                        });
+                        
+                        
+                        offersData = validOffers;
+                        
+                        if (validOffers.length > 0) {
+                        offersButton.innerHTML = `${validOffers.length} Offer${validOffers.length > 1 ? 's' : ''} Available <span class="arrow">▼</span>`;
+                        offersButton.style.display = 'block';
+                        
+                        offersButton.addEventListener('click', () => {
+                        const isVisible = offersContainer.style.display === 'grid';
+                        offersContainer.style.display = isVisible ? 'none' : 'grid';
+                        offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
+                        
+                        });
+                        }
+                        
+                        offersContainer.innerHTML = validOffers.map(offer => {
+                        return `
+                        <div class="offer-item" style="position: relative;">
+                        <button class="add-offer-btn" 
+                        data-start="${offer[0]}" 
+                        data-end="${offer[3] || ''}"
+                        data-allow-once="${offer[4] || 'No'}" 
+                        data-dependencies="${offer[5] || 'No'}">
+                        Add
+                        </button>
+                        <h2 class="offer-title">${offer[1]}</h2>
+                        <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
+                        <p class="offer-description">${offer[2]}</p>
+                        </div>
+                        `;
+                        }).join('');
+                        updateOfferAddButtons(); // Initialize button states
+                        })
+                        .catch(error => {
+                        console.error('Error loading offers:', error);
+                        });
+                        
+                        // Close offers when clicking outside
+                        document.addEventListener('click', (e) => {
+                        if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
+                        offersContainer.style.display = 'none';
+                        const arrow = offersButton.querySelector('.arrow');
+                        if (arrow) arrow.textContent = '▼';
+                        }
+                        });
+                        
+                        
+                        function updateOfferAddButtons() {
+                        const addButtons = document.querySelectorAll('.add-offer-btn');
+                        addButtons.forEach(button => {
+                        const offerItem = button.closest('.offer-item');
+                        const offerTitle = offerItem.querySelector('.offer-title').textContent;
+                        const allowOnce = button.dataset.allowOnce === 'Yes';
+                        const dependencies = button.dataset.dependencies === 'Yes';
+                        
+                        // Check if offer exists in cart (regardless of quantity)
+                        const existsInCart = offerCart.some(item => item.title === offerTitle);
+                        
+                        button.disabled = (dependencies && scrapItems.length === 0) || 
+                        (allowOnce && existsInCart);
+                        });
+                        }
+                        
+                        // Modify the click handler to group by title
+                        document.getElementById('offers-container').addEventListener('click', function(e) {
+                        if (e.target.classList.contains('add-offer-btn')) {
+                        const button = e.target;
+                        const offerItem = button.closest('.offer-item');
+                        const offerTitle = offerItem.querySelector('.offer-title').textContent;
+                        const offerDescription = offerItem.querySelector('.offer-description').textContent;
+                        const dependencies = button.dataset.dependencies === 'Yes';
+                        const startDate = formatDate(button.dataset.start);
+                        const endDate = button.dataset.end ? formatDate(button.dataset.end) : null;
+                        const allowOnce = button.dataset.allowOnce === 'Yes';
+                        const dateString = endDate ? `${startDate} to ${endDate}` : startDate;
+                        
+                        // Check for existing offer group
+                        const existingGroup = offerCart.find(group => group.title === offerTitle);
+                        
+                        if (allowOnce && existingGroup) {
+                        showFeedback('Offer already added!');
+                        return;
+                        }
+                        
+                        if (existingGroup) {
+                        // Add date if it's new
+                        if (!existingGroup.dates.includes(dateString)) {
+                        existingGroup.dates.push(dateString);
+                        }
+                        existingGroup.count++;
+                        } else {
+                        // Create new group
+                        // When adding offers to the cart
+                        offerCart.push({
+                        title: offerTitle,
+                        description: offerDescription,
+                        dates: [dateString],
+                        count: 1,
+                        dependent: dependencies,
+                        allowOnce: allowOnce // Add allowOnce flag
+                        });
+                        }
+                        animateRateMovement(offerItem);
+                        showFeedback('Offer added!');
+                        updateOfferAddButtons();
+                        updateScrapButtonStatus();
+                        updateCartDisplay();
+                        
+                        }
+                        });                  
+                        
+                        
+                        
+                        // Modified toggle cart event listener
+                        document.getElementById('toggle-cart').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (offerCart.length === 0) {
+                        showOrderListWarning();
+                        return;
+                        }
+                        toggleOfferCart();
+                        });
+                        
+                        
+                        
+                        
+                        
+                        // Modified toggle cart function
+                        function toggleOfferCart() {
+                        const offerCart = document.getElementById('offer-cart');
+                        
+                        if (offerCart.length === 0) {
+                        showOrderListWarning();
+                        offerCart.style.display = 'none';
+                        offerCartVisible = false;
+                        return;
+                        }
+                        
+                        offerCartVisible = !offerCartVisible;
+                        offerCart.style.display = offerCartVisible ? 'block' : 'none';
+                        }
+                        
+                        // New function to close offer cart
+        function closeOfferCart() {
+    document.getElementById('offer-cart').style.display = 'none';
+    offerCartVisible = false;
 }
-                    
-                // Update on window resize
-                // Update on window resize
-                window.addEventListener('resize', () => {
-                if (scrapVisible) {
-                updateCartPosition();
-                }
-                });
-                
-                // Add this function to update positions
-function updateCartPosition() {
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        // Update cart display with stepper
+                        function updateCartDisplay() {
+                        const cartItems = document.getElementById('cart-items');
+                        const totalOffers = document.getElementById('totalOffers');
+                        const toggleBtn = document.getElementById('toggle-cart');
+                        
+                        if (offerCart.length === 0) {
+                        cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
+                        totalOffers.textContent = 'Total Offers: 0';
+                        toggleBtn.textContent = 'Offer Cart (0)';
+                        closeOfferCart();
+                        return;
+                        }
+                        
+                        cartItems.innerHTML = offerCart.map((group, index) => `
+                        <div class="scrap-item">
+                        <div class="cart-item-header">
+                        <div class="cart-item-title">${group.title}</div>
+                        <div class="cart-item-date">${group.dates.join(', ')}</div>
+                        <div class="cart-item-description">${group.description}</div>
+                        </div>
+                        <div class="offer-stepper">
+                        <button class="off-decrement-btn" 
+                        onclick="adjustOfferQuantity(${index}, -1)"
+                        ${group.count <= 1 ? 'disabled' : ''}>-</button> <!-- Only check count -->
+                        <span class="offer-qty-display">${group.count}</span>
+                        <button class="off-increment-btn" 
+                        onclick="adjustOfferQuantity(${index}, 1)"
+                        ${(group.allowOnce && group.count >= 1) || 
+                        (group.dependent && scrapItems.length === 0) ? 'disabled' : ''}>+</button>
+                        </div>
+                        <span class="offer-delete-btn" data-title="${group.title}">✕</span>
+                        </div>
+                        `).join('');
+                        
+                        // Add event listeners for new delete buttons
+                        document.querySelectorAll('.offer-delete-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        offerCart.splice(index, 1);
+                        updateCartDisplay();
+                        updateScrapButtonStatus();
+                        showFeedback('Offer removed');
+                        });
+                        });
+                        
+                        const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
+                        totalOffers.textContent = `Total Offers: ${totalItems}`;
+                        toggleBtn.textContent = `Offer Cart (${totalItems})`;
+                        }
+                        
+                        
+                        
+                        
+                        // Update close button handler
+                        document.getElementById('closeOffer').addEventListener('click', closeOfferCart);
+                        
+                        
+                        // Add quantity adjustment function
+                        function adjustOfferQuantity(index, delta) {
+                        const group = offerCart[index];
+                        const maxLimit = group.allowOnce ? 1 : Infinity;
+                        
+                        // Validation checks
+                        if (delta === 1) {
+                        if (group.dependent && scrapItems.length === 0) {
+                        showFeedback('Requires menu items!');
+                        return;
+                        }
+                        if (group.count >= maxLimit) {
+                        showFeedback('Can only add once!');
+                        return;
+                        }
+                        }
+                        
+                        group.count += delta;
+                        
+                        if (group.count < 1) {
+                        offerCart.splice(index, 1);
+                        }
+                        
+                        updateCartDisplay();
+                        updateOfferAddButtons();
+                        updateScrapButtonStatus();
+                        }                 
+                        
+                        
+                        
+                        // Add event listener for clear button
+                        document.getElementById('clear-offers').addEventListener('click', clearOfferCart);
+                        
+                        function clearOfferCart() {
+                        offerCart = [];
+                        updateCartDisplay();
+                        updateOfferAddButtons();
+                        updateScrapButtonStatus();
+                        showFeedback('Offer cart cleared!');
+                        closeOfferCart();
+                        }
+                        
+                        
+                        // Add order functionality
+                        document.getElementById('order-offers').addEventListener('click', sendOfferCart);
+                        
+                        function sendOfferCart() {
+                        if (offerCart.length === 0) {
+                        showFeedback('Cart is empty!');
+                        return;
+                        }
+                        
+                        let message = '🎊\n';
+                        offerCart.forEach((group, index) => {
+                        group.dates.forEach(date => {
+                        message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
+                        });
+                        });
+                        
+                        message += '\nPlease confirm these offers!';
+                        const encodedMessage = encodeURIComponent(message);
+                        window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
+                        
+                        // Clear the cart after ordering
+                        offerCart = [];
+                        updateCartDisplay();
+                        showFeedback('Offers sent! Cart cleared');
+                        closeOfferCart();
+                        updateScrapButtonStatus();
+                        }
+                        
+                        
+                        
+                        // Add this document click handler
+document.addEventListener('click', (e) => {
     const scrapList = document.getElementById('scrapList');
     const offerCart = document.getElementById('offer-cart');
-    
-    if (scrapVisible) {
-        // Get positions of both elements
-        const scrapVisible = scrapList.style.display === 'block';
-        const cartVisible = offerCart.style.display === 'block';
+    const scrapButton = document.getElementById('scrapButton');
+    const toggleCart = document.getElementById('toggle-cart');
 
-        if (scrapVisible && cartVisible) {
-            // Both visible - stack them
-            const scrapListRect = scrapList.getBoundingClientRect();
-            offerCart.style.top = `${scrapListRect.bottom + 10}px`;
-            offerCart.style.bottom = 'auto';
-        } else if (cartVisible) {
-            // Only cart visible - position at bottom
-            offerCart.style.top = 'auto';
-            offerCart.style.bottom = '10rem';
-        }
+    // Close scrap list if click is outside
+    if (scrapList.style.display === 'block' && 
+        !scrapList.contains(e.target) && 
+        !scrapButton.contains(e.target)) {
+        closeScrapList();
     }
-}
-                
-                
-                function closeScrapList() {
-                
-                scrapVisible = false;
-                document.getElementById('scrapList').style.display = 'none';
-                
-                
-                }
-                
-                // Function to trim the first non-English character from a string
-                function trimLeftNonEnglish(text) {
-                return text.replace(/^[^A-Za-z]+/, '');
-                }
-                
-                document.getElementById('orderScrap').addEventListener('click', async () => {
-                if (scrapItems.length === 0) {
-                showOrderListWarning();
-                return;
-                }                        
-                
-                const orderNumber = cachedOrderNumber + 1;
-                
-                // Group items by name and rate to calculate quantities
-                const itemMap = new Map();
-                scrapItems.forEach((item) => {
-                const key = `${item.name}-${item.rate}`;
-                itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
-                });
-                
-                const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
-                
-                // Generate order text with quantities and total per row
-                let orderText = sortedItems.map(item => {
-                let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
-                return item.qty > 1 
-                ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-                : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-                }).join('\n');                        
-                
-                // Calculate total cost
-                let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
-                
-                // Calculate total number of items
-                let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
-                
-                // List of food-related emojis
-                let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '🎊', '💝'];
-                
-                // Select a random emoji
-                let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
-                
-                let message = encodeURIComponent(
-                `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
-                `${sortedItems.map(item => {
-                let itemTotal = item.qty * parseFloat(item.rate);
-                return item.qty > 1 
-                ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-                : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-                }).join('\n\n')}\n${'-'.repeat(30)}\n` +
-                `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
-                );
-                
-                
-                window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
-                
-                
-                // Clear the scrap list after ordering
-                scrapItems = [];
-                updateScrapListDisplay();
-                handleScrapItemsChange();
-                closeScrapList();
-                showFeedback("Order sent. List cleared!"); // Optional feedback
-                
-                
-                updateCounter('updateOrders');
-                cachedOrderNumber = orderNumber;
-                });
-                
-                
-                function calculateTotal() {
-                return scrapItems.reduce((total, item) => {
-                return total + parseFloat(item.rate);
-                }, 0);
-                }
-                
-                
-                
-                
-                
-                // Add this function to update the counter
-                function updateScrapCounter() {
-                const counter = document.querySelector('#scrapButton .counter-badge');
-                counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
-                counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
-                
-                
-                // Add animation when items are added
-                if(scrapItems.length > 0) {
-                counter.style.transform = 'scale(1.2)';
-                setTimeout(() => counter.style.transform = 'scale(1)', 200);
-                }
-                } 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                // Offers search
-                let offersData = [];
-                let offerNsg = '';
-                let offerCart = [];
-                // Add these variables at the top with other cart variables
-                let offerCartVisible = false;
-                
-                // Offer Section
-                function formatDate(dateString) {
-                const date = new Date(dateString);
-                const day = date.getDate().toString().padStart(2, '0');
-                const month = date.toLocaleString('en-US', { month: 'short' });
-                const year = date.getFullYear().toString().slice(-2);
-                return `${day}-${month}-${year}`;
-                }
-                
-                // Offer elements
-                const offersButton = document.getElementById('offers-button');
-                const offersContainer = document.getElementById('offers-container');
-                
-                fetch(scriptUrl + "?sheet=offer")
-                .then(response => response.json())
-                .then(offerData => {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                
-                // Filter valid offers
-                const validOffers = offerData.filter(offer => {
-                const startDate = new Date(offer[0]);
-                startDate.setHours(0, 0, 0, 0);
-                return startDate >= today;
-                });
-                
-                offersData = validOffers;
-                
-                if (validOffers.length > 0) {
-                offersButton.innerHTML = `${validOffers.length} Offer${validOffers.length > 1 ? 's' : ''} Available <span class="arrow">▼</span>`;
-                offersButton.style.display = 'block';
-                
-                offersButton.addEventListener('click', () => {
-                const isVisible = offersContainer.style.display === 'grid';
-                offersContainer.style.display = isVisible ? 'none' : 'grid';
-                offersButton.querySelector('.arrow').textContent = isVisible ? '▼' : '▲';
-                
-                });
-                }
-                
-                offersContainer.innerHTML = validOffers.map(offer => {
-                return `
-                <div class="offer-item" style="position: relative;">
-                <button class="add-offer-btn" 
-                data-start="${offer[0]}" 
-                data-end="${offer[3] || ''}"
-                data-allow-once="${offer[4] || 'No'}" 
-                data-dependencies="${offer[5] || 'No'}">
-                Add
-                </button>
-                <h2 class="offer-title">${offer[1]}</h2>
-                <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
-                <p class="offer-description">${offer[2]}</p>
-                </div>
-                `;
-                }).join('');
-                updateOfferAddButtons(); // Initialize button states
-                })
-                .catch(error => {
-                console.error('Error loading offers:', error);
-                });
-                
-                // Close offers when clicking outside
-                document.addEventListener('click', (e) => {
-                if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
-                offersContainer.style.display = 'none';
-                const arrow = offersButton.querySelector('.arrow');
-                if (arrow) arrow.textContent = '▼';
-                }
-                });
-                
-                
-                function updateOfferAddButtons() {
-                const addButtons = document.querySelectorAll('.add-offer-btn');
-                addButtons.forEach(button => {
-                const offerItem = button.closest('.offer-item');
-                const offerTitle = offerItem.querySelector('.offer-title').textContent;
-                const allowOnce = button.dataset.allowOnce === 'Yes';
-                const dependencies = button.dataset.dependencies === 'Yes';
-                
-                // Check if offer exists in cart (regardless of quantity)
-                const existsInCart = offerCart.some(item => item.title === offerTitle);
-                
-                button.disabled = (dependencies && scrapItems.length === 0) || 
-                (allowOnce && existsInCart);
-                });
-                }
-                
-                // Modify the click handler to group by title
-                document.getElementById('offers-container').addEventListener('click', function(e) {
-                if (e.target.classList.contains('add-offer-btn')) {
-                const button = e.target;
-                const offerItem = button.closest('.offer-item');
-                const offerTitle = offerItem.querySelector('.offer-title').textContent;
-                const offerDescription = offerItem.querySelector('.offer-description').textContent;
-                const dependencies = button.dataset.dependencies === 'Yes';
-                const startDate = formatDate(button.dataset.start);
-                const endDate = button.dataset.end ? formatDate(button.dataset.end) : null;
-                const allowOnce = button.dataset.allowOnce === 'Yes';
-                const dateString = endDate ? `${startDate} to ${endDate}` : startDate;
-                
-                // Check for existing offer group
-                const existingGroup = offerCart.find(group => group.title === offerTitle);
-                
-                if (allowOnce && existingGroup) {
-                showFeedback('Offer already added!');
-                return;
-                }
-                
-                if (existingGroup) {
-                // Add date if it's new
-                if (!existingGroup.dates.includes(dateString)) {
-                existingGroup.dates.push(dateString);
-                }
-                existingGroup.count++;
-                } else {
-                // Create new group
-                // When adding offers to the cart
-                offerCart.push({
-                title: offerTitle,
-                description: offerDescription,
-                dates: [dateString],
-                count: 1,
-                dependent: dependencies,
-                allowOnce: allowOnce // Add allowOnce flag
-                });
-                }
-                animateRateMovement(offerItem);
-                showFeedback('Offer added!');
-                updateOfferAddButtons();
-                updateScrapButtonStatus();
-                updateCartDisplay();
-                
-                }
-                });                  
-                
-                
-                
-                // Modified toggle cart event listener
-                document.getElementById('toggle-cart').addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (offerCart.length === 0) {
-                showOrderListWarning();
-                return;
-                }
-                toggleOfferCart();
-                });
-                
-                
-                
-                
-                
-                // Modified toggle cart function
-                function toggleOfferCart() {
-                const offerCart = document.getElementById('offer-cart');
-                
-                if (offerCart.length === 0) {
-                showOrderListWarning();
-                offerCart.style.display = 'none';
-                offerCartVisible = false;
-                return;
-                }
-                
-                offerCartVisible = !offerCartVisible;
-                offerCart.style.display = offerCartVisible ? 'block' : 'none';
-                }
-                
-                // New function to close offer cart
-                function closeOfferCart() {
-                const offerCart = document.getElementById('offer-cart');
-                offerCart.style.display = 'none';
-                offerCartVisible = false;
-                }
-                
-                
-                
-                
-                
-                
-                
-                // Update cart display with stepper
-                function updateCartDisplay() {
-                const cartItems = document.getElementById('cart-items');
-                const totalOffers = document.getElementById('totalOffers');
-                const toggleBtn = document.getElementById('toggle-cart');
-                
-                if (offerCart.length === 0) {
-                cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
-                totalOffers.textContent = 'Total Offers: 0';
-                toggleBtn.textContent = 'Offer Cart (0)';
-                closeOfferCart();
-                return;
-                }
-                
-                cartItems.innerHTML = offerCart.map((group, index) => `
-                <div class="scrap-item">
-                <div class="cart-item-header">
-                <div class="cart-item-title">${group.title}</div>
-                <div class="cart-item-date">${group.dates.join(', ')}</div>
-                <div class="cart-item-description">${group.description}</div>
-                </div>
-                <div class="offer-stepper">
-                <button class="off-decrement-btn" 
-                onclick="adjustOfferQuantity(${index}, -1)"
-                ${group.count < 1 ? 'disabled' : ''}>-</button> <!-- Only check count -->
-                <span class="offer-qty-display">${group.count}</span>
-                <button class="off-increment-btn" 
-                onclick="adjustOfferQuantity(${index}, 1)"
-                ${(group.allowOnce && group.count >= 1) || 
-                (group.dependent && scrapItems.length === 0) ? 'disabled' : ''}>+</button>
-                </div>
-                </div>
-                `).join('');
-                
-                const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
-                totalOffers.textContent = `Total Offers: ${totalItems}`;
-                toggleBtn.textContent = `Offer Cart (${totalItems})`;
-                }
-                
-                
-                
-                // Update close button handler
-                document.getElementById('closeOffer').addEventListener('click', closeOfferCart);
-                
-                
-                // Add quantity adjustment function
-                function adjustOfferQuantity(index, delta) {
-                const group = offerCart[index];
-                const maxLimit = group.allowOnce ? 1 : Infinity;
-                
-                // Validation checks
-                if (delta === 1) {
-                if (group.dependent && scrapItems.length === 0) {
-                showFeedback('Requires menu items!');
-                return;
-                }
-                if (group.count >= maxLimit) {
-                showFeedback('Can only add once!');
-                return;
-                }
-                }
-                
-                group.count += delta;
-                
-                if (group.count < 1) {
-                offerCart.splice(index, 1);
-                }
-                
-                updateCartDisplay();
-                updateOfferAddButtons();
-                updateScrapButtonStatus();
-                }                 
-                
-                
-                
-                // Add event listener for clear button
-                document.getElementById('clear-offers').addEventListener('click', clearOfferCart);
-                
-                function clearOfferCart() {
-                offerCart = [];
-                updateCartDisplay();
-                updateOfferAddButtons();
-                updateScrapButtonStatus();
-                showFeedback('Offer cart cleared!');
-                closeOfferCart();
-                }
-                
-                
-                // Add order functionality
-                document.getElementById('order-offers').addEventListener('click', sendOfferCart);
-                
-                function sendOfferCart() {
-                if (offerCart.length === 0) {
-                showFeedback('Cart is empty!');
-                return;
-                }
-                
-                let message = '🎊\n';
-                offerCart.forEach((group, index) => {
-                group.dates.forEach(date => {
-                message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
-                });
-                });
-                
-                message += '\nPlease confirm these offers!';
-                const encodedMessage = encodeURIComponent(message);
-                window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
-                
-                // Clear the cart after ordering
-                offerCart = [];
-                updateCartDisplay();
-                showFeedback('Offers sent! Cart cleared');
-                closeOfferCart();
-                updateScrapButtonStatus();
-                }
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                async function updateViewCounter() {
-                try {
-                await fetch(`${scriptUrl}?sheet=counter&action=updateViews`);
-                } catch (error) {
-                console.error("Error updating view counter:", error);
-                }
-                }
-                
-                // Call the function on page load
-                updateViewCounter();
-                
-                
-                
-                
-                // Counters
-                
-                async function updateCounter(type) {
-                try {
-                const response = await fetch(`${scriptUrl}?sheet=counter&action=${type}`);
-                return await response.json();
-                } catch (error) {
-                console.error(`Error updating ${type} counter:`, error);
-                }
-                }
-                
-                
-                
-                async function getViews() {
-                try {
-                const response = await fetch(`${scriptUrl}?sheet=counter&action=getViews`);
-                const data = await response.json();
-                return data.count; // Return the views count
-                } catch (error) {
-                console.error('Error fetching views:', error);
-                return 0; // Fallback to 0 if the request fails
-                }
-                }
-                
-                
-                
-                function setupVisitorCounter() {
-                if (typeof Storage !== 'undefined') {
-                const visitorKey = 'csb_visitor';
-                if (!localStorage.getItem(visitorKey)) {
-                localStorage.setItem(visitorKey, '1');
-                updateCounter('updateVisitors').then(data => {
-                document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
-                
-                });
-                } else {
-                updateCounter('getVisitors').then(data => {
-                document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
-                
-                });
-                }
-                }
-                }
-                
-                
-                
-                // Client-side JavaScript
-                function setupLikeButton() {
-                const likeIcon = document.getElementById('likeIcon');
-                const likeCounterElement = document.getElementById('likeCounter');
-                const likeKey = 'csb_like';
-                
-                updateCounter('getLikes').then(data => {
-                likeCounterElement.textContent = String(data.count).padStart(3, '0');
-                });
-                
-                if (localStorage.getItem(likeKey)) {
-                likeIcon.classList.add('liked');
-                }
-                
-                document.getElementById('likeContainer').addEventListener('click', () => {
-                if (!localStorage.getItem(likeKey)) {
-                localStorage.setItem(likeKey, 'true');
-                likeIcon.classList.add('liked');
-                startBlinking(likeCounterElement);
-                
-                updateCounter('incrementLikes').then(data => {
-                stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                showFeedback('Thank you!');
-                });
-                } else {
-                localStorage.removeItem(likeKey);
-                likeIcon.classList.remove('liked');
-                startBlinking(likeCounterElement);
-                
-                updateCounter('decrementLikes').then(data => {
-                stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                });
-                }
-                });
-                }
-                
-                // Apply existing pop animation
-                function animateCounter(element, newValue) {
-                element.classList.remove('like-animate');
-                void element.offsetWidth; // Trigger reflow
-                element.textContent = newValue;
-                element.classList.add('like-animate');
-                }
-                
-                // Start blinking animation
-                function startBlinking(element) {
-                element.classList.add('blinking');
-                }
-                
-                // Stop blinking animation
-                function stopBlinking(element) {
-                element.classList.remove('blinking');
-                }
-                
-                
-                
-                
-                
-                async function initializeOrderNumber() {
-                try {
-                const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
-                const data = await response.json();
-                cachedOrderNumber = data.count; // Store the current order number
-                } catch (error) {
-                console.error('Failed to fetch order number:', error);
-                cachedOrderNumber = 0; // Fallback to 0 if the request fails
-                }
-                }
-                
-                function setupViewsCounter() {
-                if (typeof Storage !== 'undefined') {
-                const viewsKey = 'csb_views';
-                if (!localStorage.getItem(viewsKey)) {
-                // If the user is new, update the views counter
-                localStorage.setItem(viewsKey, '1');
-                updateCounter('updateViews').then(data => {
-                document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
-                
-                });
-                } else {
-                // If the user is returning, just fetch the current views count
-                updateCounter('getViews').then(data => {
-                document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
-                
-                });
-                }
-                }
-                }
-                
-                
-                
-                // Initialize counters when the page loads
-                document.addEventListener('DOMContentLoaded', () => {
-                
-                
-                // Setup visitor counter
-                setupVisitorCounter();
-                
-                // Setup like button
-                setupLikeButton();
-                
-                initializeOrderNumber();
-                
-                setupViewsCounter();
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                let threeFingerStartTime = 0;
-                
-                document.addEventListener('touchstart', (e) => {
-                const touches = e.touches;
-                
-                if (touches.length === 1) {
-                // Record time when first finger touches
-                threeFingerStartTime = Date.now();
-                } else if (touches.length === 3) {
-                // Check if three fingers landed within 300ms of the first touch
-                const now = Date.now();
-                if (threeFingerStartTime !== 0 && now - threeFingerStartTime <= 300) {
-                activateCheatMode();
-                threeFingerStartTime = 0; // Prevent multi-trigger
-                }
-                }
-                });
-                
-                document.addEventListener('touchend', (e) => {
-                // Reset timer when all fingers are lifted
-                if (e.touches.length === 0) {
-                threeFingerStartTime = 0;
-                }
-                });
-                
-                // Keyboard cheat: Ctrl + Shift + E
-                document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
-                e.preventDefault(); // Prevent browser conflicts
-                activateCheatMode();
-                }
-                });
-                
-                // Cheat activation function
-                function activateCheatMode() {
-                // 1. Expand all categories and add borders
-                document.querySelectorAll('.category-header').forEach(header => {
-                const items = header.nextElementSibling;
-                // Expand header
-                header.style.fontSize = '6rem';
-                header.querySelector('.right').style.display = 'inline';
-                // Add border to header
-                header.classList.add('visible-border');
-                
-                // Expand items and add border
-                items.style.display = 'block';
-                items.classList.add('visible-border');
-                });
-                
-                // 2. Expand offers and show their borders
-                // offersContainer.style.display = 'grid';
-                // offersButton.querySelector('.arrow').textContent = '▲';
-                }
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                </script>        
-                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-                </body>
-                </html>                                                                                                                                                                                                             
+
+    // Close offer cart if click is outside
+    if (offerCart.style.display === 'block' && 
+        !offerCart.contains(e.target) && 
+        !toggleCart.contains(e.target)) {
+        closeOfferCart();
+    }
+});
+                        
+                        
+                        
+        // Add stopPropagation to the containers to prevent immediate closing
+document.getElementById('scrapList').addEventListener('click', e => e.stopPropagation());
+document.getElementById('offer-cart').addEventListener('click', e => e.stopPropagation());                
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        async function updateViewCounter() {
+                        try {
+                        await fetch(`${scriptUrl}?sheet=counter&action=updateViews`);
+                        } catch (error) {
+                        console.error("Error updating view counter:", error);
+                        }
+                        }
+                        
+                        // Call the function on page load
+                        updateViewCounter();
+                        
+                        
+                        
+                        
+                        // Counters
+                        
+                        async function updateCounter(type) {
+                        try {
+                        const response = await fetch(`${scriptUrl}?sheet=counter&action=${type}`);
+                        return await response.json();
+                        } catch (error) {
+                        console.error(`Error updating ${type} counter:`, error);
+                        }
+                        }
+                        
+                        
+                        
+                        async function getViews() {
+                        try {
+                        const response = await fetch(`${scriptUrl}?sheet=counter&action=getViews`);
+                        const data = await response.json();
+                        return data.count; // Return the views count
+                        } catch (error) {
+                        console.error('Error fetching views:', error);
+                        return 0; // Fallback to 0 if the request fails
+                        }
+                        }
+                        
+                        
+                        
+                        function setupVisitorCounter() {
+                        if (typeof Storage !== 'undefined') {
+                        const visitorKey = 'csb_visitor';
+                        if (!localStorage.getItem(visitorKey)) {
+                        localStorage.setItem(visitorKey, '1');
+                        updateCounter('updateVisitors').then(data => {
+                        document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
+                        
+                        });
+                        } else {
+                        updateCounter('getVisitors').then(data => {
+                        document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
+                        
+                        });
+                        }
+                        }
+                        }
+                        
+                        
+                        
+                        // Client-side JavaScript
+                        function setupLikeButton() {
+                        const likeIcon = document.getElementById('likeIcon');
+                        const likeCounterElement = document.getElementById('likeCounter');
+                        const likeKey = 'csb_like';
+                        
+                        updateCounter('getLikes').then(data => {
+                        likeCounterElement.textContent = String(data.count).padStart(3, '0');
+                        });
+                        
+                        if (localStorage.getItem(likeKey)) {
+                        likeIcon.classList.add('liked');
+                        }
+                        
+                        document.getElementById('likeContainer').addEventListener('click', () => {
+                        if (!localStorage.getItem(likeKey)) {
+                        localStorage.setItem(likeKey, 'true');
+                        likeIcon.classList.add('liked');
+                        startBlinking(likeCounterElement);
+                        
+                        updateCounter('incrementLikes').then(data => {
+                        stopBlinking(likeCounterElement);
+                        animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                        showFeedback('Thank you!');
+                        });
+                        } else {
+                        localStorage.removeItem(likeKey);
+                        likeIcon.classList.remove('liked');
+                        startBlinking(likeCounterElement);
+                        
+                        updateCounter('decrementLikes').then(data => {
+                        stopBlinking(likeCounterElement);
+                        animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                        });
+                        }
+                        });
+                        }
+                        
+                        // Apply existing pop animation
+                        function animateCounter(element, newValue) {
+                        element.classList.remove('like-animate');
+                        void element.offsetWidth; // Trigger reflow
+                        element.textContent = newValue;
+                        element.classList.add('like-animate');
+                        }
+                        
+                        // Start blinking animation
+                        function startBlinking(element) {
+                        element.classList.add('blinking');
+                        }
+                        
+                        // Stop blinking animation
+                        function stopBlinking(element) {
+                        element.classList.remove('blinking');
+                        }
+                        
+                        
+                        
+                        
+                        
+                        async function initializeOrderNumber() {
+                        try {
+                        const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
+                        const data = await response.json();
+                        cachedOrderNumber = data.count; // Store the current order number
+                        } catch (error) {
+                        console.error('Failed to fetch order number:', error);
+                        cachedOrderNumber = 0; // Fallback to 0 if the request fails
+                        }
+                        }
+                        
+                        function setupViewsCounter() {
+                        if (typeof Storage !== 'undefined') {
+                        const viewsKey = 'csb_views';
+                        if (!localStorage.getItem(viewsKey)) {
+                        // If the user is new, update the views counter
+                        localStorage.setItem(viewsKey, '1');
+                        updateCounter('updateViews').then(data => {
+                        document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
+                        
+                        });
+                        } else {
+                        // If the user is returning, just fetch the current views count
+                        updateCounter('getViews').then(data => {
+                        document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
+                        
+                        });
+                        }
+                        }
+                        }
+                        
+                        
+                        
+                        // Initialize counters when the page loads
+                        document.addEventListener('DOMContentLoaded', () => {
+                        
+                        
+                        // Setup visitor counter
+                        setupVisitorCounter();
+                        
+                        // Setup like button
+                        setupLikeButton();
+                        
+                        initializeOrderNumber();
+                        
+                        setupViewsCounter();
+                        });
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        let threeFingerStartTime = 0;
+                        
+                        document.addEventListener('touchstart', (e) => {
+                        const touches = e.touches;
+                        
+                        if (touches.length === 1) {
+                        // Record time when first finger touches
+                        threeFingerStartTime = Date.now();
+                        } else if (touches.length === 3) {
+                        // Check if three fingers landed within 300ms of the first touch
+                        const now = Date.now();
+                        if (threeFingerStartTime !== 0 && now - threeFingerStartTime <= 300) {
+                        activateCheatMode();
+                        threeFingerStartTime = 0; // Prevent multi-trigger
+                        }
+                        }
+                        });
+                        
+                        document.addEventListener('touchend', (e) => {
+                        // Reset timer when all fingers are lifted
+                        if (e.touches.length === 0) {
+                        threeFingerStartTime = 0;
+                        }
+                        });
+                        
+                        // Keyboard cheat: Ctrl + Shift + E
+                        document.addEventListener('keydown', (e) => {
+                        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
+                        e.preventDefault(); // Prevent browser conflicts
+                        activateCheatMode();
+                        }
+                        });
+                        
+                        // Cheat activation function
+                        function activateCheatMode() {
+                        // 1. Expand all categories and add borders
+                        document.querySelectorAll('.category-header').forEach(header => {
+                        const items = header.nextElementSibling;
+                        // Expand header
+                        header.style.fontSize = '6rem';
+                        header.querySelector('.right').style.display = 'inline';
+                        // Add border to header
+                        header.classList.add('visible-border');
+                        
+                        // Expand items and add border
+                        items.style.display = 'block';
+                        items.classList.add('visible-border');
+                        });
+                        
+                        // 2. Expand offers and show their borders
+                        // offersContainer.style.display = 'grid';
+                        // offersButton.querySelector('.arrow').textContent = '▲';
+                        }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        </script>        
+                        <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+                        </body>
+                        </html>                                                                                                                                                                                                                                             
