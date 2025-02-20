@@ -102,7 +102,7 @@
             cursor: pointer;
             color: #cc0000;
             font-size: 4rem;
-            margin-left: 1rem;
+            margin-left: 2rem;
     		transition: transform 0.2s ease;
             }
             
@@ -608,14 +608,17 @@
             justify-content: space-between;
             }
             
-            .colAB, .colCDE {
-            font-size: 6rem;
+            .colAB {
+            font-size: 5.5rem;
             font-weight: bold;
             }
             
             .colCDE {
+            font-size: 6rem;
+            font-weight: bold;
             color: #40E0D0;
             }
+            
             
             
             
@@ -954,12 +957,18 @@
             min-width: 100px;
             }
             
+            .scrap-item-name .column-value {
+            color: #005792; 
+            font-weight: bold; /* Optional: Adjust font weight if needed */
+            }
+            
             /* Rate Container */
             .scrap-item-rate {
             flex: 2;
             text-align: right;
             padding: 0 1rem;
-            min-width: 50px;
+            min-width: 70px;
+            max-width: 100px;
             color: #333;
             display: flex;
             align-items: center;
@@ -1189,7 +1198,7 @@
             }
             
             .cart-item-title {
-            font-size: 4.5rem;
+            font-size: 4rem;
             color: #2c3e50;
             font-weight: bold;
             flex: 2;
@@ -1328,6 +1337,12 @@
             width: 5rem; /* Adjust icon size */
             height: auto;   
             }
+            
+            .phone-icon:hover {
+    transform: translateY(-50%) scaleX(-1) scale(1.2); /* Slightly enlarge on hover */
+    opacity: 0.8; /* Reduce opacity slightly */
+    cursor: pointer;
+}
             
             /* Wrap container */
             .social {
@@ -1609,6 +1624,7 @@
             color: #fae68e;
             margin: 3rem auto; /* Reduced margin */
             margin-bottom: 5rem;
+            margin-top: 10rem;
             }
             
             /* Like Icon */
@@ -1725,7 +1741,7 @@
             }
             
             /* QR Code Image clsoe button */
-            #close-modal {
+            #close-qr-modal {
             position: absolute;
             top: -25rem;
             left: 50%;
@@ -1745,7 +1761,7 @@
             outline: none;
             }
             
-            #close-modal:hover {
+            #close-qr-modal:hover {
             color: #ff5555; /* Red color on hover for contrast */
             }
             
@@ -1946,6 +1962,10 @@
                     </div>
                 </div>
                 
+<!-- Development Button -->
+<button id="devFill" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; padding: 1rem; background: #ff4444; color: white; border: none; border-radius: 5px;">
+DEV-Order
+</button>
                 
                 <script>
                     // temp disable offer cart button
@@ -2940,7 +2960,7 @@
                         qrCodeModal.id = 'qr-code-modal';
                         qrCodeModal.innerHTML = `
                         <div class="modal-content">
-                        <span id="close-modal">&times;</span>
+                       <span id="close-qr-modal">&times;</span>
                         <img src="qrcode.png" alt="QR Code">
                         </div>
                         `;
@@ -2954,7 +2974,7 @@
                         });
                         
                         // Close QR Code Modal
-                        document.getElementById('close-modal').addEventListener('click', () => {
+                        document.getElementById('close-qr-modal').addEventListener('click', () => {
                             qrCodeModal.style.display = 'none';
                             document.body.style.overflow = ''; // Unlock scrolling
                             document.documentElement.style.overflow = ''; // Unlock scrolling
@@ -3033,29 +3053,42 @@
                             const osName = getOSName();
                             const browserVersion = getBrowserVersion();
                             
-                            modalContent.innerHTML = `
-                            <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
-                            <p><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
-                            <p><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
-                            <p><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
-                            <p><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
-                            <p><strong>Device Type:</strong> ${deviceType}</p>
-                            <p><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
-                            <p><strong>Operating System:</strong> ${osName}</p>
-                            <p><strong>Internet Browser:</strong> ${browserVersion}</p>
-                            <p><strong>Time Zone:</strong> ${timeZone}</p>
-                            <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
-                            <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
-                            `;
+                           modalContent.innerHTML = `
+    <style>
+        #modal-content p {
+            margin-bottom: 3rem;
+        }
+    </style>
+    <div id="modal-content">
+        <h3 style="font-size: 6rem; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
+        <p><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
+        <p><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
+        <p><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
+        <p><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
+        <p><strong>Device Type:</strong> ${deviceType}</p>
+        <p><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
+        <p><strong>Operating System:</strong> ${osName}</p>
+        <p><strong>Internet Browser:</strong> ${browserVersion}</p>
+        <p><strong>Time Zone:</strong> ${timeZone}</p>
+        <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
+        <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
+    </div>
+`;
+
                             
                             // Copy text functionality
-                            modalContent.querySelector('#copy-button').addEventListener('click', function (event) {
-                                event.stopPropagation();
-                                const text = modalContent.innerText;
-                                navigator.clipboard.writeText(text).then(() => {
-                                    alert('Text copied to clipboard');
-                                }).catch(err => console.error('Failed to copy:', err));
-                            });
+        const copyButton = modalContent.querySelector('#copy-button');
+        copyButton.addEventListener('click', function (event) {
+            event.stopPropagation();
+            const text = modalContent.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                copyButton.textContent = "Text Copied";
+                copyButton.style.backgroundColor = "gray";
+                copyButton.style.cursor = "not-allowed";
+                copyButton.disabled = true;
+            }).catch(err => console.error('Failed to copy:', err));
+        });
+
                             
                             // Close modal functionality
                             modalContent.querySelector('#close-modal').addEventListener('click', closeModal);
@@ -3198,6 +3231,17 @@
                         const scrapList = document.getElementById('scrapList');
                         const offerCartElement = document.getElementById('offer-cart');
                         
+                        
+                          // Check if both carts are empty
+    const hasScrapItems = scrapItems.length > 0;
+    const hasCartItems = offerCart.length > 0;
+
+    if (!hasScrapItems && !hasCartItems) {
+        const existingModal = document.getElementById('orderListWarningModal');
+        if (!existingModal) showOrderListWarning();
+        return; // Exit before showing scrap overlay
+    }
+    
                         if (!scrapVisible) {
                             overlay.style.display = 'block';
                             document.body.style.overflow = 'hidden';
@@ -3206,17 +3250,7 @@
                             document.body.style.overflow = '';
                         }
                         
-                        // Determine which lists have content
-                        const hasScrapItems = scrapItems.length > 0;
-                        const hasCartItems = offerCart.length > 0;
-                        
-                        // If both are empty, show warning
-                        if (!hasScrapItems && !hasCartItems) {
-                            const existingModal = document.getElementById('orderListWarningModal');
-                            if (!existingModal) showOrderListWarning();
-                            return;
-                        }
-                        
+                       
                         // Toggle visibility based on content
                         scrapVisible = !scrapVisible;
                         
@@ -3302,10 +3336,13 @@
                             }
                         });
                         
-                        function closeModal() {
-                            modal.remove();
-                            isWarningVisible = false;
-                        }
+                 function closeModal() {
+        modal.remove();
+        isWarningVisible = false;
+        
+        // Add this line to ensure scrap overlay is hidden
+        document.querySelector('.scrap-overlay').style.display = 'none';
+    }
                         
                         const autoCloseTimer = setTimeout(closeModal, 60000);
                         
@@ -3399,22 +3436,27 @@
                     });
                     
                     
-                    document.getElementById('clearScrap').addEventListener('click', () => {
-                        const scrapList = document.getElementById('scrapList'); // Define scrapList properly
-                        
-                        if (!scrapList) return; // Safety check
-                        
-                        // Clear items immediately
-                        scrapItems = [];
-                        
-                        // Update UI
-                        updateScrapListDisplay();
-                        showFeedback("Order list cleared");
-                        closeScrapList();
-                        
-                        // Update dependencies
-                        handleScrapItemsChange();
-                    });               
+document.getElementById('clearScrap').addEventListener('click', () => {
+    const scrapList = document.getElementById('scrapList');
+    const overlay = document.querySelector('.scrap-overlay');
+    
+    // Clear scrap items
+    scrapItems = [];
+    updateScrapListDisplay();
+    showFeedback("Order list cleared");
+    
+    // Close the scrap list
+    scrapList.style.display = 'none';
+    scrapVisible = false;
+    
+    // Only hide overlay if offer cart is also empty
+    if (offerCart.length === 0) {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    
+    handleScrapItemsChange();
+});              
                     
                     // Add items to scrap list when clicking rates
                     document.getElementById('menu').addEventListener('click', (e) => {
@@ -3614,7 +3656,7 @@
                         // Step 3: Generate HTML for sorted items with quantity stepper
                         scrapContainer.innerHTML = sortedItems.map((groupedItem) => `
                         <div class="scrap-item">
-                        <div class="scrap-item-name"><strong>${groupedItem.name}</strong></div>
+                        <div class="scrap-item-name"><strong>${groupedItem.name.replace(/\((.*?)\)/g, '<span class="column-value">($1)</span>')}</strong></div>
                         <div class="scrap-item-rate">
                         <div class="qty-stepper">
                         <button class="decrement-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">-</button>
@@ -4071,20 +4113,20 @@
                         offerCart.style.display = offerCartVisible ? 'block' : 'none';
                     }
                     
-function closeOfferCart() {
-  const scrapList = document.getElementById('scrapList');
-  const overlay = document.querySelector('.scrap-overlay');
-
-  // Hide the offer cart
-  document.getElementById('offer-cart').style.display = 'none';
-  offerCartVisible = false;
-
-  // Only hide the overlay if scrapList is also not visible
-  if (scrapList.style.display !== 'flex') {
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-}
+                    function closeOfferCart() {
+                        const scrapList = document.getElementById('scrapList');
+                        const overlay = document.querySelector('.scrap-overlay');
+                        
+                        // Hide the offer cart
+                        document.getElementById('offer-cart').style.display = 'none';
+                        offerCartVisible = false;
+                        
+                        // Only hide the overlay if scrapList is also not visible
+                        if (scrapList.style.display !== 'flex') {
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = '';
+                        }
+                    }
                     
                     
                     
@@ -4107,7 +4149,7 @@ function closeOfferCart() {
                         <div class="scrap-item">
                         <div class="cart-item-header">
                         <div class="cart-item-title">${group.title}</div>
-                        <div class="cart-item-date">${group.dates.join(', ')}</div>
+                        <!--   <div class="cart-item-date">${group.dates.join(', ')}</div> -->
                         <div class="cart-item-description">${group.description}</div>
                         </div>
                         <div class="offer-stepper">
@@ -4493,7 +4535,7 @@ function closeOfferCart() {
                     
                     
                     
-                    
+    // Cheat - Full menu - 3 finegr tap, Ctrl+Shift+E                
                     let threeFingerStartTime = 0;
                     
                     document.addEventListener('touchstart', (e) => {
@@ -4549,15 +4591,200 @@ function closeOfferCart() {
                     }
                     
                     
-                
-                
-                
-                
-                
-                
-                
-                
+                    
+                    
+                    
+                    
+                    
+             
+            
+            
+            
+            
+            
+            
+            
+            
+                    
+                    
+// Cheat - Random item - 2 finegr long press, Ctrl+Shift+P
+let longPressTimer = null; // Timer for long press detection
+
+// Function to add a random item
+function addRandomItem() {
+  // Get all menu items from the DOM
+  const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+
+  if (menuItems.length === 0) {
+    showFeedback('No menu items found!');
+    return;
+  }
+
+  // Select a random menu item
+  const randomItem = menuItems[Math.floor(Math.random() * menuItems.length)];
+
+  // Extract item details
+  const menuItemLine = randomItem.querySelector('.menu-item-line');
+  const colAB = menuItemLine.querySelector('.colAB').textContent.trim();
+  const colCDE = menuItemLine.querySelector('.colCDE').textContent.trim();
+
+  // Extract rate (mimic your project's logic)
+  const rateMatch = colCDE.match(/\d+/); // Find the first number in colCDE
+  if (!rateMatch) {
+    showFeedback('No rate found for this item!');
+    return;
+  }
+  const rate = rateMatch[0];
+
+  // Extract category details
+  const categoryHeader = randomItem.closest('.category-items').previousElementSibling;
+  const categoryLeft = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
+  const categoryRight = categoryHeader.querySelector('.right').textContent.trim(); // Get the right side of the header
+
+  // Extract item name
+  const itemName = colAB.split('(')[0].trim();
+
+  // Combine names (mimic your project's logic)
+  let combinedName = `${categoryLeft} - ${itemName}`;
+
+  // Extract the specific part of the header-right side that matches the rate
+  if (categoryRight) {
+    // Split the header-right side by "/" or other delimiters
+    const rightParts = categoryRight.split('/').map(part => part.trim());
+
+    // Find the corresponding part based on the rate column (C/D/E)
+    const rateColumn = menuItemLine.querySelector('.colCDE').textContent.trim();
+    const rateIndex = rateColumn.split(' / ').findIndex(part => part.includes(rate));
+
+    // If a matching part is found, append it to the name
+    if (rateIndex !== -1 && rightParts[rateIndex]) {
+      combinedName += ` (${rightParts[rateIndex]})`;
+    }
+  }
+
+  // Add to scrap list
+  scrapItems.push({
+    name: combinedName,
+    rate: rate
+  });
+
+  // Update UI
+  updateScrapListDisplay();
+  updateScrapCounter();
+  showFeedback('DEV: Random item added!');
+
+  // Animate the rate movement (mimic your project's logic)
+  animateRateMovement(menuItemLine.querySelector('.colCDE'));
+  
+  updateScrapButtonStatus()
+}
+
+// Keyboard shortcut: Ctrl + Shift + P
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') {
+    e.preventDefault(); // Prevent browser conflicts
+    addRandomItem(); // Call the function
+  }
+});
+
+// Touch Gesture: Two-Finger Long Press (1 second)
+document.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 2) { // Detects two fingers
+    longPressTimer = setTimeout(() => {
+      addRandomItem(); // Trigger after 1 second
+    }, 1000); // 1000ms = 1 second
+  }
+});
+
+document.addEventListener('touchend', () => {
+  clearTimeout(longPressTimer); // Cancel if fingers are lifted early
+});
+
+
+
+
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+                                  
+// Development - 20 items and 4 offers
+document.getElementById('devFill').addEventListener('click', () => {
+  // Clear existing data
+  scrapItems = [];
+  offerCart = [];
+
+  // Get all menu items from the DOM
+  const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+
+  // Generate 20 random scrap items from real menu data
+  for (let i = 0; i < 20; i++) {
+    const randomItem = menuItems[Math.floor(Math.random() * menuItems.length)];
+    const itemName = randomItem.querySelector('.colAB').textContent.trim();
+    const itemRate = randomItem.querySelector('.colCDE').textContent.match(/\d+/)[0]; // Extract first number as rate
+
+    scrapItems.push({
+      name: itemName,
+      rate: itemRate
+    });
+  }
+
+  // Generate 4 random offers from real offer data
+  const offerItems = Array.from(document.querySelectorAll('.offer-item'));
+  for (let i = 0; i < 4; i++) {
+    const randomOffer = offerItems[Math.floor(Math.random() * offerItems.length)];
+    const offerTitle = randomOffer.querySelector('.offer-title').textContent.trim();
+    const offerDescription = randomOffer.querySelector('.offer-description').textContent.trim();
+    const offerDates = randomOffer.querySelector('.offer-dates').textContent.trim();
+    const dependencies = randomOffer.querySelector('.add-offer-btn').dataset.dependencies === 'Yes';
+    const allowOnce = randomOffer.querySelector('.add-offer-btn').dataset.allowOnce === 'Yes';
+
+    offerCart.push({
+      title: offerTitle,
+      description: offerDescription,
+      dates: [offerDates],
+      count: 1,
+      dependent: dependencies,
+      allowOnce: allowOnce
+    });
+  }
+
+  // Update displays
+  updateScrapListDisplay();
+  updateCartDisplay();
+  updateScrapButtonStatus();
+  showFeedback('DEV: Random data loaded from real items!');
+
+  // Show both panels
+  document.getElementById('scrapList').style.display = 'flex';
+  document.getElementById('offer-cart').style.display = 'block';
+  document.querySelector('.scrap-overlay').style.display = 'block';
+});
+                    
+                    
+                    
+          
                 </script>        
                 <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
-                </body>
-                </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+            </body>
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
