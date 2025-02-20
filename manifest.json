@@ -1,7 +1,7 @@
 {
   "name": "Chai Sutta Bar",
   "short_name": "CSB",
-  "start_url": "/",
+  "start_url": "/index.html",
   "display": "standalone",
   "icons": [
     {
