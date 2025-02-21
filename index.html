@@ -1339,10 +1339,10 @@
             }
             
             .phone-icon:hover {
-    transform: translateY(-50%) scaleX(-1) scale(1.2); /* Slightly enlarge on hover */
-    opacity: 0.8; /* Reduce opacity slightly */
-    cursor: pointer;
-}
+            transform: translateY(-50%) scaleX(-1) scale(1.2); /* Slightly enlarge on hover */
+            opacity: 0.8; /* Reduce opacity slightly */
+            cursor: pointer;
+            }
             
             /* Wrap container */
             .social {
@@ -1962,27 +1962,26 @@
                     </div>
                 </div>
                 
-<!-- Development Button -->
-<button id="devFill" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; padding: 1rem; background: #ff4444; color: white; border: none; border-radius: 5px;">
-DEV-Order
-</button>
+                <!-- Development Button -->
+                <button id="devFill" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; padding: 1rem; background: #ff4444; color: white; border: none; border-radius: 5px;">
+                    DEV-Order
+                </button>
                 
                 <script>
                     // temp disable offer cart button
                     document.getElementById("toggle-cart").style.display = "none"; // Hide
                     
-                    
+                    // google script URL
                     const scriptUrl = "https://script.google.com/macros/s/AKfycbzEjqDlAhzGNmTn7M81p6_POCCvhgbT1UlCQKJIPZ9TNgdGGTikxB8EDnNSc99LMym5Qg/exec";
                     
-                    
+                    //Disable context menu, cut-copy-paste
                     document.addEventListener('contextmenu', event => event.preventDefault());
                     document.addEventListener('copy', event => event.preventDefault());
                     document.addEventListener('cut', event => event.preventDefault());
                     document.addEventListener('paste', event => event.preventDefault());
                     
-                    // let whatsappOfferNumber = '918968444425'; // Default value as fallback
-                    let cachedOrderNumber = null;
-                    
+                    // Declarations
+                    let cachedOrderNumber = null;                    
                     
                     
                     function showFeedback(message) {
@@ -2050,8 +2049,7 @@ DEV-Order
                                 'coofe': 'coffee',
                             };
                         }
-                    }
-                    
+                    }                    
                     // Initialize when page loads
                     loadReplacements();
                     
@@ -2229,16 +2227,8 @@ DEV-Order
                                 } else {
                                 offersContainer.style.display = 'none';
                                 offersButton.querySelector('.arrow').textContent = '▼'
-                            }
-                            
-                            
-                            
-                            
+                            }   
                         });
-                        
-                        
-                        
-                        
                         
                         const totalItemsDiv = document.getElementById('total-items-found');
                         
@@ -2260,9 +2250,7 @@ DEV-Order
                                 totalItemsDiv.style.color = '#ff4d4d'; // Red for visibility
                             }
                             totalItemsDiv.style.display = 'block'; // Show only when search is not empty
-                        }
-                        
-                        
+                        }  
                     }
                     
                     // Add event listener to filter buttons
@@ -2306,7 +2294,6 @@ DEV-Order
                     const clearButton = document.getElementById('clearButton');
                     // The magnifierIcon remains always visible, so no toggling is required here
                     
-                    // Modify the input handler like this
                     // Modify the search handler like this
                     searchInput.addEventListener('input', (e) => {
                         let query = e.target.value;
@@ -2331,8 +2318,6 @@ DEV-Order
                             );
                         });
                         
-                        
-                        
                         // 3. Pass to filter
                         filterMenuItems(query);
                         
@@ -2350,7 +2335,9 @@ DEV-Order
                             offersButton.querySelector('.arrow').textContent = '▼';
                         }
                         
-                    });             
+                    }); 
+                    
+                    
                     
                     // Clear Button Event Listener
                     clearButton.addEventListener('click', () => {
@@ -2372,7 +2359,6 @@ DEV-Order
                         searchInput.focus();
                         resetHeaders();
                     });
-                    
                     
                     
                     
@@ -2507,8 +2493,6 @@ DEV-Order
                         document.querySelector('.footer-container').style.display = 'block'; // Show footer
                         
                         
-                        
-                        
                         // Remove the loading overlay after the data is fetched and processed
                         document.getElementById('loadingOverlay').style.display = 'none';
                     })
@@ -2545,652 +2529,7 @@ DEV-Order
                     
                     
                     
-                    // Get references to sidebar and phone icon
-                    let sidebar = document.getElementById('sidebar');
-                    let phoneIcon = document.querySelector('.phone-icon'); // Select existing phone.svg icon
                     
-                    // Function to toggle sidebar
-                    function toggleSidebar(event) {
-                        event.stopPropagation(); // Prevent immediate closing when clicking phone icon
-                        sidebar.classList.toggle('open');
-                    }
-                    
-                    // Function to close sidebar when clicking outside
-                    function closeSidebar(event) {
-                        // Ensure sidebar stays open when clicking inside it
-                        if (!sidebar.contains(event.target) && !phoneIcon.contains(event.target)) {
-                            sidebar.classList.remove('open');
-                            overlay.style.display = 'none'; // Hide overlay
-                            document.body.style.overflow = ''; // Restore scrolling
-                        }
-                    }
-                    
-                    // Stop click inside the sidebar from closing it
-                    sidebar.addEventListener('click', function(event) {
-                        event.stopPropagation(); // Prevent bubbling up to document click event
-                    });
-                    
-                    // Add event listeners
-                    phoneIcon.addEventListener('click', toggleSidebar);
-                    document.addEventListener('click', closeSidebar);
-                    
-                    
-                    
-                    
-                    const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
-                    
-                    fetch(miscUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.length >= 2) {
-                            // Fetch delivery phone number from B3 cell
-                            let deliveryPhone = data[3][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
-                            if (deliveryPhone) {
-                                deliveryPhone = deliveryPhone.replace(/-/g, ""); // Remove dashes
-                                const formattedDeliveryPhone = `tel:+91${deliveryPhone}`; // Add country code
-                                
-                                // Update the delivery phone link
-                                const deliveryLinkElement = document.getElementById('delivery-link');
-                                if (deliveryLinkElement) {
-                                    deliveryLinkElement.href = formattedDeliveryPhone;
-                                }
-                            }
-                            
-                            // Fetch WhatsApp phone number from B4 cell (3rd row, 2nd column, 0-indexed)
-                            let chatNumber = data[4][1];
-                            if (chatNumber) {
-                                chatNumber = chatNumber.replace(/-/g, ""); // Remove dashes
-                            }
-                            
-                            // Fetch WhatsApp message from B5 cell (4th row, 2nd column, 0-indexed)
-                            let message = data[5][1]; 
-                            if (!message || message.trim() === "") {
-                                message = "Hello Chai Sutta Bar!"; // Default message
-                            }
-                            
-                            // URL-encode the message for the WhatsApp link
-                            const encodedMessage = encodeURIComponent(message);
-                            
-                            // Construct the full WhatsApp link dynamically
-                            const whatsappLink = `https://wa.me/+91${chatNumber}?text=${encodedMessage}`;
-                            
-                            // Update the href attribute of the anchor tag with the new link
-                            const whatsappLinkElement = document.getElementById('whatsapp-link');
-                            if (whatsappLinkElement) {
-                                whatsappLinkElement.href = whatsappLink;
-                            }
-                            
-                            // Fetch phone number from B6 cell (5th row, 2nd column, 0-indexed)
-                            let contactPhone = data[6][1]; 
-                            if (contactPhone) {
-                                contactPhone = contactPhone.replace(/-/g, ""); // Remove dashes
-                                const formattedContactPhone = `tel:+91${contactPhone}`; // Add country code
-                                
-                                // Update the phone link dynamically
-                                const phoneLinkElement = document.getElementById("phone-link");
-                                if (phoneLinkElement) {
-                                    phoneLinkElement.href = formattedContactPhone;
-                                }
-                            }
-                            
-                            // Fetch WhatsApp offer number from B8 cell
-                            let offerWhatsappNumber = data[7][1]; // B8 is 8th row (index 7), 2nd column (index 1)
-                            if (offerWhatsappNumber) {
-                                offerWhatsappNumber = offerWhatsappNumber.replace(/-/g, ""); // Remove dashes
-                                whatsappOfferNumber = '+91' + offerWhatsappNumber; // Add country code
-                            }
-                            
-                            
-                            
-                            
-                            
-                            
-                            // Extract Open and Close times from Google Sheets
-                            const openTimeStr = data[0][1]; // Example: "09.30am"
-                            const closeTimeStr = data[1][1]; // Example: "10.45pm"
-                            
-                            // Get current date
-                            const now = new Date();
-                            const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Get today's date without time
-                            
-                            // Convert the date in data[2][0] to a Date object (assuming it's already in dd/mm/yy format and can be parsed directly)
-                            const dataDate = new Date(data[2][0]); // This assumes the date is in a format that JavaScript can parse directly (e.g., mm/dd/yyyy or yyyy/mm/dd)
-                            
-                            // Check if data[2][0] is today's date and data[2][1] is not empty
-                            if (dataDate.getTime() === currentDate.getTime() && data[2][1] !== "") {
-                                // If the date is today and data[2][1] is not empty, set statusMessage to data[2][1]
-                                statusMessage = `<span style="color: #FFA500;">${data[2][1]}</span>`;
-                                } else {
-                                // Check if either openTimeStr or closeTimeStr is empty
-                                if (!openTimeStr || !closeTimeStr) {
-                                    // If one or both times are missing, don't display anything
-                                    const timeElem = document.querySelector('.open-close');
-                                    if (timeElem) {
-                                        timeElem.innerHTML = "";
-                                    }
-                                    return; // Exit the function
-                                }
-                                
-                                // Add validation for time format
-                                if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
-                                    console.error('Invalid time format detected');
-                                    return;
-                                }
-                                
-                                // Convert Open and Close times to Date objects
-                                const openTime = parseCustomTime(openTimeStr);
-                                const closeTime = parseCustomTime(closeTimeStr);
-                                
-                                // Get current time
-                                const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
-                                
-                                // Convert Open and Close times to minutes since midnight
-                                const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
-                                const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
-                                
-                                // Compare times based on minutes from midnight
-                                if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
-                                    const timeLeft = closeTimeInMinutes - currentTime;
-                                    const blinkClass = timeLeft <= 30 ? 'blink' : '';
-                                    statusMessage = `<span style="color: #00FF00; font-weight: bold;">Open</span> <span class="${blinkClass}">until ${formatTime(closeTime)}</span>`;
-                                    } else {
-                                    let timeUntilOpen = openTimeInMinutes - currentTime;
-                                    
-                                    // Check if the opening time is on the next day
-                                    if (timeUntilOpen < 0) {
-                                        // Calculate the time difference until the next day's opening
-                                        const minutesInDay = 24 * 60;
-                                        timeUntilOpen = minutesInDay + timeUntilOpen; // Add a full day's worth of minutes
-                                    }
-                                    
-                                    
-                                    const blinkClass = timeUntilOpen <= 30 ? 'blink' : '';
-                                    statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ <span class="${blinkClass}">Opens ${formatTime(openTime)}</span>`;
-                                }
-                            }
-                            
-                            
-                            // Update the display
-                            const timeElem = document.querySelector('.open-close');
-                            if (timeElem) {
-                                timeElem.innerHTML = statusMessage;
-                            }
-                            
-                        }                
-                    })
-                    .catch(error => {
-                        console.error("Error fetching Misc data:", error);
-                    });
-                    
-                    // Function to parse custom time format (hh.mmap)
-                    function parseCustomTime(timeStr) {
-                        // Extract hour, minute, and period using regex
-                        const match = timeStr.match(/(\d{1,2})\.(\d{2})(am|pm)/i);
-                        if (!match) {
-                            console.error('Invalid time format:', timeStr);
-                            return new Date(); // Handle error appropriately
-                        }
-                        
-                        let hour = parseInt(match[1], 10);
-                        const minute = parseInt(match[2], 10);
-                        const period = match[3].toLowerCase();
-                        
-                        // Convert to 24-hour format
-                        if (period === 'pm' && hour !== 12) {
-                            hour += 12;
-                            } else if (period === 'am' && hour === 12) {
-                            hour = 0;
-                        }
-                        
-                        return new Date(0, 0, 0, hour, minute);
-                    }
-                    
-                    // Function to format time in hh:mm am/pm format
-                    function formatTime(date) {
-                        const hours = date.getHours();
-                        const minutes = date.getMinutes();
-                        const period = hours >= 12 ? "pm" : "am";
-                        const formattedHours = hours % 12 || 12;  // Convert to 12-hour format
-                        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-                        return `${formattedHours}:${formattedMinutes} ${period}`;
-                    }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    function setupHamburgerMenu() {
-                        // Create Hamburger Button
-                        const hamburgerButton = document.createElement('div');
-                        hamburgerButton.id = 'hamburger-button';
-                        hamburgerButton.innerHTML = `
-                        <div class="hamburger-lines">
-                        <div class="line"></div>
-                        <div class="line"></div>
-                        <div class="line"></div>
-                        </div>
-                        `;
-                        
-                        // Create hsidebar container
-                        const hsidebarContainer = document.createElement('div');
-                        hsidebarContainer.className = 'hsidebar-container';
-                        
-                        // Append it to the header
-                        document.querySelector('.header').appendChild(hamburgerButton);
-                        
-                        // Create Sidebar (fixed missing close button and footer)
-                        const hsidebar = document.createElement('div');
-                        hsidebar.id = 'hsidebar';
-                        hsidebar.innerHTML = `
-                        <div class="hsidebar-content">
-                        
-                        <div id="close-sidebar" class="close-btn">&times;</div>
-                        
-                        <div class="hsidebar-option" id="likeContainer">
-                        <div style="display: flex; align-items: center; gap: 3rem;">
-                        <img src="icons/like.svg" alt="Like Icon" class="menu-icon invert-icon" id="likeIcon">
-                        <span id="likeCounter"></span>
-                        </div>
-                        <div id="feedback"></div>
-                        </div>
-                        
-                        <div class="hsidebar-option" id="install-app">
-                        <img src="icons/install.svg" alt="Install Icon" class="menu-icon invert-icon">
-                        Install CSB App
-                        </div>
-                        <div class="hsidebar-option" id="share-app-link">
-                        <img src="icons/share.svg" alt="Share Icon" class="menu-icon green-icon">
-                        Share App Link
-                        </div>
-                        <div class="hsidebar-option" id="show-qrcode">
-                        <img src="icons/qr-code.svg" alt="Install Icon" class="menu-icon green-icon">
-                        App QR Code
-                        </div>
-                        <div class="hsidebar-option" id="device-screen-info">
-                        <img src="icons/display.svg" alt="Install Icon" class="menu-icon invert-icon">
-                        Screen Info
-                        </div>
-                        
-                        <div class="footer-text" id="footer-info">
-                        <div class="footer-content">
-                        <img src="icon-192.png" alt="CSB Logo" class="footer-logo">
-                        <div>
-                        Chai Sutta Bar - BPA<br>Version 1.20.3 x64<br>Developed by Brar
-                        </div>
-                        </div>
-                        </div>                        
-                        </div>`;
-                        
-                        hsidebarContainer.appendChild(hsidebar);
-                        document.body.appendChild(hsidebarContainer);
-                        
-                        // pwa
-                        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-                            const installOption = document.getElementById('install-app');
-                            installOption.classList.add('disabled-option');
-                            installOption.onclick = null;  // Remove click handler
-                        }
-                        
-                        // Create Backdrop
-                        const overlay = document.createElement('div');
-                        overlay.id = 'hsidebar-overlay';
-                        document.body.appendChild(overlay);
-                        
-                        
-                        // Open Sidebar
-                        hamburgerButton.addEventListener('click', () => {
-                            hsidebar.classList.add('open');
-                            overlay.style.display = 'block';
-                            document.body.style.overflow = 'hidden'; 
-                            document.documentElement.style.overflow = 'hidden'; 
-                        });
-                        
-                        // Close Sidebar when clicking outside
-                        document.addEventListener(
-                        'click',
-                        (event) => {
-                            if (!hsidebar.contains(event.target) && !hamburgerButton.contains(event.target)) {
-                                hsidebar.classList.remove('open');
-                                overlay.style.display = 'none';
-                                document.body.style.overflow = ''; // Unlock scrolling
-                                document.documentElement.style.overflow = ''; // Unlock scrolling
-                            }
-                        },
-                        true // Use capture phase
-                        );
-                        
-                        // Close Sidebar on Escape Key
-                        document.addEventListener('keydown', (e) => {
-                            if (e.key === "Escape") {
-                                hsidebar.classList.remove('open');
-                                overlay.style.display = 'none';
-                                document.body.style.overflow = '';
-                                document.documentElement.style.overflow = ''; // Unlock scrolling on html
-                            }
-                        });
-                        
-                        // Close Sidebar when clicking on the cross button
-                        document.getElementById('close-sidebar').addEventListener('click', () => {
-                            hsidebar.classList.remove('open');
-                            overlay.style.display = 'none';
-                            document.body.style.overflow = ''; // Unlock scrolling
-                            document.documentElement.style.overflow = ''; // Unlock scrolling
-                        });
-                        
-                        // Swipe Left to Close Sidebar (Mobile Gesture)
-                        let startX;
-                        let startY;
-                        
-                        hsidebar.addEventListener('touchstart', (e) => {
-                            const touchStart = e.touches[0];
-                            startX = touchStart.clientX;
-                            startY = touchStart.clientY;
-                        });
-                        
-                        hsidebar.addEventListener('touchend', (e) => {
-                            const touchEnd = e.changedTouches[0];
-                            const deltaX = touchEnd.clientX - startX;
-                            const deltaY = touchEnd.clientY - startY;
-                            
-                            if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
-                                hsidebar.classList.remove('open');
-                                overlay.style.display = 'none';
-                                document.body.style.overflow = '';
-                                document.documentElement.style.overflow = '';
-                                document.body.style.height = '';
-                                document.documentElement.style.height = '';
-                            }
-                        });
-                        
-                        
-                        
-                        
-                        // Add event listeners to options to activate overlay and lock scrolling
-                        const options = document.querySelectorAll('.hsidebar-option');
-                        options.forEach(option => {
-                            option.addEventListener('click', () => {
-                                overlay.style.display = 'block';
-                                document.body.style.overflow = 'hidden'; 
-                                document.documentElement.style.overflow = 'hidden'; 
-                            });
-                        });
-                        
-                        // Install App
-                        document.getElementById('install-app').addEventListener('click', () => {
-                            if (deferredPrompt) {
-                                deferredPrompt.prompt();
-                                deferredPrompt.userChoice.then((choiceResult) => {
-                                    console.log(choiceResult.outcome === 'accepted' ? 'User accepted' : 'User dismissed');
-                                    deferredPrompt = null;
-                                });
-                            }
-                        });
-                        
-                        // Add Share functionality
-                        document.getElementById('share-app-link').addEventListener('click', () => {
-                            const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
-                            if (navigator.share) {
-                                navigator.share({
-                                    title: 'Chai Sutta Bar',
-                                    url: appLink
-                                }).catch(console.error);
-                                } else {
-                                navigator.clipboard.writeText(appLink).then(() => {
-                                    showFeedback('Link copied');
-                                });
-                            }
-                        });
-                        
-                        // Create QR Code Modal
-                        const qrCodeModal = document.createElement('div');
-                        qrCodeModal.id = 'qr-code-modal';
-                        qrCodeModal.innerHTML = `
-                        <div class="modal-content">
-                       <span id="close-qr-modal">&times;</span>
-                        <img src="qrcode.png" alt="QR Code">
-                        </div>
-                        `;
-                        document.body.appendChild(qrCodeModal);
-                        
-                        // Fixed QR Code handler
-                        document.getElementById('show-qrcode').addEventListener('click', () => {
-                            hsidebar.classList.remove('open');
-                            overlay.style.display = 'none';
-                            qrCodeModal.style.display = 'block'; // Use the already defined variable
-                        });
-                        
-                        // Close QR Code Modal
-                        document.getElementById('close-qr-modal').addEventListener('click', () => {
-                            qrCodeModal.style.display = 'none';
-                            document.body.style.overflow = ''; // Unlock scrolling
-                            document.documentElement.style.overflow = ''; // Unlock scrolling
-                        });
-                        
-                        // Close QR Code Modal on Click Outside
-                        window.addEventListener('click', (event) => {
-                            if (event.target === qrCodeModal) {
-                                qrCodeModal.style.display = 'none';
-                                document.body.style.overflow = ''; // Unlock scrolling
-                                document.documentElement.style.overflow = ''; // Unlock scrolling
-                            }
-                        });
-                        
-                        // Show Device Screen Info
-                        document.getElementById('device-screen-info').addEventListener('click', function() {
-                            showDeviceInfoModal();
-                        });
-                        
-                        
-                    } //hdidebar
-                    
-                    // Call the setup function
-                    setupHamburgerMenu();
-                    
-                    
-                    
-                    
-                    
-                    function showDeviceInfoModal() {
-                        // Hide the sidebar when showing the modal
-                        const hsidebar = document.getElementById('hsidebar');
-                        const overlay = document.getElementById('hsidebar-overlay');
-                        hsidebar.classList.remove('open');
-                        overlay.style.display = 'block';
-                        document.body.style.overflow = 'hidden';
-                        
-                        // Create modal container
-                        const modalContainer = document.createElement('div');
-                        modalContainer.style.position = 'fixed';
-                        modalContainer.style.top = '0';
-                        modalContainer.style.left = '0';
-                        modalContainer.style.width = '100%';
-                        modalContainer.style.height = '100%';
-                        modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                        modalContainer.style.display = 'flex';
-                        modalContainer.style.justifyContent = 'center';
-                        modalContainer.style.alignItems = 'center';
-                        modalContainer.style.zIndex = '1000';
-                        
-                        // Create modal content container
-                        const modalContent = document.createElement('div');
-                        modalContent.style.padding = '20px';
-                        modalContent.style.fontFamily = 'Arial, sans-serif';
-                        modalContent.style.backgroundColor = '#fff';
-                        modalContent.style.color = '#333';
-                        modalContent.style.borderRadius = '8px';
-                        modalContent.style.width = '80%';
-                        modalContent.style.maxWidth = '500px';
-                        modalContent.style.fontSize = '13px';
-                        modalContent.style.position = 'relative';
-                        modalContent.style.textAlign = 'center';
-                        
-                        // Function to update screen info dynamically
-                        function updateScreenInfo() {
-                            const screenWidth = window.screen.width;
-                            const screenHeight = window.screen.height;
-                            const innerWidth = window.innerWidth;
-                            const innerHeight = window.innerHeight;
-                            const pixelRatio = window.devicePixelRatio;
-                            const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
-                            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                            const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
-                            
-                            // Get OS and Browser
-                            const osName = getOSName();
-                            const browserVersion = getBrowserVersion();
-                            
-                           modalContent.innerHTML = `
-    <style>
-        #modal-content p {
-            margin-bottom: 3rem;
-        }
-    </style>
-    <div id="modal-content">
-        <h3 style="font-size: 6rem; font-weight: bold; margin-bottom: 20px;">Screen Info</h3>
-        <p><strong>Screen Resolution:</strong> ${screenWidth} x ${screenHeight}</p>
-        <p><strong>Viewport Size:</strong> ${innerWidth} x ${innerHeight}</p>
-        <p><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
-        <p><strong>Effective DPI/PPI:</strong> ${96 * pixelRatio} dpi</p>
-        <p><strong>Device Type:</strong> ${deviceType}</p>
-        <p><strong>Touch Events Support:</strong> ${isTouchDevice}</p>
-        <p><strong>Operating System:</strong> ${osName}</p>
-        <p><strong>Internet Browser:</strong> ${browserVersion}</p>
-        <p><strong>Time Zone:</strong> ${timeZone}</p>
-        <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
-        <button id="close-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: transparent; color: #333; border: 1px solid #333; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
-    </div>
-`;
-
-                            
-                            // Copy text functionality
-        const copyButton = modalContent.querySelector('#copy-button');
-        copyButton.addEventListener('click', function (event) {
-            event.stopPropagation();
-            const text = modalContent.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                copyButton.textContent = "Text Copied";
-                copyButton.style.backgroundColor = "gray";
-                copyButton.style.cursor = "not-allowed";
-                copyButton.disabled = true;
-            }).catch(err => console.error('Failed to copy:', err));
-        });
-
-                            
-                            // Close modal functionality
-                            modalContent.querySelector('#close-modal').addEventListener('click', closeModal);
-                        }
-                        
-                        // Append modal content and add to DOM
-                        modalContainer.appendChild(modalContent);
-                        document.body.appendChild(modalContainer);
-                        updateScreenInfo(); // Initial call to set data
-                        
-                        // Update screen info dynamically on resize
-                        window.addEventListener('resize', updateScreenInfo);
-                        
-                        // Function to close modal
-                        function closeModal() {
-                            document.body.removeChild(modalContainer);
-                            document.body.style.overflow = '';
-                            window.removeEventListener('resize', updateScreenInfo); // Cleanup event listener
-                        }
-                        
-                        // Close modal on clicking outside
-                        modalContainer.addEventListener('click', function (event) {
-                            if (event.target === modalContainer) {
-                                closeModal();
-                            }
-                        });
-                        
-                        // Close modal on Escape key
-                        window.addEventListener('keydown', function (event) {
-                            if (event.key === 'Escape') {
-                                closeModal();
-                            }
-                        });
-                    }
-                    
-                    // Functions to detect OS and Browser
-                    function getOSName() {
-                        let ua = navigator.userAgent;
-                        if (ua.indexOf("Windows NT 10.0") !== -1) return "Windows 10/11";
-                        if (ua.indexOf("Windows NT 6.3") !== -1) return "Windows 8.1";
-                        if (ua.indexOf("Windows NT 6.2") !== -1) return "Windows 8";
-                        if (ua.indexOf("Windows NT 6.1") !== -1) return "Windows 7";
-                        if (ua.indexOf("Mac OS X") !== -1) return "macOS";
-                        if (ua.indexOf("Android") !== -1) return "Android";
-                        if (ua.indexOf("Linux") !== -1) return "Linux";
-                        if (ua.indexOf("iPhone") !== -1 || ua.indexOf("iPad") !== -1) return "iOS";
-                        return "Unknown OS";
-                    }
-                    
-                    function getBrowserVersion() {
-                        let ua = navigator.userAgent;
-                        let browserInfo = "Unknown Browser";
-                        
-                        let edgeMatch = ua.match(/Edg\/(\d+\.\d+)/);
-                        let chromeMatch = ua.match(/Chrome\/(\d+\.\d+)/);
-                        let firefoxMatch = ua.match(/Firefox\/(\d+\.\d+)/);
-                        let safariMatch = ua.match(/Version\/(\d+\.\d+).*Safari/);
-                        let operaMatch = ua.match(/OPR\/(\d+\.\d+)/);
-                        
-                        if (edgeMatch) {
-                            browserInfo = "Edge " + edgeMatch[1];
-                            } else if (chromeMatch) {
-                            browserInfo = "Chrome " + chromeMatch[1];
-                            } else if (firefoxMatch) {
-                            browserInfo = "Firefox " + firefoxMatch[1];
-                            } else if (safariMatch) {
-                            browserInfo = "Safari " + safariMatch[1];
-                            } else if (operaMatch) {
-                            browserInfo = "Opera " + operaMatch[1];
-                        }
-                        
-                        return browserInfo;
-                    }
-                    
-                    
-                    
-                    
-                    
-                    let deferredPrompt; // Variable to hold the deferred prompt event
-                    
-                    // Listen for the beforeinstallprompt event
-                    window.addEventListener("beforeinstallprompt", (e) => {
-                        e.preventDefault(); // Prevent the default prompt from showing automatically
-                        deferredPrompt = e; // Store the event so we can trigger it later
-                        
-                        // Optionally, show a custom install button here if needed
-                        // document.getElementById('install-button').style.display = 'block'; 
-                        
-                        // Automatically trigger the prompt after a delay
-                        setTimeout(() => {
-                            deferredPrompt.prompt(); // Show the install prompt
-                            deferredPrompt.userChoice.then((choiceResult) => {
-                                // Handle the user's response
-                                if (choiceResult.outcome === "accepted") {
-                                    console.log("User accepted the install prompt");
-                                    } else {
-                                    console.log("User dismissed the install prompt");
-                                }
-                                deferredPrompt = null; // Reset the deferred prompt
-                            });
-                        }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-                    });
                     
                     
                     
@@ -3232,16 +2571,16 @@ DEV-Order
                         const offerCartElement = document.getElementById('offer-cart');
                         
                         
-                          // Check if both carts are empty
-    const hasScrapItems = scrapItems.length > 0;
-    const hasCartItems = offerCart.length > 0;
-
-    if (!hasScrapItems && !hasCartItems) {
-        const existingModal = document.getElementById('orderListWarningModal');
-        if (!existingModal) showOrderListWarning();
-        return; // Exit before showing scrap overlay
-    }
-    
+                        // Check if both carts are empty
+                        const hasScrapItems = scrapItems.length > 0;
+                        const hasCartItems = offerCart.length > 0;
+                        
+                        if (!hasScrapItems && !hasCartItems) {
+                            const existingModal = document.getElementById('orderListWarningModal');
+                            if (!existingModal) showOrderListWarning();
+                            return; // Exit before showing scrap overlay
+                        }
+                        
                         if (!scrapVisible) {
                             overlay.style.display = 'block';
                             document.body.style.overflow = 'hidden';
@@ -3250,7 +2589,7 @@ DEV-Order
                             document.body.style.overflow = '';
                         }
                         
-                       
+                        
                         // Toggle visibility based on content
                         scrapVisible = !scrapVisible;
                         
@@ -3336,13 +2675,13 @@ DEV-Order
                             }
                         });
                         
-                 function closeModal() {
-        modal.remove();
-        isWarningVisible = false;
-        
-        // Add this line to ensure scrap overlay is hidden
-        document.querySelector('.scrap-overlay').style.display = 'none';
-    }
+                        function closeModal() {
+                            modal.remove();
+                            isWarningVisible = false;
+                            
+                            // Add this line to ensure scrap overlay is hidden
+                            document.querySelector('.scrap-overlay').style.display = 'none';
+                        }
                         
                         const autoCloseTimer = setTimeout(closeModal, 60000);
                         
@@ -3360,6 +2699,8 @@ DEV-Order
                         
                         isWarningVisible = true;
                     }
+                    
+                    
                     
                     
                     
@@ -3427,36 +2768,24 @@ DEV-Order
                         updateCartDisplay(); 
                     }
                     
+                                        
+                    // Add this function to update the counter
+                    function updateScrapCounter() {
+                        const counter = document.querySelector('#scrapButton .counter-badge');
+                        counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
+                        counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
+                        
+                        
+                        // Add animation when items are added
+                        if(scrapItems.length > 0) {
+                            counter.style.transform = 'scale(1.2)';
+                            setTimeout(() => counter.style.transform = 'scale(1)', 200);
+                        }
+                    } 
                     
                     
-                    // Close scrap list when clicking close button
-                    document.getElementById('closeScrap').addEventListener('click', function() {
-                        closeScrapList();
-                        closeOfferCart()
-                    });
                     
                     
-document.getElementById('clearScrap').addEventListener('click', () => {
-    const scrapList = document.getElementById('scrapList');
-    const overlay = document.querySelector('.scrap-overlay');
-    
-    // Clear scrap items
-    scrapItems = [];
-    updateScrapListDisplay();
-    showFeedback("Order list cleared");
-    
-    // Close the scrap list
-    scrapList.style.display = 'none';
-    scrapVisible = false;
-    
-    // Only hide overlay if offer cart is also empty
-    if (offerCart.length === 0) {
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-    
-    handleScrapItemsChange();
-});              
                     
                     // Add items to scrap list when clicking rates
                     document.getElementById('menu').addEventListener('click', (e) => {
@@ -3679,7 +3008,7 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                         totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item' : 'items'} - Total: ₹${totalPrice.toFixed(0)}`;
                         
                         
-                        // Step 5: Add event listeners for quantity controls
+                        // Step 5: scrap-increment-button
                         document.querySelectorAll('.increment-btn').forEach(btn => {
                             btn.addEventListener('click', (e) => {
                                 e.stopPropagation();
@@ -3716,6 +3045,7 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                             
                         }
                         
+                        // scrap-decrement-button                        
                         document.querySelectorAll('.decrement-btn').forEach(btn => {
                             btn.addEventListener('click', (e) => {
                                 e.stopPropagation();
@@ -3764,7 +3094,7 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                         }
                         
                         
-                        // Existing delete button handlers
+                        // scrap-delete-button
                         document.querySelectorAll('.delete-btn').forEach(btn => {
                             btn.addEventListener('click', (e) => {
                                 e.stopPropagation();
@@ -3789,30 +3119,23 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                     
                     
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    // Modify close functions
-                    function closeScrapList() {
-                        document.querySelector('.scrap-overlay').style.display = 'none';
-                        document.body.style.overflow = '';
-                        scrapVisible = false;
-                        document.getElementById('scrapList').style.display = 'none';
-                    }
-                    
                     // Function to trim the first non-English character from a string
                     function trimLeftNonEnglish(text) {
                         return text.replace(/^[^A-Za-z]+/, '');
-                    }
+                    }                    
                     
+
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    // Scrap-order button
                     document.getElementById('orderScrap').addEventListener('click', async () => {
                         if (scrapItems.length === 0) {
                             showOrderListWarning();
@@ -3877,40 +3200,28 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                         cachedOrderNumber = orderNumber;
                     });
                     
-                    
-                    function calculateTotal() {
-                        return scrapItems.reduce((total, item) => {
-                            return total + parseFloat(item.rate);
-                        }, 0);
-                    }
-                    
-                    
-                    
-                    
-                    
-                    // Add this function to update the counter
-                    function updateScrapCounter() {
-                        const counter = document.querySelector('#scrapButton .counter-badge');
-                        counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
-                        counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
+                    // scrap-clear button
+                    document.getElementById('clearScrap').addEventListener('click', () => {
+                        const scrapList = document.getElementById('scrapList');
+                        const overlay = document.querySelector('.scrap-overlay');
                         
+                        // Clear scrap items
+                        scrapItems = [];
+                        updateScrapListDisplay();
+                        showFeedback("Order list cleared");
                         
-                        // Add animation when items are added
-                        if(scrapItems.length > 0) {
-                            counter.style.transform = 'scale(1.2)';
-                            setTimeout(() => counter.style.transform = 'scale(1)', 200);
+                        // Close the scrap list
+                        scrapList.style.display = 'none';
+                        scrapVisible = false;
+                        
+                        // Only hide overlay if offer cart is also empty
+                        if (offerCart.length === 0) {
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = '';
                         }
-                    } 
-                    
-                    
-                    
-                    // Escape key handler
-                    document.addEventListener('keydown', (e) => {
-                        if (e.key === "Escape") {
-                            closeScrapList();
-                            closeOfferCart();
-                        }
-                    });
+                        
+                        handleScrapItemsChange();
+                    });  
                     
                     
                     
@@ -3932,12 +3243,44 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                     
                     
                     
+
                     
                     
                     
                     
                     
-                    // Offers search
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     let offersData = [];
                     let offerNsg = '';
                     let offerCart = [];
@@ -4012,14 +3355,6 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                         console.error('Error loading offers:', error);
                     });
                     
-                    // Close offers when clicking outside
-                    document.addEventListener('click', (e) => {
-                        if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
-                            offersContainer.style.display = 'none';
-                            const arrow = offersButton.querySelector('.arrow');
-                            if (arrow) arrow.textContent = '▼';
-                        }
-                    });
                     
                     
                     function updateOfferAddButtons() {
@@ -4088,7 +3423,7 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                     
                     
                     
-                    // Modified toggle cart event listener
+                    // offer-button
                     document.getElementById('toggle-cart').addEventListener('click', (e) => {
                         e.stopPropagation();
                         if (offerCart.length === 0) {
@@ -4113,20 +3448,6 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                         offerCart.style.display = offerCartVisible ? 'block' : 'none';
                     }
                     
-                    function closeOfferCart() {
-                        const scrapList = document.getElementById('scrapList');
-                        const overlay = document.querySelector('.scrap-overlay');
-                        
-                        // Hide the offer cart
-                        document.getElementById('offer-cart').style.display = 'none';
-                        offerCartVisible = false;
-                        
-                        // Only hide the overlay if scrapList is also not visible
-                        if (scrapList.style.display !== 'flex') {
-                            overlay.style.display = 'none';
-                            document.body.style.overflow = '';
-                        }
-                    }
                     
                     
                     
@@ -4166,7 +3487,7 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                         </div>
                         `).join('');
                         
-                        // Add event listeners for new delete buttons
+                        // offer-delete-button
                         document.querySelectorAll('.offer-delete-btn').forEach(btn => {
                             btn.addEventListener('click', (e) => {
                                 const index = parseInt(e.target.dataset.index);
@@ -4185,11 +3506,7 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                     
                     
                     
-                    // Update close button handler
-                    document.getElementById('closeOffer').addEventListener('click', closeOfferCart);
-                    
-                    
-                    // Add quantity adjustment function
+                    // offer-stepper logic
                     function adjustOfferQuantity(index, delta) {
                         const group = offerCart[index];
                         const maxLimit = group.allowOnce ? 1 : Infinity;
@@ -4219,20 +3536,17 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                     
                     
                     
-                    // Add event listener for clear button
-                    document.getElementById('clear-offers').addEventListener('click', clearOfferCart);
-                    
-                    function clearOfferCart() {
-                        offerCart = [];
-                        updateCartDisplay();
-                        updateOfferAddButtons();
-                        updateScrapButtonStatus();
-                        showFeedback('Offer cart cleared!');
-                        closeOfferCart();
-                    }
                     
                     
-                    // Add order functionality
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    // offer-order button
                     document.getElementById('order-offers').addEventListener('click', sendOfferCart);
                     
                     function sendOfferCart() {
@@ -4260,6 +3574,17 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                         updateScrapButtonStatus();
                     }
                     
+                    // offer-clear button
+                    document.getElementById('clear-offers').addEventListener('click', clearOfferCart);
+                    
+                    function clearOfferCart() {
+                        offerCart = [];
+                        updateCartDisplay();
+                        updateOfferAddButtons();
+                        updateScrapButtonStatus();
+                        showFeedback('Offer cart cleared!');
+                        closeOfferCart();
+                    }
                     
                     
                     
@@ -4271,7 +3596,26 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                     
                     
                     
-                    // Add this document click handler
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    // Cloing of scraplist and offer-cart
+
+                    
+                    // scrap-close-outside offer-close-outside
                     document.addEventListener('click', (e) => {
                         const scrapList = document.getElementById('scrapList');
                         const offerCart = document.getElementById('offer-cart');
@@ -4292,9 +3636,70 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                             closeOfferCart();
                         }
                     });
+                                                           
+                    // offer-close-outside
+                    document.addEventListener('click', (e) => {
+                        if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
+                            offersContainer.style.display = 'none';
+                            const arrow = offersButton.querySelector('.arrow');
+                            if (arrow) arrow.textContent = '▼';
+                        }
+                    });
+                    
+                                        
+                    // scrap-close-cross
+                    document.getElementById('closeScrap').addEventListener('click', function() {
+                        closeScrapList();
+                        closeOfferCart()
+                    });
+                    
+                    // Modify close functions
+                    function closeScrapList() {
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCartElement = document.getElementById('offer-cart');
+                        const overlay = document.querySelector('.scrap-overlay');
+                        
+                        scrapList.style.display = 'none';
+                        scrapVisible = false;
+                        
+                        // Check if offer cart is visible or has items before hiding overlay
+                        if (offerCartElement.style.display === 'block') {
+                            overlay.style.display = 'block'; // Keep overlay if offer cart is visible
+                            document.body.style.overflow = 'hidden';
+                            } else {
+                            overlay.style.display = 'none'; // Hide overlay only when both are closed
+                            document.body.style.overflow = '';
+                        }
+                    }                     
+                                        
+                    // offer-close-cross
+                    document.getElementById('closeOffer').addEventListener('click', closeOfferCart);                    
+                    
+                    function closeOfferCart() {
+                        const scrapList = document.getElementById('scrapList');
+                        const overlay = document.querySelector('.scrap-overlay');
+                        
+                        // Hide the offer cart
+                        document.getElementById('offer-cart').style.display = 'none';
+                        offerCartVisible = false;
+                        
+                        // Only hide the overlay if scrapList is also not visible
+                        if (scrapList.style.display !== 'flex') {
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = '';
+                        }
+                    }
                     
                     
+                    // scrap-close-esc offer-close-esc
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === "Escape") {
+                            closeScrapList();
+                            closeOfferCart();
+                        }
+                    });
                     
+
                     // Add stopPropagation to the containers to prevent immediate closing
                     document.getElementById('scrapList').addEventListener('click', e => e.stopPropagation());
                     document.getElementById('offer-cart').addEventListener('click', e => e.stopPropagation());                
@@ -4346,445 +3751,15 @@ document.getElementById('clearScrap').addEventListener('click', () => {
                     window.addEventListener('scroll', updateCartPosition); // Keep it fixed on scroll  
                     
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    // Counters
-                    async function updateCounter(type) {
-                        try {
-                            const response = await fetch(`${scriptUrl}?sheet=counter&action=${type}`);
-                            return await response.json();
-                            } catch (error) {
-                            console.error(`Error updating ${type} counter:`, error);
-                        }
-                    }
-                    
-                    
-                    
-                    function setupViewsCounter() {
-                        if (typeof Storage !== 'undefined') {
-                            const viewsKey = 'csb_views';
-                            if (!localStorage.getItem(viewsKey)) {
-                                // If the user is new, update the views counter
-                                localStorage.setItem(viewsKey, '1');
-                                updateCounter('updateViews').then(data => {
-                                    document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
-                                    
-                                });
-                                } else {
-                                // If the user is returning, just fetch the current views count
-                                updateCounter('getViews').then(data => {
-                                    document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
-                                    
-                                });
-                            }
-                        }
-                    }
-                    
-                    async function updateViewCounter() {
-                        try {
-                            await fetch(`${scriptUrl}?sheet=counter&action=updateViews`);
-                            } catch (error) {
-                            console.error("Error updating view counter:", error);
-                        }
-                    }
-                    
-                    async function getViews() {
-                        try {
-                            const response = await fetch(`${scriptUrl}?sheet=counter&action=getViews`);
-                            const data = await response.json();
-                            return data.count; // Return the views count
-                            } catch (error) {
-                            console.error('Error fetching views:', error);
-                            return 0; // Fallback to 0 if the request fails
-                        }
-                    }
-                    
-                    
-                    
-                    function setupVisitorCounter() {
-                        if (typeof Storage !== 'undefined') {
-                            const visitorKey = 'csb_visitor';
-                            if (!localStorage.getItem(visitorKey)) {
-                                localStorage.setItem(visitorKey, '1');
-                                updateCounter('updateVisitors').then(data => {
-                                    document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
-                                    
-                                });
-                                } else {
-                                updateCounter('getVisitors').then(data => {
-                                    document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
-                                    
-                                });
-                            }
-                        }
-                    }
-                    
-                    
-                    function setupLikeButton() {
-                        const likeIcon = document.getElementById('likeIcon');
-                        const likeCounterElement = document.getElementById('likeCounter');
-                        const likeKey = 'csb_like';
-                        
-                        updateCounter('getLikes').then(data => {
-                            likeCounterElement.textContent = String(data.count).padStart(3, '0');
-                        });
-                        
-                        if (localStorage.getItem(likeKey)) {
-                            likeIcon.classList.add('liked');
-                        }
-                        
-                        document.getElementById('likeContainer').addEventListener('click', () => {
-                            if (!localStorage.getItem(likeKey)) {
-                                localStorage.setItem(likeKey, 'true');
-                                likeIcon.classList.add('liked');
-                                startBlinking(likeCounterElement);
-                                
-                                updateCounter('incrementLikes').then(data => {
-                                    stopBlinking(likeCounterElement);
-                                    animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                                    showFeedback('Thank you!');
-                                });
-                                } else {
-                                localStorage.removeItem(likeKey);
-                                likeIcon.classList.remove('liked');
-                                startBlinking(likeCounterElement);
-                                
-                                updateCounter('decrementLikes').then(data => {
-                                    stopBlinking(likeCounterElement);
-                                    animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
-                                });
-                            }
-                        });
-                    }
-                    
-                    // Apply existing pop animation
-                    function animateCounter(element, newValue) {
-                        element.classList.remove('like-animate');
-                        void element.offsetWidth; // Trigger reflow
-                        element.textContent = newValue;
-                        element.classList.add('like-animate');
-                    }
-                    
-                    // Start blinking animation
-                    function startBlinking(element) {
-                        element.classList.add('blinking');
-                    }
-                    
-                    // Stop blinking animation
-                    function stopBlinking(element) {
-                        element.classList.remove('blinking');
-                    }
-                    
-                    
-                    async function initializeOrderNumber() {
-                        try {
-                            const response = await fetch(`${scriptUrl}?sheet=counter&action=getOrders`);
-                            const data = await response.json();
-                            cachedOrderNumber = data.count; // Store the current order number
-                            } catch (error) {
-                            console.error('Failed to fetch order number:', error);
-                            cachedOrderNumber = 0; // Fallback to 0 if the request fails
-                        }
-                    }
-                    
-                    
-                    
-                    
-                    
-                    // Initialize counters when the page loads
-                    document.addEventListener('DOMContentLoaded', () => {
-                        
-                        setupViewsCounter();
-                        updateViewCounter();
-                        
-                        setupVisitorCounter();
-                        
-                        setupLikeButton();
-                        
-                        initializeOrderNumber();
-                        
-                    });
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-    // Cheat - Full menu - 3 finegr tap, Ctrl+Shift+E                
-                    let threeFingerStartTime = 0;
-                    
-                    document.addEventListener('touchstart', (e) => {
-                        const touches = e.touches;
-                        
-                        if (touches.length === 1) {
-                            // Record time when first finger touches
-                            threeFingerStartTime = Date.now();
-                            } else if (touches.length === 3) {
-                            // Check if three fingers landed within 300ms of the first touch
-                            const now = Date.now();
-                            if (threeFingerStartTime !== 0 && now - threeFingerStartTime <= 300) {
-                                activateCheatMode();
-                                threeFingerStartTime = 0; // Prevent multi-trigger
-                            }
-                        }
-                    });
-                    
-                    document.addEventListener('touchend', (e) => {
-                        // Reset timer when all fingers are lifted
-                        if (e.touches.length === 0) {
-                            threeFingerStartTime = 0;
-                        }
-                    });
-                    
-                    // Keyboard cheat: Ctrl + Shift + E
-                    document.addEventListener('keydown', (e) => {
-                        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
-                            e.preventDefault(); // Prevent browser conflicts
-                            activateCheatMode();
-                        }
-                    });
-                    
-                    // Cheat activation function
-                    function activateCheatMode() {
-                        // 1. Expand all categories and add borders
-                        document.querySelectorAll('.category-header').forEach(header => {
-                            const items = header.nextElementSibling;
-                            // Expand header
-                            header.style.fontSize = '6rem';
-                            header.querySelector('.right').style.display = 'inline';
-                            // Add border to header
-                            header.classList.add('visible-border');
-                            
-                            // Expand items and add border
-                            items.style.display = 'block';
-                            items.classList.add('visible-border');
-                        });
-                        
-                        // 2. Expand offers and show their borders
-                        // offersContainer.style.display = 'grid';
-                        // offersButton.querySelector('.arrow').textContent = '▲';
-                    }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-             
-            
-            
-            
-            
-            
-            
-            
-            
-                    
-                    
-// Cheat - Random item - 2 finegr long press, Ctrl+Shift+P
-let longPressTimer = null; // Timer for long press detection
 
-// Function to add a random item
-function addRandomItem() {
-  // Get all menu items from the DOM
-  const menuItems = Array.from(document.querySelectorAll('.menu-item'));
-
-  if (menuItems.length === 0) {
-    showFeedback('No menu items found!');
-    return;
-  }
-
-  // Select a random menu item
-  const randomItem = menuItems[Math.floor(Math.random() * menuItems.length)];
-
-  // Extract item details
-  const menuItemLine = randomItem.querySelector('.menu-item-line');
-  const colAB = menuItemLine.querySelector('.colAB').textContent.trim();
-  const colCDE = menuItemLine.querySelector('.colCDE').textContent.trim();
-
-  // Extract rate (mimic your project's logic)
-  const rateMatch = colCDE.match(/\d+/); // Find the first number in colCDE
-  if (!rateMatch) {
-    showFeedback('No rate found for this item!');
-    return;
-  }
-  const rate = rateMatch[0];
-
-  // Extract category details
-  const categoryHeader = randomItem.closest('.category-items').previousElementSibling;
-  const categoryLeft = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
-  const categoryRight = categoryHeader.querySelector('.right').textContent.trim(); // Get the right side of the header
-
-  // Extract item name
-  const itemName = colAB.split('(')[0].trim();
-
-  // Combine names (mimic your project's logic)
-  let combinedName = `${categoryLeft} - ${itemName}`;
-
-  // Extract the specific part of the header-right side that matches the rate
-  if (categoryRight) {
-    // Split the header-right side by "/" or other delimiters
-    const rightParts = categoryRight.split('/').map(part => part.trim());
-
-    // Find the corresponding part based on the rate column (C/D/E)
-    const rateColumn = menuItemLine.querySelector('.colCDE').textContent.trim();
-    const rateIndex = rateColumn.split(' / ').findIndex(part => part.includes(rate));
-
-    // If a matching part is found, append it to the name
-    if (rateIndex !== -1 && rightParts[rateIndex]) {
-      combinedName += ` (${rightParts[rateIndex]})`;
-    }
-  }
-
-  // Add to scrap list
-  scrapItems.push({
-    name: combinedName,
-    rate: rate
-  });
-
-  // Update UI
-  updateScrapListDisplay();
-  updateScrapCounter();
-  showFeedback('DEV: Random item added!');
-
-  // Animate the rate movement (mimic your project's logic)
-  animateRateMovement(menuItemLine.querySelector('.colCDE'));
-  
-  updateScrapButtonStatus()
-}
-
-// Keyboard shortcut: Ctrl + Shift + P
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') {
-    e.preventDefault(); // Prevent browser conflicts
-    addRandomItem(); // Call the function
-  }
-});
-
-// Touch Gesture: Two-Finger Long Press (1 second)
-document.addEventListener('touchstart', (e) => {
-  if (e.touches.length === 2) { // Detects two fingers
-    longPressTimer = setTimeout(() => {
-      addRandomItem(); // Trigger after 1 second
-    }, 1000); // 1000ms = 1 second
-  }
-});
-
-document.addEventListener('touchend', () => {
-  clearTimeout(longPressTimer); // Cancel if fingers are lifted early
-});
-
-
-
-
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-                                  
-// Development - 20 items and 4 offers
-document.getElementById('devFill').addEventListener('click', () => {
-  // Clear existing data
-  scrapItems = [];
-  offerCart = [];
-
-  // Get all menu items from the DOM
-  const menuItems = Array.from(document.querySelectorAll('.menu-item'));
-
-  // Generate 20 random scrap items from real menu data
-  for (let i = 0; i < 20; i++) {
-    const randomItem = menuItems[Math.floor(Math.random() * menuItems.length)];
-    const itemName = randomItem.querySelector('.colAB').textContent.trim();
-    const itemRate = randomItem.querySelector('.colCDE').textContent.match(/\d+/)[0]; // Extract first number as rate
-
-    scrapItems.push({
-      name: itemName,
-      rate: itemRate
-    });
-  }
-
-  // Generate 4 random offers from real offer data
-  const offerItems = Array.from(document.querySelectorAll('.offer-item'));
-  for (let i = 0; i < 4; i++) {
-    const randomOffer = offerItems[Math.floor(Math.random() * offerItems.length)];
-    const offerTitle = randomOffer.querySelector('.offer-title').textContent.trim();
-    const offerDescription = randomOffer.querySelector('.offer-description').textContent.trim();
-    const offerDates = randomOffer.querySelector('.offer-dates').textContent.trim();
-    const dependencies = randomOffer.querySelector('.add-offer-btn').dataset.dependencies === 'Yes';
-    const allowOnce = randomOffer.querySelector('.add-offer-btn').dataset.allowOnce === 'Yes';
-
-    offerCart.push({
-      title: offerTitle,
-      description: offerDescription,
-      dates: [offerDates],
-      count: 1,
-      dependent: dependencies,
-      allowOnce: allowOnce
-    });
-  }
-
-  // Update displays
-  updateScrapListDisplay();
-  updateCartDisplay();
-  updateScrapButtonStatus();
-  showFeedback('DEV: Random data loaded from real items!');
-
-  // Show both panels
-  document.getElementById('scrapList').style.display = 'flex';
-  document.getElementById('offer-cart').style.display = 'block';
-  document.querySelector('.scrap-overlay').style.display = 'block';
-});
                     
                     
                     
-          
                 </script>        
-                <script src="app.js"></script> <!-- Ensure app.js is correctly linked -->
+                <script src="app.js"></script> <!-- PWA -->                
+                <script src="com.js"></script> <!-- Commu sidebar -->                
+                <script src="ham.js"></script> <!-- Hamburger sidebar -->                
+                <script src="counter.js"></script> <!-- Counters -->                
+                <script src="cheat.js"></script> <!-- Cheats, Dev tools -->                
             </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
