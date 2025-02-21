@@ -889,7 +889,7 @@
             #scrapList, #offer-cart {
             display: none; /* Ensure it is hidden initially */
             position: fixed;
-            top: 6%;
+            top: 8%;
             left: 50%;
             transform: translateX(-50%);
             width: 350px;
@@ -1176,7 +1176,7 @@
             
             #cart-items {
             flex: 1;
-            max-height: 30rem;
+            max-height: 40rem;
             overflow-y: auto;
             }
             
@@ -1434,8 +1434,8 @@
             padding: 2rem;
             background: rgba(33, 33, 33, 0.8);
             border-radius: 50%;
-            width: 8rem;
-            height: 8rem;
+            width: 9rem;
+            height: 9rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1851,7 +1851,7 @@
         <div id="scrapList">
             <div class="scrap-content">                
                 <div id="closeScrap">×</div>
-                <h2 style="font-size: 6rem;">Order List</h2>
+                <h2 style="font-size: 6rem;">Item List</h2>
                 <div id="scrapItemsContainer">
                     <div id="scrapItems"></div>
                     <!-- Total price aligned below the rate column -->
@@ -3458,13 +3458,7 @@
                         const totalOffers = document.getElementById('totalOffers');
                         const toggleBtn = document.getElementById('toggle-cart');
                         
-                        const scrapList = document.getElementById('scrapList');
-                        // Set scrapList height based on offer cart emptiness
-                        if (offerCart.length === 0) {
-                            scrapList.style.maxHeight = '70vh';
-                            } else {
-                            scrapList.style.maxHeight = '45vh';
-                        }
+                       
                         if (offerCart.length === 0) {
                             cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
                             totalOffers.textContent = 'Total Offers: 0';
@@ -3482,32 +3476,32 @@
                         </div>
                         <div class="offer-stepper">
                         <button class="off-decrement-btn" 
-                    onclick="adjustOfferQuantity(${index}, -1)"
-                    ${group.count <= 1 ? 'disabled' : ''}>-</button> <!-- Only check count -->
-                    <span class="offer-qty-display">${group.count}</span>
-                    <button class="off-increment-btn" 
-                    onclick="adjustOfferQuantity(${index}, 1)"
-                    ${(group.allowOnce && group.count >= 1) || 
-                    (group.dependent && scrapItems.length === 0) ? 'disabled' : ''}>+</button>
-                    </div>
-                    <span class="offer-delete-btn" data-title="${group.title}">✕</span>
-                    </div>
-                    `).join('');
-                    
-                    // offer-delete-button
-                    document.querySelectorAll('.offer-delete-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                    const index = parseInt(e.target.dataset.index);
-                    offerCart.splice(index, 1);
-                    updateCartDisplay();
-                    updateScrapButtonStatus();
-                    showFeedback('Offer removed');
-                    });
-                    });
-                    
-                    const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
-                    totalOffers.textContent = `Total Offers: ${totalItems}`;
-                    toggleBtn.textContent = `Offer Cart (${totalItems})`;
+                        onclick="adjustOfferQuantity(${index}, -1)"
+                        ${group.count <= 1 ? 'disabled' : ''}>-</button> <!-- Only check count -->
+                        <span class="offer-qty-display">${group.count}</span>
+                        <button class="off-increment-btn" 
+                        onclick="adjustOfferQuantity(${index}, 1)"
+                        ${(group.allowOnce && group.count >= 1) || 
+                        (group.dependent && scrapItems.length === 0) ? 'disabled' : ''}>+</button>
+                        </div>
+                        <span class="offer-delete-btn" data-title="${group.title}">✕</span>
+                        </div>
+                        `).join('');
+                        
+                        // offer-delete-button
+                        document.querySelectorAll('.offer-delete-btn').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                const index = parseInt(e.target.dataset.index);
+                                offerCart.splice(index, 1);
+                                updateCartDisplay();
+                                updateScrapButtonStatus();
+                                showFeedback('Offer removed');
+                            });
+                        });
+                        
+                        const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
+                        totalOffers.textContent = `Total Offers: ${totalItems}`;
+                        toggleBtn.textContent = `Offer Cart (${totalItems})`;
                     }
                     
                     
@@ -3515,30 +3509,30 @@
                     
                     // offer-stepper logic
                     function adjustOfferQuantity(index, delta) {
-                    const group = offerCart[index];
-                    const maxLimit = group.allowOnce ? 1 : Infinity;
-                    
-                    // Validation checks
-                    if (delta === 1) {
-                    if (group.dependent && scrapItems.length === 0) {
-                    showFeedback('Requires menu items!');
-                    return;
-                    }
-                    if (group.count >= maxLimit) {
-                    showFeedback('Can only add once!');
-                    return;
-                    }
-                    }
-                    
-                    group.count += delta;
-                    
-                    if (group.count < 1) {
-                    offerCart.splice(index, 1);
-                    }
-                    
-                    updateCartDisplay();
-                    updateOfferAddButtons();
-                    updateScrapButtonStatus();
+                        const group = offerCart[index];
+                        const maxLimit = group.allowOnce ? 1 : Infinity;
+                        
+                        // Validation checks
+                        if (delta === 1) {
+                            if (group.dependent && scrapItems.length === 0) {
+                                showFeedback('Requires menu items!');
+                                return;
+                            }
+                            if (group.count >= maxLimit) {
+                                showFeedback('Can only add once!');
+                                return;
+                            }
+                        }
+                        
+                        group.count += delta;
+                        
+                        if (group.count < 1) {
+                            offerCart.splice(index, 1);
+                        }
+                        
+                        updateCartDisplay();
+                        updateOfferAddButtons();
+                        updateScrapButtonStatus();
                     }                 
                     
                     
@@ -3557,40 +3551,40 @@
                     document.getElementById('order-offers').addEventListener('click', sendOfferCart);
                     
                     function sendOfferCart() {
-                    if (offerCart.length === 0) {
-                    showFeedback('Cart is empty!');
-                    return;
-                    }
-                    
-                    let message = '🎊\n';
-                    offerCart.forEach((group, index) => {
-                    group.dates.forEach(date => {
-                    message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
-                    });
-                    });
-                    
-                    message += '\nPlease confirm these offers!';
-                    const encodedMessage = encodeURIComponent(message);
-                    window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
-                    
-                    // Clear the cart after ordering
-                    offerCart = [];
-                    updateCartDisplay();
-                    showFeedback('Offers sent! Cart cleared');
-                    closeOfferCart();
-                    updateScrapButtonStatus();
+                        if (offerCart.length === 0) {
+                            showFeedback('Cart is empty!');
+                            return;
+                        }
+                        
+                        let message = '🎊\n';
+                        offerCart.forEach((group, index) => {
+                            group.dates.forEach(date => {
+                                message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
+                            });
+                        });
+                        
+                        message += '\nPlease confirm these offers!';
+                        const encodedMessage = encodeURIComponent(message);
+                        window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
+                        
+                        // Clear the cart after ordering
+                        offerCart = [];
+                        updateCartDisplay();
+                        showFeedback('Offers sent! Cart cleared');
+                        closeOfferCart();
+                        updateScrapButtonStatus();
                     }
                     
                     // offer-clear button
                     document.getElementById('clear-offers').addEventListener('click', clearOfferCart);
                     
                     function clearOfferCart() {
-                    offerCart = [];
-                    updateCartDisplay();
-                    updateOfferAddButtons();
-                    updateScrapButtonStatus();
-                    showFeedback('Offer cart cleared!');
-                    closeOfferCart();
+                        offerCart = [];
+                        updateCartDisplay();
+                        updateOfferAddButtons();
+                        updateScrapButtonStatus();
+                        showFeedback('Offer cart cleared!');
+                        closeOfferCart();
                     }
                     
                     
@@ -3624,86 +3618,86 @@
                     
                     // scrap-close-outside offer-close-outside
                     document.addEventListener('click', (e) => {
-                    const scrapList = document.getElementById('scrapList');
-                    const offerCart = document.getElementById('offer-cart');
-                    const scrapButton = document.getElementById('scrapButton');
-                    const toggleCart = document.getElementById('toggle-cart');
-                    
-                    // Close scrap list if click is outside
-                    if (scrapList.style.display === 'flex' && 
-                    !scrapList.contains(e.target) && 
-                    !scrapButton.contains(e.target)) {
-                    closeScrapList();
-                    }
-                    
-                    // Close offer cart if click is outside
-                    if (offerCart.style.display === 'block' && 
-                    !offerCart.contains(e.target) && 
-                    !toggleCart.contains(e.target)) {
-                    closeOfferCart();
-                    }
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCart = document.getElementById('offer-cart');
+                        const scrapButton = document.getElementById('scrapButton');
+                        const toggleCart = document.getElementById('toggle-cart');
+                        
+                        // Close scrap list if click is outside
+                        if (scrapList.style.display === 'flex' && 
+                        !scrapList.contains(e.target) && 
+                        !scrapButton.contains(e.target)) {
+                            closeScrapList();
+                        }
+                        
+                        // Close offer cart if click is outside
+                        if (offerCart.style.display === 'block' && 
+                        !offerCart.contains(e.target) && 
+                        !toggleCart.contains(e.target)) {
+                            closeOfferCart();
+                        }
                     });
                     
                     // offer-close-outside
                     document.addEventListener('click', (e) => {
-                    if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
-                    offersContainer.style.display = 'none';
-                    const arrow = offersButton.querySelector('.arrow');
-                    if (arrow) arrow.textContent = '▼';
-                    }
+                        if (!offersContainer.contains(e.target) && !offersButton.contains(e.target)) {
+                            offersContainer.style.display = 'none';
+                            const arrow = offersButton.querySelector('.arrow');
+                            if (arrow) arrow.textContent = '▼';
+                        }
                     });
                     
                     
                     // scrap-close-cross
                     document.getElementById('closeScrap').addEventListener('click', function() {
-                    closeScrapList();
-                    closeOfferCart()
+                        closeScrapList();
+                        closeOfferCart()
                     });
                     
                     // Modify close functions
                     function closeScrapList() {
-                    const scrapList = document.getElementById('scrapList');
-                    const offerCartElement = document.getElementById('offer-cart');
-                    const overlay = document.querySelector('.scrap-overlay');
-                    
-                    scrapList.style.display = 'none';
-                    scrapVisible = false;
-                    
-                    // Check if offer cart is visible or has items before hiding overlay
-                    if (offerCartElement.style.display === 'block') {
-                    overlay.style.display = 'block'; // Keep overlay if offer cart is visible
-                    document.body.style.overflow = 'hidden';
-                    } else {
-                    overlay.style.display = 'none'; // Hide overlay only when both are closed
-                    document.body.style.overflow = '';
-                    }
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCartElement = document.getElementById('offer-cart');
+                        const overlay = document.querySelector('.scrap-overlay');
+                        
+                        scrapList.style.display = 'none';
+                        scrapVisible = false;
+                        
+                        // Check if offer cart is visible or has items before hiding overlay
+                        if (offerCartElement.style.display === 'block') {
+                            overlay.style.display = 'block'; // Keep overlay if offer cart is visible
+                            document.body.style.overflow = 'hidden';
+                            } else {
+                            overlay.style.display = 'none'; // Hide overlay only when both are closed
+                            document.body.style.overflow = '';
+                        }
                     }                     
                     
                     // offer-close-cross
                     document.getElementById('closeOffer').addEventListener('click', closeOfferCart);                    
                     
                     function closeOfferCart() {
-                    const scrapList = document.getElementById('scrapList');
-                    const overlay = document.querySelector('.scrap-overlay');
-                    
-                    // Hide the offer cart
-                    document.getElementById('offer-cart').style.display = 'none';
-                    offerCartVisible = false;
-                    
-                    // Only hide the overlay if scrapList is also not visible
-                    if (scrapList.style.display !== 'flex') {
-                    overlay.style.display = 'none';
-                    document.body.style.overflow = '';
-                    }
+                        const scrapList = document.getElementById('scrapList');
+                        const overlay = document.querySelector('.scrap-overlay');
+                        
+                        // Hide the offer cart
+                        document.getElementById('offer-cart').style.display = 'none';
+                        offerCartVisible = false;
+                        
+                        // Only hide the overlay if scrapList is also not visible
+                        if (scrapList.style.display !== 'flex') {
+                            overlay.style.display = 'none';
+                            document.body.style.overflow = '';
+                        }
                     }
                     
                     
                     // scrap-close-esc offer-close-esc
                     document.addEventListener('keydown', (e) => {
-                    if (e.key === "Escape") {
-                    closeScrapList();
-                    closeOfferCart();
-                    }
+                        if (e.key === "Escape") {
+                            closeScrapList();
+                            closeOfferCart();
+                        }
                     });
                     
                     
@@ -3725,32 +3719,32 @@
                     
                     // Add this function to update positions
                     function updateCartPosition() {
-                    const scrapList = document.getElementById('scrapList');
-                    const offerCart = document.getElementById('offer-cart');
-                    
-                    if (scrapList.style.display === 'flex' && scrapList.children.length > 0) {
-                    // Position offer-cart below scrapList but keep it centered
-                    const scrapListRect = scrapList.getBoundingClientRect();
-                    offerCart.style.position = 'fixed';
-                    offerCart.style.top = `${scrapListRect.bottom + 10}px`;
-                    offerCart.style.left = '50%'; // Center it horizontally
-                    offerCart.style.transform = 'translateX(-50%)'; // Adjust centering
-                    offerCart.style.width = `${scrapList.offsetWidth}px`; // Optional: Match width
-                    } else {
-                    // Reset to default centered position
-                    offerCart.style.position = 'fixed';
-                    offerCart.style.top = '10rem'; // Default position when scrapList is empty
-                    offerCart.style.left = '50%'; // Keep it centered
-                    offerCart.style.transform = 'translateX(-50%)';
-                    offerCart.style.width = ''; // Reset width
-                    }
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCart = document.getElementById('offer-cart');
+                        
+                        if (scrapList.style.display === 'flex' && scrapList.children.length > 0) {
+                            // Position offer-cart below scrapList but keep it centered
+                            const scrapListRect = scrapList.getBoundingClientRect();
+                            offerCart.style.position = 'fixed';
+                            offerCart.style.top = `${scrapListRect.bottom + 10}px`;
+                            offerCart.style.left = '50%'; // Center it horizontally
+                            offerCart.style.transform = 'translateX(-50%)'; // Adjust centering
+                            offerCart.style.width = `${scrapList.offsetWidth}px`; // Optional: Match width
+                            } else {
+                            // Reset to default centered position
+                            offerCart.style.position = 'fixed';
+                            offerCart.style.top = '10rem'; // Default position when scrapList is empty
+                            offerCart.style.left = '50%'; // Keep it centered
+                            offerCart.style.transform = 'translateX(-50%)';
+                            offerCart.style.width = ''; // Reset width
+                        }
                     }
                     
                     // Observer to track changes in scrapList
                     const scrapListObserver = new ResizeObserver(() => {
-                    if (scrapVisible) {
-                    updateCartPosition();
-                    }
+                        if (scrapVisible) {
+                            updateCartPosition();
+                        }
                     });
                     
                     // Update position on window resize
@@ -3762,11 +3756,55 @@
                     
                     
                     
-                    </script>        
-                    <script src="app.js"></script> <!-- PWA -->                
-                    <script src="com.js"></script> <!-- Commu sidebar -->                
-                    <script src="ham.js"></script> <!-- Hamburger sidebar -->                
-                    <script src="counter.js"></script> <!-- Counters -->                
-                    <script src="cheat.js"></script> <!-- Cheats, Dev tools -->                
-                    </body>
-                    </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                    
+                    
+                    // Function to adjust scrapList height
+                    function adjustScrapListHeight() {
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCart = document.getElementById('offer-cart');
+                        
+                        if (offerCart.style.display === 'none') {
+                            scrapList.style.maxHeight = '50vh';
+                            } else {
+                            scrapList.style.maxHeight = '45vh';
+                        }
+                    }
+                    
+                    // Set up MutationObserver to watch for changes in offer-cart visibility
+                   
+                    
+                    const observer = new MutationObserver((mutationsList) => {
+                        for (const mutation of mutationsList) {
+                            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                                adjustScrapListHeight(); // Adjust height whenever style changes
+                            }
+                        }
+                    });
+                    
+                    // Start observing the offer-cart element for style changes
+                    observer.observe(offerCart, {
+                        attributes: true, // Watch for attribute changes
+                        attributeFilter: ['style'] // Specifically watch for style changes
+                    });
+                    
+                    // Initial adjustment
+                    adjustScrapListHeight();
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </script>        
+                <script src="app.js"></script> <!-- PWA -->                
+                <script src="com.js"></script> <!-- Commu sidebar -->                
+                <script src="ham.js"></script> <!-- Hamburger sidebar -->                
+                <script src="counter.js"></script> <!-- Counters -->                
+                <script src="cheat.js"></script> <!-- Cheats, Dev tools -->                
+            </body>
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
