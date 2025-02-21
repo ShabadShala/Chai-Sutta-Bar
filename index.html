@@ -3457,7 +3457,13 @@
                         const cartItems = document.getElementById('cart-items');
                         const totalOffers = document.getElementById('totalOffers');
                         const toggleBtn = document.getElementById('toggle-cart');
-                        
+                         const scrapList = document.getElementById('scrapList');
+    // Set scrapList height based on offer cart emptiness
+    if (offerCart.length === 0) {
+        scrapList.style.maxHeight = '70vh';
+    } else {
+        scrapList.style.maxHeight = '45vh';
+    }
                         if (offerCart.length === 0) {
                             cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
                             totalOffers.textContent = 'Total Offers: 0';
