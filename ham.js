@@ -1,5 +1,3 @@
-
-
 function setupHamburgerMenu() {
     // Create Hamburger Button
     const hamburgerButton = document.createElement('div');
@@ -19,7 +17,7 @@ function setupHamburgerMenu() {
     // Append it to the header
     document.querySelector('.header').appendChild(hamburgerButton);
     
-    // Create Sidebar (fixed missing close button and footer)
+    // Create Sidebar
     const hsidebar = document.createElement('div');
     hsidebar.id = 'hsidebar';
     hsidebar.innerHTML = `
@@ -66,53 +64,59 @@ function setupHamburgerMenu() {
     document.body.appendChild(hsidebarContainer);
     
     
-    // Create Backdrop
-    const overlay = document.createElement('div');
-    overlay.id = 'hsidebar-overlay';
-    document.body.appendChild(overlay);
+    // Ensure only one hoverlay exists
+    let hoverlay = document.getElementById('hsidebar-overlay');
+    if (!hoverlay) {
+        hoverlay = document.createElement('div');
+        hoverlay.id = 'hsidebar-overlay';
+        document.body.appendChild(hoverlay);
+    }
+    
+    // Function to show hoverlay (applies uniform dimming)
+    function showhoverlay(opacity = 0.9) {
+        hoverlay.style.display = 'block';
+        hoverlay.style.opacity = opacity; // Adjust opacity dynamically
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+    }
+    
+    // Function to hide hoverlay
+    function hidehoverlay() {
+        hoverlay.style.display = 'none';
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+    }
+    
+    
+    
+    
+    
     
     
     // Open Sidebar
-    hamburgerButton.addEventListener('click', () => {
+    function openSidebar() {
         hsidebar.classList.add('open');
-        overlay.style.display = 'block';
-        document.body.style.overflow = 'hidden'; 
-        document.documentElement.style.overflow = 'hidden'; 
-    });
+        showhoverlay(0.9); // Default dimming for sidebar
+    }
+    hamburgerButton.addEventListener('click', openSidebar);
     
-    // Close Sidebar when clicking outside
-    document.addEventListener(
-        'click',
-        (event) => {
-            if (!hsidebar.contains(event.target) && !hamburgerButton.contains(event.target)) {
-                hsidebar.classList.remove('open');
-                overlay.style.display = 'none';
-                document.body.style.overflow = ''; // Unlock scrolling
-                document.documentElement.style.overflow = ''; // Unlock scrolling
-            }
-        },
-        true // Use capture phase
-    );
-    
-    // Close Sidebar on Escape Key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === "Escape") {
-            hsidebar.classList.remove('open');
-            overlay.style.display = 'none';
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = ''; // Unlock scrolling on html
-        }
-    });
-    
-    // Close Sidebar when clicking on the cross button
-    document.getElementById('close-sidebar').addEventListener('click', () => {
+    // sidebar-close-cross button
+    function closeSidebar() {
         hsidebar.classList.remove('open');
-        overlay.style.display = 'none';
-        document.body.style.overflow = ''; // Unlock scrolling
-        document.documentElement.style.overflow = ''; // Unlock scrolling
-    });
+        hidehoverlay();
+    }
+    document.getElementById('close-sidebar').addEventListener('click', closeSidebar);
     
-    // Swipe Left to Close Sidebar (Mobile Gesture)
+    // sidebar-close-outside
+    document.addEventListener('click', (event) => {
+        if (!hsidebar.contains(event.target) && !hamburgerButton.contains(event.target)) {
+            closeSidebar();
+        }
+    }, true);
+    
+    
+    
+    // sidebar-close-Swipe Left to Close Sidebar (Mobile Gesture)
     let startX;
     let startY;
     
@@ -128,10 +132,7 @@ function setupHamburgerMenu() {
         const deltaY = touchEnd.clientY - startY;
         
         if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < -50) {
-            hsidebar.classList.remove('open');
-            overlay.style.display = 'none';
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
+            closeSidebar();
             document.body.style.height = '';
             document.documentElement.style.height = '';
         }
@@ -140,15 +141,22 @@ function setupHamburgerMenu() {
     
     
     
-    // Add event listeners to options to activate overlay and lock scrolling
-    const options = document.querySelectorAll('.hsidebar-option');
-    options.forEach(option => {
-        option.addEventListener('click', () => {
-            overlay.style.display = 'block';
-            document.body.style.overflow = 'hidden'; 
-            document.documentElement.style.overflow = 'hidden'; 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Add event listeners to all options  
+    document.querySelectorAll('.hsidebar-option').forEach(option => {
+        option.addEventListener('click', (event) => {           
+            closeSidebar();          
         });
     });
+    
     
     
     
@@ -171,7 +179,6 @@ function setupHamburgerMenu() {
         }
     });
     
-    
     // pwa
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
         const installOption = document.getElementById('install-app');
@@ -190,7 +197,8 @@ function setupHamburgerMenu() {
     
     
     // Add Share functionality
-    document.getElementById('share-app-link').addEventListener('click', () => {
+    document.getElementById('share-app-link').addEventListener('click', () => {  
+        
         const appLink = "https://shabadshala.github.io/Chai-Sutta-Bar/";
         if (navigator.share) {
             navigator.share({
@@ -216,6 +224,7 @@ function setupHamburgerMenu() {
     // Create QR Code Modal
     const qrCodeModal = document.createElement('div');
     qrCodeModal.id = 'qr-code-modal';
+    
     qrCodeModal.innerHTML = `
     <div class="modal-content">
     <span id="close-qr-modal">&times;</span>
@@ -224,15 +233,12 @@ function setupHamburgerMenu() {
     `;
     document.body.appendChild(qrCodeModal);
     
-    
-    
     // QR-Click
     document.getElementById('show-qrcode').addEventListener('click', () => {
         showModal('qr');
     });
     
-    
-    // QR-Close button
+    // QR-Close-cross button
     document.getElementById('close-qr-modal').addEventListener('click', () => {
         hideModal('qr');
     });
@@ -240,9 +246,47 @@ function setupHamburgerMenu() {
     // QR-Close-outside
     window.addEventListener('click', (event) => {
         if (event.target === qrCodeModal) {
-            qrCodeModal.style.display = 'none';
-            document.body.style.overflow = ''; // Unlock scrolling
-            document.documentElement.style.overflow = ''; // Unlock scrolling
+            hideModal('qr');
+        }
+    });
+    
+    
+    
+    
+    // Create Device Info Modal
+    const deviceModal = document.createElement('div');
+    deviceModal.id = 'device-modal';
+    deviceModal.style.display = 'none';
+
+    deviceModal.innerHTML = `
+    <div class="modal-content" id="device-modal-content">
+    <span id="close-device-modal" class="close-btn">&times;</span>
+    <h2>Screen Information</h2>
+    <div id="device-info-dynamic"></div>
+    <button id="copy-device-info" class="copy-button">
+    Copy Text
+    </button>
+    </div>
+    `;
+    document.body.appendChild(deviceModal);
+    
+    
+    
+    // info-click
+    document.getElementById('device-screen-info').addEventListener('click', () => {
+        showDeviceInfoModal(); // This should trigger everything
+    });
+    
+    // info-close-cross button
+    document.getElementById('close-device-modal').addEventListener('click', () => {
+        hideModal('device');
+        window.removeEventListener('resize', updateScreenInfo);
+    });
+    
+    // Info-Close-outside
+    window.addEventListener('click', (event) => {
+        if (event.target === deviceModal) {
+            hideModal('device');
         }
     });
     
@@ -251,37 +295,23 @@ function setupHamburgerMenu() {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // Create Device Info Modal
-    const deviceModal = document.createElement('div');
-deviceModal.id = 'device-modal';
-deviceModal.style.display = 'none'; // Start hidden
-deviceModal.innerHTML = `
-  <div class="modal-content" style="padding: 20px; font-family: Arial, sans-serif; background-color: #2b2b2b; color: #f5f5f5; border-radius: 8px; width: 80%; max-width: 500px; font-size: 14px; position: relative; text-align: center; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);">
-    <span id="close-device-modal" style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; background-color: #444; color: #f5f5f5; border: none; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</span>
-    <h2 style="font-size: 22px; font-weight: bold; margin-bottom: 10px;">Screen Info</h2>
-    <div id="device-modal-content" style="font-size: 14px;"></div>
-  </div>
-`;
-
-
-    document.body.appendChild(deviceModal);
-    
-    
-    
-    
-    
-    
-    
-    
+    // Unified Esc close, sidebar-close-Esc, qr-close-esc, info-close-esc
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+            // Check if any modal is open
+            const qrDisplay = getComputedStyle(qrCodeModal).display;
+            const deviceDisplay = getComputedStyle(deviceModal).display;
+            
+            if (qrDisplay !== 'none') {
+                hideModal('qr');
+                } else if (deviceDisplay !== 'none') {
+                hideModal('device');
+                } else {
+                // If no modals are open, close the sidebar
+                closeSidebar();
+            }
+        }
+    });
     
     
     
@@ -302,85 +332,33 @@ deviceModal.innerHTML = `
         device: deviceModal
     }; 
     
-function showModal(type) {
-    hsidebar.classList.remove('open');
-    overlay.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-    
-    if (type === 'qr') {
-        qrCodeModal.style.display = 'block';
-    } else if (type === 'device') {
-        // Change this line to use flex display
-        deviceModal.style.display = 'flex'; // Instead of 'block'
-    }
-}
-    
-function hideModal(type) {
-    if (type === 'qr') {
-        qrCodeModal.style.display = 'none';
-    } else if (type === 'device') {
-        deviceModal.style.display = 'none';
+    function showModal(type) {
+        if (type === 'qr') {   
+            hsidebar.classList.remove('open');
+            qrCodeModal.style.display = 'block';
+            } else if (type === 'device') {
+            hsidebar.classList.remove('open');
+            deviceModal.style.display = 'flex'; 
+        }
     }
     
-    // CORRECTED: Check actual display status for both modals
-    const isQRVisible = qrCodeModal.style.display !== 'none';
-    const isDeviceVisible = deviceModal.style.display !== 'none';
-    
-    if (!isQRVisible && !isDeviceVisible) {
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-}
-    
-    // Device Info Handler
-    document.getElementById('device-screen-info').addEventListener('click', () => {
-        showDeviceInfoModal(); // This should trigger everything
-    });
-    
-    
-    
-    
-    
-    // Unified Close Handler Close-Esc
-function handleModalClose(e) {
-    // Get actual displayed state using computed styles
-    const qrDisplay = getComputedStyle(qrCodeModal).display;
-    const deviceDisplay = getComputedStyle(deviceModal).display;
-
-    // Handle ESC key
-    if (e.key === "Escape") {
-        if (qrDisplay !== 'none') hideModal('qr');
-        if (deviceDisplay !== 'none') hideModal('device');
+    function hideModal(type) {
+        if (type === 'qr') {
+            qrCodeModal.style.display = 'none';
+            hidehoverlay();
+            } else if (type === 'device') {
+            deviceModal.style.display = 'none';
+            hidehoverlay();
+        }
     }
     
-    // Handle overlay clicks
-    if (e.target === overlay) {
-        if (qrDisplay !== 'none') hideModal('qr');
-        if (deviceDisplay !== 'none') hideModal('device');
-    }
-}
     
-    // Event Listeners
-    document.addEventListener(
-        'click',
-        (event) => {
-            const isDeviceModalOpen = deviceModal.style.display === 'block';
-            const isQRModalOpen = qrCodeModal.style.display === 'block';
-            
-            if (hsidebar.classList.contains('open') && 
-                !hsidebar.contains(event.target) && 
-                !hamburgerButton.contains(event.target) &&
-                !isDeviceModalOpen &&
-                !isQRModalOpen) {
-                hsidebar.classList.remove('open');
-                overlay.style.display = 'none';
-                document.body.style.overflow = '';
-                document.documentElement.style.overflow = '';
-            }
-        },
-        true
-    );
-    document.addEventListener('keydown', handleModalClose);            
+    
+    
+    
+    
+    
+    
     
     
     
@@ -398,29 +376,23 @@ function handleModalClose(e) {
     
     function showDeviceInfoModal() {
         
-        
         // Create modal content container
         const modalContent = document.getElementById('device-modal-content');
         
-        
-        
         // Function to update screen info dynamically
-        function updateScreenInfo() {
-            const screenWidth = window.screen.width;
-            const screenHeight = window.screen.height;
-            const innerWidth = window.innerWidth;
-            const innerHeight = window.innerHeight;
-            const pixelRatio = window.devicePixelRatio;
-            const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
-            
-            // Get OS and Browser
-            const osName = getOSName();
-            const browserVersion = getBrowserVersion();
-            
-            modalContent.innerHTML = `
-            <h3 style="margin-bottom: 20px;"></h3>
+ function updateScreenInfo() {
+        const screenWidth = window.screen.width;
+        const screenHeight = window.screen.height;
+        const innerWidth = window.innerWidth;
+        const innerHeight = window.innerHeight;
+        const pixelRatio = window.devicePixelRatio;
+        const isTouchDevice = 'ontouchstart' in window ? "Touch device" : "Non-touch device";
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const deviceType = (innerWidth <= 767) ? "Mobile or Tablet" : "Desktop";
+        const osName = getOSName();
+        const browserVersion = getBrowserVersion();
+
+        const dynamicContent = `
             <p><strong>Screen Resolution:</strong> ${screenWidth}x${screenHeight}</p>
             <p><strong>Viewport Size:</strong> ${innerWidth}x${innerHeight}</p>
             <p><strong>Device Pixel Ratio:</strong> ${pixelRatio}</p>
@@ -430,20 +402,25 @@ function handleModalClose(e) {
             <p><strong>Operating System:</strong> ${osName}</p>
             <p><strong>Internet Browser:</strong> ${browserVersion}</p>
             <p><strong>Time Zone:</strong> ${timeZone}</p>
-            <button id="copy-button" style="margin-top: 20px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Text</button>
-            `;
-            
-            
-            // Add copy functionality
-            document.getElementById('copy-button').addEventListener('click', () => {
-                const text = modalContent.innerText;
-                navigator.clipboard.writeText(text).then(() => {
-                    const btn = document.getElementById('copy-button');
-                    btn.textContent = "Copied!";
-                    btn.style.backgroundColor = "#888";
-                });
-            });
-        }
+        `;
+        
+        document.getElementById('device-info-dynamic').innerHTML = dynamicContent;
+    }
+        
+        
+        // Add copy functionality each time modal opens
+    document.getElementById('copy-device-info').addEventListener('click', function() {
+        const text = document.getElementById('device-info-dynamic').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.getElementById('copy-device-info');
+            btn.textContent = "Copied!";
+            btn.style.backgroundColor = "#888";
+            setTimeout(() => {
+                btn.textContent = "Copy Text";
+                btn.style.backgroundColor = "#4CAF50";
+            }, 2000);
+        });
+    });
         
         
         // Initial update
@@ -452,42 +429,20 @@ function handleModalClose(e) {
         // Show the modal
         showModal('device');
         
-        // info-close button
-        document.getElementById('close-device-modal').addEventListener('click', () => {
-            hideModal('device');
-            window.removeEventListener('resize', updateScreenInfo);
-        });
-        
-        
-    
-    // Info-Close-outside
-    window.addEventListener('click', (event) => {
-        if (event.target === deviceModal) {
-            deviceModal.style.display = 'none';
-            document.body.style.overflow = ''; // Unlock scrolling
-            document.documentElement.style.overflow = ''; // Unlock scrolling
-        }
-    });
-        
-        
-        
-        
-        
-        
         
         // Add resize listener
         window.addEventListener('resize', updateScreenInfo);
     }
     
     
-} //hdidebar
-
-// Call the setup function
-setupHamburgerMenu();
-
-
-// Functions to detect OS and Browser
-function getOSName() {
+    } //hsidebar
+    
+    // Call the setup function
+    setupHamburgerMenu();
+    
+    
+    // Functions to detect OS and Browser
+    function getOSName() {
     let ua = navigator.userAgent;
     if (ua.indexOf("Windows NT 10.0") !== -1) return "Windows 10/11";
     if (ua.indexOf("Windows NT 6.3") !== -1) return "Windows 8.1";
@@ -498,9 +453,9 @@ function getOSName() {
     if (ua.indexOf("Linux") !== -1) return "Linux";
     if (ua.indexOf("iPhone") !== -1 || ua.indexOf("iPad") !== -1) return "iOS";
     return "Unknown OS";
-}
-
-function getBrowserVersion() {
+    }
+    
+    function getBrowserVersion() {
     let ua = navigator.userAgent;
     let browserInfo = "Unknown Browser";
     
@@ -511,28 +466,28 @@ function getBrowserVersion() {
     let operaMatch = ua.match(/OPR\/(\d+\.\d+)/);
     
     if (edgeMatch) {
-        browserInfo = "Edge " + edgeMatch[1];
-        } else if (chromeMatch) {
-        browserInfo = "Chrome " + chromeMatch[1];
-        } else if (firefoxMatch) {
-        browserInfo = "Firefox " + firefoxMatch[1];
-        } else if (safariMatch) {
-        browserInfo = "Safari " + safariMatch[1];
-        } else if (operaMatch) {
-        browserInfo = "Opera " + operaMatch[1];
+    browserInfo = "Edge " + edgeMatch[1];
+    } else if (chromeMatch) {
+    browserInfo = "Chrome " + chromeMatch[1];
+    } else if (firefoxMatch) {
+    browserInfo = "Firefox " + firefoxMatch[1];
+    } else if (safariMatch) {
+    browserInfo = "Safari " + safariMatch[1];
+    } else if (operaMatch) {
+    browserInfo = "Opera " + operaMatch[1];
     }
     
     return browserInfo;
-}
-
-
-
-
-
-let deferredPrompt; // Variable to hold the deferred prompt event
-
-// Listen for the beforeinstallprompt event
-window.addEventListener("beforeinstallprompt", (e) => {
+    }
+    
+    
+    
+    
+    
+    let deferredPrompt; // Variable to hold the deferred prompt event
+    
+    // Listen for the beforeinstallprompt event
+    window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault(); // Prevent the default prompt from showing automatically
     deferredPrompt = e; // Store the event so we can trigger it later
     
@@ -541,15 +496,15 @@ window.addEventListener("beforeinstallprompt", (e) => {
     
     // Automatically trigger the prompt after a delay
     setTimeout(() => {
-        deferredPrompt.prompt(); // Show the install prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            // Handle the user's response
-            if (choiceResult.outcome === "accepted") {
-                console.log("User accepted the install prompt");
-                } else {
-                console.log("User dismissed the install prompt");
-            }
-            deferredPrompt = null; // Reset the deferred prompt
-        });
+    deferredPrompt.prompt(); // Show the install prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+    // Handle the user's response
+    if (choiceResult.outcome === "accepted") {
+    console.log("User accepted the install prompt");
+    } else {
+    console.log("User dismissed the install prompt");
+    }
+    deferredPrompt = null; // Reset the deferred prompt
+    });
     }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-});    
+    });    

@@ -13,16 +13,7 @@
                         sidebar.classList.toggle('open');
                     }
                     
-                    // Function to close sidebar when clicking outside
-                    function closeSidebar(event) {
-                        // Ensure sidebar stays open when clicking inside it
-                        if (!sidebar.contains(event.target) && !phoneIcon.contains(event.target)) {
-                            sidebar.classList.remove('open');
-                            overlay.style.display = 'none'; // Hide overlay
-                            document.body.style.overflow = ''; // Restore scrolling
-                        }
-                    }
-                    
+
                     // Stop click inside the sidebar from closing it
                     sidebar.addEventListener('click', function(event) {
                         event.stopPropagation(); // Prevent bubbling up to document click event
@@ -30,7 +21,7 @@
                     
                     // Add event listeners
                     phoneIcon.addEventListener('click', toggleSidebar);
-                    document.addEventListener('click', closeSidebar);
+         
                     
                     
                     const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
