@@ -230,14 +230,14 @@
             // 1️⃣ Close on clicking the close button (X)
             modal.querySelector(".close-btn")?.addEventListener("click", closeModal);
             
-            // 2️⃣ Close on pressing the Escape key
+          // 2️⃣ Close on pressing the Escape key
             document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") closeModal();
+                if (e.key === "Escape" && modal.style.display != "none") closeModal();
             });
             
             // 3️⃣ Close on clicking outside the modal
     modal.addEventListener("click", (e) => {
-        if (e.target === modal) { // Ensures it only closes when clicking the backdrop
+        if (e.target === modal && modal.style.display != "none") { // Ensures it only closes when clicking the backdrop
             closeModal();
         }
     });
