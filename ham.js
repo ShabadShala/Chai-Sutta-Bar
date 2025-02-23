@@ -7,11 +7,11 @@
             hamburgerButton = document.createElement('div');
             hamburgerButton.id = 'hamburger-button';
             hamburgerButton.innerHTML = `
-                <div class="hamburger-lines">
-                    <div class="line"></div>
-                    <div class="line"></div>
-                    <div class="line"></div>
-                </div>`;
+            <div class="hamburger-lines">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            </div>`;
         }
         
         // Create hsidebar container
@@ -74,7 +74,7 @@
         hsidebar.querySelector('#close-sidebar').addEventListener('click', () => toggleSidebar(false));
         
         // sidebar-close-outside
-       document.addEventListener('click', (event) => {
+        document.addEventListener('click', (event) => {
             if (!hsidebar.contains(event.target) && !hamburgerButton.contains(event.target) && hsidebar.classList.contains('open')) {
                 setTimeout(() => toggleSidebar(false), 10);
             }
@@ -84,7 +84,7 @@
         // sidebar-close-Esc
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                toggleSidebar(false);
+                toggleSidebar(true);
             }
         });
         
@@ -95,12 +95,12 @@
             startX = touchStart.clientX;
             startY = touchStart.clientY;
         });
-
+        
         hsidebar.addEventListener('touchend', (e) => {
             const touchEnd = e.changedTouches[0];
             const deltaX = touchEnd.clientX - startX;
             const deltaY = touchEnd.clientY - startY;
-
+            
             if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 30 && deltaX < 0) {
                 toggleSidebar(false);
             }
@@ -112,7 +112,7 @@
                 toggleSidebar(false);
                 if (history.state && history.state.sidebarOpen) {
                     history.back();
-                } else {
+                    } else {
                     history.replaceState(null, "", location.href);
                 }
             }
@@ -200,9 +200,68 @@
         
         // opening modals separately
         function openModalStandalone(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-            showOverlay(0.9);
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex'; // Use flex to center the modal
+                modal.style.top = '0'; // Reset top position
+                modal.style.left = '0'; // Reset left position
+                showOverlay(0.9); // Show the overlay
+            }
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function setupModalTriggers(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            
+            function closeModal() {
+                modal.style.display = "none";
+                hideOverlay();
+                history.back(); // Support Android back button
+            }
+            
+            // 1️⃣ Close on clicking the close button (X)
+            modal.querySelector(".close-btn")?.addEventListener("click", closeModal);
+            
+            // 2️⃣ Close on pressing the Escape key
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeModal();
+            });
+            
+            // 3️⃣ Close on clicking outside the modal
+            document.addEventListener("click", (e) => {
+                if (!modal.contains(e.target) && modal.style.display === "block") {
+                    closeModal();
+                }
+            });
+            
+            // 4️⃣ Close on swipe (Mobile)
+            let startX;
+            modal.addEventListener("touchstart", (e) => startX = e.touches[0].clientX);
+            modal.addEventListener("touchend", (e) => {
+                if (startX - e.changedTouches[0].clientX > 50) closeModal(); // Swipe left to close
+            });
+            
+            // 5️⃣ Close on Android back button
+            window.addEventListener("popstate", () => {
+                if (modal.style.display === "block") closeModal();
+            });
+            
+            // Open Modal Function
+            window.openModal = function (modalId) {
+                document.getElementById(modalId).style.display = "block";
+                showOverlay();
+                history.pushState({ modalOpen: true }, "", location.href);
+            };
+        }
+        
         
         
         
@@ -243,12 +302,122 @@
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        const shareModal = document.createElement('div');
+        shareModal.id = 'share-modal';
+        shareModal.className = 'modal';
+        shareModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn">&times;</div>
+        <h2>Share App</h2>
+        <div class="qrcode-container">
+        <img src="qrcode.png" alt="QR Code" class="qrcode">
+        </div>
+        <div class="modal-buttons">
+        <button id="share-qr-code">Share Code</button>
+        <button id="share-link">Share Link</button>
+        </div>
+        </div>
+        `;
+        document.body.appendChild(shareModal);
+        
+        
+        
+        
+document.body.addEventListener('click', (event) => {
+    if (event.target.closest('#share-app')) {
+        toggleSidebar(false); // Close the sidebar
+        openModalStandalone('share-modal'); // Open the share modal
+    }
+});
+        
+        document.getElementById('share-qr-code').addEventListener('click', () => {
+            // Logic to share the QR code image
+            if (navigator.share) {
+                navigator.share({
+                    files: [new File(['qrcode.png'], 'qrcode.png', { type: 'image/png' })],
+                    title: 'Share QR Code',
+                }).then(() => console.log('QR Code shared successfully'))
+                .catch((error) => console.log('Error sharing QR code:', error));
+                } else {
+                alert('Sharing not supported on this device.');
+            }
+        });
+        
+        document.getElementById('share-link').addEventListener('click', () => {
+            // Logic to share the link
+            if (navigator.share) {
+                navigator.share({
+                    url: 'https://shabadshala.github.io/Chai-Sutta-Bar/',
+                    title: 'Share Link',
+                }).then(() => console.log('Link shared successfully'))
+                .catch((error) => console.log('Error sharing link:', error));
+                } else {
+                alert('Sharing not supported on this device.');
+            }
+        });
+        
+    
+        
+        
+        
+       setupModalTriggers('share-modal'); 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     } //hsidebar
     
     // Call the setup function
     setupHamburgerMenu();
     
 })(); // IIFE Ends
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
