@@ -236,11 +236,11 @@
             });
             
             // 3️⃣ Close on clicking outside the modal
-            document.addEventListener("click", (e) => {
-                if (!modal.contains(e.target) && modal.style.display === "block") {
-                    closeModal();
-                }
-            });
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) { // Ensures it only closes when clicking the backdrop
+            closeModal();
+        }
+    });
             
             // 4️⃣ Close on swipe (Mobile)
             let startX;
