@@ -224,23 +224,26 @@
             function closeModal() {
                 modal.style.display = "none";
                 hideOverlay();
-                history.back(); // Support Android back button
+                // Only go back in history if the last entry was added by the modal
+                if (history.state && history.state.modalOpen) {
+                    history.back();
+                }
             }
             
             // 1️⃣ Close on clicking the close button (X)
             modal.querySelector(".close-btn")?.addEventListener("click", closeModal);
             
-          // 2️⃣ Close on pressing the Escape key
+            // 2️⃣ Close on pressing the Escape key
             document.addEventListener("keydown", (e) => {
                 if (e.key === "Escape" && modal.style.display != "none") closeModal();
             });
             
             // 3️⃣ Close on clicking outside the modal
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal && modal.style.display != "none") { // Ensures it only closes when clicking the backdrop
-            closeModal();
-        }
-    });
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal && modal.style.display != "none") { // Ensures it only closes when clicking the backdrop
+                    closeModal();
+                }
+            });
             
             // 4️⃣ Close on swipe (Mobile)
             let startX;
@@ -251,7 +254,12 @@
             
             // 5️⃣ Close on Android back button
             window.addEventListener("popstate", () => {
-                if (modal.style.display === "block") closeModal();
+                if (modal.style.display === "block") {
+                    closeModal();
+                    } else {
+                    // Remove listener if no modal is open
+                    window.removeEventListener("popstate", closeModal);
+                }
             });
             
             // Open Modal Function
@@ -332,12 +340,12 @@
         
         
         
-document.body.addEventListener('click', (event) => {
-    if (event.target.closest('#share-app')) {
-        toggleSidebar(false); // Close the sidebar
-        openModalStandalone('share-modal'); // Open the share modal
-    }
-});
+        document.body.addEventListener('click', (event) => {
+            if (event.target.closest('#share-app')) {
+                toggleSidebar(false); // Close the sidebar
+                openModalStandalone('share-modal'); // Open the share modal
+            }
+        });
         
         document.getElementById('share-qr-code').addEventListener('click', () => {
             // Logic to share the QR code image
@@ -365,11 +373,11 @@ document.body.addEventListener('click', (event) => {
             }
         });
         
-    
         
         
         
-       setupModalTriggers('share-modal'); 
+        
+        setupModalTriggers('share-modal'); 
         
         
         
