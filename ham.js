@@ -534,56 +534,26 @@ document.head.appendChild(style);
 
 // Print QR code image
 document.getElementById('print-qr-code').addEventListener('click', () => {
-    const qrSrc = document.getElementById('qr-code-img').src;
+    // Create a printable content container
+    const printContent = document.createElement('div');
+    printContent.className = 'print-content';
+    printContent.innerHTML = `
+        <h1>Chai Sutta Bar<br>(Bagha Purana)</h1>
+        <img src="${document.getElementById('qr-code-img').src}" class="print-qr-code" alt="QR Code">
+        <p>Scan this QR code to open or install the 'Chai Sutta Bar - Bagha Purana' app</p>
+    `;
 
-    // Open a new blank window
-    const printWindow = window.open('', '_blank');
+    // Append the printable content to the body
+    document.body.appendChild(printContent);
 
-    // Write the printable content
-    printWindow.document.write(`
-        <html>
-        <head>
-            <title>Print QR Code</title>
-            <style>
-                @media print {
-                    @page { margin: 0; }
-                    body { margin: 0; padding: 0; text-align: center; }
-                    .print-content {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        width: 100vw;
-                        height: 100vh;
-                    }
-                    .print-qr-code { width: 300px; height: 300px; }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="print-content">
-                <h1>Chai Sutta Bar<br>(Bagha Purana)</h1>
-                <img id="qr-print-img" class="print-qr-code" alt="QR Code">
-                <p>Scan this QR code to open or install the 'Chai Sutta Bar - Bagha Purana' app</p>
-            </div>
-            <script>
-                // Wait for the image to load before printing
-                const img = document.getElementById('qr-print-img');
-                img.src = "${qrSrc}";
-                img.onload = function() {
-                    setTimeout(() => {
-                        window.print();
-                        setTimeout(() => window.close(), 500);
-                    }, 500); // Small delay ensures rendering on slow devices
-                };
-            </script>
-        </body>
-        </html>
-    `);
+    // Trigger the print dialog
+    window.print();
 
-    printWindow.document.close(); // Required for Safari
+    // Clean up the printable content
+    setTimeout(() => {
+        document.body.removeChild(printContent);
+    }, 100);
 });
-
 
         
         
