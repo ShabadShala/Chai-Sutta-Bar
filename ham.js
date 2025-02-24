@@ -120,25 +120,28 @@
         
         // Ensure a new history state is added when the sidebar is opened (For back button)
         // Open-Close Sidebar
-        function toggleSidebar(forceClose = false) {
-            const sidebar = document.getElementById('hsidebar');
-            if (!sidebar) return;
-            const isOpen = sidebar.classList.contains('open');
-            
-            if (isOpen || forceClose) {
-                sidebar.classList.remove('open');
-                hideOverlay();
-                if (history.state && history.state.sidebarOpen) {
-                    history.back(); // Properly navigate back if sidebar was opened
-                    } else {
-                    history.replaceState(null, "", location.href);
-                }
-                } else {
-                sidebar.classList.add('open');
-                showOverlay(0.9);
-                history.pushState({ sidebarOpen: true }, "", location.href);
-            }
+function toggleSidebar(forceClose = false) {
+    const sidebar = document.getElementById('hsidebar');
+    if (!sidebar) return;
+    const isOpen = sidebar.classList.contains('open');
+
+    if (isOpen || forceClose) {
+        sidebar.classList.remove('open');
+        hideOverlay();
+        
+        // Only manipulate history if we're programmatically closing
+        if (history.state && history.state.sidebarOpen) {
+            history.replaceState(null, "", location.href);
         }
+    } else {
+        sidebar.classList.add('open');
+        showOverlay(0.9);
+        // Push new state only if there's no existing sidebar state
+        if (!history.state || !history.state.sidebarOpen) {
+            history.pushState({ sidebarOpen: true }, "", location.href);
+        }
+    }
+}
         
         
         // Update event listeners:
@@ -246,14 +249,17 @@
             });            
             
             // 5️⃣ Close on Android back button
-            window.addEventListener("popstate", () => {
-                if (modal.style.display === "block") {
-                    closeModal();
-                    } else {
-                    // Remove listener if no modal is open
-                    window.removeEventListener("popstate", closeModal);
-                }
-            });
+window.addEventListener("popstate", function(event) {
+    const hsidebar = document.getElementById('hsidebar');
+    if (hsidebar && hsidebar.classList.contains("open")) {
+        // Close sidebar but don't manipulate history
+        hsidebar.classList.remove('open');
+        hideOverlay();
+        
+        // Clear any existing sidebar state
+        history.replaceState(null, "", location.href);
+    }
+});
             
             // Open Modal Function
             window.openModal = function (modalId) {
@@ -359,18 +365,17 @@
         
         
         //Share QR Code image
-function dataURLtoBlob(dataURL) {
-    const arr = dataURL.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], { type: mime });
-}
-
+        function dataURLtoBlob(dataURL) {
+            const parts = dataURL.split(',');
+            const mime = parts[0].match(/:(.*?);/)[1];
+            const byteString = atob(parts[1]);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mime });
+        }
         
         document.getElementById('share-qr-code').addEventListener('click', async () => {
             try {
@@ -501,19 +506,20 @@ style.textContent = `
         padding: 0;
     }
     .print-content, .print-content * {
-        visibility: visible !important;
+        visibility: visible;
     }
     .print-content {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100vw;
+        height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: white;
         page-break-after: avoid;
     }
     .print-content h1 {
@@ -529,17 +535,12 @@ style.textContent = `
         height: 300px !important;
         margin: 20px auto;
     }
-}
-
-@media screen {
-    .print-content {
-        display: none !important;
-    }
 }`;
 document.head.appendChild(style);
 
 // Print QR code image
 document.getElementById('print-qr-code').addEventListener('click', () => {
+    // Create a printable content container
     const printContent = document.createElement('div');
     printContent.className = 'print-content';
     printContent.innerHTML = `
@@ -548,20 +549,18 @@ document.getElementById('print-qr-code').addEventListener('click', () => {
         <p>Scan this QR code to open or install the 'Chai Sutta Bar - Bagha Purana' app</p>
     `;
 
+    // Append the printable content to the body
     document.body.appendChild(printContent);
 
-    // Delay print to ensure content is rendered
+    // Trigger the print dialog
+    window.print();
+
+    // Clean up the printable content
     setTimeout(() => {
-        window.print();
-        // Cleanup after print
-        const cleanup = () => {
-            document.body.removeChild(printContent);
-            window.removeEventListener('afterprint', cleanup);
-        };
-        window.addEventListener('afterprint', cleanup);
-        setTimeout(cleanup, 1000); // Fallback cleanup
+        document.body.removeChild(printContent);
     }, 100);
 });
+
         
         
         
