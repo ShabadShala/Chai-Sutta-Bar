@@ -243,14 +243,7 @@
                 if (e.target === modal && modal.style.display != "none") { // Ensures it only closes when clicking the backdrop
                     closeModal();
                 }
-            });
-            
-            // 4️⃣ Close on swipe (Mobile)
-            let startX;
-            modal.addEventListener("touchstart", (e) => startX = e.touches[0].clientX);
-            modal.addEventListener("touchend", (e) => {
-                if (startX - e.changedTouches[0].clientX > 50) closeModal(); // Swipe left to close
-            });
+            });            
             
             // 5️⃣ Close on Android back button
             window.addEventListener("popstate", () => {
@@ -354,18 +347,29 @@ shareModal.innerHTML = `
             }
         });
         
-        document.getElementById('share-qr-code').addEventListener('click', () => {
-            // Logic to share the QR code image
-            if (navigator.share) {
-                navigator.share({
-                    files: [new File(['qrcode.png'], 'qrcode.png', { type: 'image/png' })],
-                    title: 'Share QR Code',
-                }).then(() => console.log('QR Code shared successfully'))
-                .catch((error) => console.log('Error sharing QR code:', error));
-                } else {
-                alert('Sharing not supported on this device.');
-            }
-        });
+document.getElementById('share-qr-code').addEventListener('click', async () => {
+    const imgElement = document.getElementById('qr-code-img'); // Your QR code image element
+    const imageUrl = imgElement.src; // Get image source
+
+    try {
+        const response = await fetch(imageUrl); // Fetch the image as a blob
+        const blob = await response.blob(); // Convert response to a blob
+        const file = new File([blob], 'qrcode.png', { type: 'image/png' }); // Create a File object
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: 'Share QR Code',
+            });
+            console.log('QR Code shared successfully');
+        } else {
+            alert('Sharing not supported on this device.');
+        }
+    } catch (error) {
+        console.log('Error sharing QR code:', error);
+    }
+});
+
         
         document.getElementById('share-link').addEventListener('click', () => {
             // Logic to share the link
