@@ -120,32 +120,25 @@
         
         // Ensure a new history state is added when the sidebar is opened (For back button)
         // Open-Close Sidebar
-function toggleSidebar(forceClose = false, isBackButton = false) {
-    const sidebar = document.getElementById('hsidebar');
-    if (!sidebar) return;
-    const isOpen = sidebar.classList.contains('open');
-
-    if (isOpen || forceClose) {
-        sidebar.classList.remove('open');
-        hideOverlay();
-        
-        // Only modify history if not using back button
-        if (!isBackButton) {
-            if (history.state?.sidebarOpen) {
-                history.back();
-            } else {
-                history.replaceState({ isBase: true }, "");
+        function toggleSidebar(forceClose = false) {
+            const sidebar = document.getElementById('hsidebar');
+            if (!sidebar) return;
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen || forceClose) {
+                sidebar.classList.remove('open');
+                hideOverlay();
+                if (history.state && history.state.sidebarOpen) {
+                    history.back(); // Properly navigate back if sidebar was opened
+                    } else {
+                    history.replaceState(null, "", location.href);
+                }
+                } else {
+                sidebar.classList.add('open');
+                showOverlay(0.9);
+                history.pushState({ sidebarOpen: true }, "", location.href);
             }
         }
-    } else {
-        sidebar.classList.add('open');
-        showOverlay(0.9);
-        // Push new state only if not already open
-        if (!history.state?.sidebarOpen) {
-            history.pushState({ sidebarOpen: true }, "");
-        }
-    }
-}
         
         
         // Update event listeners:
@@ -225,9 +218,6 @@ function toggleSidebar(forceClose = false, isBackButton = false) {
         
         
         function setupModalTriggers(modalId) {
-        // Add this at the beginning to initialize history state
-history.replaceState({ isBase: true }, "");
-
             const modal = document.getElementById(modalId);
             if (!modal) return;
             
@@ -256,19 +246,14 @@ history.replaceState({ isBase: true }, "");
             });            
             
             // 5️⃣ Close on Android back button
-window.addEventListener("popstate", function (event) {
-    const hsidebar = document.getElementById('hsidebar');
-    if (hsidebar.classList.contains("open")) {
-        // Close sidebar but don't modify history
-        toggleSidebar(false, true);
-        
-        // If current state is not base, restore it
-        if (!event.state?.isBase) {
-            history.replaceState({ isBase: true }, "");
-        }
-    }
-});
-
+            window.addEventListener("popstate", () => {
+                if (modal.style.display === "block") {
+                    closeModal();
+                    } else {
+                    // Remove listener if no modal is open
+                    window.removeEventListener("popstate", closeModal);
+                }
+            });
             
             // Open Modal Function
             window.openModal = function (modalId) {
@@ -501,47 +486,61 @@ document.getElementById('save-qr-code').addEventListener('click', async () => {
 });
         
         
-        
-        // Add this CSS for print styling
+// Add this CSS for print styling
 const style = document.createElement('style');
 style.textContent = `
 @media print {
+    @page {
+        size: auto;
+        margin: 0;
+    }
     body {
-        margin: 0 !important;
-        padding: 20px !important;
+        visibility: hidden;
+        margin: 0;
+        padding: 0;
+    }
+    .print-content, .print-content * {
+        visibility: visible;
     }
     .print-content {
-        visibility: visible !important;
-        position: relative !important;
-        width: 100% !important;
-        height: auto !important;
-        transform: none !important;
-        page-break-inside: avoid;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        page-break-after: avoid;
+    }
+    .print-content h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .print-content p {
+        font-size: 18px;
+        margin-top: 20px;
     }
     .print-qr-code {
         width: 300px !important;
         height: 300px !important;
-        margin: 20px auto !important;
-    }
-    body > :not(.print-content) {
-        display: none !important;
+        margin: 20px auto;
     }
 }`;
-document.head.appendChild(style);              
-        
-        
-        // Print QR code image 
+document.head.appendChild(style);
+
+// Print QR code image
 document.getElementById('print-qr-code').addEventListener('click', () => {
     // Create a printable content container
     const printContent = document.createElement('div');
     printContent.className = 'print-content';
     printContent.innerHTML = `
-        <h1 style="font-size: 24px; margin-bottom: 20px;">Chai Sutta Bar<br>(Bagha Purana)</h1>
-        <img src="${document.getElementById('qr-code-img').src}" class="print-qr-code" alt="QR Code" style="width: 300px; height: 300px; margin: 20px auto;">
-        <p style="font-size: 18px; margin-top: 20px;">
-            Scan this QR code to open or install the Chai Sutta Bar - Bagha Purana app,<br>
-            or visit: https://shabadshala.github.io/Chai-Sutta-Bar/
-        </p>
+        <h1>Chai Sutta Bar<br>(Bagha Purana)</h1>
+        <img src="${document.getElementById('qr-code-img').src}" class="print-qr-code" alt="QR Code">
+        <p>Scan this QR code to open or install the 'Chai Sutta Bar - Bagha Purana' app</p>
     `;
 
     // Append the printable content to the body
@@ -551,8 +550,11 @@ document.getElementById('print-qr-code').addEventListener('click', () => {
     window.print();
 
     // Clean up the printable content
-    document.body.removeChild(printContent);
+    setTimeout(() => {
+        document.body.removeChild(printContent);
+    }, 100);
 });
+
         
         
         
