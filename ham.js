@@ -321,20 +321,27 @@
         <div class="close-btn">&times;</div>
         <h2>Share App</h2>
         <div class="qrcode-container">
-       <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
+        <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
         </div>
         <div class="modal-buttons">
         <button id="share-qr-code">
         <img src="icons/share.svg" alt="Code" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
         Code
         </button>
+        <button id="save-qr-code">
+        <img src="icons/save.svg" alt="Save" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Save
+        </button>
+        <button id="print-qr-code">
+        <img src="icons/print.svg" alt="Print" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Print
+        </button>
         <button id="share-link">
         <img src="icons/share.svg" alt="Link" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
         Link
         </button>
         </div>
-        </div>
-        `;
+        </div>`;
         
         document.body.appendChild(shareModal);
         
@@ -348,83 +355,86 @@
             }
         });
         
+        setupModalTriggers('share-modal'); 
+        
+        
+        //Share QR Code image
         function dataURLtoBlob(dataURL) {
             const parts = dataURL.split(',');
-    const mime = parts[0].match(/:(.*?);/)[1];
-    const byteString = atob(parts[1]);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type: mime });
-}
-
-
-document.getElementById('share-qr-code').addEventListener('click', async () => {
-    try {
-        const imgElement = document.getElementById('qr-code-img');
-        if (!imgElement) {
-            throw new Error('QR Code image element not found');
+            const mime = parts[0].match(/:(.*?);/)[1];
+            const byteString = atob(parts[1]);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mime });
         }
-
-        let blob;
-        if (imgElement.src.startsWith('data:')) {
-            // If the image is already a data URL, convert it to a blob
-            blob = dataURLtoBlob(imgElement.src);
-        } else {
-            // Fetch the image from the file path
-            const response = await fetch(imgElement.src);
-            if (!response.ok) throw new Error('Failed to fetch QR code');
-            blob = await response.blob();
-        }
-
-        const file = new File([blob], 'qrcode.png', { type: 'image/png' });
-
-        // Localized share messages (only this part is localized)
-        const shareMessages = {
-            en: 'Scan this QR code to open or install the Chai Sutta Bar - Bagha Purana app, or open https://shabadshala.github.io/Chai-Sutta-Bar/',
-            pa: 'ਚਾਹ ਸੂਤਾ ਬਾਰ - ਬਾਘਾ ਪੁਰਾਣਾ ਐਪ ਖੋਲ੍ਹਣ ਜਾਂ ਲੋਡ ਕਰਨ ਲਈ QR ਕੋਡ ਸਕੈਨ ਕਰੋ ਜਾਂ https://shabadshala.github.io/Chai-Sutta-Bar/ ਖੋਲ੍ਹੋ',
-        };
-
-        // Detect user language (e.g., "en" or "pa")
-        const userLanguage = navigator.language.split('-')[0];
-
-        // Prepare share data with localized message
-        const shareData = {
-            files: [file],
-            title: 'Chai Sutta Bar - Bagha Purana',
-            text: shareMessages[userLanguage] || shareMessages.en, // Fallback to English
-        };
-
-        // Check if Web Share API is supported
-        if (navigator.share && navigator.canShare(shareData)) {
-            // Use Web Share API
-            await navigator.share(shareData);
-        } else {
-            // Fallback for unsupported browsers: Download the QR code
-            const url = URL.createObjectURL(file);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'qrcode.png';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            // Fallback message (in English)
-            alert('QR code downloaded. You can share it manually.');
-        }
-    } catch (error) {
-        console.error('Sharing failed:', error);
-
-        // Error message (in English)
-        alert(`Sharing failed: ${error.message}`);
-    }
-});
+        
+        document.getElementById('share-qr-code').addEventListener('click', async () => {
+            try {
+                const imgElement = document.getElementById('qr-code-img');
+                if (!imgElement) {
+                    throw new Error('QR Code image element not found');
+                }
+                
+                let blob;
+                if (imgElement.src.startsWith('data:')) {
+                    // If the image is already a data URL, convert it to a blob
+                    blob = dataURLtoBlob(imgElement.src);
+                    } else {
+                    // Fetch the image from the file path
+                    const response = await fetch(imgElement.src);
+                    if (!response.ok) throw new Error('Failed to fetch QR code');
+                    blob = await response.blob();
+                }
+                
+                const file = new File([blob], 'qrcode.png', { type: 'image/png' });
+                
+                // Localized share messages (only this part is localized)
+                const shareMessages = {
+                    en: 'Scan this QR code to open or install the Chai Sutta Bar - Bagha Purana app, or open https://shabadshala.github.io/Chai-Sutta-Bar/',
+                    pa: 'ਚਾਹ ਸੂਤਾ ਬਾਰ - ਬਾਘਾ ਪੁਰਾਣਾ ਐਪ ਖੋਲ੍ਹਣ ਜਾਂ ਲੋਡ ਕਰਨ ਲਈ QR ਕੋਡ ਸਕੈਨ ਕਰੋ ਜਾਂ https://shabadshala.github.io/Chai-Sutta-Bar/ ਖੋਲ੍ਹੋ',
+                };
+                
+                // Detect user language (e.g., "en" or "pa")
+                const userLanguage = navigator.language.split('-')[0];
+                
+                // Prepare share data with localized message
+                const shareData = {
+                    files: [file],
+                    title: 'Chai Sutta Bar - Bagha Purana',
+                    text: shareMessages[userLanguage] || shareMessages.en, // Fallback to English
+                };
+                
+                // Check if Web Share API is supported
+                if (navigator.share && navigator.canShare(shareData)) {
+                    // Use Web Share API
+                    await navigator.share(shareData);
+                    } else {
+                    // Fallback for unsupported browsers: Download the QR code
+                    const url = URL.createObjectURL(file);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'qrcode.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    // Fallback message (in English)
+                    alert('QR code downloaded. You can share it manually.');
+                }
+                } catch (error) {
+                console.error('Sharing failed:', error);
+                
+                // Error message (in English)
+                alert(`Sharing failed: ${error.message}`);
+            }
+        });
         
         
-        
+        // Share link
         document.getElementById('share-link').addEventListener('click', () => {
             // Logic to share the link
             if (navigator.share) {
@@ -439,10 +449,103 @@ document.getElementById('share-qr-code').addEventListener('click', async () => {
         });
         
         
+        //Save QR code image to local storage
+document.getElementById('save-qr-code').addEventListener('click', async () => {
+    try {
+        const imgElement = document.getElementById('qr-code-img');
+        if (!imgElement) throw new Error('QR Code image element not found');
+
+        let blob;
+        if (imgElement.src.startsWith('data:')) {
+            // If the image is already a data URL, convert it to a blob
+            blob = dataURLtoBlob(imgElement.src);
+        } else {
+            // Fetch the image from the file path
+            const response = await fetch(imgElement.src);
+            if (!response.ok) throw new Error('Failed to fetch QR code');
+            blob = await response.blob();
+        }
+
+        // Create a URL for the blob
+        const url = URL.createObjectURL(blob);
+
+        // Create a temporary anchor element to trigger the download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
+        document.body.appendChild(a);
+        a.click(); // Trigger the download
+        document.body.removeChild(a); // Clean up
+        URL.revokeObjectURL(url); // Release the object URL
+
+        console.log('QR code saved successfully');
+        } catch (error) {
+        console.error('Save failed:', error);
+        alert(`Save failed: ${error.message}`);
+    }
+});
         
         
         
-        setupModalTriggers('share-modal'); 
+        // Add this CSS for print styling
+const style = document.createElement('style');
+style.textContent = `
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .print-content, .print-content * {
+        visibility: visible;
+    }
+    .print-content {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+    }
+    .print-content h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .print-content p {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+    .print-qr-code {
+        width: 300px !important;
+        height: 300px !important;
+        margin: 20px auto;
+    }
+}`;
+document.head.appendChild(style);              
+        
+        
+        // Print QR code image 
+document.getElementById('print-qr-code').addEventListener('click', () => {
+    // Create a printable content container
+    const printContent = document.createElement('div');
+    printContent.className = 'print-content';
+    printContent.innerHTML = `
+        <h1 style="font-size: 24px; margin-bottom: 20px;">Chai Sutta Bar<br>(Bagha Purana)</h1>
+        <img src="${document.getElementById('qr-code-img').src}" class="print-qr-code" alt="QR Code" style="width: 300px; height: 300px; margin: 20px auto;">
+        <p style="font-size: 18px; margin-top: 20px;">
+            Scan this QR code to open or install the Chai Sutta Bar - Bagha Purana app,<br>
+            or visit: https://shabadshala.github.io/Chai-Sutta-Bar/
+        </p>
+    `;
+
+    // Append the printable content to the body
+    document.body.appendChild(printContent);
+
+    // Trigger the print dialog
+    window.print();
+
+    // Clean up the printable content
+    document.body.removeChild(printContent);
+});
+        
         
         
         
