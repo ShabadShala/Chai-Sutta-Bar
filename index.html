@@ -170,20 +170,12 @@
             cursor: pointer;            
             }
             
-            .smart-pick-btn2 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #ff9800;
-    color: white;
-    border: none;
-   padding: 1rem 2rem;
-    border-radius: 1rem;
-    font-size: 5rem;    
-    cursor: pointer;
-    transition: background 0.3s;
+            #smartPickBtn2 {
+    padding: 1.5rem 2rem; /* Apply padding only to this button */
 }
+
             
+           
             #orderScrap, .order-btn {
             background-color: #28a745;
             }
@@ -201,10 +193,7 @@
             background-color: #c82333; /* Darker red on hover */
              transform: translateY(-2px);
             }
-            
-            .smart-pick-btn2:hover {
-             transform: translateY(-2px);
-             }
+
             
             /* Feedback Message */
             .feedback-message {
@@ -795,8 +784,8 @@
     background-color: #ff9800;
     color: white;
     border: none;
-    padding: 3rem 2rem;
-    border-radius: 6px;
+    padding: 2rem 2rem;
+    border-radius: 1rem;
     font-size: 5rem;    
     cursor: pointer;
     transition: background 0.3s;
@@ -804,7 +793,9 @@
 
 .smart-pick-btn:hover {
     background-color: #e68900;
+    transform: translateY(-2px);
 }
+            
 
 .button-icon {
     width: 22px;
@@ -2027,7 +2018,7 @@
                 </div>
                 <div class="button-container">
                     <button id="orderScrap">Order</button>
-                    <button id="smartPickBtn2" class="smart-pick-btn2"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
+                    <button id="smartPickBtn2" class="smart-pick-btn"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
                     <button id="clearScrap">Clear</button>
                 </div>                
             </div>
@@ -2126,8 +2117,8 @@
                 </div>
                 
                 <!-- Development Button -->
-                <button id="devFill" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; padding: 1rem; background: #ff4444; color: white; border: none; border-radius: 5px;">
-                    DEV-Order
+                <button id="devFill" style="position: fixed; bottom: 15px; left: 17px; z-index: 9999; padding: 1rem; background: #ff4444; color: white; border: none; border-radius: 5px;">
+                    DEV
                 </button>
                 
                 <script>
@@ -2808,10 +2799,10 @@ function showEmptyWarningInScrapList() {
 <p class="empty-text"><strong>Start adding items:</strong></p>
 <p class="empty-text">🛒 Tap <strong>Rates</strong> to add menu items.</p>
 <p class="empty-text">🎉 Press the <strong>Add</strong> button to include offers.</p>
-<p class="empty-text">✨ Want a surprise? Use <strong>Smart Pick</strong> or try a <strong>2-Finger Long Press</strong> anywhere!</p>
+<p class="empty-text">✨ Want a surprise? Use <strong>Magic Pick</strong> button.</p>
 <div class="button-container-center">
     <button id="smartPickBtn" class="smart-pick-btn">
-        Smart 
+        Magic 
         <img src="icons/magic.svg" alt="Magic" class="button-icon">
         Pick
     </button>
