@@ -501,20 +501,19 @@ style.textContent = `
         padding: 0;
     }
     .print-content, .print-content * {
-        visibility: visible;
+        visibility: visible !important;
     }
     .print-content {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        width: 100vw;
-        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        background: white;
         page-break-after: avoid;
     }
     .print-content h1 {
@@ -530,12 +529,17 @@ style.textContent = `
         height: 300px !important;
         margin: 20px auto;
     }
+}
+
+@media screen {
+    .print-content {
+        display: none !important;
+    }
 }`;
 document.head.appendChild(style);
 
 // Print QR code image
 document.getElementById('print-qr-code').addEventListener('click', () => {
-    // Create a printable content container
     const printContent = document.createElement('div');
     printContent.className = 'print-content';
     printContent.innerHTML = `
@@ -544,18 +548,20 @@ document.getElementById('print-qr-code').addEventListener('click', () => {
         <p>Scan this QR code to open or install the 'Chai Sutta Bar - Bagha Purana' app</p>
     `;
 
-    // Append the printable content to the body
     document.body.appendChild(printContent);
 
-    // Trigger the print dialog
-    window.print();
-
-    // Clean up the printable content
+    // Delay print to ensure content is rendered
     setTimeout(() => {
-        document.body.removeChild(printContent);
+        window.print();
+        // Cleanup after print
+        const cleanup = () => {
+            document.body.removeChild(printContent);
+            window.removeEventListener('afterprint', cleanup);
+        };
+        window.addEventListener('afterprint', cleanup);
+        setTimeout(cleanup, 1000); // Fallback cleanup
     }, 100);
 });
-
         
         
         
