@@ -283,7 +283,8 @@
                         deferredPrompt = null;
                     });
                     } else {
-                    alert("App installation is not available at the moment.");
+                    alert("App installation is not available. Possible reasons may be:\n- App is already installed\n- You're trying this option on Desktop.");
+                    
                 }
             });
         }
@@ -315,26 +316,26 @@
         const shareModal = document.createElement('div');
         shareModal.id = 'share-modal';
         shareModal.className = 'modal';
-shareModal.innerHTML = `
-    <div class="modal-content">
+        shareModal.innerHTML = `
+        <div class="modal-content">
         <div class="close-btn">&times;</div>
         <h2>Share App</h2>
         <div class="qrcode-container">
-            <img src="qrcode.png" alt="QR Code" class="qrcode">
+       <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
         </div>
         <div class="modal-buttons">
-            <button id="share-qr-code">
-                <img src="icons/share.svg" alt="Code" width="16" height="16" class="invert-icon" style="margin-right: 8px; vertical-align: middle;">
-                Code
-            </button>
-            <button id="share-link">
-                <img src="icons/share.svg" alt="Link" width="16" height="16" class="invert-icon" style="margin-right: 8px; vertical-align: middle;">
-                Link
-            </button>
+        <button id="share-qr-code">
+        <img src="icons/share.svg" alt="Code" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Code
+        </button>
+        <button id="share-link">
+        <img src="icons/share.svg" alt="Link" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Link
+        </button>
         </div>
-    </div>
-`;
-
+        </div>
+        `;
+        
         document.body.appendChild(shareModal);
         
         
@@ -347,29 +348,65 @@ shareModal.innerHTML = `
             }
         });
         
+        function dataURLtoBlob(dataURL) {
+            const parts = dataURL.split(',');
+    const mime = parts[0].match(/:(.*?);/)[1];
+    const byteString = atob(parts[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mime });
+}
+
+
 document.getElementById('share-qr-code').addEventListener('click', async () => {
-    const imgElement = document.getElementById('qr-code-img'); // Your QR code image element
-    const imageUrl = imgElement.src; // Get image source
-
     try {
-        const response = await fetch(imageUrl); // Fetch the image as a blob
-        const blob = await response.blob(); // Convert response to a blob
-        const file = new File([blob], 'qrcode.png', { type: 'image/png' }); // Create a File object
+        const imgElement = document.getElementById('qr-code-img');
+        if (!imgElement) {
+            throw new Error('QR Code image element not found');
+        }
 
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        // Handle both external images and data URLs
+        let blob;
+        if (imgElement.src.startsWith('data:')) {
+            blob = dataURLtoBlob(imgElement.src);
+        } else {
+            const response = await fetch(imgElement.src);
+            if (!response.ok) throw new Error('Failed to fetch QR code');
+            blob = await response.blob();
+        }
+
+        const file = new File([blob], 'qrcode.png', { type: 'image/png' });
+
+        // Check if Web Share API is supported
+        if (navigator.share && navigator.canShare({ files: [file] })) {
+            // Mobile devices: Use Web Share API
             await navigator.share({
                 files: [file],
                 title: 'Share QR Code',
+                text: 'Scan this QR code to access the app',
             });
-            console.log('QR Code shared successfully');
         } else {
-            alert('Sharing not supported on this device.');
+            // Desktop or unsupported browsers: Download the QR code
+            const url = URL.createObjectURL(file);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'qrcode.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('QR code downloaded. You can share it manually.');
         }
     } catch (error) {
-        console.log('Error sharing QR code:', error);
+        console.error('Sharing failed:', error);
+        alert(`Sharing failed: ${error.message}`);
     }
 });
-
+        
+        
         
         document.getElementById('share-link').addEventListener('click', () => {
             // Logic to share the link
@@ -447,25 +484,25 @@ let deferredPrompt; // Variable to hold the deferred prompt event
 
 // Listen for the beforeinstallprompt event
 window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault(); // Prevent the default prompt from showing automatically
-    deferredPrompt = e; // Store the event so we can trigger it later
-    
-    // Optionally, show a custom install button here if needed
-    // document.getElementById('install-button').style.display = 'block'; 
-    
-    // Automatically trigger the prompt after a delay
-    setTimeout(() => {
-        deferredPrompt.prompt(); // Show the install prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            // Handle the user's response
-            if (choiceResult.outcome === "accepted") {
-                console.log("User accepted the install prompt");
-                } else {
-                console.log("User dismissed the install prompt");
-            }
-            deferredPrompt = null; // Reset the deferred prompt
-        });
-    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+e.preventDefault(); // Prevent the default prompt from showing automatically
+deferredPrompt = e; // Store the event so we can trigger it later
+
+// Optionally, show a custom install button here if needed
+// document.getElementById('install-button').style.display = 'block'; 
+
+// Automatically trigger the prompt after a delay
+setTimeout(() => {
+deferredPrompt.prompt(); // Show the install prompt
+deferredPrompt.userChoice.then((choiceResult) => {
+// Handle the user's response
+if (choiceResult.outcome === "accepted") {
+console.log("User accepted the install prompt");
+} else {
+console.log("User dismissed the install prompt");
+}
+deferredPrompt = null; // Reset the deferred prompt
+});
+}, 3000); // Adjust delay as needed (e.g., 3 seconds)
 });               
 
 
