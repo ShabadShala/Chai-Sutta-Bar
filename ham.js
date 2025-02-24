@@ -368,11 +368,12 @@ document.getElementById('share-qr-code').addEventListener('click', async () => {
             throw new Error('QR Code image element not found');
         }
 
-        // Handle both external images and data URLs
         let blob;
         if (imgElement.src.startsWith('data:')) {
+            // If the image is already a data URL, convert it to a blob
             blob = dataURLtoBlob(imgElement.src);
         } else {
+            // Fetch the image from the file path
             const response = await fetch(imgElement.src);
             if (!response.ok) throw new Error('Failed to fetch QR code');
             blob = await response.blob();
@@ -380,16 +381,19 @@ document.getElementById('share-qr-code').addEventListener('click', async () => {
 
         const file = new File([blob], 'qrcode.png', { type: 'image/png' });
 
+        // Add context to the share message
+        const shareData = {
+            files: [file],
+            title: 'Scan to Install',
+            text: 'Scan this QR code or visit: https://shabadshala.github.io/Chai-Sutta-Bar/ to open/install Chai Sutta Bar - Bagha Purana app',
+        };
+
         // Check if Web Share API is supported
-        if (navigator.share && navigator.canShare({ files: [file] })) {
-            // Mobile devices: Use Web Share API
-            await navigator.share({
-                files: [file],
-                title: 'Share QR Code',
-                text: 'Scan this QR code to access the app',
-            });
+        if (navigator.share && navigator.canShare(shareData)) {
+            // Use Web Share API
+            await navigator.share(shareData);
         } else {
-            // Desktop or unsupported browsers: Download the QR code
+            // Fallback for unsupported browsers: Download the QR code
             const url = URL.createObjectURL(file);
             const a = document.createElement('a');
             a.href = url;
