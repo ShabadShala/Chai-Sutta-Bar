@@ -381,11 +381,20 @@ document.getElementById('share-qr-code').addEventListener('click', async () => {
 
         const file = new File([blob], 'qrcode.png', { type: 'image/png' });
 
-        // Add context to the share message
+        // Localized share messages (only this part is localized)
+        const shareMessages = {
+            en: 'Scan this QR code to open or install the Chai Sutta Bar - Bagha Purana app, or open https://shabadshala.github.io/Chai-Sutta-Bar/',
+            pa: 'ਚਾਹ ਸੂਤਾ ਬਾਰ - ਬਾਘਾ ਪੁਰਾਣਾ ਐਪ ਖੋਲ੍ਹਣ ਜਾਂ ਲੋਡ ਕਰਨ ਲਈ QR ਕੋਡ ਸਕੈਨ ਕਰੋ ਜਾਂ https://shabadshala.github.io/Chai-Sutta-Bar/ ਖੋਲ੍ਹੋ',
+        };
+
+        // Detect user language (e.g., "en" or "pa")
+        const userLanguage = navigator.language.split('-')[0];
+
+        // Prepare share data with localized message
         const shareData = {
             files: [file],
-            title: 'Scan to Install',
-            text: 'Scan this QR code or visit: https://shabadshala.github.io/Chai-Sutta-Bar/ to open/install Chai Sutta Bar - Bagha Purana app',
+            title: 'Chai Sutta Bar - Bagha Purana',
+            text: shareMessages[userLanguage] || shareMessages.en, // Fallback to English
         };
 
         // Check if Web Share API is supported
@@ -402,10 +411,14 @@ document.getElementById('share-qr-code').addEventListener('click', async () => {
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+
+            // Fallback message (in English)
             alert('QR code downloaded. You can share it manually.');
         }
     } catch (error) {
         console.error('Sharing failed:', error);
+
+        // Error message (in English)
         alert(`Sharing failed: ${error.message}`);
     }
 });
