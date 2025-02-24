@@ -120,25 +120,32 @@
         
         // Ensure a new history state is added when the sidebar is opened (For back button)
         // Open-Close Sidebar
-        function toggleSidebar(forceClose = false) {
-            const sidebar = document.getElementById('hsidebar');
-            if (!sidebar) return;
-            const isOpen = sidebar.classList.contains('open');
-            
-            if (isOpen || forceClose) {
-                sidebar.classList.remove('open');
-                hideOverlay();
-                if (history.state && history.state.sidebarOpen) {
-                    history.back(); // Properly navigate back if sidebar was opened
-                    } else {
-                    history.replaceState(null, "", location.href);
-                }
-                } else {
-                sidebar.classList.add('open');
-                showOverlay(0.9);
-                history.pushState({ sidebarOpen: true }, "", location.href);
+function toggleSidebar(forceClose = false, isBackButton = false) {
+    const sidebar = document.getElementById('hsidebar');
+    if (!sidebar) return;
+    const isOpen = sidebar.classList.contains('open');
+
+    if (isOpen || forceClose) {
+        sidebar.classList.remove('open');
+        hideOverlay();
+        
+        // Only modify history if not using back button
+        if (!isBackButton) {
+            if (history.state?.sidebarOpen) {
+                history.back();
+            } else {
+                history.replaceState({ isBase: true }, "");
             }
         }
+    } else {
+        sidebar.classList.add('open');
+        showOverlay(0.9);
+        // Push new state only if not already open
+        if (!history.state?.sidebarOpen) {
+            history.pushState({ sidebarOpen: true }, "");
+        }
+    }
+}
         
         
         // Update event listeners:
@@ -218,6 +225,9 @@
         
         
         function setupModalTriggers(modalId) {
+        // Add this at the beginning to initialize history state
+history.replaceState({ isBase: true }, "");
+
             const modal = document.getElementById(modalId);
             if (!modal) return;
             
@@ -246,14 +256,19 @@
             });            
             
             // 5️⃣ Close on Android back button
-            window.addEventListener("popstate", () => {
-                if (modal.style.display === "block") {
-                    closeModal();
-                    } else {
-                    // Remove listener if no modal is open
-                    window.removeEventListener("popstate", closeModal);
-                }
-            });
+window.addEventListener("popstate", function (event) {
+    const hsidebar = document.getElementById('hsidebar');
+    if (hsidebar.classList.contains("open")) {
+        // Close sidebar but don't modify history
+        toggleSidebar(false, true);
+        
+        // If current state is not base, restore it
+        if (!event.state?.isBase) {
+            history.replaceState({ isBase: true }, "");
+        }
+    }
+});
+
             
             // Open Modal Function
             window.openModal = function (modalId) {
@@ -491,32 +506,25 @@ document.getElementById('save-qr-code').addEventListener('click', async () => {
 const style = document.createElement('style');
 style.textContent = `
 @media print {
-    body * {
-        visibility: hidden;
-    }
-    .print-content, .print-content * {
-        visibility: visible;
+    body {
+        margin: 0 !important;
+        padding: 20px !important;
     }
     .print-content {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        width: 100%;
-    }
-    .print-content h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-    .print-content p {
-        font-size: 18px;
-        margin-top: 20px;
+        visibility: visible !important;
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+        transform: none !important;
+        page-break-inside: avoid;
     }
     .print-qr-code {
         width: 300px !important;
         height: 300px !important;
-        margin: 20px auto;
+        margin: 20px auto !important;
+    }
+    body > :not(.print-content) {
+        display: none !important;
     }
 }`;
 document.head.appendChild(style);              
