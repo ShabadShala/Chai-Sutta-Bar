@@ -322,19 +322,26 @@
         const shareModal = document.createElement('div');
         shareModal.id = 'share-modal';
         shareModal.className = 'modal';
-        shareModal.innerHTML = `
-        <div class="modal-content">
+shareModal.innerHTML = `
+    <div class="modal-content">
         <div class="close-btn">&times;</div>
         <h2>Share App</h2>
         <div class="qrcode-container">
-        <img src="qrcode.png" alt="QR Code" class="qrcode">
+            <img src="qrcode.png" alt="QR Code" class="qrcode">
         </div>
         <div class="modal-buttons">
-        <button id="share-qr-code">Share Code</button>
-        <button id="share-link">Share Link</button>
+            <button id="share-qr-code">
+                <img src="icons/share.svg" alt="Code" width="16" height="16" class="invert-icon" style="margin-right: 8px; vertical-align: middle;">
+                Code
+            </button>
+            <button id="share-link">
+                <img src="icons/share.svg" alt="Link" width="16" height="16" class="invert-icon" style="margin-right: 8px; vertical-align: middle;">
+                Link
+            </button>
         </div>
-        </div>
-        `;
+    </div>
+`;
+
         document.body.appendChild(shareModal);
         
         
@@ -456,3 +463,5 @@ window.addEventListener("beforeinstallprompt", (e) => {
         });
     }, 3000); // Adjust delay as needed (e.g., 3 seconds)
 });               
+
+

@@ -194,8 +194,8 @@
                     // Development - 20 items and 4 offers
                     document.getElementById('devFill').addEventListener('click', () => {
                         // Clear existing data
-                        scrapItems = [];
-                        offerCart = [];
+                       // scrapItems = [];
+                       // offerCart = [];
                         
                         // Get all menu items from the DOM
                         const menuItems = Array.from(document.querySelectorAll('.menu-item'));
