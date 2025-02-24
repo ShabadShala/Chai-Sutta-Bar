@@ -536,10 +536,10 @@ document.head.appendChild(style);
 document.getElementById('print-qr-code').addEventListener('click', () => {
     const qrSrc = document.getElementById('qr-code-img').src;
 
-    // Open a new window for printing (works better on mobile)
+    // Open a new blank window
     const printWindow = window.open('', '_blank');
 
-    // Add HTML & CSS to the new window
+    // Write the printable content
     printWindow.document.write(`
         <html>
         <head>
@@ -563,20 +563,25 @@ document.getElementById('print-qr-code').addEventListener('click', () => {
         <body>
             <div class="print-content">
                 <h1>Chai Sutta Bar<br>(Bagha Purana)</h1>
-                <img src="${qrSrc}" class="print-qr-code" alt="QR Code">
+                <img id="qr-print-img" class="print-qr-code" alt="QR Code">
                 <p>Scan this QR code to open or install the 'Chai Sutta Bar - Bagha Purana' app</p>
             </div>
+            <script>
+                // Wait for the image to load before printing
+                const img = document.getElementById('qr-print-img');
+                img.src = "${qrSrc}";
+                img.onload = function() {
+                    setTimeout(() => {
+                        window.print();
+                        setTimeout(() => window.close(), 500);
+                    }, 500); // Small delay ensures rendering on slow devices
+                };
+            </script>
         </body>
         </html>
     `);
 
     printWindow.document.close(); // Required for Safari
-
-    // Wait a bit to ensure the content loads before printing
-    printWindow.onload = () => {
-        printWindow.print();
-        setTimeout(() => printWindow.close(), 500); // Close window after printing
-    };
 });
 
 
