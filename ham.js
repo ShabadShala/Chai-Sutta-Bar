@@ -120,28 +120,25 @@
         
         // Ensure a new history state is added when the sidebar is opened (For back button)
         // Open-Close Sidebar
-function toggleSidebar(forceClose = false) {
-    const sidebar = document.getElementById('hsidebar');
-    if (!sidebar) return;
-    const isOpen = sidebar.classList.contains('open');
-
-    if (isOpen || forceClose) {
-        sidebar.classList.remove('open');
-        hideOverlay();
-        
-        // Only manipulate history if we're programmatically closing
-        if (history.state && history.state.sidebarOpen) {
-            history.replaceState(null, "", location.href);
+        function toggleSidebar(forceClose = false) {
+            const sidebar = document.getElementById('hsidebar');
+            if (!sidebar) return;
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen || forceClose) {
+                sidebar.classList.remove('open');
+                hideOverlay();
+                if (history.state && history.state.sidebarOpen) {
+                    history.back(); // Properly navigate back if sidebar was opened
+                    } else {
+                    history.replaceState(null, "", location.href);
+                }
+                } else {
+                sidebar.classList.add('open');
+                showOverlay(0.9);
+                history.pushState({ sidebarOpen: true }, "", location.href);
+            }
         }
-    } else {
-        sidebar.classList.add('open');
-        showOverlay(0.9);
-        // Push new state only if there's no existing sidebar state
-        if (!history.state || !history.state.sidebarOpen) {
-            history.pushState({ sidebarOpen: true }, "", location.href);
-        }
-    }
-}
         
         
         // Update event listeners:
@@ -220,54 +217,52 @@ function toggleSidebar(forceClose = false) {
         
         
         
-        function setupModalTriggers(modalId) {
-            const modal = document.getElementById(modalId);
-            if (!modal) return;
-            
-            function closeModal() {
-                modal.style.display = "none";
-                hideOverlay();
-                // Only go back in history if the last entry was added by the modal
-                if (history.state && history.state.modalOpen) {
-                    history.back();
-                }
-            }
-            
-            // 1️⃣ Close on clicking the close button (X)
-            modal.querySelector(".close-btn")?.addEventListener("click", closeModal);
-            
-            // 2️⃣ Close on pressing the Escape key
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape" && modal.style.display != "none") closeModal();
-            });
-            
-            // 3️⃣ Close on clicking outside the modal
-            modal.addEventListener("click", (e) => {
-                if (e.target === modal && modal.style.display != "none") { // Ensures it only closes when clicking the backdrop
-                    closeModal();
-                }
-            });            
-            
-            // 5️⃣ Close on Android back button
-window.addEventListener("popstate", function(event) {
-    const hsidebar = document.getElementById('hsidebar');
-    if (hsidebar && hsidebar.classList.contains("open")) {
-        // Close sidebar but don't manipulate history
-        hsidebar.classList.remove('open');
+function setupModalTriggers(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    function closeModal() {
+        modal.style.display = "none";
         hideOverlay();
-        
-        // Clear any existing sidebar state
-        history.replaceState(null, "", location.href);
-    }
-});
-            
-            // Open Modal Function
-            window.openModal = function (modalId) {
-                document.getElementById(modalId).style.display = "block";
-                showOverlay();
-                history.pushState({ modalOpen: true }, "", location.href);
-            };
+        if (history.state && history.state.modalOpen) {
+            history.back();
         }
+    }
+
+    // 1️⃣ Close on clicking the close button (X)
+    modal.querySelector(".close-btn")?.addEventListener("click", closeModal);
+
+    // 2️⃣ Close on pressing the Escape key
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.style.display != "none") closeModal();
+    });
+
+    // 3️⃣ Close on clicking outside the modal
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal && modal.style.display != "none") {
+            closeModal();
+        }
+    });
+
+    // ⚠️ Skip back button handling for share modal
+    if (modalId !== 'share-modal') {
+        // 5️⃣ Close on Android back button
+        window.addEventListener("popstate", () => {
+            if (modal.style.display === "block") {
+                closeModal();
+            } else {
+                window.removeEventListener("popstate", closeModal);
+            }
+        });
+    }
+
+    // Open Modal Function
+    window.openModal = function (modalId) {
+        document.getElementById(modalId).style.display = "block";
+        showOverlay();
+        history.pushState({ modalOpen: true }, "", location.href);
+    };
+}
         
         
         
@@ -319,47 +314,70 @@ window.addEventListener("popstate", function(event) {
         
         
         
-        const shareModal = document.createElement('div');
-        shareModal.id = 'share-modal';
-        shareModal.className = 'modal';
-        shareModal.innerHTML = `
-        <div class="modal-content">
-        <div class="close-btn">&times;</div>
-        <h2>Share App</h2>
-        <div class="qrcode-container">
-        <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
-        </div>
-        <div class="modal-buttons">
-        <button id="share-qr-code">
-        <img src="icons/share.svg" alt="Code" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-        Code
-        </button>
-        <button id="save-qr-code">
-        <img src="icons/save.svg" alt="Save" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-        Save
-        </button>
-        <button id="print-qr-code">
-        <img src="icons/print.svg" alt="Print" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-        Print
-        </button>
-        <button id="share-link">
-        <img src="icons/share.svg" alt="Link" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-        Link
-        </button>
-        </div>
-        </div>`;
+const shareModal = document.createElement('div');
+shareModal.id = 'share-modal';
+shareModal.className = 'modal';
+shareModal.innerHTML = `
+<div class="modal-content">
+<div class="close-btn">&times;</div>
+<h2>Share App</h2>
+<div class="qrcode-container">
+<img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
+</div>
+<div class="modal-buttons">
+<button id="share-qr-code">
+<img src="icons/share.svg" alt="Code" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+Code
+</button>
+<button id="save-qr-code">
+<img src="icons/save.svg" alt="Save" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+Save
+</button>
+<button id="print-qr-code">
+<img src="icons/print.svg" alt="Print" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+Print
+</button>
+<button id="share-link">
+<img src="icons/share.svg" alt="Link" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+Link
+</button>
+</div>
+</div>`;
+document.body.appendChild(shareModal);
+
+// Dedicated back handler for share modal
+function setupShareModalBackHandler() {
+    const shareModal = document.getElementById('share-modal');
+    
+    function closeShareModal() {
+        shareModal.style.display = 'none';
+        hideOverlay();
+        if (history.state?.shareModalOpen) {
+            history.back(); // Navigate back to remove the state we added
+        }
+    }
+
+    window.addEventListener('popstate', function(event) {
+        if (shareModal.style.display === 'block' || shareModal.style.display === 'flex') {
+            closeShareModal();
+        }
+    });
+}
+
+// Initialize share modal back handler
+setupShareModalBackHandler();
         
-        document.body.appendChild(shareModal);
         
         
         
-        
-        document.body.addEventListener('click', (event) => {
-            if (event.target.closest('#share-app')) {
-                toggleSidebar(false); // Close the sidebar
-                openModalStandalone('share-modal'); // Open the share modal
-            }
-        });
+document.body.addEventListener('click', (event) => {
+    if (event.target.closest('#share-app')) {
+        toggleSidebar(false);
+        shareModal.style.display = 'flex'; // Directly show modal
+        showOverlay(0.9);
+        history.pushState({ shareModalOpen: true }, "", location.href); // Add dedicated state
+    }
+});
         
         setupModalTriggers('share-modal'); 
         
