@@ -36,6 +36,14 @@ fetch(miscUrl)
 .then(response => response.json())
 .then(data => {
     if (data && data.length >= 2) {
+    
+    
+
+
+
+    
+    
+    
         // Fetch delivery phone number from B3 cell
         let deliveryPhone = data[3][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
         if (deliveryPhone) {
