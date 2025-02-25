@@ -2121,28 +2121,29 @@
                 </button>
                 
                 <script>
-                    //Lock back button
-                    function lockBackButton() {
-                        history.pushState(null, "", location.href);
-                    }
-                    
-                    window.onload = function () {
-                        lockBackButton(); // Push state on page load
-                        
-                        window.addEventListener("popstate", function () {
-                            lockBackButton(); // Prevent back navigation
-                        });
-                        
-                        // Extra: Prevents back navigation using hash-based methods
-                        window.addEventListener("hashchange", function () {
-                            lockBackButton();
-                        });
-                        
-                        // Extra: Disables swipe-back gestures on iOS
-                        window.addEventListener("touchstart", function (event) {
-                            event.preventDefault();
-                        }, { passive: false });
-                    };
+// Lock back button
+function lockBackButton() {
+    history.pushState(null, "", location.href);
+}
+
+window.onload = function () {
+    lockBackButton(); // Push state on page load
+    
+    window.addEventListener("popstate", function () {
+        lockBackButton(); // Prevent back navigation
+    });
+
+    // Extra: Prevents back navigation using hash-based methods
+    window.addEventListener("hashchange", function () {
+        lockBackButton();
+    });
+
+    // Lock Android hardware back button
+    document.addEventListener("backbutton", function (event) {
+        event.preventDefault(); // Prevent default back behavior
+    }, false);
+};
+
                     
                     
                     
