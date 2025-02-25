@@ -299,7 +299,7 @@
         shareModal.innerHTML = `
         <div class="modal-content">
         <div class="close-btn">&times;</div>
-        <h2>Share App</h2>
+        
         <div class="qrcode-container">
         <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
         </div>
@@ -348,7 +348,7 @@
             if (navigator.share) {
                 navigator.share({
                     url: 'https://shabadshala.github.io/Chai-Sutta-Bar/',
-                    title: 'Share Link',
+                    title: 'Share CSB-BPA Link',
                 }).then(() => console.log('Link shared successfully'))
                 .catch((error) => console.log('Error sharing link:', error));
                 } else {
