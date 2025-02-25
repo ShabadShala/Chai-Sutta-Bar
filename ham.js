@@ -338,80 +338,8 @@
         setupModalTriggers('share-modal'); 
         
         
-        //Share QR Code image
-        function dataURLtoBlob(dataURL) {
-            const parts = dataURL.split(',');
-            const mime = parts[0].match(/:(.*?);/)[1];
-            const byteString = atob(parts[1]);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-            return new Blob([ab], { type: mime });
-        }
         
-        document.getElementById('share-qr-code').addEventListener('click', async () => {
-            try {
-                const imgElement = document.getElementById('qr-code-img');
-                if (!imgElement) {
-                    throw new Error('QR Code image element not found');
-                }
-                
-                let blob;
-                if (imgElement.src.startsWith('data:')) {
-                    // If the image is already a data URL, convert it to a blob
-                    blob = dataURLtoBlob(imgElement.src);
-                    } else {
-                    // Fetch the image from the file path
-                    const response = await fetch(imgElement.src);
-                    if (!response.ok) throw new Error('Failed to fetch QR code');
-                    blob = await response.blob();
-                }
-                
-                const file = new File([blob], 'qrcode.png', { type: 'image/png' });
-                
-                // Localized share messages (only this part is localized)
-                const shareMessages = {
-                    en: 'Scan this QR code to open or install the Chai Sutta Bar - Bagha Purana app, or open https://shabadshala.github.io/Chai-Sutta-Bar/',
-                    pa: 'ਚਾਹ ਸੂਤਾ ਬਾਰ - ਬਾਘਾ ਪੁਰਾਣਾ ਐਪ ਖੋਲ੍ਹਣ ਜਾਂ ਲੋਡ ਕਰਨ ਲਈ QR ਕੋਡ ਸਕੈਨ ਕਰੋ ਜਾਂ https://shabadshala.github.io/Chai-Sutta-Bar/ ਖੋਲ੍ਹੋ',
-                };
-                
-                // Detect user language (e.g., "en" or "pa")
-                const userLanguage = navigator.language.split('-')[0];
-                
-                // Prepare share data with localized message
-                const shareData = {
-                    files: [file],
-                    title: 'Chai Sutta Bar - Bagha Purana',
-                    text: shareMessages[userLanguage] || shareMessages.en, // Fallback to English
-                };
-                
-                // Check if Web Share API is supported
-                if (navigator.share && navigator.canShare(shareData)) {
-                    // Use Web Share API
-                    await navigator.share(shareData);
-                    } else {
-                    // Fallback for unsupported browsers: Download the QR code
-                    const url = URL.createObjectURL(file);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'qrcode.png';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    
-                    // Fallback message (in English)
-                    alert('QR code downloaded. You can share it manually.');
-                }
-                } catch (error) {
-                console.error('Sharing failed:', error);
-                
-                // Error message (in English)
-                alert(`Sharing failed: ${error.message}`);
-            }
-        });
+        
         
         
         // Share link
@@ -430,111 +358,40 @@
         
         
         //Save QR code image to local storage
-document.getElementById('save-qr-code').addEventListener('click', async () => {
-    try {
-        const imgElement = document.getElementById('qr-code-img');
-        if (!imgElement) throw new Error('QR Code image element not found');
-
-        let blob;
-        if (imgElement.src.startsWith('data:')) {
-            // If the image is already a data URL, convert it to a blob
-            blob = dataURLtoBlob(imgElement.src);
-        } else {
-            // Fetch the image from the file path
-            const response = await fetch(imgElement.src);
-            if (!response.ok) throw new Error('Failed to fetch QR code');
-            blob = await response.blob();
-        }
-
-        // Create a URL for the blob
-        const url = URL.createObjectURL(blob);
-
-        // Create a temporary anchor element to trigger the download
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
-        document.body.appendChild(a);
-        a.click(); // Trigger the download
-        document.body.removeChild(a); // Clean up
-        URL.revokeObjectURL(url); // Release the object URL
-
-        console.log('QR code saved successfully');
-        } catch (error) {
-        console.error('Save failed:', error);
-        alert(`Save failed: ${error.message}`);
-    }
-});
-        
-        
-// Add this CSS for print styling
-const style = document.createElement('style');
-style.textContent = `
-@media print {
-    @page {
-        size: auto;
-        margin: 0;
-    }
-    body {
-        visibility: hidden;
-        margin: 0;
-        padding: 0;
-    }
-    .print-content, .print-content * {
-        visibility: visible;
-    }
-    .print-content {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        page-break-after: avoid;
-    }
-    .print-content h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-    .print-content p {
-        font-size: 18px;
-        margin-top: 20px;
-    }
-    .print-qr-code {
-        width: 300px !important;
-        height: 300px !important;
-        margin: 20px auto;
-    }
-}`;
-document.head.appendChild(style);
-
-// Print QR code image
-document.getElementById('print-qr-code').addEventListener('click', () => {
-    // Create a printable content container
-    const printContent = document.createElement('div');
-    printContent.className = 'print-content';
-    printContent.innerHTML = `
-        <h1>Chai Sutta Bar<br>(Bagha Purana)</h1>
-        <img src="${document.getElementById('qr-code-img').src}" class="print-qr-code" alt="QR Code">
-        <p>Scan this QR code to open or install the 'Chai Sutta Bar - Bagha Purana' app</p>
-    `;
-
-    // Append the printable content to the body
-    document.body.appendChild(printContent);
-
-    // Trigger the print dialog
-    window.print();
-
-    // Clean up the printable content
-    setTimeout(() => {
-        document.body.removeChild(printContent);
-    }, 100);
-});
-
+        document.getElementById('save-qr-code').addEventListener('click', async () => {
+            try {
+                const imgElement = document.getElementById('qr-code-img');
+                if (!imgElement) throw new Error('QR Code image element not found');
+                
+                let blob;
+                if (imgElement.src.startsWith('data:')) {
+                    // If the image is already a data URL, convert it to a blob
+                    blob = dataURLtoBlob(imgElement.src);
+                    } else {
+                    // Fetch the image from the file path
+                    const response = await fetch(imgElement.src);
+                    if (!response.ok) throw new Error('Failed to fetch QR code');
+                    blob = await response.blob();
+                }
+                
+                // Create a URL for the blob
+                const url = URL.createObjectURL(blob);
+                
+                // Create a temporary anchor element to trigger the download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
+                document.body.appendChild(a);
+                a.click(); // Trigger the download
+                document.body.removeChild(a); // Clean up
+                URL.revokeObjectURL(url); // Release the object URL
+                
+                console.log('QR code saved successfully');
+                } catch (error) {
+                console.error('Save failed:', error);
+                alert(`Save failed: ${error.message}`);
+            }
+        });
         
         
         
@@ -542,6 +399,70 @@ document.getElementById('print-qr-code').addEventListener('click', () => {
         
         
         
+        
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to share the QR Code
+            function shareQRCode() {
+                const qrImg = document.getElementById("qr-code-img");
+                if (!qrImg) {
+                    alert("QR Code not found!");
+                    return;
+                }
+                
+                // Convert QR code image to a Blob URL
+                fetch(qrImg.src)
+                .then(response => response.blob())
+                .then(blob => {
+                    const file = new File([blob], "qrcode.png", { type: blob.type });
+                    
+                    if (navigator.share) {
+                        navigator.share({
+                            title: "Scan this QR Code",
+                            text: "Scan this QR code to access the app.",
+                            files: [file],
+                        })
+                        .then(() => console.log("Successfully shared"))
+                        .catch(err => console.error("Error sharing:", err));
+                        } else {
+                        alert("Web Share API not supported. Please download and share manually.");
+                    }
+                })
+                .catch(err => console.error("Error fetching QR Code:", err));
+            }
+            
+            // Function to print the QR Code
+            function printQRCode() {
+                const qrImg = document.getElementById("qr-code-img");
+                if (!qrImg) {
+                    alert("QR Code not found!");
+                    return;
+                }
+                
+                const printWindow = window.open("", "_blank");
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                    <title>Print QR Code</title>
+                    <style>
+                    body { text-align: center; padding: 20px; }
+                    img { max-width: 100%; height: auto; }
+                    </style>
+                    </head>
+                    <body>
+                    <h2>QR Code</h2>
+                    <img src="${qrImg.src}" alt="QR Code">
+                    <script>window.onload = function() { window.print(); }</script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }
+            
+            // Attach event listeners
+            document.getElementById("share-qr-code")?.addEventListener("click", shareQRCode);
+            document.getElementById("print-qr-code")?.addEventListener("click", printQRCode);
+        });
         
         
         
@@ -575,50 +496,51 @@ document.getElementById('print-qr-code').addEventListener('click', () => {
 document.addEventListener("DOMContentLoaded", function () {
     const saveButton = document.getElementById("save-qr-code");
     if (saveButton) {
-        saveButton.style.display = "none"; // Completely hide the button
+    saveButton.style.display = "none"; // Completely hide the button
     }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-let deferredPrompt; // Variable to hold the deferred prompt event
-
-// Listen for the beforeinstallprompt event
-window.addEventListener("beforeinstallprompt", (e) => {
-e.preventDefault(); // Prevent the default prompt from showing automatically
-deferredPrompt = e; // Store the event so we can trigger it later
-
-// Optionally, show a custom install button here if needed
-// document.getElementById('install-button').style.display = 'block'; 
-
-// Automatically trigger the prompt after a delay
-setTimeout(() => {
-deferredPrompt.prompt(); // Show the install prompt
-deferredPrompt.userChoice.then((choiceResult) => {
-// Handle the user's response
-if (choiceResult.outcome === "accepted") {
-console.log("User accepted the install prompt");
-} else {
-console.log("User dismissed the install prompt");
-}
-deferredPrompt = null; // Reset the deferred prompt
-});
-}, 3000); // Adjust delay as needed (e.g., 3 seconds)
-});               
-
-
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    let deferredPrompt; // Variable to hold the deferred prompt event
+    
+    // Listen for the beforeinstallprompt event
+    window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault(); // Prevent the default prompt from showing automatically
+    deferredPrompt = e; // Store the event so we can trigger it later
+    
+    // Optionally, show a custom install button here if needed
+    // document.getElementById('install-button').style.display = 'block'; 
+    
+    // Automatically trigger the prompt after a delay
+    setTimeout(() => {
+    deferredPrompt.prompt(); // Show the install prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+    // Handle the user's response
+    if (choiceResult.outcome === "accepted") {
+    console.log("User accepted the install prompt");
+    } else {
+    console.log("User dismissed the install prompt");
+    }
+    deferredPrompt = null; // Reset the deferred prompt
+    });
+    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+    });               
+    
+    
+        
