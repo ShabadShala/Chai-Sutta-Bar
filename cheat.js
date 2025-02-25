@@ -236,6 +236,7 @@
                         updateScrapListDisplay();
                         updateCartDisplay();
                         updateScrapButtonStatus();
+                        updateScrapCounter();
                         showFeedback('DEV: Random data loaded from real items!');
                         
                         // Show both panels
