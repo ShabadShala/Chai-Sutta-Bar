@@ -246,3 +246,114 @@
                     });
                     
                     
+
+
+
+
+
+
+
+
+
+       
+        
+        
+        
+        
+        
+        
+        
+        
+            
+// cheat.js - Strict Activation Flow
+let cheatActive = false;
+let activationListenersAdded = false;
+
+function getWordUnderPointer(event) {
+    const x = event.clientX || (event.touches?.[0]?.clientX);
+    const y = event.clientY || (event.touches?.[0]?.clientY);
+    
+    const element = document.elementFromPoint(x, y);
+    if (!element?.classList?.contains('colAB')) return null;
+
+    const range = document.caretRangeFromPoint(x, y);
+    if (!range) return null;
+
+    const textNode = range.startContainer;
+    const offset = range.startOffset;
+    const text = textNode.textContent || '';
+
+    // Find word boundaries
+    let start = offset;
+    while (start > 0 && !/\s/.test(text[start - 1])) start--;
+    
+    let end = offset;
+    while (end < text.length && !/\s/.test(text[end])) end++;
+
+    return text.slice(start, end)
+        .trim()  // First remove whitespace
+        .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
+}
+
+function simulateSearchInput(word) {
+    const searchInput = document.getElementById('searchInput');
+    
+    // Show search UI elements
+    document.querySelector('.search-container').style.display = 'block';
+    document.getElementById('filterContainer').style.display = 'flex';
+    document.getElementById('clearButton').style.display = 'block';
+    
+    // Trigger search
+    searchInput.value = word;
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function handleCheatInteraction(event) {
+    if (!cheatActive) return;
+    
+    const word = getWordUnderPointer(event);
+    if (word) {
+        simulateSearchInput(word);
+        showFeedback(`CHEAT: Filtering by "${word}"`);
+    }
+}
+
+function addCheatListeners() {
+    if (activationListenersAdded) return;
+    
+    // Add click handler for desktop
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.colAB')) {
+            handleCheatInteraction(e);
+        }
+    });
+    
+    // Add touch handler for mobile
+    document.addEventListener('touchstart', (e) => {
+        if (e.target.closest('.colAB')) {
+            handleCheatInteraction(e);
+        }
+    });
+    
+    activationListenersAdded = true;
+}
+
+// Keyboard shortcut activation (Ctrl+Shift+C)
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyC') {
+        e.preventDefault();
+        cheatActive = !cheatActive;
+        
+if (cheatActive) {
+    addCheatListeners();
+    alert('Item Word Search activated, this may disturb menu browsing.\n\nTo deactivate it: press Ctrl+Shift+C or tap by 4-fingers');
+} else {
+    alert('CHEAT MODE DEACTIVATED');
+}
+
+    }
+});
+        
+        
+        
+        
