@@ -265,7 +265,7 @@ document.getElementById('devFill').addEventListener('click', () => {
 
 
 
-// Cheat - Word Search - 4 Finger Tap OR Ctrl+Shift+C
+// Cheat - Word Search - Three-Finger Swipe Down OR Ctrl+Shift+C
 // cheat.js - Strict Activation Flow
 let cheatActive = false;
 let activationListenersAdded = false;
@@ -284,17 +284,16 @@ function getWordUnderPointer(event) {
     const offset = range.startOffset;
     const text = textNode.textContent || '';
     
-    // Find word boundaries
+    // Find word boundaries (including hyphenated words)
     let start = offset;
-    while (start > 0 && !/\s/.test(text[start - 1])) start--;
+    while (start > 0 && /[^\s()-]/.test(text[start - 1])) start--; // Stop at spaces, ( , ) or -
     
     let end = offset;
-    while (end < text.length && !/\s/.test(text[end])) end++;
+    while (end < text.length && /[^\s()-]/.test(text[end])) end++; // Stop at spaces, ( , ) or -
     
-    return text.slice(start, end)
-    .trim()  // First remove whitespace
-    .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
+    return text.slice(start, end).trim(); // Extract only the clicked word
 }
+
 
 function simulateSearchInput(word) {
     const searchInput = document.getElementById('searchInput');
@@ -355,28 +354,18 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-let fourFingerStartTime = 0;
-
-document.addEventListener('touchstart', (e) => {
-    const touches = e.touches;
-    
-    if (touches.length === 1) {
-        // Record time when the first finger touches
-        fourFingerStartTime = Date.now();
-    } else if (touches.length === 4) {
-        // Check if four fingers landed within 300ms of the first touch
-        const now = Date.now();
-        if (fourFingerStartTime !== 0 && now - fourFingerStartTime <= 300) {
-            addCheatListeners();
-            fourFingerStartTime = 0; // Prevent multi-trigger
+document.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 3) {
+        let allMovingDown = true;
+        for (let touch of e.touches) {
+            if (touch.movementY <= 0) {
+                allMovingDown = false;
+                break;
+            }
         }
-    }
-});
-
-document.addEventListener('touchend', (e) => {
-    // Reset timer when all fingers are lifted
-    if (e.touches.length === 0) {
-        fourFingerStartTime = 0;
+        if (allMovingDown) {
+            addCheatListeners();
+        }
     }
 });
 
