@@ -1601,7 +1601,7 @@
             position: absolute;
             top: 0;
             left: -100%;
-            width: 70%;
+            width: 75%;
             height: 100%;
             background: #1c1c1c;
             backdrop-filter: blur(8px);
@@ -2886,10 +2886,13 @@
         
         // Add event listener to Smart Pick button
         document.getElementById('smartPickBtn').addEventListener('click', addRandomItem);
-        document.getElementById('smartPickBtn2').addEventListener('click', addRandomItem);
+        // document.getElementById('smartPickBtn2').addEventListener('click', addRandomItem);        
         }
         
         
+        document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('smartPickBtn2').addEventListener('click', addRandomItem);
+});
         
         
         
