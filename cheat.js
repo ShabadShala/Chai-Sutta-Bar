@@ -130,16 +130,17 @@ function addRandomItem() {
         name: combinedName,
         rate: rate
     });
-    
-    // Update UI
-    updateScrapListDisplay();
-    updateScrapCounter();
-    showFeedback('DEV: Random item added!');
+
     
     // Animate the rate movement (mimic your project's logic)
     animateRateMovement(menuItemLine.querySelector('.colCDE'));
     
-    updateScrapButtonStatus()
+    // Update UI
+    updateScrapListDisplay();
+    updateScrapCounter();
+    handleScrapItemsChange();
+    updateScrapButtonStatus();
+        showFeedback('DEV: Random item added!');    
 }
 
 // Keyboard shortcut: Ctrl + Shift + P
