@@ -265,7 +265,7 @@ document.getElementById('devFill').addEventListener('click', () => {
 
 
 
-// Cheat - Word Search - Three-Finger Swipe Down OR Ctrl+Shift+C
+// Cheat - Word Search - Double Finger Tap OR Ctrl+Shift+C
 // cheat.js - Strict Activation Flow
 let cheatActive = false;
 let activationListenersAdded = false;
@@ -354,20 +354,21 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-document.addEventListener('touchmove', (e) => {
-    if (e.touches.length === 3) {
-        let allMovingDown = true;
-        for (let touch of e.touches) {
-            if (touch.movementY <= 0) {
-                allMovingDown = false;
-                break;
-            }
-        }
-        if (allMovingDown) {
+let lastTapTime = 0;
+
+document.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) { // Detect two-finger tap
+        let currentTime = new Date().getTime();
+        let tapInterval = currentTime - lastTapTime;
+
+        if (tapInterval < 300 && tapInterval > 50) { // Detect double-tap within 300ms
             addCheatListeners();
         }
+
+        lastTapTime = currentTime;
     }
 });
+
 
 
 

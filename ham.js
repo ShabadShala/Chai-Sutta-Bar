@@ -66,6 +66,12 @@
         <img src="icons/share.svg" alt="Share Icon" class="menu-icon green-icon">
         Share App
         </div>
+        
+        <div class="hsidebar-option" id="app-features">
+  <img src="icons/feature.svg" alt="Features Icon" class="menu-icon invert-icon">
+  App Features
+</div>
+
         </div>
         
         <!-- Footer -->
@@ -495,6 +501,96 @@ function printQRCode() {
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Add this modal structure
+const featuresModal = document.createElement('div');
+featuresModal.id = 'features-modal';
+featuresModal.className = 'modal';
+featuresModal.innerHTML = `
+  <div class="modal-content">
+    <div class="close-btn">&times;</div>
+    <h3 class="modal-header">App Features</h3>
+    <div id="features" class="features-container"></div>
+  </div>
+`;
+document.body.appendChild(featuresModal);
+setupModalTriggers('features-modal');
+
+// Add event listener for the menu option
+document.getElementById('app-features').addEventListener('click', () => {
+  toggleSidebar(false);
+  openModalStandalone('features-modal');
+  loadFeatures();
+});
+
+
+
+
+
+// Use your working functions with slight CSS adjustments
+async function loadFeatures() {
+  try {
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzXUfmt5NJorlHdyeUqoJPAazvJ4N6s8nQsbJWc54OV3Dud6uRCL6K8zRfd8WrXN_tO/exec';
+    const response = await fetch(scriptUrl);
+    const data = await response.json();
+    
+    const container = document.getElementById('features');
+    container.innerHTML = buildList(data);
+    addToggleListeners();
+  } catch (error) {
+    console.error('Error loading features:', error);
+    document.getElementById('features').innerHTML = 'Failed to load features';
+  }
+}
+
+function buildList(items, level = 0) {
+  if (!items) return '';
+  return `<ul class="feature-list level-${level}">${items.map(item => {
+    const hasChildren = item.children && Object.keys(item.children).length > 0;
+    const indent = level * 20; // 20px indent per level
+    
+    return `
+    <li style="padding-left: ${indent}px;">
+      <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
+        <span class="feature-name">${item.name}</span>
+        ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+      </div>
+      ${hasChildren ? `
+        <div class="sub-items-container">
+          ${buildList(Object.values(item.children), level + 1)}
+        </div>
+      ` : ''}
+    </li>
+  `}).join('')}</ul>`;
+}
+
+function addToggleListeners() {
+  document.querySelectorAll('.toggle.has-children').forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const icon = this.querySelector('.toggle-icon');
+      const container = this.parentElement.querySelector('.sub-items-container');
+      
+      if (container) {
+        container.classList.toggle('open');
+        icon.classList.toggle('open');
+      }
+    });
+  });
+}
+
+
+
+
         
         
         

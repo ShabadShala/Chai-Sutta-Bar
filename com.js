@@ -19,12 +19,12 @@ sidebar.addEventListener('click', function(event) {
     event.stopPropagation(); // Prevent bubbling up to document click event
 });
 
-        // Close sidebar when clicking outside
-        document.addEventListener("click", function(event) {
-            if (!sidebar.contains(event.target) && !event.target.matches(".open-btn")) {
-                sidebar.classList.remove("open");
-            }
-        });
+// Close sidebar when clicking outside
+document.addEventListener("click", function(event) {
+    if (!sidebar.contains(event.target) && !event.target.matches(".open-btn")) {
+        sidebar.classList.remove("open");
+    }
+});
 
 // Add event listeners
 phoneIcon.addEventListener('click', toggleSidebar);
@@ -36,14 +36,14 @@ fetch(miscUrl)
 .then(response => response.json())
 .then(data => {
     if (data && data.length >= 2) {
-    
-    
-
-
-
-    
-    
-    
+        
+        
+        
+        
+        
+        
+        
+        
         // Fetch delivery phone number from B3 cell
         let deliveryPhone = data[3][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
         if (deliveryPhone) {
@@ -172,11 +172,96 @@ fetch(miscUrl)
             timeElem.innerHTML = statusMessage;
         }
         
-    }                
+        
+        
+        
+        // Inside the Misc data fetch .then block, after processing other data:
+        const a9Value = data[8] && data[8][0]; // A9 cell (row 8, column 0)
+        if (a9Value === "Image") {
+            checkImageSize().then(valid => {
+                if (valid) {
+                    document.getElementById('imageOverlay').style.display = 'flex';
+                    document.getElementById('driveImage').src = imageUrl;
+                    setTimeout(() => {
+                        document.getElementById('imageOverlay').style.display = 'none';
+                    }, 5000);
+                }
+            });
+        }
+    } 
+    // Check A9 cell and image size
+    const a9Value = data[8] && data[8][0];
+    if (a9Value === "Image") {
+        checkImageSize().then(valid => {
+            if (valid) {
+                document.getElementById('imageOverlay').style.display = 'flex';
+                document.getElementById('driveImage').src = imageUrl;
+                setTimeout(() => {
+                    document.getElementById('imageOverlay').style.display = 'none';
+                }, 5000);
+            }
+        });
+    } // Inside the Misc data fetch .then block
+    else if (a9Value === "Message") {
+        const b9Value = data[8] && data[8][1]; // B9 cell
+        if (b9Value && b9Value.trim() !== "") {
+    //        if (b9Value && typeof b9Value === "string" && b9Value.trim().length > 0 && b9Value.trim().length <= 250) {
+    
+            const messageOverlay = document.getElementById('messageOverlay');
+            const messageText = document.getElementById('messageText');
+            
+            // Set message content
+            messageText.textContent = b9Value;
+            
+            // Show the overlay
+            messageOverlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Close button handler
+            document.getElementById('closeMessage').onclick = () => {
+                messageOverlay.style.display = 'none';
+                document.body.style.overflow = '';
+            };
+            
+            // Click outside to close
+            messageOverlay.addEventListener('click', (e) => {
+                if (e.target === messageOverlay) {
+                    messageOverlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Auto-close after 5 seconds
+            setTimeout(() => {
+                if (messageOverlay.style.display === 'flex') {
+                    messageOverlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            }, 5000);
+        }
+    }
+    
+    
+    
 })
 .catch(error => {
     console.error("Error fetching Misc data:", error);
+    
+    
 });
+
+
+function checkImageSize() {
+    return fetch(imageUrl)
+    .then(response => {
+        if (!response.ok) throw new Error('Network error');
+        return response.blob();
+    })
+    .then(blob => (blob.size / 1024) < 250)
+    .catch(() => false);
+}
+
+
 
 // Function to parse custom time format (hh.mmap)
 function parseCustomTime(timeStr) {
