@@ -361,9 +361,9 @@ document.addEventListener('touchstart', (e) => {
     const touches = e.touches;
     
     if (touches.length === 1) {
-        // Record time when first finger touches
+        // Record time when the first finger touches
         fourFingerStartTime = Date.now();
-        } else if (touches.length === 3) {
+    } else if (touches.length === 4) {
         // Check if four fingers landed within 300ms of the first touch
         const now = Date.now();
         if (fourFingerStartTime !== 0 && now - fourFingerStartTime <= 300) {
