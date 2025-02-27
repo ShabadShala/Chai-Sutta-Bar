@@ -288,6 +288,119 @@
             
             
             
+            
+            
+            
+            
+            
+            /* Image Overlay Styles */
+            .image-overlay, .message-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000; /* Higher than everything else */
+            backdrop-filter: blur(5px);            
+            }
+            
+            .overlay-image {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 15px;
+            border: 3px solid #fae68e;
+            box-shadow: 0 0 30px rgba(250, 230, 142, 0.3);
+            }
+            
+            .image-close-btn {
+            position: absolute;
+            top: 10%;
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for exact centering */
+            font-size: 8rem;
+            color: #fff;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+            }
+            
+            .image-close-btn:hover {
+            transform: scale(1.2);
+            color: #ff4444;
+            }           
+            
+            
+            
+            
+            
+            
+            
+            .frame {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            min-height: 100px;
+            max-width: 550px;
+            padding: 20px;
+            border: 10px solid transparent;
+            border-image: linear-gradient(to bottom, yellow, orange) 1;
+            text-align: center;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 30px yellow;
+            z-index: 10000;
+            
+            /* Flexbox to center content */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            }
+            
+            .flashMessage {
+            font-size: 5rem;
+            line-height: 7rem;
+            
+            /* Ensure text wraps properly */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            }
+            
+            /* Updated Close Button Positioning */
+            #closeMessage {
+            position: absolute;
+            top: -100%; 
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for exact centering */
+            font-size: 8rem;
+            color: #fff;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+            }
+            
+            #closeMessage:hover {
+            transform: translateX(-50%) scale(1.2); /* Maintain centering while scaling */
+            color: #ff4444;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             /* Main Header container */
             .header {
             display: flex;
@@ -2013,120 +2126,10 @@
             
             
             
-            
-            
-            /* Image Overlay Styles */
-            .image-overlay, .message-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000; /* Higher than everything else */
-            backdrop-filter: blur(5px);            
-            }
-            
-            .overlay-image {
-            max-width: 90%;
-            max-height: 80%;
-            border-radius: 15px;
-            border: 3px solid #fae68e;
-            box-shadow: 0 0 30px rgba(250, 230, 142, 0.3);
-            }
-            
-            .image-close-btn {
-            position: absolute;
-            top: 10%;
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust for exact centering */
-            font-size: 8rem;
-            color: #fff;
-            cursor: pointer;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
-            }
-            
-            .image-close-btn:hover {
-            transform: scale(1.2);
-            color: #ff4444;
-            }           
-            
-            
-            
-            
-            
-            
-            
-            .frame {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            min-height: 100px;
-            max-width: 550px;
-            padding: 20px;
-            border: 10px solid transparent;
-            border-image: linear-gradient(to bottom, yellow, orange) 1;
-            text-align: center;
-            color: white;
-            background: rgba(0, 0, 0, 0.6);
-            box-shadow: 0 0 30px yellow;
-            z-index: 10000;
-            
-            /* Flexbox to center content */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            }
-            
-            .flashMessage {
-            font-size: 5rem;
-            line-height: 7rem;
-            
-            /* Ensure text wraps properly */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            }
-            
-            /* Updated Close Button Positioning */
-            #closeMessage {
-            position: absolute;
-            top: -100%; 
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust for exact centering */
-            font-size: 8rem;
-            color: #fff;
-            cursor: pointer;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
-            }
-            
-            #closeMessage:hover {
-            transform: translateX(-50%) scale(1.2); /* Maintain centering while scaling */
-            color: #ff4444;
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-// Add this CSS
+/* App Features */
 .feature-list {
   list-style: none;
-  padding-left: 20px;
+  padding-left: 0;
   margin: 0;
   color: black;
 }
@@ -2137,139 +2140,38 @@
 
 .toggle {
   cursor: pointer;
-  padding: 8px 0;
+  padding: 1rem 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid #f0f0f0;
+  padding-right: 10px; /* Prevent arrow misalignment */
+}
+
+.toggle.has-children {
+  font-weight: 600;
+}
+
+.toggle:hover {
+  background-color: #f8f8f8;
 }
 
 .toggle-icon {
   font-size: 0.8em;
   width: 20px;
+  margin-left: auto; /* Align right */
+  transition: transform 0.2s;
   display: inline-block;
+  padding-left: 0;
+}
+
+.toggle-icon.open {
+  transform: rotate(90deg);
 }
 
 .collapsed {
   display: none;
-}
-
-.features-container {
-  max-height: 70vh;
-  overflow-y: auto;
-  padding: 10px;
-}
-
-/* Add these styles to your existing CSS */
-
-/* Set black color for all text in the modal */
-#features-modal {
-  color: #000000; /* Black color */
-}
-
-/* Ensure specific elements inherit the color */
-#features-modal .feature-list,
-#features-modal .toggle,
-#features-modal .feature-name,
-#features-modal .toggle-icon {
-  color: inherit; /* Inherits black color from parent */
-}
-
-/* If you have other elements in the modal, ensure they inherit the color */
-#features-modal .modal-content {
-  color: inherit;
-}
-
-/* If you're using dark mode or have other conflicting styles, add !important */
-#features-modal {
-  color: #000000 !important;
-}
-
-#features-modal * {
-  color: inherit !important;
-}
-
-
-
-
-
-
-
-
-
-
-.modal-header {
-  color: #000;
-  font-size: 6rem;
-  margin: 0 0 1rem 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #ddd;
-}
-
-.toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.toggle-icon {
-  margin-left: auto;
-  padding-left: 15px;
-  transition: transform 0.2s;
-}
-
-.feature-name {
-  flex-grow: 1;
-}
-
-
-
-
-
-.modal {
-  display: none; /* Hidden by default */
-}
-
-.modal-header {
-  color: #000;
-  font-size: 5rem;
-  margin: 0 0 1rem 0;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #eee;
-}
-
-.feature-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.toggle {
-  display: flex;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.toggle.has-children {
-  font-weight: 600; /* Bold for parent items */
-}
-
-.sub-items-container {
-  border-left: 2px solid #e0e0e0;
-  margin-left: 10px;
-  display: none; /* Collapsed by default */
-}
-
-.sub-items-container .feature-name {
-  font-weight: 400; /* Normal weight for sub-items */
-  color: #555; /* Different color for sub-items */
-}
-
-.toggle-icon {
-  margin-left: 15px;
-  font-size: 0.8em;
-  transition: transform 0.2s;
 }
 
 .feature-name {
@@ -2277,19 +2179,209 @@
   text-align: left;
 }
 
-/* Hover effects */
-.toggle:hover {
-  background-color: #f8f8f8;
+.sub-items-container {
+  border-left: 2px solid #e0e0e0;
+  margin-left: 2rem;
+  display: none;
 }
 
-/* Open state */
 .sub-items-container.open {
   display: block;
 }
 
-.toggle-icon.open {
-  transform: rotate(90deg);
+.sub-items-container .feature-name {
+  font-weight: 400;
+  color: #555;
 }
+
+.features-container {
+  max-height: 60vh; /* Adjusted for footer space */
+  padding: 10px 0;
+  overflow-y: auto; /* Vertical scroll only */
+  overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+/* Scrollbar styling */
+.features-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.features-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.features-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+.features-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+#features-modal {
+  color: #000 !important;
+}
+
+#features-modal * {
+  color: inherit !important;
+}
+
+#features-modal .modal-content,
+#features-modal .feature-list,
+#features-modal .toggle,
+#features-modal .feature-name,
+#features-modal .toggle-icon {
+  color: inherit;
+}
+
+#features-modal .close-btn {
+top: 1rem;
+}
+
+.modal {
+  display: none;
+}
+
+.modal-header {
+  color: #000;
+  font-size: 5rem;
+  margin-bottom: 2rem; /* Unified spacing */
+  padding-bottom: 3rem;
+  border-bottom: 2px solid #eee;
+}
+
+.modal-footer {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 10px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+  justify-content: center; /* Center buttons horizontally */
+}
+
+.modal-footer button {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-footer button img {
+  width: 16px;
+  height: 16px;
+}     
+            
+/* Reduce gap between inner items' text and left-side border */
+.feature-list li {
+  padding-left: 10px; /* Reduced from 20px to 10px */
+}
+
+/* Adjust the indent for nested items */
+.feature-list.level-0 {
+  padding-left: 0;
+}
+
+.feature-list.level-1 li {
+  padding-left: 20px; /* Adjust as needed for nested levels */
+}
+
+.feature-list.level-2 li {
+  padding-left: 30px; /* Adjust as needed for nested levels */
+}   
+
+    .modal-footer button:disabled {
+  opacity: 0.5; /* Reduce visibility */
+
+  filter: grayscale(100%); /* Make it look inactive */
+}
+        
+        .copy-btn {
+  transition: transform 0.2s ease-in-out; /* Smooth transition */
+}
+
+.copy-btn:active {
+  transform: scale(1.1); /* Slight zoom-in effect */
+}
+       
+       .copy-btn.clicked {
+  transform: scale(1.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+ .load-container {
+ top: 20px;
+            position: relative;
+            width: 200px;
+            height: 80px; /* Adjusted for better visibility */
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .loading-text {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            animation: fadeMove 6s infinite;
+            font-size: 22px;
+            white-space: nowrap;
+        }
+
+        .loading-text:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .loading-text:nth-child(2) {
+            animation-delay: 2s;
+        }
+
+        .loading-text:nth-child(3) {
+            animation-delay: 4s;
+        }
+
+        @keyframes fadeMove {
+            0% {
+                opacity: 0;
+                transform: translateX(40px); /* Start from right */
+            }
+            10% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            30% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            40% {
+                opacity: 0;
+                transform: translateX(-40px); /* Move to left */
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+        }
+
+
+
+            
         </style>
     </head>
     <body>
@@ -2302,8 +2394,16 @@
                     <div class="spinner"></div>
                     <img src="veg.png" alt="Loading" class="loading-image">
                 </div>
-                <div class="loading-message">Loading</div>
+              <!--  <div class="loading-message">Loading</div> -->
+                
+                <div class="load-container">
+        <div class="loading-text">Dive in</div>
+        <div class="loading-text">Take away</div>
+        <div class="loading-text">Delivery</div>
+    </div>
             </div>
+            
+            
         </div>
         
         <!-- Header -->
@@ -2439,624 +2539,624 @@
                 
                 <!-- Image Overlay -->
                 <div id="imageOverlay" class="image-overlay">
-                    <span id="closeImage" class="image-close-btn">×</span>                    
-                    <img id="driveImage" 
-                    alt="Special Offer" 
-                    class="overlay-image">
-                    
-                    
+                <span id="closeImage" class="image-close-btn">×</span>                    
+                <img id="driveImage" 
+                alt="Special Offer" 
+                class="overlay-image">
+                
+                
                 </div>
                 
                 <!-- Message Overlay -->
                 <div id="messageOverlay" class="message-overlay" style="display: none;">
-                    <div class="frame">
-                        <div id="messageText" class="flashMessage"></div>
-                        <span id="closeMessage" class="image-close-btn">×</span>
-                    </div>
+                <div class="frame">
+                <div id="messageText" class="flashMessage"></div>
+                <span id="closeMessage" class="image-close-btn">×</span>
+                </div>
                 </div>      
                 
                 
                 
                 <script>
-                    
-                    
-                    
-                    
-                    
-                    
-                    // temp disable offer cart button
-                    document.getElementById("toggle-cart").style.display = "none"; // Hide
-                    
-                    // google script URL
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbzEjqDlAhzGNmTn7M81p6_POCCvhgbT1UlCQKJIPZ9TNgdGGTikxB8EDnNSc99LMym5Qg/exec";
-                    
-                    //Disable context menu, cut-copy-paste
-                    document.addEventListener('contextmenu', event => event.preventDefault());
-                    document.addEventListener('copy', event => event.preventDefault());
-                    document.addEventListener('cut', event => event.preventDefault());
-                    document.addEventListener('paste', event => event.preventDefault());
-                    
-                    // Declarations
-                    let cachedOrderNumber = null;                    
-                    
-                    
-                    function showFeedback(message) {
-                        const feedback = document.querySelector('.feedback-message');
-                        feedback.textContent = message;
-                        feedback.style.display = 'block';
-                        setTimeout(() => {
-                            feedback.style.display = 'none';
-                        }, 1000);
-                    }
-                    
-                    
-                    function updateScreenSize() {
-                        const width = window.innerWidth;
-                        const height = window.innerHeight;
-                        
-                        const header = document.querySelector('.header');
-                        
-                        // If width is greater than or equal to height, make header scrollable
-                        if (width >= height) {
-                            header.classList.add('scrollable'); // Make header scrollable
-                            } else {
-                            header.classList.remove('scrollable'); // Keep header fixed
-                        }
-                    }                    
-                    // Listen for window resizing
-                    window.addEventListener('resize', updateScreenSize);                    
-                    // Call the function initially to set the correct behavior based on current screen size
-                    updateScreenSize();
-                    
-                    
-                    
-                    async function loadReplacements() {
-                        try {
-                            const response = await fetch(`${scriptUrl}?sheet=replace`);
-                            const data = await response.json();
-                            
-                            SEARCH_REPLACEMENTS = data.slice(1).reduce((acc, row) => {
-                                if (row.length >= 2) {
-                                    // Split column A by commas and process each word separately
-                                    const words = String(row[0]).split(',').map(word => word.trim()).filter(word => word);
-                                    
-                                    const isGurmukhi = words.some(word => /[\u0A00-\u0A7F]/.test(word));
-                                    
-                                    const replacements = isGurmukhi
-                                    ? String(row[1]).trim()  // Preserve exact Gurmukhi
-                                    : String(row[1]).toLowerCase().trim();
-                                    
-                                    words.forEach(original => {
-                                        if (original && replacements) {
-                                            acc[isGurmukhi ? original : original.toLowerCase()] = replacements;
-                                        }
-                                    });
-                                }
-                                return acc;
-                            }, {});
-                            
-                            
-                            console.log('Final replacements:', SEARCH_REPLACEMENTS);
-                            
-                            } catch (error) {
-                            console.error('Error:', error);
-                            SEARCH_REPLACEMENTS = {
-                                'cofee': 'coffee',
-                                'coofe': 'coffee',
-                            };
-                        }
-                    }                    
-                    // Initialize when page loads
-                    loadReplacements();
-                    
-                    
-                    
-                    let selectedFilter = "="; // Default to "="                                        
-                    function filterMenuItems(searchQuery) {
-                        const menuDiv = document.getElementById('menu');
-                        if (!menuDiv) return;
-                        
-                        
-                        const menuItems = document.querySelectorAll('.menu-item');
-                        const categoryHeaders = document.querySelectorAll('.category-header');
-                        const categoryItems = document.querySelectorAll('.category-items');
-                        
-                        let totalVisibleItems = 0;
-                        
-                        
-                        const normalizedSearchQuery = searchQuery.trim().toLowerCase();
-                        const isNumberSearch = /^\d+$/.test(normalizedSearchQuery); // Check if the search query is a number                        
-                        
-                        // Show/hide filter buttons based on whether the search query is a number
-                        const filterButtons = document.getElementById('filterButtons');
-                        if (isNumberSearch) {
-                            filterButtons.style.display = 'flex'; // Show filter buttons
-                            } else {
-                            filterButtons.style.display = 'none'; // Hide filter buttons
-                        }
-                        
-                        // Get the selected filter type (=, <=, >=)
-                        // Use the globally selected filter type
-                        const filterType = selectedFilter;
-                        
-                        
-                        // Convert the search query to a number
-                        const searchNumber = isNumberSearch ? parseInt(normalizedSearchQuery, 10) : null;
-                        
-                        categoryHeaders.forEach((header, index) => {
-                            const categoryItem = categoryItems[index];
-                            const itemsInCategory = categoryItem.querySelectorAll('.menu-item');
-                            
-                            // Access the header's left and right parts (columns)
-                            const leftPart = header.querySelector('.left')?.textContent.trim().toLowerCase() || '';
-                            const rightPart = header.querySelector('.right')?.textContent.trim().toLowerCase() || '';
-                            
-                            // Combine the header text for searching
-                            const headerText = `${leftPart} ${rightPart}`.trim();
-                            
-                            // Debug: Log the header text and split words
-                            console.log("Header Text:", headerText);
-                            console.log("Header Words:", headerText.split(/[\s,]+/).filter(word => word.length > 0));
-                            
-                            // Check if the header matches the search query
-                            const isNumeric = !isNaN(normalizedSearchQuery); // Check if the search query is numeric
-                            
-                            const headerMatches = !isNumeric && headerText.split(' ').some(word => {
-                                const splitWords = word.split('('); 
-                                return splitWords.some(part => part.startsWith(normalizedSearchQuery));
-                            });
-                            
-                            
-                            let hasVisibleItemsInCategory = false;
-                            
-                            itemsInCategory.forEach(item => {
-                                const colABElement = item.querySelector('.colAB');
-                                const colCDEElement = item.querySelector('.colCDE');
-                                const itemTextAB = colABElement ? colABElement.textContent.trim().toLowerCase() : '';
-                                const itemTextCDE = colCDEElement ? colCDEElement.textContent.trim().toLowerCase() : '';
-                                
-                                let itemMatches = itemTextAB.includes('ml') || itemTextCDE.includes('ml') ? false : false;
-                                
-                                if (isNumberSearch) {
-                                    // Extract numbers from the last three columns (colCDE)
-                                    const numbersInCDE = itemTextCDE.match(/\d+/g) || [];
-                                    itemMatches = numbersInCDE.some(numberStr => {
-                                        const number = parseInt(numberStr, 10);
-                                        switch (filterType) {
-                                            case '=':
-                                            return number === searchNumber;
-                                            case '<=':
-                                            return number <= searchNumber;
-                                            case '>=':
-                                            return number >= searchNumber;
-                                            default:
-                                            return false;
-                                        }
-                                        
-                                    });                      
-                                    } else {
-                                    // Otherwise, check start-with words from all 5 columns (A, B, C, D, E)
-                                    itemMatches = itemTextAB.split(' ').some(word => {
-                                        const splitWords = word.split('('); 
-                                        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
-                                        }) || itemTextCDE.split(' ').some(word => {
-                                        const splitWords = word.split('('); 
-                                        return splitWords.some(part => part.startsWith(normalizedSearchQuery));
-                                    });
-                                }
-                                
-                                if (headerMatches || itemMatches) {
-                                    totalVisibleItems++;                                    
-                                    item.style.display = 'block';
-                                    hasVisibleItemsInCategory = true;
-                                    hasVisibleItems = true;
-                                    item.style.borderBottom = ''; // Reset border-bottom for all items
-                                    
-                                    } else {
-                                    item.style.display = 'none';
-                                }
-                            });
-                            
-                            // Adjust the header display and styling based on matches
-                            if (headerMatches || hasVisibleItemsInCategory) {
-                                header.style.display = 'flex';
-                                categoryItem.style.display = 'block';
-                                header.classList.add('visible-border');
-                                categoryItem.classList.add('visible-border');                                
-                                header.style.fontSize = '6rem';  // Set font size for expanded header
-                                header.querySelector('.right').style.display = 'inline';  // Show second column
-                                } else {                                
-                                header.style.display = 'none';
-                                categoryItem.style.display = 'none';
-                                header.classList.remove('visible-border'); // Ensure these lines exist
-                                categoryItem.classList.remove('visible-border');
-                                header.querySelector('.right').style.display = 'none';  // Hide second column
-                            }
-                            
-                            // Now handle the last visible item in the category
-                            const visibleItems = Array.from(itemsInCategory).filter(item => item.style.display === 'block');
-                            if (visibleItems.length > 0) {    
-                                const lastVisibleItem = visibleItems[visibleItems.length - 1];
-                                lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
-                                lastVisibleItem.style.marginBottom = '2rem'; // Add this line
-                            }
-                            
-                            
-                            // Offers search code
-                            const offersContainer = document.getElementById('offers-container');
-                            offersContainer.innerHTML = ''; // Clear previous results
-                            
-                            const searchWords = normalizedSearchQuery.toLowerCase().split(/\s+/); // Split search query into words
-                            
-                            
-                            const matchedOffers = offersData.filter(offer => {
-                                if (searchQuery.trim() === '') return true; // Include all offers when search is empty
-                                const titleWords = offer[1].toLowerCase().split(/\s+/);
-                                const descWords = offer[2].toLowerCase().split(/\s+/);
-                                return searchWords.some(searchWord => 
-                                titleWords.some(word => word.startsWith(searchWord)) || 
-                                descWords.some(word => word.startsWith(searchWord))
-                                );
-                            });
-                            
-                            if (matchedOffers.length > 0) {
-                                offersContainer.innerHTML = matchedOffers.map(offer => {
-                                    const offerText = `🎊\n*${offer[1]}*\n(${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''})\n${offer[2]}\n〰️〰️〰️〰️〰️〰️〰️〰️〰`;
-                                    
-                                    return `
-                                    <div class="offer-item" style="position: relative;">
-                                    
-                                    <button class="add-offer-btn" 
-                                    data-start="${offer[0]}" 
-                                    data-end="${offer[3] || ''}"
-                                    data-allow-once="${offer[4] || 'No'}" 
-                                    data-dependencies="${offer[5] || 'No'}">
-                                    Add
-                                    </button>
-                                    <h2 class="offer-title">${offer[1]}</h2>
-                                    <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
-                                    <p class="offer-description">${offer[2]}</p>
-                                    </div>
-                                    `;
-                                }).join('');
-                                offersContainer.style.display = 'grid';
-                                offersButton.querySelector('.arrow').textContent = '▲';
-                                } else {
-                                offersContainer.style.display = 'none';
-                                offersButton.querySelector('.arrow').textContent = '▼'
-                            }
-                            
-                            // Update offers button counter dynamically
-                            const arrow = offersButton.querySelector('.arrow').outerHTML;
-                            offersButton.innerHTML = `${matchedOffers.length} Offer${matchedOffers.length !== 1 ? 's' : ''} Available ${arrow}`;
-                            
-                        });
-                        
-                        const totalItemsDiv = document.getElementById('total-items-found');
-                        
-                        if (searchQuery.length === 0) {
-                            totalItemsDiv.style.display = 'none'; // Hide when search box is empty
-                            updateOfferAddButtons();
-                            } else {
-                            if (totalVisibleItems > 0) {
-                                // Check if totalVisibleItems is 1 (singular) or more (plural)
-                                totalItemsDiv.textContent = `${totalVisibleItems} ${totalVisibleItems === 1 ? 'item' : 'items'}`;
-                                totalItemsDiv.style.color = '#00FF00'; // Green for visibility
-                                } else {
-                                if (filterButtons.style.display === 'none') {
-                                    totalItemsDiv.textContent = 'No menu item found';
-                                    } else {
-                                    totalItemsDiv.textContent = 'No item';
-                                }
-                                
-                                totalItemsDiv.style.color = '#ff4d4d'; // Red for visibility
-                            }
-                            totalItemsDiv.style.display = 'block'; // Show only when search is not empty
-                        }  
-                    }
-                    
-                    // Add event listener to filter buttons
-                    document.querySelectorAll('.filter-btn').forEach(button => {
-                        button.addEventListener('click', () => {
-                            // Remove active class from all buttons
-                            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-                            
-                            // Add active class to the clicked button
-                            button.classList.add('active');
-                            
-                            // Update the selected filter type
-                            selectedFilter = button.getAttribute('data-filter');
-                            
-                            // Trigger filtering
-                            const searchQuery = document.getElementById('searchInput').value.trim();
-                            filterMenuItems(searchQuery);
-                        });
-                    });
-                    
-                    
-                    // Function to reset headers and hide the second column when search is cleared
-                    function resetHeaders() {
-                        document.querySelectorAll('.category-header').forEach(header => {
-                            header.style.fontSize = '7rem';  // Reset to collapsed size
-                            header.querySelector('.right').style.display = 'none';  // Hide second column
-                            header.classList.remove('visible-border'); 
-                            
-                        });
-                        
-                        document.querySelectorAll('.category-items').forEach(container => {
-                            container.style.display = 'none';  // Collapse all categories
-                            container.classList.remove('visible-border'); 
-                            
-                        });
-                    }
-                    
-                    
-                    // Get references to the elements
-                    const searchInput = document.getElementById('searchInput');
-                    const clearButton = document.getElementById('clearButton');
-                    // The magnifierIcon remains always visible, so no toggling is required here
-                    
-                    // Modify the search handler like this
-                    searchInput.addEventListener('input', (e) => {
-                        let query = e.target.value;
-                        
-                        // Validate the input to allow only English or Gurmukhi characters
-                        const regex = /^[a-zA-Z0-9\u0A00-\u0A7F]*$/;
-                        if (!regex.test(query)) {
-                            e.target.value = query.slice(0, -1);
-                            return;
-                        }
-                        
-                        // 1. Convert replacements to array and sort by key length (longest first)
-                        const sortedReplacements = Object.entries(SEARCH_REPLACEMENTS)
-                        .sort((a, b) => b[0].length - a[0].length);
-                        
-                        // 2. Process replacements in sorted order
-                        sortedReplacements.forEach(([original, replacement]) => {
-                            const escapedOriginal = original.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                            query = query.replace(
-                            new RegExp(escapedOriginal, 'g'), 
-                            replacement
-                            );
-                        });
-                        
-                        // 3. Pass to filter
-                        filterMenuItems(query);
-                        
-                        // Existing clear button logic
-                        if (query.length > 0) {
-                            clearButton.style.display = 'block';
-                            } else {
-                            clearButton.style.display = 'none';
-                            resetHeaders();
-                        }
-                        
-                        // NEW FIX (add these 4 lines at the very end):
-                        if (e.target.value === '' && offersContainer.style.display === 'grid') {
-                            offersContainer.style.display = 'none';
-                            offersButton.querySelector('.arrow').textContent = '▼';
-                        }
-                        
-                    }); 
-                    
-                    
-                    
-                    // Clear Button Event Listener
-                    clearButton.addEventListener('click', () => {
-                        searchInput.value = '';              // Clear input field
-                        clearButton.style.display = 'none';  // Hide the clear button
-                        
-                        // Reset filtering and collapse categories (your existing logic)
-                        filterMenuItems('');
-                        
-                        // Collapse all category items (your existing logic)
-                        document.querySelectorAll('.category-items').forEach(container => {
-                            container.style.display = 'none';
-                        });
-                        document.querySelectorAll('.category-header').forEach(header => {
-                            header.classList.remove('expanded');
-                        });
-                        
-                        // Focus back on the search box
-                        searchInput.focus();
-                        resetHeaders();
-                    });
-                    
-                    
-                    
-                    
-                    // Fetch data from Google Script URL
-                    fetch(scriptUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        const menuDiv = document.getElementById('menu');
-                        let currentCategory = null;
-                        
-                        // Store all category item containers for collapsing
-                        const categoryItemsContainers = [];
-                        
-                        console.log("Fetched data:", data); // Debugging data fetching
-                        
-                        data.forEach(row => {
-                            const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
-                            
-                            // Apply different colors to column C, D, and E and join them with " / "
-                            // Original code where you create colCDEElement:
-                            const mergedcolCDE = [
-                            row.columnC ? `<span style="color: #40E0D0;" data-column="C">${row.columnC}</span>` : '',
-                            row.columnD ? `<span style="color: #00FF7F;" data-column="D">${row.columnD}</span>` : '',
-                            //                            row.columnE ? `<span style="color: #E6E6FA;" data-column="E">${row.columnE}</span>` : ''
-                            row.columnE ? `<span style="color: #F8BBD0;" data-column="E">${row.columnE}</span>` : ''
-                            
-                            ].filter(col => col).join(' / ');
-                            
-                            const colCDEElement = document.createElement('span');
-                            colCDEElement.classList.add('colCDE');
-                            colCDEElement.innerHTML = mergedcolCDE;  // This now contains data-column attributes
-                            
-                            console.log("Merged colCDE:", mergedcolCDE); // Debugging merged colCDE
-                            
-                            // Check if columnC is empty or is a category header
-                            const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
-                            
-                            console.log("Is category?", isCategory); // Debugging category check
-                            
-                            if (isCategory) {
-                                const categoryHeaderDiv = document.createElement('div');
-                                categoryHeaderDiv.classList.add('category-header');
-                                
-                                // MODIFIED: Store individual column values as data attributes
-                                categoryHeaderDiv.dataset.columnC = row.columnC || '';
-                                categoryHeaderDiv.dataset.columnD = row.columnD || '';
-                                categoryHeaderDiv.dataset.columnE = row.columnE || '';
-                                
-                                const leftPart = document.createElement('span');
-                                leftPart.classList.add('left');
-                                leftPart.textContent = mergedColAB;
-                                
-                                const rightPart = document.createElement('span');
-                                rightPart.classList.add('right');
-                                rightPart.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
-                                
-                                categoryHeaderDiv.appendChild(leftPart);
-                                categoryHeaderDiv.appendChild(rightPart);
-                                
-                                const categoryItemsDiv = document.createElement('div');
-                                categoryItemsDiv.classList.add('category-items');
-                                
-                                // Toggle category items visibility on click
-                                categoryHeaderDiv.addEventListener('click', () => {
-                                    // Reset all other headers to default collapsed size and show only the first column
-                                    document.querySelectorAll('.category-header').forEach(header => {
-                                        header.style.fontSize = '7rem'; // Set collapsed size
-                                        header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
-                                        header.classList.remove('visible-border'); // Add this line
-                                    });
-                                    
-                                    document.querySelectorAll('.category-items').forEach(container => {
-                                        if (container !== categoryItemsDiv) {
-                                            container.style.display = 'none';
-                                            container.classList.remove('visible-border'); // Add this line
-                                        }
-                                    });
-                                    
-                                    // Toggle visibility and adjust styles accordingly
-                                    if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
-                                        categoryItemsDiv.style.display = 'block';
-                                        categoryHeaderDiv.style.fontSize = '6rem';
-                                        categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show right column
-                                        categoryHeaderDiv.classList.add('visible-border');
-                                        categoryItemsDiv.classList.add('visible-border');
-                                        } else {
-                                        categoryItemsDiv.style.display = 'none';
-                                        categoryHeaderDiv.classList.remove('visible-border');
-                                        categoryItemsDiv.classList.remove('visible-border');
-                                    }
-                                });
-                                
-                                // Initial state: Increase font size for collapsed categories and hide second column
-                                categoryHeaderDiv.style.fontSize = '7rem';
-                                categoryHeaderDiv.querySelector('.right').style.display = 'none';
-                                
-                                menuDiv.appendChild(categoryHeaderDiv);
-                                menuDiv.appendChild(categoryItemsDiv);
-                                
-                                categoryItemsContainers.push(categoryItemsDiv);                    
-                                currentCategory = categoryItemsDiv;
-                                } else if (currentCategory) {
-                                const menuItemDiv = document.createElement('div');
-                                menuItemDiv.classList.add('menu-item');
-                                menuItemDiv.style.marginBottom = '0';
-                                
-                                const lineDiv = document.createElement('div');
-                                lineDiv.classList.add('menu-item-line');
-                                
-                                const colABElement = document.createElement('span');
-                                colABElement.classList.add('colAB');
-                                colABElement.textContent = mergedColAB;
-                                
-                                const colCDEElement = document.createElement('span');
-                                colCDEElement.classList.add('colCDE');
-                                colCDEElement.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
-                                
-                                lineDiv.appendChild(colABElement);
-                                lineDiv.appendChild(colCDEElement);                        
-                                menuItemDiv.appendChild(lineDiv);
-                                currentCategory.appendChild(menuItemDiv);
-                            }
-                        });
-                        
-                        categoryItemsContainers.forEach(container => {
-                            container.style.display = 'none';
-                        });
-                        
-                        document.querySelector(".search-container").style.display = "block";
-                        
-                        document.querySelector('.footer-container').style.display = 'block'; // Show footer
-                        
-                        
-                        // Modify the loading overlay hide code to show the image overlay
-                        document.getElementById('loadingOverlay').style.display = 'none';
-                        
-                        
-                        
-                        // Set the image source when the overlay is shown
-                        document.getElementById('imageOverlay').addEventListener('click', () => {
-                            document.getElementById('driveImage').src = imageUrl;
-                        });
-                        
-                        
-                        
-                    })
-                    .catch(error => {
-                        console.error("Error fetching data:", error);
-                        document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
-                    });
-                    
-                    
-                    
-                    // Add this code where you initialize other JavaScript
-                    const fileId = "1_YZByTcu5rHIobQoOS1AZ_NjNCz98m8T";
-                    const timestamp = new Date().getTime();
-                    const imageUrl = `https://lh3.googleusercontent.com/d/${fileId}?t=${timestamp}`; 
-                    
-                    
-                    // Close image overlay
-                    document.getElementById('closeImage').addEventListener('click', () => {
-                        document.getElementById('imageOverlay').style.display = 'none';
-                    });
-                    
-                    // Optional: Close when clicking outside image
-                    document.getElementById('imageOverlay').addEventListener('click', (e) => {
-                        if (e.target === document.getElementById('imageOverlay')) {
-                            document.getElementById('imageOverlay').style.display = 'none';
-                        }
-                    });               
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                
+                
+                
+                
+                
+                
+                // temp disable offer cart button
+                document.getElementById("toggle-cart").style.display = "none"; // Hide
+                
+                // google script URL
+                const scriptUrl = "https://script.google.com/macros/s/AKfycbzEjqDlAhzGNmTn7M81p6_POCCvhgbT1UlCQKJIPZ9TNgdGGTikxB8EDnNSc99LMym5Qg/exec";
+                
+                //Disable context menu, cut-copy-paste
+                document.addEventListener('contextmenu', event => event.preventDefault());
+                document.addEventListener('copy', event => event.preventDefault());
+                document.addEventListener('cut', event => event.preventDefault());
+                document.addEventListener('paste', event => event.preventDefault());
+                
+                // Declarations
+                let cachedOrderNumber = null;                    
+                
+                
+                function showFeedback(message) {
+                const feedback = document.querySelector('.feedback-message');
+                feedback.textContent = message;
+                feedback.style.display = 'block';
+                setTimeout(() => {
+                feedback.style.display = 'none';
+                }, 1000);
+                }
+                
+                
+                function updateScreenSize() {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                
+                const header = document.querySelector('.header');
+                
+                // If width is greater than or equal to height, make header scrollable
+                if (width >= height) {
+                header.classList.add('scrollable'); // Make header scrollable
+                } else {
+                header.classList.remove('scrollable'); // Keep header fixed
+                }
+                }                    
+                // Listen for window resizing
+                window.addEventListener('resize', updateScreenSize);                    
+                // Call the function initially to set the correct behavior based on current screen size
+                updateScreenSize();
+                
+                
+                
+                async function loadReplacements() {
+                try {
+                const response = await fetch(`${scriptUrl}?sheet=replace`);
+                const data = await response.json();
+                
+                SEARCH_REPLACEMENTS = data.slice(1).reduce((acc, row) => {
+                if (row.length >= 2) {
+                // Split column A by commas and process each word separately
+                const words = String(row[0]).split(',').map(word => word.trim()).filter(word => word);
+                
+                const isGurmukhi = words.some(word => /[\u0A00-\u0A7F]/.test(word));
+                
+                const replacements = isGurmukhi
+                ? String(row[1]).trim()  // Preserve exact Gurmukhi
+                : String(row[1]).toLowerCase().trim();
+                
+                words.forEach(original => {
+                if (original && replacements) {
+                acc[isGurmukhi ? original : original.toLowerCase()] = replacements;
+                }
+                });
+                }
+                return acc;
+                }, {});
+                
+                
+                console.log('Final replacements:', SEARCH_REPLACEMENTS);
+                
+                } catch (error) {
+                console.error('Error:', error);
+                SEARCH_REPLACEMENTS = {
+                'cofee': 'coffee',
+                'coofe': 'coffee',
+                };
+                }
+                }                    
+                // Initialize when page loads
+                loadReplacements();
+                
+                
+                
+                let selectedFilter = "="; // Default to "="                                        
+                function filterMenuItems(searchQuery) {
+                const menuDiv = document.getElementById('menu');
+                if (!menuDiv) return;
+                
+                
+                const menuItems = document.querySelectorAll('.menu-item');
+                const categoryHeaders = document.querySelectorAll('.category-header');
+                const categoryItems = document.querySelectorAll('.category-items');
+                
+                let totalVisibleItems = 0;
+                
+                
+                const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+                const isNumberSearch = /^\d+$/.test(normalizedSearchQuery); // Check if the search query is a number                        
+                
+                // Show/hide filter buttons based on whether the search query is a number
+                const filterButtons = document.getElementById('filterButtons');
+                if (isNumberSearch) {
+                filterButtons.style.display = 'flex'; // Show filter buttons
+                } else {
+                filterButtons.style.display = 'none'; // Hide filter buttons
+                }
+                
+                // Get the selected filter type (=, <=, >=)
+                // Use the globally selected filter type
+                const filterType = selectedFilter;
+                
+                
+                // Convert the search query to a number
+                const searchNumber = isNumberSearch ? parseInt(normalizedSearchQuery, 10) : null;
+                
+                categoryHeaders.forEach((header, index) => {
+                const categoryItem = categoryItems[index];
+                const itemsInCategory = categoryItem.querySelectorAll('.menu-item');
+                
+                // Access the header's left and right parts (columns)
+                const leftPart = header.querySelector('.left')?.textContent.trim().toLowerCase() || '';
+                const rightPart = header.querySelector('.right')?.textContent.trim().toLowerCase() || '';
+                
+                // Combine the header text for searching
+                const headerText = `${leftPart} ${rightPart}`.trim();
+                
+                // Debug: Log the header text and split words
+                console.log("Header Text:", headerText);
+                console.log("Header Words:", headerText.split(/[\s,]+/).filter(word => word.length > 0));
+                
+                // Check if the header matches the search query
+                const isNumeric = !isNaN(normalizedSearchQuery); // Check if the search query is numeric
+                
+                const headerMatches = !isNumeric && headerText.split(' ').some(word => {
+                const splitWords = word.split('('); 
+                return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+                });
+                
+                
+                let hasVisibleItemsInCategory = false;
+                
+                itemsInCategory.forEach(item => {
+                const colABElement = item.querySelector('.colAB');
+                const colCDEElement = item.querySelector('.colCDE');
+                const itemTextAB = colABElement ? colABElement.textContent.trim().toLowerCase() : '';
+                const itemTextCDE = colCDEElement ? colCDEElement.textContent.trim().toLowerCase() : '';
+                
+                let itemMatches = itemTextAB.includes('ml') || itemTextCDE.includes('ml') ? false : false;
+                
+                if (isNumberSearch) {
+                // Extract numbers from the last three columns (colCDE)
+                const numbersInCDE = itemTextCDE.match(/\d+/g) || [];
+                itemMatches = numbersInCDE.some(numberStr => {
+                const number = parseInt(numberStr, 10);
+                switch (filterType) {
+                case '=':
+                return number === searchNumber;
+                case '<=':
+                return number <= searchNumber;
+                case '>=':
+                return number >= searchNumber;
+                default:
+                return false;
+                }
+                
+                });                      
+                } else {
+                // Otherwise, check start-with words from all 5 columns (A, B, C, D, E)
+                itemMatches = itemTextAB.split(' ').some(word => {
+                const splitWords = word.split('('); 
+                return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+                }) || itemTextCDE.split(' ').some(word => {
+                const splitWords = word.split('('); 
+                return splitWords.some(part => part.startsWith(normalizedSearchQuery));
+                });
+                }
+                
+                if (headerMatches || itemMatches) {
+                totalVisibleItems++;                                    
+                item.style.display = 'block';
+                hasVisibleItemsInCategory = true;
+                hasVisibleItems = true;
+                item.style.borderBottom = ''; // Reset border-bottom for all items
+                
+                } else {
+                item.style.display = 'none';
+                }
+                });
+                
+                // Adjust the header display and styling based on matches
+                if (headerMatches || hasVisibleItemsInCategory) {
+                header.style.display = 'flex';
+                categoryItem.style.display = 'block';
+                header.classList.add('visible-border');
+                categoryItem.classList.add('visible-border');                                
+                header.style.fontSize = '6rem';  // Set font size for expanded header
+                header.querySelector('.right').style.display = 'inline';  // Show second column
+                } else {                                
+                header.style.display = 'none';
+                categoryItem.style.display = 'none';
+                header.classList.remove('visible-border'); // Ensure these lines exist
+                categoryItem.classList.remove('visible-border');
+                header.querySelector('.right').style.display = 'none';  // Hide second column
+                }
+                
+                // Now handle the last visible item in the category
+                const visibleItems = Array.from(itemsInCategory).filter(item => item.style.display === 'block');
+                if (visibleItems.length > 0) {    
+                const lastVisibleItem = visibleItems[visibleItems.length - 1];
+                lastVisibleItem.style.borderBottom = 'none'; // Remove border from the last visible item
+                lastVisibleItem.style.marginBottom = '2rem'; // Add this line
+                }
+                
+                
+                // Offers search code
+                const offersContainer = document.getElementById('offers-container');
+                offersContainer.innerHTML = ''; // Clear previous results
+                
+                const searchWords = normalizedSearchQuery.toLowerCase().split(/\s+/); // Split search query into words
+                
+                
+                const matchedOffers = offersData.filter(offer => {
+                if (searchQuery.trim() === '') return true; // Include all offers when search is empty
+                const titleWords = offer[1].toLowerCase().split(/\s+/);
+                const descWords = offer[2].toLowerCase().split(/\s+/);
+                return searchWords.some(searchWord => 
+                titleWords.some(word => word.startsWith(searchWord)) || 
+                descWords.some(word => word.startsWith(searchWord))
+                );
+                });
+                
+                if (matchedOffers.length > 0) {
+                offersContainer.innerHTML = matchedOffers.map(offer => {
+                const offerText = `🎊\n*${offer[1]}*\n(${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''})\n${offer[2]}\n〰️〰️〰️〰️〰️〰️〰️〰️〰`;
+                
+                return `
+                <div class="offer-item" style="position: relative;">
+                
+                <button class="add-offer-btn" 
+                data-start="${offer[0]}" 
+                data-end="${offer[3] || ''}"
+                data-allow-once="${offer[4] || 'No'}" 
+                data-dependencies="${offer[5] || 'No'}">
+                Add
+                </button>
+                <h2 class="offer-title">${offer[1]}</h2>
+                <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
+                <p class="offer-description">${offer[2]}</p>
+                </div>
+                `;
+                }).join('');
+                offersContainer.style.display = 'grid';
+                offersButton.querySelector('.arrow').textContent = '▲';
+                } else {
+                offersContainer.style.display = 'none';
+                offersButton.querySelector('.arrow').textContent = '▼'
+                }
+                
+                // Update offers button counter dynamically
+                const arrow = offersButton.querySelector('.arrow').outerHTML;
+                offersButton.innerHTML = `${matchedOffers.length} Offer${matchedOffers.length !== 1 ? 's' : ''} Available ${arrow}`;
+                
+                });
+                
+                const totalItemsDiv = document.getElementById('total-items-found');
+                
+                if (searchQuery.length === 0) {
+                totalItemsDiv.style.display = 'none'; // Hide when search box is empty
+                updateOfferAddButtons();
+                } else {
+                if (totalVisibleItems > 0) {
+                // Check if totalVisibleItems is 1 (singular) or more (plural)
+                totalItemsDiv.textContent = `${totalVisibleItems} ${totalVisibleItems === 1 ? 'item' : 'items'}`;
+                totalItemsDiv.style.color = '#00FF00'; // Green for visibility
+                } else {
+                if (filterButtons.style.display === 'none') {
+                totalItemsDiv.textContent = 'No menu item found';
+                } else {
+                totalItemsDiv.textContent = 'No item';
+                }
+                
+                totalItemsDiv.style.color = '#ff4d4d'; // Red for visibility
+                }
+                totalItemsDiv.style.display = 'block'; // Show only when search is not empty
+                }  
+                }
+                
+                // Add event listener to filter buttons
+                document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to the clicked button
+                button.classList.add('active');
+                
+                // Update the selected filter type
+                selectedFilter = button.getAttribute('data-filter');
+                
+                // Trigger filtering
+                const searchQuery = document.getElementById('searchInput').value.trim();
+                filterMenuItems(searchQuery);
+                });
+                });
+                
+                
+                // Function to reset headers and hide the second column when search is cleared
+                function resetHeaders() {
+                document.querySelectorAll('.category-header').forEach(header => {
+                header.style.fontSize = '7rem';  // Reset to collapsed size
+                header.querySelector('.right').style.display = 'none';  // Hide second column
+                header.classList.remove('visible-border'); 
+                
+                });
+                
+                document.querySelectorAll('.category-items').forEach(container => {
+                container.style.display = 'none';  // Collapse all categories
+                container.classList.remove('visible-border'); 
+                
+                });
+                }
+                
+                
+                // Get references to the elements
+                const searchInput = document.getElementById('searchInput');
+                const clearButton = document.getElementById('clearButton');
+                // The magnifierIcon remains always visible, so no toggling is required here
+                
+                // Modify the search handler like this
+                searchInput.addEventListener('input', (e) => {
+                let query = e.target.value;
+                
+                // Validate the input to allow only English or Gurmukhi characters
+                const regex = /^[a-zA-Z0-9\u0A00-\u0A7F]*$/;
+                if (!regex.test(query)) {
+                e.target.value = query.slice(0, -1);
+                return;
+                }
+                
+                // 1. Convert replacements to array and sort by key length (longest first)
+                const sortedReplacements = Object.entries(SEARCH_REPLACEMENTS)
+                .sort((a, b) => b[0].length - a[0].length);
+                
+                // 2. Process replacements in sorted order
+                sortedReplacements.forEach(([original, replacement]) => {
+                const escapedOriginal = original.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                query = query.replace(
+                new RegExp(escapedOriginal, 'g'), 
+                replacement
+                );
+                });
+                
+                // 3. Pass to filter
+                filterMenuItems(query);
+                
+                // Existing clear button logic
+                if (query.length > 0) {
+                clearButton.style.display = 'block';
+                } else {
+                clearButton.style.display = 'none';
+                resetHeaders();
+                }
+                
+                // NEW FIX (add these 4 lines at the very end):
+                if (e.target.value === '' && offersContainer.style.display === 'grid') {
+                offersContainer.style.display = 'none';
+                offersButton.querySelector('.arrow').textContent = '▼';
+                }
+                
+                }); 
+                
+                
+                
+                // Clear Button Event Listener
+                clearButton.addEventListener('click', () => {
+                searchInput.value = '';              // Clear input field
+                clearButton.style.display = 'none';  // Hide the clear button
+                
+                // Reset filtering and collapse categories (your existing logic)
+                filterMenuItems('');
+                
+                // Collapse all category items (your existing logic)
+                document.querySelectorAll('.category-items').forEach(container => {
+                container.style.display = 'none';
+                });
+                document.querySelectorAll('.category-header').forEach(header => {
+                header.classList.remove('expanded');
+                });
+                
+                // Focus back on the search box
+                searchInput.focus();
+                resetHeaders();
+                });
+                
+                
+                
+                
+                // Fetch data from Google Script URL
+                fetch(scriptUrl)
+                .then(response => response.json())
+                .then(data => {
+                const menuDiv = document.getElementById('menu');
+                let currentCategory = null;
+                
+                // Store all category item containers for collapsing
+                const categoryItemsContainers = [];
+                
+                console.log("Fetched data:", data); // Debugging data fetching
+                
+                data.forEach(row => {
+                const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
+                
+                // Apply different colors to column C, D, and E and join them with " / "
+                // Original code where you create colCDEElement:
+                const mergedcolCDE = [
+                row.columnC ? `<span style="color: #40E0D0;" data-column="C">${row.columnC}</span>` : '',
+                row.columnD ? `<span style="color: #00FF7F;" data-column="D">${row.columnD}</span>` : '',
+                //                            row.columnE ? `<span style="color: #E6E6FA;" data-column="E">${row.columnE}</span>` : ''
+                row.columnE ? `<span style="color: #F8BBD0;" data-column="E">${row.columnE}</span>` : ''
+                
+                ].filter(col => col).join(' / ');
+                
+                const colCDEElement = document.createElement('span');
+                colCDEElement.classList.add('colCDE');
+                colCDEElement.innerHTML = mergedcolCDE;  // This now contains data-column attributes
+                
+                console.log("Merged colCDE:", mergedcolCDE); // Debugging merged colCDE
+                
+                // Check if columnC is empty or is a category header
+                const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
+                
+                console.log("Is category?", isCategory); // Debugging category check
+                
+                if (isCategory) {
+                const categoryHeaderDiv = document.createElement('div');
+                categoryHeaderDiv.classList.add('category-header');
+                
+                // MODIFIED: Store individual column values as data attributes
+                categoryHeaderDiv.dataset.columnC = row.columnC || '';
+                categoryHeaderDiv.dataset.columnD = row.columnD || '';
+                categoryHeaderDiv.dataset.columnE = row.columnE || '';
+                
+                const leftPart = document.createElement('span');
+                leftPart.classList.add('left');
+                leftPart.textContent = mergedColAB;
+                
+                const rightPart = document.createElement('span');
+                rightPart.classList.add('right');
+                rightPart.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
+                
+                categoryHeaderDiv.appendChild(leftPart);
+                categoryHeaderDiv.appendChild(rightPart);
+                
+                const categoryItemsDiv = document.createElement('div');
+                categoryItemsDiv.classList.add('category-items');
+                
+                // Toggle category items visibility on click
+                categoryHeaderDiv.addEventListener('click', () => {
+                // Reset all other headers to default collapsed size and show only the first column
+                document.querySelectorAll('.category-header').forEach(header => {
+                header.style.fontSize = '7rem'; // Set collapsed size
+                header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
+                header.classList.remove('visible-border'); // Add this line
+                });
+                
+                document.querySelectorAll('.category-items').forEach(container => {
+                if (container !== categoryItemsDiv) {
+                container.style.display = 'none';
+                container.classList.remove('visible-border'); // Add this line
+                }
+                });
+                
+                // Toggle visibility and adjust styles accordingly
+                if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
+                categoryItemsDiv.style.display = 'block';
+                categoryHeaderDiv.style.fontSize = '6rem';
+                categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show right column
+                categoryHeaderDiv.classList.add('visible-border');
+                categoryItemsDiv.classList.add('visible-border');
+                } else {
+                categoryItemsDiv.style.display = 'none';
+                categoryHeaderDiv.classList.remove('visible-border');
+                categoryItemsDiv.classList.remove('visible-border');
+                }
+                });
+                
+                // Initial state: Increase font size for collapsed categories and hide second column
+                categoryHeaderDiv.style.fontSize = '7rem';
+                categoryHeaderDiv.querySelector('.right').style.display = 'none';
+                
+                menuDiv.appendChild(categoryHeaderDiv);
+                menuDiv.appendChild(categoryItemsDiv);
+                
+                categoryItemsContainers.push(categoryItemsDiv);                    
+                currentCategory = categoryItemsDiv;
+                } else if (currentCategory) {
+                const menuItemDiv = document.createElement('div');
+                menuItemDiv.classList.add('menu-item');
+                menuItemDiv.style.marginBottom = '0';
+                
+                const lineDiv = document.createElement('div');
+                lineDiv.classList.add('menu-item-line');
+                
+                const colABElement = document.createElement('span');
+                colABElement.classList.add('colAB');
+                colABElement.textContent = mergedColAB;
+                
+                const colCDEElement = document.createElement('span');
+                colCDEElement.classList.add('colCDE');
+                colCDEElement.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
+                
+                lineDiv.appendChild(colABElement);
+                lineDiv.appendChild(colCDEElement);                        
+                menuItemDiv.appendChild(lineDiv);
+                currentCategory.appendChild(menuItemDiv);
+                }
+                });
+                
+                categoryItemsContainers.forEach(container => {
+                container.style.display = 'none';
+                });
+                
+                document.querySelector(".search-container").style.display = "block";
+                
+                document.querySelector('.footer-container').style.display = 'block'; // Show footer
+                
+                
+                // Modify the loading overlay hide code to show the image overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                
+                
+                // Set the image source when the overlay is shown
+                document.getElementById('imageOverlay').addEventListener('click', () => {
+                document.getElementById('driveImage').src = imageUrl;
+                });
+                
+                
+                
+                })
+                .catch(error => {
+                console.error("Error fetching data:", error);
+                document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
+                });
+                
+                
+                
+                // Add this code where you initialize other JavaScript
+                const fileId = "1_YZByTcu5rHIobQoOS1AZ_NjNCz98m8T";
+                const timestamp = new Date().getTime();
+                const imageUrl = `https://lh3.googleusercontent.com/d/${fileId}?t=${timestamp}`; 
+                
+                
+                // Close image overlay
+                document.getElementById('closeImage').addEventListener('click', () => {
+                document.getElementById('imageOverlay').style.display = 'none';
+                });
+                
+                // Optional: Close when clicking outside image
+                document.getElementById('imageOverlay').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('imageOverlay')) {
+                document.getElementById('imageOverlay').style.display = 'none';
+                }
+                });               
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
                 
                 
@@ -4425,4 +4525,4 @@
                 <script src="counter.js"></script> <!-- Counters -->                
                 <script src="cheat.js"></script> <!-- Cheats, Dev tools -->                
                 </body>
-                </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
