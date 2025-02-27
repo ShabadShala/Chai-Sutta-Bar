@@ -354,19 +354,18 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-let lastTapTime = 0;
+let longPressTimer;
 
 document.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 2) { // Detect two-finger tap
-        let currentTime = new Date().getTime();
-        let tapInterval = currentTime - lastTapTime;
-
-        if (tapInterval < 300 && tapInterval > 50) { // Detect double-tap within 300ms
+    if (e.touches.length === 1) { // Detect single-finger touch
+        longPressTimer = setTimeout(() => {
             addCheatListeners();
-        }
-
-        lastTapTime = currentTime;
+        }, 600); // Long press duration (600ms)
     }
+});
+
+document.addEventListener('touchend', () => {
+    clearTimeout(longPressTimer); // Cancel if released early
 });
 
 
