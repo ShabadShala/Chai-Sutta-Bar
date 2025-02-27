@@ -517,12 +517,22 @@ const featuresModal = document.createElement('div');
 featuresModal.id = 'features-modal';
 featuresModal.className = 'modal';
 featuresModal.innerHTML = `
-  <div class="modal-content">
-    <div class="close-btn">&times;</div>
-    <h3 class="modal-header">App Features</h3>
-    <div id="features" class="features-container"></div>
+<div class="modal-content">
+  <div class="close-btn">&times;</div>
+  <h3 class="modal-header">App Features</h3>
+  <div id="features" class="features-container"></div>
+  <div class="modal-footer">
+    <button class="expand-all-btn">
+      <img src="icons/expand-all.svg" alt="Expand">
+    </button>
+    <button class="collapse-all-btn">
+      <img src="icons/collapse-all.svg" alt="Collapse">
+    </button>
+    <button class="copy-btn">
+      <img src="icons/copy.svg" alt="Copy">
+    </button>
   </div>
-`;
+</div>`;
 document.body.appendChild(featuresModal);
 setupModalTriggers('features-modal');
 
@@ -547,11 +557,16 @@ async function loadFeatures() {
     const container = document.getElementById('features');
     container.innerHTML = buildList(data);
     addToggleListeners();
+
+    // Set button states when features load
+    document.querySelector('.expand-all-btn').disabled = false;
+    document.querySelector('.collapse-all-btn').disabled = true;
   } catch (error) {
     console.error('Error loading features:', error);
     document.getElementById('features').innerHTML = 'Failed to load features';
   }
 }
+
 
 function buildList(items, level = 0) {
   if (!items) return '';
@@ -572,6 +587,7 @@ function buildList(items, level = 0) {
       ` : ''}
     </li>
   `}).join('')}</ul>`;
+  
 }
 
 function addToggleListeners() {
@@ -579,18 +595,67 @@ function addToggleListeners() {
     toggle.addEventListener('click', function() {
       const icon = this.querySelector('.toggle-icon');
       const container = this.parentElement.querySelector('.sub-items-container');
+
+      // Toggle current item
+      container.classList.toggle('open');
+      icon.classList.toggle('open');
       
-      if (container) {
-        container.classList.toggle('open');
-        icon.classList.toggle('open');
-      }
+      updateButtonsState(); // Check button state on each toggle
     });
   });
 }
 
+// New utility functions
+function expandAll() {
+  document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
+  document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
+  updateButtonsState();
+}
+
+function collapseAll() {
+  document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
+  document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
+  updateButtonsState();
+}
+
+function copyToClipboard() {
+  const lines = [];
+  document.querySelectorAll('.feature-name').forEach(feature => {
+    const level = parseInt(feature.closest('.toggle').dataset.level);
+    const prefix = '-'.repeat(level);
+    lines.push(prefix + feature.textContent.trim());
+  });
+  navigator.clipboard.writeText(lines.join('\n'));
+
+  // Add a class to trigger animation
+  const copyBtn = document.querySelector('.copy-btn');
+  copyBtn.classList.add('clicked');
+
+  // Remove class after animation completes
+  setTimeout(() => {
+    copyBtn.classList.remove('clicked');
+  }, 200);
+}
 
 
+function updateButtonsState() {
+    const expandAllBtn = document.querySelector('.expand-all-btn');
+  const collapseAllBtn = document.querySelector('.collapse-all-btn');
+  
+  const allContainers = document.querySelectorAll('.sub-items-container');
+  const expandedContainers = document.querySelectorAll('.sub-items-container.open');
 
+  // Disable "Expand All" if all items are already expanded
+  expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
+
+  // Disable "Collapse All" if all items are already collapsed
+  collapseAllBtn.disabled = expandedContainers.length === 0;
+}
+
+// Add footer button functionality
+document.querySelector('.expand-all-btn').addEventListener('click', expandAll);
+document.querySelector('.collapse-all-btn').addEventListener('click', collapseAll);
+document.querySelector('.copy-btn').addEventListener('click', copyToClipboard);
         
         
         
