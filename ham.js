@@ -5,7 +5,27 @@
         let hamburgerButton = document.getElementById('hamburger-button');
         if (!hamburgerButton) {
             hamburgerButton = document.createElement('div');
-            hamburgerButton.id = 'hamburger-button';
+            hamburgerButton.id = 'hamburger-button';function buildList(items, level = 0) {
+    if (!items) return '';
+    return `<ul class="feature-list level-${level}">${items.map(item => {
+        const hasChildren = item.children && Object.keys(item.children).length > 0;
+        const indent = level * 10;
+        
+        return `
+            <li style="padding-left: ${indent}px;">
+                <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
+                    <span class="feature-name">${item.name}</span>
+                    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+                </div>
+                ${hasChildren ? `
+                    <div class="sub-items-container">
+                        ${buildList(Object.values(item.children), level + 1)}
+                    </div>
+                ` : ''}
+            </li>
+        `;
+    }).join('')}</ul>`;
+}
             hamburgerButton.innerHTML = `
             <div class="hamburger-lines">
             <div class="line"></div>
@@ -509,10 +529,7 @@
         
         
         
-        
-        
-        
-        // Add this modal structure
+        // FeaturesModal
         const featuresModal = document.createElement('div');
         featuresModal.id = 'features-modal';
         featuresModal.className = 'modal';
@@ -543,90 +560,111 @@
             loadFeatures();
         });
         
-        
-        
-        
-        
-        // Use your working functions with slight CSS adjustments
-async function loadFeatures() {
-    const container = document.getElementById('features');
-
-    // Disable footer buttons initially
-    document.querySelector('.expand-all-btn').disabled = true;
-    document.querySelector('.collapse-all-btn').disabled = true;
-    document.querySelector('.copy-btn').disabled = true;
-
-    // Add a spinner before fetching data
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.id = 'loading-animation';
-    loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
-    container.innerHTML = ''; // Clear previous content
-    container.appendChild(loadingIndicator);
-
-    try {
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzXUfmt5NJorlHdyeUqoJPAazvJ4N6s8nQsbJWc54OV3Dud6uRCL6K8zRfd8WrXN_tO/exec';
-        const response = await fetch(scriptUrl);
-        const data = await response.json();
-
-        if (data && data.length > 0) {
-            container.innerHTML = buildList(data);
-            addToggleListeners();
-
-            // Enable footer buttons
-            document.querySelector('.expand-all-btn').disabled = false;
+        // Updated data processing functions
+        async function loadFeatures() {
+            const container = document.getElementById('features');
+            
+            // Disable footer buttons initially
+            document.querySelector('.expand-all-btn').disabled = true;
             document.querySelector('.collapse-all-btn').disabled = true;
-            document.querySelector('.copy-btn').disabled = false;
-        } else {
-            container.innerHTML = '⚠ No features available.';
-        }
-    } catch (error) {
-        console.error('Error loading features:', error);
-        container.innerHTML = '❌ Failed to load features';
-    } finally {
-        // Remove the loading spinner
-        const loadingElem = document.getElementById('loading-animation');
-        if (loadingElem) loadingElem.remove();
-    }
-}
-
-
-        
-        
-        function buildList(items, level = 0) {
-            if (!items) return '';
-            return `<ul class="feature-list level-${level}">${items.map(item => {
-                const hasChildren = item.children && Object.keys(item.children).length > 0;
-                const indent = level * 10; // 10px indent per level
+            document.querySelector('.copy-btn').disabled = true;
+            
+            // Add a spinner before fetching data
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'loading-animation';
+            loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
+            container.innerHTML = ''; // Clear previous content
+            container.appendChild(loadingIndicator);
+            
+            try {
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbyVW40rLEHWzLmFt2bSNhCVxFnfVdLmFTpB8gZoIdbBLUzKZPYpELLePEAzX6K3X2Fe/exec';
+                const response = await fetch(scriptUrl);
+                const data = await response.json();
                 
-                return `
-                <li style="padding-left: ${indent}px;">
+                if (data?.features && Object.keys(data.features).length > 0) {
+                    const transformedData = transformGoogleData(data.features);
+                    container.innerHTML = buildList(transformedData);
+                    addToggleListeners();
+                    
+                    // Enable footer buttons
+                    document.querySelector('.expand-all-btn').disabled = false;
+                    document.querySelector('.collapse-all-btn').disabled = true;
+                    document.querySelector('.copy-btn').disabled = false;
+                    } else {
+                    container.innerHTML = '⚠ No features available.';
+                }
+                } catch (error) {
+                console.error('Error loading features:', error);
+                container.innerHTML = '❌ Failed to load features';
+                } finally {
+                // Remove the loading spinner
+                const loadingElem = document.getElementById('loading-animation');
+                if (loadingElem) loadingElem.remove();
+            }
+        }
+        
+        function transformGoogleData(features) {
+            return Object.keys(features).map(category => ({
+                name: category,
+                children: features[category].map(feature => ({
+                    name: feature,
+                    children: []
+                }))
+            }));
+        }
+        
+        // Keep the rest of the functions unchanged
+function buildList(items, level = 0) {
+    if (!items) return '';
+    return `<ul class="feature-list level-${level}">${items.map(item => {
+        const hasChildren = item.children && Object.keys(item.children).length > 0;
+        const indent = level * 10;
+        
+        return `
+            <li style="padding-left: ${indent}px;">
                 <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
-                <span class="feature-name">${item.name}</span>
-                ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+                    <span class="feature-name">${item.name}</span>
+                    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
                 </div>
                 ${hasChildren ? `
                     <div class="sub-items-container">
-                    ${buildList(Object.values(item.children), level + 1)}
+                        ${buildList(Object.values(item.children), level + 1)}
                     </div>
                 ` : ''}
-                </li>
-            `}).join('')}</ul>`;        
-        }
+            </li>
+        `;
+    }).join('')}</ul>`;
+}
         
-        function addToggleListeners() {
-            document.querySelectorAll('.toggle.has-children').forEach(toggle => {
-                toggle.addEventListener('click', function() {
-                    const icon = this.querySelector('.toggle-icon');
-                    const container = this.parentElement.querySelector('.sub-items-container');
-                    
-                    // Toggle current item
-                    container.classList.toggle('open');
-                    icon.classList.toggle('open');
-                    
-                    updateButtonsState(); // Check button state on each toggle
-                });
+        // Keep all remaining functions (addToggleListeners, expandAll, collapseAll, 
+        // copyToClipboard, updateButtonsState) exactly the same as original
+        // ... [rest of the functions remain identical] ...
+        
+function addToggleListeners() {
+    document.querySelectorAll('.toggle.has-children').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const icon = this.querySelector('.toggle-icon');
+            const container = this.parentElement.querySelector('.sub-items-container');
+            
+            // Collapse all other open items
+            document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
+                if (otherContainer !== container) {
+                    otherContainer.classList.remove('open');
+                    const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
+                    if (otherIcon) {
+                        otherIcon.classList.remove('open');
+                    }
+                }
             });
-        }
+
+            // Toggle current item
+            container.classList.toggle('open');
+            icon.classList.toggle('open');
+            
+            updateButtonsState();
+        });
+    });
+}
         
         // New utility functions
         function expandAll() {
@@ -667,12 +705,12 @@ async function loadFeatures() {
             
             const allContainers = document.querySelectorAll('.sub-items-container');
             const expandedContainers = document.querySelectorAll('.sub-items-container.open');
-            
-            // Disable "Expand All" if all items are already expanded
-            expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
-            
-            // Disable "Collapse All" if all items are already collapsed
-            collapseAllBtn.disabled = expandedContainers.length === 0;
+        
+        // Disable "Expand All" if all items are already expanded
+        expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
+        
+        // Disable "Collapse All" if all items are already collapsed
+        collapseAllBtn.disabled = expandedContainers.length === 0;
         }
         
         // Add footer button functionality
@@ -683,72 +721,72 @@ async function loadFeatures() {
         
         
         
-    } //hsidebar
-    
-    // Call the setup function
-    setupHamburgerMenu();
-    
-})(); // IIFE Ends
-
-
-
-
-
-
-
-
-
-
-
-//Hide the Save (save-qr-code) button from project
-document.addEventListener("DOMContentLoaded", function () {
-    const saveButton = document.getElementById("save-qr-code");
-    if (saveButton) {
-        saveButton.style.display = "none"; // Completely hide the button
-    }
-    });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    let deferredPrompt; // Variable to hold the deferred prompt event
-    
-    // Listen for the beforeinstallprompt event
-    window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault(); // Prevent the default prompt from showing automatically
-    deferredPrompt = e; // Store the event so we can trigger it later
-    
-    // Optionally, show a custom install button here if needed
-    // document.getElementById('install-button').style.display = 'block'; 
-    
-    // Automatically trigger the prompt after a delay
-    setTimeout(() => {
-    deferredPrompt.prompt(); // Show the install prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-    // Handle the user's response
-    if (choiceResult.outcome === "accepted") {
-    console.log("User accepted the install prompt");
-    } else {
-    console.log("User dismissed the install prompt");
-    }
-    deferredPrompt = null; // Reset the deferred prompt
-    });
-    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-    });               
-    
-    
+        } //hsidebar
         
+        // Call the setup function
+        setupHamburgerMenu();
+        
+        })(); // IIFE Ends
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //Hide the Save (save-qr-code) button from project
+        document.addEventListener("DOMContentLoaded", function () {
+        const saveButton = document.getElementById("save-qr-code");
+        if (saveButton) {
+        saveButton.style.display = "none"; // Completely hide the button
+        }
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        let deferredPrompt; // Variable to hold the deferred prompt event
+        
+        // Listen for the beforeinstallprompt event
+        window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault(); // Prevent the default prompt from showing automatically
+        deferredPrompt = e; // Store the event so we can trigger it later
+        
+        // Optionally, show a custom install button here if needed
+        // document.getElementById('install-button').style.display = 'block'; 
+        
+        // Automatically trigger the prompt after a delay
+        setTimeout(() => {
+        deferredPrompt.prompt(); // Show the install prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+        // Handle the user's response
+        if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the install prompt");
+        } else {
+        console.log("User dismissed the install prompt");
+        }
+        deferredPrompt = null; // Reset the deferred prompt
+        });
+        }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+        });               
+        
+        
+                
