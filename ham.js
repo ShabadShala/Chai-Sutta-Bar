@@ -68,10 +68,10 @@
         </div>
         
         <div class="hsidebar-option" id="app-features">
-  <img src="icons/feature.svg" alt="Features Icon" class="menu-icon invert-icon">
-  App Features
-</div>
-
+        <img src="icons/feature.svg" alt="Features Icon" class="menu-icon invert-icon">
+        App Features
+        </div>
+        
         </div>
         
         <!-- Footer -->
@@ -422,7 +422,7 @@
         
         
         
-
+        
         document.addEventListener("DOMContentLoaded", function () {
             // Function to share the QR Code
             function shareQRCode() {
@@ -454,39 +454,39 @@
             }
             
             // Function to print the QR Code
-function printQRCode() {
-    const qrImg = document.getElementById("qr-code-img");
-    if (!qrImg) {
-        alert("QR Code not found!");
-        return;
-    }
-
-    const printWindow = window.open("", "_blank");
-
-    printWindow.document.write(`
-        <html>
-        <head>
-        <title>Print QR Code</title>
-        <style>
-        body { text-align: center; padding: 20px; }
-        img { max-width: 100%; height: auto; }
-        </style>
-        </head>
-        <body>
-        
-        <img src="${qrImg.src}" alt="QR Code">
-        
-        <script>
-        window.onload = function() { window.print(); };
-        </script>
-        
-        </body>
-        </html>
-    `);
-
-    printWindow.document.close();
-}
-
+            function printQRCode() {
+                const qrImg = document.getElementById("qr-code-img");
+                if (!qrImg) {
+                    alert("QR Code not found!");
+                    return;
+                }
+                
+                const printWindow = window.open("", "_blank");
+                
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                    <title>Print QR Code</title>
+                    <style>
+                    body { text-align: center; padding: 20px; }
+                    img { max-width: 100%; height: auto; }
+                    </style>
+                    </head>
+                    <body>
+                    
+                    <img src="${qrImg.src}" alt="QR Code">
+                    
+                    <script>
+                    window.onload = function() { window.print(); };
+                    </script>
+                    
+                    </body>
+                    </html>
+                `);
+                
+                printWindow.document.close();
+            }
+            
             
             
             // Attach event listeners
@@ -513,149 +513,172 @@ function printQRCode() {
         
         
         // Add this modal structure
-const featuresModal = document.createElement('div');
-featuresModal.id = 'features-modal';
-featuresModal.className = 'modal';
-featuresModal.innerHTML = `
-<div class="modal-content">
-  <div class="close-btn">&times;</div>
-  <h3 class="modal-header">App Features</h3>
-  <div id="features" class="features-container"></div>
-  <div class="modal-footer">
-    <button class="expand-all-btn">
-      <img src="icons/expand-all.svg" alt="Expand">
-    </button>
-    <button class="collapse-all-btn">
-      <img src="icons/collapse-all.svg" alt="Collapse">
-    </button>
-    <button class="copy-btn">
-      <img src="icons/copy.svg" alt="Copy">
-    </button>
-  </div>
-</div>`;
-document.body.appendChild(featuresModal);
-setupModalTriggers('features-modal');
-
-// Add event listener for the menu option
-document.getElementById('app-features').addEventListener('click', () => {
-  toggleSidebar(false);
-  openModalStandalone('features-modal');
-  loadFeatures();
-});
-
-
-
-
-
-// Use your working functions with slight CSS adjustments
-async function loadFeatures() {
-  try {
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzXUfmt5NJorlHdyeUqoJPAazvJ4N6s8nQsbJWc54OV3Dud6uRCL6K8zRfd8WrXN_tO/exec';
-    const response = await fetch(scriptUrl);
-    const data = await response.json();
-    
-    const container = document.getElementById('features');
-    container.innerHTML = buildList(data);
-    addToggleListeners();
-
-    // Set button states when features load
-    document.querySelector('.expand-all-btn').disabled = false;
-    document.querySelector('.collapse-all-btn').disabled = true;
-  } catch (error) {
-    console.error('Error loading features:', error);
-    document.getElementById('features').innerHTML = 'Failed to load features';
-  }
-}
-
-
-function buildList(items, level = 0) {
-  if (!items) return '';
-  return `<ul class="feature-list level-${level}">${items.map(item => {
-    const hasChildren = item.children && Object.keys(item.children).length > 0;
-    const indent = level * 20; // 20px indent per level
-    
-    return `
-    <li style="padding-left: ${indent}px;">
-      <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
-        <span class="feature-name">${item.name}</span>
-        ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
-      </div>
-      ${hasChildren ? `
-        <div class="sub-items-container">
-          ${buildList(Object.values(item.children), level + 1)}
+        const featuresModal = document.createElement('div');
+        featuresModal.id = 'features-modal';
+        featuresModal.className = 'modal';
+        featuresModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn">&times;</div>
+        <h3 class="modal-header">App Features</h3>
+        <div id="features" class="features-container"></div>
+        <div class="modal-footer">
+        <button class="expand-all-btn">
+        <img src="icons/expand-all.svg" alt="Expand">
+        </button>
+        <button class="collapse-all-btn">
+        <img src="icons/collapse-all.svg" alt="Collapse">
+        </button>
+        <button class="copy-btn">
+        <img src="icons/copy.svg" alt="Copy">
+        </button>
         </div>
-      ` : ''}
-    </li>
-  `}).join('')}</ul>`;
-  
+        </div>`;
+        document.body.appendChild(featuresModal);
+        setupModalTriggers('features-modal');
+        
+        // Add event listener for the menu option
+        document.getElementById('app-features').addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('features-modal');
+            loadFeatures();
+        });
+        
+        
+        
+        
+        
+        // Use your working functions with slight CSS adjustments
+async function loadFeatures() {
+    const container = document.getElementById('features');
+
+    // Disable footer buttons initially
+    document.querySelector('.expand-all-btn').disabled = true;
+    document.querySelector('.collapse-all-btn').disabled = true;
+    document.querySelector('.copy-btn').disabled = true;
+
+    // Add a spinner before fetching data
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.id = 'loading-animation';
+    loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
+    container.innerHTML = ''; // Clear previous content
+    container.appendChild(loadingIndicator);
+
+    try {
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzXUfmt5NJorlHdyeUqoJPAazvJ4N6s8nQsbJWc54OV3Dud6uRCL6K8zRfd8WrXN_tO/exec';
+        const response = await fetch(scriptUrl);
+        const data = await response.json();
+
+        if (data && data.length > 0) {
+            container.innerHTML = buildList(data);
+            addToggleListeners();
+
+            // Enable footer buttons
+            document.querySelector('.expand-all-btn').disabled = false;
+            document.querySelector('.collapse-all-btn').disabled = true;
+            document.querySelector('.copy-btn').disabled = false;
+        } else {
+            container.innerHTML = '⚠ No features available.';
+        }
+    } catch (error) {
+        console.error('Error loading features:', error);
+        container.innerHTML = '❌ Failed to load features';
+    } finally {
+        // Remove the loading spinner
+        const loadingElem = document.getElementById('loading-animation');
+        if (loadingElem) loadingElem.remove();
+    }
 }
 
-function addToggleListeners() {
-  document.querySelectorAll('.toggle.has-children').forEach(toggle => {
-    toggle.addEventListener('click', function() {
-      const icon = this.querySelector('.toggle-icon');
-      const container = this.parentElement.querySelector('.sub-items-container');
 
-      // Toggle current item
-      container.classList.toggle('open');
-      icon.classList.toggle('open');
-      
-      updateButtonsState(); // Check button state on each toggle
-    });
-  });
-}
-
-// New utility functions
-function expandAll() {
-  document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
-  document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
-  updateButtonsState();
-}
-
-function collapseAll() {
-  document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
-  document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
-  updateButtonsState();
-}
-
-function copyToClipboard() {
-  const lines = [];
-  document.querySelectorAll('.feature-name').forEach(feature => {
-    const level = parseInt(feature.closest('.toggle').dataset.level);
-    const prefix = '-'.repeat(level);
-    lines.push(prefix + feature.textContent.trim());
-  });
-  navigator.clipboard.writeText(lines.join('\n'));
-
-  // Add a class to trigger animation
-  const copyBtn = document.querySelector('.copy-btn');
-  copyBtn.classList.add('clicked');
-
-  // Remove class after animation completes
-  setTimeout(() => {
-    copyBtn.classList.remove('clicked');
-  }, 200);
-}
-
-
-function updateButtonsState() {
-    const expandAllBtn = document.querySelector('.expand-all-btn');
-  const collapseAllBtn = document.querySelector('.collapse-all-btn');
-  
-  const allContainers = document.querySelectorAll('.sub-items-container');
-  const expandedContainers = document.querySelectorAll('.sub-items-container.open');
-
-  // Disable "Expand All" if all items are already expanded
-  expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
-
-  // Disable "Collapse All" if all items are already collapsed
-  collapseAllBtn.disabled = expandedContainers.length === 0;
-}
-
-// Add footer button functionality
-document.querySelector('.expand-all-btn').addEventListener('click', expandAll);
-document.querySelector('.collapse-all-btn').addEventListener('click', collapseAll);
-document.querySelector('.copy-btn').addEventListener('click', copyToClipboard);
+        
+        
+        function buildList(items, level = 0) {
+            if (!items) return '';
+            return `<ul class="feature-list level-${level}">${items.map(item => {
+                const hasChildren = item.children && Object.keys(item.children).length > 0;
+                const indent = level * 10; // 10px indent per level
+                
+                return `
+                <li style="padding-left: ${indent}px;">
+                <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
+                <span class="feature-name">${item.name}</span>
+                ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+                </div>
+                ${hasChildren ? `
+                    <div class="sub-items-container">
+                    ${buildList(Object.values(item.children), level + 1)}
+                    </div>
+                ` : ''}
+                </li>
+            `}).join('')}</ul>`;        
+        }
+        
+        function addToggleListeners() {
+            document.querySelectorAll('.toggle.has-children').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const icon = this.querySelector('.toggle-icon');
+                    const container = this.parentElement.querySelector('.sub-items-container');
+                    
+                    // Toggle current item
+                    container.classList.toggle('open');
+                    icon.classList.toggle('open');
+                    
+                    updateButtonsState(); // Check button state on each toggle
+                });
+            });
+        }
+        
+        // New utility functions
+        function expandAll() {
+            document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
+            document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
+            updateButtonsState();
+        }
+        
+        function collapseAll() {
+            document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
+            document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
+            updateButtonsState();
+        }
+        
+        function copyToClipboard() {
+            const lines = [];
+            document.querySelectorAll('.feature-name').forEach(feature => {
+                const level = parseInt(feature.closest('.toggle').dataset.level);
+                const prefix = '-'.repeat(level);
+                lines.push(prefix + feature.textContent.trim());
+            });
+            navigator.clipboard.writeText(lines.join('\n'));
+            
+            // Add a class to trigger animation
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.classList.add('clicked');
+            
+            // Remove class after animation completes
+            setTimeout(() => {
+                copyBtn.classList.remove('clicked');
+            }, 200);
+        }
+        
+        
+        function updateButtonsState() {
+            const expandAllBtn = document.querySelector('.expand-all-btn');
+            const collapseAllBtn = document.querySelector('.collapse-all-btn');
+            
+            const allContainers = document.querySelectorAll('.sub-items-container');
+            const expandedContainers = document.querySelectorAll('.sub-items-container.open');
+            
+            // Disable "Expand All" if all items are already expanded
+            expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
+            
+            // Disable "Collapse All" if all items are already collapsed
+            collapseAllBtn.disabled = expandedContainers.length === 0;
+        }
+        
+        // Add footer button functionality
+        document.querySelector('.expand-all-btn').addEventListener('click', expandAll);
+        document.querySelector('.collapse-all-btn').addEventListener('click', collapseAll);
+        document.querySelector('.copy-btn').addEventListener('click', copyToClipboard);
         
         
         
@@ -665,23 +688,23 @@ document.querySelector('.copy-btn').addEventListener('click', copyToClipboard);
     // Call the setup function
     setupHamburgerMenu();
     
-    })(); // IIFE Ends
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //Hide the Save (save-qr-code) button from project
-    document.addEventListener("DOMContentLoaded", function () {
+})(); // IIFE Ends
+
+
+
+
+
+
+
+
+
+
+
+//Hide the Save (save-qr-code) button from project
+document.addEventListener("DOMContentLoaded", function () {
     const saveButton = document.getElementById("save-qr-code");
     if (saveButton) {
-    saveButton.style.display = "none"; // Completely hide the button
+        saveButton.style.display = "none"; // Completely hide the button
     }
     });
     
