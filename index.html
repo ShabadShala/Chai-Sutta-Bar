@@ -2405,13 +2405,13 @@
             
             
             .grayed-out {
-    color: #999 !important;
-    opacity: 0.7;
-}
-
-.toggle.has-children .feature-name {
-    font-weight: bold;
-}
+            color: #999 !important;
+            opacity: 0.7;
+            }
+            
+            .toggle.has-children .feature-name {
+            font-weight: bold;
+            }
         </style>
     </head>
     <body>
@@ -2598,7 +2598,7 @@
                     document.getElementById("toggle-cart").style.display = "none"; // Hide
                     
                     // google script URL
-                    const scriptUrl = "https://script.google.com/macros/s/AKfycbxk_UjSyb7nkOz2gRnviV0UE_roc5CCcBkbMoYb7GCm7RFeYHUCtz5d8eD5Rgs-Ub6cOQ/exec";
+                    const scriptUrl = "https://script.google.com/macros/s/AKfycbzKZMW-kzPA8h7W2pEku9xHlWLfJwQaFvX8Bm8A8fHg07N8lSsuRHIl2HanxIDBnorOcw/exec";
                     
                     //Disable context menu, cut-copy-paste
                     document.addEventListener('contextmenu', event => event.preventDefault());
@@ -3000,10 +3000,11 @@
                     .then(response => response.json())
                     .then(data => {
                         
-     if (data.error) {  
-            alert(data.error); // Show error from backend
-            return;
-        }
+                        // Expiry check
+                        if (data.error) {  
+                            alert(data.error); // Show error from backend
+                            return;
+                        }
                         
                         const menuDiv = document.getElementById('menu');
                         let currentCategory = null;
@@ -4074,54 +4075,54 @@
                         }
                         
                         offersContainer.innerHTML = validOffers.map(offer => {
-                        return `
-                        <div class="offer-item" style="position: relative;">
-                        <button class="add-offer-btn" 
-                        data-start="${offer[0]}" 
-                        data-end="${offer[3] || ''}"
-                        data-allow-once="${offer[4] || 'No'}" 
-                        data-dependencies="${offer[5] || 'No'}">
-                        Add
-                        </button>
-                        <h2 class="offer-title">${offer[1]}</h2>
-                        <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
-                        <p class="offer-description">${offer[2]}</p>
-                        </div>
-                        `;
+                            return `
+                            <div class="offer-item" style="position: relative;">
+                            <button class="add-offer-btn" 
+                            data-start="${offer[0]}" 
+                            data-end="${offer[3] || ''}"
+                            data-allow-once="${offer[4] || 'No'}" 
+                            data-dependencies="${offer[5] || 'No'}">
+                            Add
+                            </button>
+                            <h2 class="offer-title">${offer[1]}</h2>
+                            <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
+                            <p class="offer-description">${offer[2]}</p>
+                            </div>
+                            `;
                         }).join('');
                         updateOfferAddButtons(); // Initialize button states
-                        })
-                        .catch(error => {
+                    })
+                    .catch(error => {
                         console.error('Error loading offers:', error);
-                        });
-                        
-                        
-                        
-                        function updateOfferAddButtons() {
+                    });
+                    
+                    
+                    
+                    function updateOfferAddButtons() {
                         const addButtons = document.querySelectorAll('.add-offer-btn');
                         addButtons.forEach(button => {
-                        const offerItem = button.closest('.offer-item');
-                        const offerTitle = offerItem.querySelector('.offer-title').textContent;
-                        const allowOnce = button.dataset.allowOnce === 'Yes';
-                        const dependencies = button.dataset.dependencies === 'Yes';
-                        
-                        // Check if offer exists in cart (regardless of quantity)
-                        const existsInCart = offerCart.some(item => item.title === offerTitle);
-                        
-                        button.disabled = (dependencies && scrapItems.length === 0) || 
-                        (allowOnce && existsInCart);
+                            const offerItem = button.closest('.offer-item');
+                            const offerTitle = offerItem.querySelector('.offer-title').textContent;
+                            const allowOnce = button.dataset.allowOnce === 'Yes';
+                            const dependencies = button.dataset.dependencies === 'Yes';
+                            
+                            // Check if offer exists in cart (regardless of quantity)
+                            const existsInCart = offerCart.some(item => item.title === offerTitle);
+                            
+                            button.disabled = (dependencies && scrapItems.length === 0) || 
+                            (allowOnce && existsInCart);
                         });
-                        }
-                        
-                        // Modify the click handler to group by title
-                        document.getElementById('offers-container').addEventListener('click', function(e) {
+                    }
+                    
+                    // Modify the click handler to group by title
+                    document.getElementById('offers-container').addEventListener('click', function(e) {
                         if (e.target.classList.contains('add-offer-btn')) {
-                        const button = e.target;
-                        const offerItem = button.closest('.offer-item');
-                        const offerTitle = offerItem.querySelector('.offer-title').textContent;
-                        const offerDescription = offerItem.querySelector('.offer-description').textContent;
-                        const dependencies = button.dataset.dependencies === 'Yes';
-                        const startDate = formatDate(button.dataset.start);
+                            const button = e.target;
+                            const offerItem = button.closest('.offer-item');
+                            const offerTitle = offerItem.querySelector('.offer-title').textContent;
+                            const offerDescription = offerItem.querySelector('.offer-description').textContent;
+                            const dependencies = button.dataset.dependencies === 'Yes';
+                            const startDate = formatDate(button.dataset.start);
                         const endDate = button.dataset.end ? formatDate(button.dataset.end) : null;
                         const allowOnce = button.dataset.allowOnce === 'Yes';
                         const dateString = endDate ? `${startDate} to ${endDate}` : startDate;
@@ -4561,4 +4562,4 @@
                         <script src="counter.js"></script> <!-- Counters -->                
                         <script src="cheat.js"></script> <!-- Cheats, Dev tools -->                
                         </body>
-                        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
