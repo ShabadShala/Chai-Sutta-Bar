@@ -562,79 +562,124 @@
         
         // Updated data processing functions
         
-async function loadFeatures() {
-    const container = document.getElementById('features');
-
-    // Disable footer buttons initially
-    document.querySelector('.expand-all-btn').disabled = true;
-    document.querySelector('.collapse-all-btn').disabled = true;
-    document.querySelector('.copy-btn').disabled = true;
-
-    // Add loading spinner
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.id = 'loading-animation';
-    loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
-    container.innerHTML = '';
-    container.appendChild(loadingIndicator);
-
-    try {
-        // Get current script URL dynamically
-        const baseUrl = scriptUrl;
-        const requestUrl = `${baseUrl}?sheet=features`; // Pass "features" as a parameter
-
-        const response = await fetch(requestUrl);
-        const data = await response.json();
-
-        if (Array.isArray(data) && data.length > 0) {
-            // Group features on the client side
-            const groupedData = {};
-
-            data.forEach(item => {
-                const featureKey = Object.keys(item)[0]; // First column dynamically
-                const subFeatureKey = Object.keys(item)[1]; // Second column dynamically
-
-                const feature = item[featureKey]?.trim();
-                const subFeature = item[subFeatureKey]?.trim();
-
-                if (feature) { // Only process rows with valid features
-                    if (!groupedData[feature]) {
-                        groupedData[feature] = {};
-                    }
-
-                    if (subFeature) { // Only add non-empty subfeatures
-                        groupedData[feature][subFeature] = {
-                            name: subFeature,
-                            children: {}
-                        };
-                    }
-                }
-            });
-
-            // Transform grouped data into hierarchical structure
-            const transformedData = Object.entries(groupedData).map(([category, features]) => ({
-                name: category,
-                children: features
-            }));
-
-            container.innerHTML = buildList(transformedData);
-            addToggleListeners();
-
-            // Enable footer buttons
-            document.querySelector('.expand-all-btn').disabled = false;
+        async function loadFeatures() {
+            const container = document.getElementById('features');
+            
+            // Disable footer buttons initially
+            document.querySelector('.expand-all-btn').disabled = true;
             document.querySelector('.collapse-all-btn').disabled = true;
-            document.querySelector('.copy-btn').disabled = false;
-        } else {
-            container.innerHTML = '⚠ Features list not available.';
+            document.querySelector('.copy-btn').disabled = true;
+            
+            // Add loading spinner
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'loading-animation';
+            loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
+            container.innerHTML = '';
+            container.appendChild(loadingIndicator);
+            
+            try {
+                const baseUrl = scriptUrl;
+                const requestUrl = `${baseUrl}?sheet=features`;
+                
+                const response = await fetch(requestUrl);
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    const groupedData = {};
+                    
+                    data.forEach(item => {
+                        const keys = Object.keys(item);
+                        const featureKey = keys[0]; // 1st column
+                        const subFeatureKey = keys[1]; // 2nd column
+                        const fourthColKey = keys[3]; // 4th column
+                        
+                        const feature = item[featureKey]?.trim();
+                        const subFeature = item[subFeatureKey]?.trim();
+                        const fourthColValue = item[fourthColKey]?.trim() || '';
+                        
+                        if (feature) {
+                            if (!groupedData[feature]) {
+                                groupedData[feature] = {
+                                    fourthColValue: '', // Default for feature row
+                                    subfeatures: {}
+                                };
+                            }
+                            
+                            if (subFeature) {
+                                groupedData[feature].subfeatures[subFeature] = {
+                                    name: subFeature,
+                                    fourthColValue: fourthColValue,
+                                    children: {}
+                                };
+                                } else {
+                                groupedData[feature].fourthColValue = fourthColValue;
+                            }
+                        }
+                    });
+                    
+                    const transformedData = Object.entries(groupedData).map(([category, data]) => ({
+                        name: category,
+                        fourthColValue: data.fourthColValue,
+                        children: Object.values(data.subfeatures).map(sub => ({
+                            name: sub.name,
+                            fourthColValue: sub.fourthColValue,
+                            children: sub.children
+                        }))
+                    }));
+                    
+                    container.innerHTML = buildList(transformedData);
+                    addToggleListeners();
+                    
+                    // Enable footer buttons
+                    document.querySelector('.expand-all-btn').disabled = false;
+                    document.querySelector('.collapse-all-btn').disabled = true;
+                    document.querySelector('.copy-btn').disabled = false;
+                    } else {
+                    container.innerHTML = '⚠ Features list not available.';
+                }
+                } catch (error) {
+                console.error('Error loading features:', error);
+                container.innerHTML = '❌ Failed to load features';
+                } finally {
+                const loadingElem = document.getElementById('loading-animation');
+                if (loadingElem) loadingElem.remove();
+            }
+            
+            // Updated buildList function
+            function buildList(items, level = 0) {
+                if (!items) return '';
+                return `<ul class="feature-list level-${level}">${items.map(item => {
+                    const hasChildren = item.children && item.children.length > 0;
+                    const indent = level * 10;
+                    
+                    // Determine strikethrough
+                    let shouldStrike = false;
+                    if (level === 0) { // Top-level feature
+                        shouldStrike = (item.fourthColValue === '' && !hasChildren);
+                        } else { // Subfeature
+                        shouldStrike = (item.fourthColValue === '');
+                    }
+                    
+                    const strikeClass = shouldStrike ? 'strikethrough' : '';
+                    
+                    return `
+                    <li style="padding-left: ${indent}px;">
+                    <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
+                    <span class="feature-name ${strikeClass}">${item.name}</span>
+                    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+                    </div>
+                    ${hasChildren ? `
+                        <div class="sub-items-container">
+                        ${buildList(item.children, level + 1)}
+                        </div>
+                    ` : ''}
+                    </li>`;
+                }).join('')}</ul>`; // Closing .map() and joining results
+            }
+            
+            
         }
-    } catch (error) {
-        console.error('Error loading features:', error);
-        container.innerHTML = '❌ Failed to load features';
-    } finally {
-        const loadingElem = document.getElementById('loading-animation');
-        if (loadingElem) loadingElem.remove();
-    }
-}
-
+        
         
         // Keep the rest of your existing functions unchanged (buildList, addToggleListeners, etc.)
         
@@ -648,65 +693,43 @@ async function loadFeatures() {
             }));
         }
         
-        // Keep the rest of the functions unchanged
-        function buildList(items, level = 0) {
-            if (!items) return '';
-            return `<ul class="feature-list level-${level}">${items.map(item => {
-                const hasChildren = item.children && Object.keys(item.children).length > 0;
-                const indent = level * 10;
-                
-                return `
-                <li style="padding-left: ${indent}px;">
-                <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
-                <span class="feature-name">${item.name}</span>
-                ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
-                </div>
-                ${hasChildren ? `
-                    <div class="sub-items-container">
-                    ${buildList(Object.values(item.children), level + 1)}
-                    </div>
-                ` : ''}
-                </li>
-            `}).join('')}</ul>`;
-        }
-        
         
         
         function addToggleListeners() {
-        document.querySelectorAll('.toggle.has-children').forEach(toggle => {
-        toggle.addEventListener('click', function() {
-        const icon = this.querySelector('.toggle-icon');
-        const container = this.parentElement.querySelector('.sub-items-container');
-        
-        // Collapse all other open items
-        document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
-        if (otherContainer !== container) {
-        otherContainer.classList.remove('open');
-        const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
-        if (otherIcon) {
-        otherIcon.classList.remove('open');
-        }
-        }
-        });
-        
-        // Toggle current item
-        container.classList.toggle('open');
-        icon.classList.toggle('open');
-        
-        updateButtonsState();
-        });
-        });
+            document.querySelectorAll('.toggle.has-children').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const icon = this.querySelector('.toggle-icon');
+                    const container = this.parentElement.querySelector('.sub-items-container');
+                    
+                    // Collapse all other open items
+                    document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
+                        if (otherContainer !== container) {
+                            otherContainer.classList.remove('open');
+                            const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
+                            if (otherIcon) {
+                            otherIcon.classList.remove('open');
+                        }
+                    }
+                    });
+                    
+                    // Toggle current item
+                    container.classList.toggle('open');
+                    icon.classList.toggle('open');
+                    
+                    updateButtonsState();
+                });
+            });
         }
         
         // New utility functions
         function expandAll() {
-        document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
-        document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
-        updateButtonsState();
+            document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
+            document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
+            updateButtonsState();
         }
         
         function collapseAll() {
-        document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
+            document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
         document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
         updateButtonsState();
         }
