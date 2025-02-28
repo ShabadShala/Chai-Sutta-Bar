@@ -561,47 +561,70 @@
         });
         
         // Updated data processing functions
+        
 async function loadFeatures() {
     const container = document.getElementById('features');
-    
-    // Disable footer buttons initially (unchanged)
+
+    // Disable footer buttons initially
     document.querySelector('.expand-all-btn').disabled = true;
     document.querySelector('.collapse-all-btn').disabled = true;
     document.querySelector('.copy-btn').disabled = true;
-    
-    // Add loading spinner (unchanged)
+
+    // Add loading spinner
     const loadingIndicator = document.createElement('div');
     loadingIndicator.id = 'loading-animation';
     loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
     container.innerHTML = '';
     container.appendChild(loadingIndicator);
-    
+
     try {
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbxJiareqBRF3gengfeoCh2BE7YskYMbqSYPV_tw6eGh_uglCiy_Ekrhc5UA4HZDv9kR/exec';
-        const response = await fetch(scriptUrl);
+        // Get current script URL dynamically
+        const baseUrl = scriptUrl;
+        const requestUrl = `${baseUrl}?sheet=features`; // Pass "features" as a parameter
+
+        const response = await fetch(requestUrl);
         const data = await response.json();
-        
-        if (data.status === 'success' && data.features) {
-            // Filter out empty features and transform data
-            const transformedData = Object.entries(data.features).map(([category, features]) => ({
+
+        if (Array.isArray(data) && data.length > 0) {
+            // Group features on the client side
+            const groupedData = {};
+
+            data.forEach(item => {
+                const featureKey = Object.keys(item)[0]; // First column dynamically
+                const subFeatureKey = Object.keys(item)[1]; // Second column dynamically
+
+                const feature = item[featureKey]?.trim();
+                const subFeature = item[subFeatureKey]?.trim();
+
+                if (feature) { // Only process rows with valid features
+                    if (!groupedData[feature]) {
+                        groupedData[feature] = {};
+                    }
+
+                    if (subFeature) { // Only add non-empty subfeatures
+                        groupedData[feature][subFeature] = {
+                            name: subFeature,
+                            children: {}
+                        };
+                    }
+                }
+            });
+
+            // Transform grouped data into hierarchical structure
+            const transformedData = Object.entries(groupedData).map(([category, features]) => ({
                 name: category,
                 children: features
-                    .filter(feature => feature.trim() !== '') // Filter out empty features
-                    .reduce((acc, feature) => {
-                        acc[feature] = { name: feature, children: {} };
-                        return acc;
-                    }, {})
             }));
-            
+
             container.innerHTML = buildList(transformedData);
             addToggleListeners();
-            
-            // Enable footer buttons (unchanged)
+
+            // Enable footer buttons
             document.querySelector('.expand-all-btn').disabled = false;
             document.querySelector('.collapse-all-btn').disabled = true;
             document.querySelector('.copy-btn').disabled = false;
         } else {
-            container.innerHTML = '⚠ No features available.';
+            container.innerHTML = '⚠ Features list not available.';
         }
     } catch (error) {
         console.error('Error loading features:', error);
@@ -611,6 +634,9 @@ async function loadFeatures() {
         if (loadingElem) loadingElem.remove();
     }
 }
+
+        
+        // Keep the rest of your existing functions unchanged (buildList, addToggleListeners, etc.)
         
         function transformGoogleData(features) {
             return Object.keys(features).map(category => ({
@@ -622,177 +648,177 @@ async function loadFeatures() {
             }));
         }
         
-    // Keep the rest of the functions unchanged
-    function buildList(items, level = 0) {
-    if (!items) return '';
-    return `<ul class="feature-list level-${level}">${items.map(item => {
-    const hasChildren = item.children && Object.keys(item.children).length > 0;
-    const indent = level * 10;
-    
-    return `
-    <li style="padding-left: ${indent}px;">
-    <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
-    <span class="feature-name">${item.name}</span>
-    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
-    </div>
-    ${hasChildren ? `
-    <div class="sub-items-container">
-    ${buildList(Object.values(item.children), level + 1)}
-    </div>
-    ` : ''}
-    </li>
-    `}).join('')}</ul>`;
-    }
-    
-    
-    
-    function addToggleListeners() {
-    document.querySelectorAll('.toggle.has-children').forEach(toggle => {
-    toggle.addEventListener('click', function() {
-    const icon = this.querySelector('.toggle-icon');
-    const container = this.parentElement.querySelector('.sub-items-container');
-    
-    // Collapse all other open items
-    document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
-    if (otherContainer !== container) {
-    otherContainer.classList.remove('open');
-    const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
-    if (otherIcon) {
-    otherIcon.classList.remove('open');
-    }
-    }
-    });
-    
-    // Toggle current item
-    container.classList.toggle('open');
-    icon.classList.toggle('open');
-    
-    updateButtonsState();
-    });
-    });
-    }
-    
-    // New utility functions
-    function expandAll() {
-    document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
-    document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
-    updateButtonsState();
-    }
-    
-    function collapseAll() {
-    document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
-    document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
-    updateButtonsState();
-    }
-    
-    function copyToClipboard() {
-    const lines = [];
-    document.querySelectorAll('.feature-name').forEach(feature => {
-    const level = parseInt(feature.closest('.toggle').dataset.level);
-    const prefix = '-'.repeat(level);
-    lines.push(prefix + feature.textContent.trim());
-    });
-    navigator.clipboard.writeText(lines.join('\n'));
-    
-    // Add a class to trigger animation
-    const copyBtn = document.querySelector('.copy-btn');
-    copyBtn.classList.add('clicked');
-    
-    // Remove class after animation completes
-    setTimeout(() => {
-    copyBtn.classList.remove('clicked');
-    }, 200);
-    }
-    
-    
-    function updateButtonsState() {
-    const expandAllBtn = document.querySelector('.expand-all-btn');
-    const collapseAllBtn = document.querySelector('.collapse-all-btn');
-    
-    const allContainers = document.querySelectorAll('.sub-items-container');
-    const expandedContainers = document.querySelectorAll('.sub-items-container.open');
-    
-    // Disable "Expand All" if all items are already expanded
-    expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
-    
-    // Disable "Collapse All" if all items are already collapsed
-    collapseAllBtn.disabled = expandedContainers.length === 0;
-    }
-    
-    // Add footer button functionality
-    document.querySelector('.expand-all-btn').addEventListener('click', expandAll);
-    document.querySelector('.collapse-all-btn').addEventListener('click', collapseAll);
-    document.querySelector('.copy-btn').addEventListener('click', copyToClipboard);
-    
-    
-    
-    
-    } //hsidebar
-    
-    // Call the setup function
-    setupHamburgerMenu();
-    
-    })(); // IIFE Ends
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //Hide the Save (save-qr-code) button from project
-    document.addEventListener("DOMContentLoaded", function () {
-    const saveButton = document.getElementById("save-qr-code");
-    if (saveButton) {
-    saveButton.style.display = "none"; // Completely hide the button
-    }
-    });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    let deferredPrompt; // Variable to hold the deferred prompt event
-    
-    // Listen for the beforeinstallprompt event
-    window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault(); // Prevent the default prompt from showing automatically
-    deferredPrompt = e; // Store the event so we can trigger it later
-    
-    // Optionally, show a custom install button here if needed
-    // document.getElementById('install-button').style.display = 'block'; 
-    
-    // Automatically trigger the prompt after a delay
-    setTimeout(() => {
-    deferredPrompt.prompt(); // Show the install prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-    // Handle the user's response
-    if (choiceResult.outcome === "accepted") {
-    console.log("User accepted the install prompt");
-    } else {
-    console.log("User dismissed the install prompt");
-    }
-    deferredPrompt = null; // Reset the deferred prompt
-    });
-    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-    });               
-    
-    
+        // Keep the rest of the functions unchanged
+        function buildList(items, level = 0) {
+            if (!items) return '';
+            return `<ul class="feature-list level-${level}">${items.map(item => {
+                const hasChildren = item.children && Object.keys(item.children).length > 0;
+                const indent = level * 10;
+                
+                return `
+                <li style="padding-left: ${indent}px;">
+                <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
+                <span class="feature-name">${item.name}</span>
+                ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+                </div>
+                ${hasChildren ? `
+                    <div class="sub-items-container">
+                    ${buildList(Object.values(item.children), level + 1)}
+                    </div>
+                ` : ''}
+                </li>
+            `}).join('')}</ul>`;
+        }
         
+        
+        
+        function addToggleListeners() {
+        document.querySelectorAll('.toggle.has-children').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+        const icon = this.querySelector('.toggle-icon');
+        const container = this.parentElement.querySelector('.sub-items-container');
+        
+        // Collapse all other open items
+        document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
+        if (otherContainer !== container) {
+        otherContainer.classList.remove('open');
+        const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
+        if (otherIcon) {
+        otherIcon.classList.remove('open');
+        }
+        }
+        });
+        
+        // Toggle current item
+        container.classList.toggle('open');
+        icon.classList.toggle('open');
+        
+        updateButtonsState();
+        });
+        });
+        }
+        
+        // New utility functions
+        function expandAll() {
+        document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
+        document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
+        updateButtonsState();
+        }
+        
+        function collapseAll() {
+        document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
+        document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
+        updateButtonsState();
+        }
+        
+        function copyToClipboard() {
+        const lines = [];
+        document.querySelectorAll('.feature-name').forEach(feature => {
+        const level = parseInt(feature.closest('.toggle').dataset.level);
+        const prefix = '-'.repeat(level);
+        lines.push(prefix + feature.textContent.trim());
+        });
+        navigator.clipboard.writeText(lines.join('\n'));
+        
+        // Add a class to trigger animation
+        const copyBtn = document.querySelector('.copy-btn');
+        copyBtn.classList.add('clicked');
+        
+        // Remove class after animation completes
+        setTimeout(() => {
+        copyBtn.classList.remove('clicked');
+        }, 200);
+        }
+        
+        
+        function updateButtonsState() {
+        const expandAllBtn = document.querySelector('.expand-all-btn');
+        const collapseAllBtn = document.querySelector('.collapse-all-btn');
+        
+        const allContainers = document.querySelectorAll('.sub-items-container');
+        const expandedContainers = document.querySelectorAll('.sub-items-container.open');
+        
+        // Disable "Expand All" if all items are already expanded
+        expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
+        
+        // Disable "Collapse All" if all items are already collapsed
+        collapseAllBtn.disabled = expandedContainers.length === 0;
+        }
+        
+        // Add footer button functionality
+        document.querySelector('.expand-all-btn').addEventListener('click', expandAll);
+        document.querySelector('.collapse-all-btn').addEventListener('click', collapseAll);
+        document.querySelector('.copy-btn').addEventListener('click', copyToClipboard);
+        
+        
+        
+        
+        } //hsidebar
+        
+        // Call the setup function
+        setupHamburgerMenu();
+        
+        })(); // IIFE Ends
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //Hide the Save (save-qr-code) button from project
+        document.addEventListener("DOMContentLoaded", function () {
+        const saveButton = document.getElementById("save-qr-code");
+        if (saveButton) {
+        saveButton.style.display = "none"; // Completely hide the button
+        }
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        let deferredPrompt; // Variable to hold the deferred prompt event
+        
+        // Listen for the beforeinstallprompt event
+        window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault(); // Prevent the default prompt from showing automatically
+        deferredPrompt = e; // Store the event so we can trigger it later
+        
+        // Optionally, show a custom install button here if needed
+        // document.getElementById('install-button').style.display = 'block'; 
+        
+        // Automatically trigger the prompt after a delay
+        setTimeout(() => {
+        deferredPrompt.prompt(); // Show the install prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+        // Handle the user's response
+        if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the install prompt");
+        } else {
+        console.log("User dismissed the install prompt");
+        }
+        deferredPrompt = null; // Reset the deferred prompt
+        });
+        }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+        });               
+        
+        
+                
