@@ -539,13 +539,13 @@
         <h3 class="modal-header">App Features</h3>
         <div id="features" class="features-container"></div>
         <div class="modal-footer">
-        <button class="expand-all-btn">
+        <button class="expand-all-btn" title="Expand All">
         <img src="icons/expand-all.svg" alt="Expand">
         </button>
-        <button class="collapse-all-btn">
+        <button class="collapse-all-btn" title="Collapse All">
         <img src="icons/collapse-all.svg" alt="Collapse">
         </button>
-        <button class="copy-btn">
+        <button class="copy-btn" title="Copy Features">
         <img src="icons/copy.svg" alt="Copy">
         </button>
         </div>
@@ -591,16 +591,19 @@
                         const keys = Object.keys(item);
                         const featureKey = keys[0]; // 1st column
                         const subFeatureKey = keys[1]; // 2nd column
-                        const fourthColKey = keys[3]; // 4th column
+                        const thirdColKey = keys[2]; // 3rd column (info text)
+                        const fourthColKey = keys[3]; // 4th column (existing logic)
                         
                         const feature = item[featureKey]?.trim();
                         const subFeature = item[subFeatureKey]?.trim();
+                        const thirdColValue = item[thirdColKey]?.trim() || '';
                         const fourthColValue = item[fourthColKey]?.trim() || '';
                         
                         if (feature) {
                             if (!groupedData[feature]) {
                                 groupedData[feature] = {
-                                    fourthColValue: '', // Default for feature row
+                                    fourthColValue: '',
+                                    thirdColValue: '',
                                     subfeatures: {}
                                 };
                             }
@@ -609,10 +612,12 @@
                                 groupedData[feature].subfeatures[subFeature] = {
                                     name: subFeature,
                                     fourthColValue: fourthColValue,
+                                    thirdColValue: thirdColValue,
                                     children: {}
                                 };
                                 } else {
                                 groupedData[feature].fourthColValue = fourthColValue;
+                                groupedData[feature].thirdColValue = thirdColValue;
                             }
                         }
                     });
@@ -620,15 +625,18 @@
                     const transformedData = Object.entries(groupedData).map(([category, data]) => ({
                         name: category,
                         fourthColValue: data.fourthColValue,
+                        thirdColValue: data.thirdColValue,
                         children: Object.values(data.subfeatures).map(sub => ({
                             name: sub.name,
                             fourthColValue: sub.fourthColValue,
+                            thirdColValue: sub.thirdColValue,
                             children: sub.children
                         }))
-                    }));
+                        }));
                     
                     container.innerHTML = buildList(transformedData);
                     addToggleListeners();
+                      addInfoButtonListeners();
                     
                     // Enable footer buttons
                     document.querySelector('.expand-all-btn').disabled = false;
@@ -652,6 +660,7 @@
                     const hasChildren = item.children && item.children.length > 0;
                     const indent = level * 10;
                     
+                    
                     // Determine strikethrough
                     let shouldStrike = false;
                     if (level === 0) { // Top-level feature
@@ -662,24 +671,49 @@
                     
                     const strikeClass = shouldStrike ? 'strikethrough' : '';
                     
-                    return `
-                    <li style="padding-left: ${indent}px;">
-                    <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
+         return `
+        <li style="padding-left: ${indent}px;">
+            <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
+                <div class="feature-content">
                     <span class="feature-name ${strikeClass}">${item.name}</span>
-                    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
-                    </div>
-                    ${hasChildren ? `
-                        <div class="sub-items-container">
-                        ${buildList(item.children, level + 1)}
-                        </div>
-                    ` : ''}
-                    </li>`;
-                }).join('')}</ul>`; // Closing .map() and joining results
-            }
+                    ${item.thirdColValue ? 
+                        `<button class="info-btn" data-info="${item.thirdColValue.replace(/"/g, '&quot;')}">i</button>` : ''}
+                </div>
+                ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+            </div>
+            ${hasChildren ? `
+                <div class="sub-items-container">
+                ${buildList(item.children, level + 1)}
+                </div>
+            ` : ''}
+        </li>`;
+    }).join('')}</ul>`;
+}
             
             
         }
         
+        
+         // Add info button handlers
+    function addInfoButtonListeners() {
+        document.querySelectorAll('.info-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const tooltip = document.createElement('div');
+                tooltip.className = 'info-tooltip';
+                tooltip.textContent = this.dataset.info;
+                
+                const rect = this.getBoundingClientRect();
+                tooltip.style.left = `${rect.left}px`;
+                tooltip.style.top = `${rect.bottom + 4}px`;
+                
+                document.body.appendChild(tooltip);
+                setTimeout(() => tooltip.remove(), 3000);
+                document.addEventListener('click', () => tooltip.remove(), { once: true });
+            });
+        });
+    }
+    
         
         // Keep the rest of your existing functions unchanged (buildList, addToggleListeners, etc.)
         
@@ -690,26 +724,26 @@
                     name: feature,
                     children: []
                 }))
-            }));
-        }
-        
-        
-        
-        function addToggleListeners() {
-            document.querySelectorAll('.toggle.has-children').forEach(toggle => {
-                toggle.addEventListener('click', function() {
-                    const icon = this.querySelector('.toggle-icon');
-                    const container = this.parentElement.querySelector('.sub-items-container');
-                    
-                    // Collapse all other open items
-                    document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
-                        if (otherContainer !== container) {
-                            otherContainer.classList.remove('open');
-                            const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
-                            if (otherIcon) {
-                            otherIcon.classList.remove('open');
+                }));
+                }
+                
+                
+                
+                function addToggleListeners() {
+                    document.querySelectorAll('.toggle.has-children').forEach(toggle => {
+                        toggle.addEventListener('click', function() {
+                            const icon = this.querySelector('.toggle-icon');
+                            const container = this.parentElement.querySelector('.sub-items-container');
+                            
+                            // Collapse all other open items
+                            document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
+                                if (otherContainer !== container) {
+                                otherContainer.classList.remove('open');
+                                const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
+                                if (otherIcon) {
+                                    otherIcon.classList.remove('open');
+                                }
                         }
-                    }
                     });
                     
                     // Toggle current item
@@ -730,42 +764,43 @@
         
         function collapseAll() {
             document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
-        document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
-        updateButtonsState();
+            document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
+            updateButtonsState();
         }
         
         function copyToClipboard() {
-        const lines = [];
-        document.querySelectorAll('.feature-name').forEach(feature => {
-        const level = parseInt(feature.closest('.toggle').dataset.level);
-        const prefix = '-'.repeat(level);
-        lines.push(prefix + feature.textContent.trim());
-        });
-        navigator.clipboard.writeText(lines.join('\n'));
-        
-        // Add a class to trigger animation
-        const copyBtn = document.querySelector('.copy-btn');
-        copyBtn.classList.add('clicked');
-        
-        // Remove class after animation completes
-        setTimeout(() => {
-        copyBtn.classList.remove('clicked');
-        }, 200);
+            const lines = [];
+            // all document.querySelectorAll('.feature-name').forEach(feature => {
+            document.querySelectorAll('.feature-name:not(.strikethrough)').forEach(feature => { // available
+                const level = parseInt(feature.closest('.toggle').dataset.level);
+                const prefix = '-'.repeat(level);
+                lines.push(prefix + feature.textContent.trim());
+            });
+            navigator.clipboard.writeText(lines.join('\n'));
+            
+            // Add a class to trigger animation
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.classList.add('clicked');
+            
+            // Remove class after animation completes
+            setTimeout(() => {
+                copyBtn.classList.remove('clicked');
+            }, 200);
         }
         
         
         function updateButtonsState() {
-        const expandAllBtn = document.querySelector('.expand-all-btn');
-        const collapseAllBtn = document.querySelector('.collapse-all-btn');
-        
-        const allContainers = document.querySelectorAll('.sub-items-container');
-        const expandedContainers = document.querySelectorAll('.sub-items-container.open');
-        
-        // Disable "Expand All" if all items are already expanded
-        expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
-        
-        // Disable "Collapse All" if all items are already collapsed
-        collapseAllBtn.disabled = expandedContainers.length === 0;
+            const expandAllBtn = document.querySelector('.expand-all-btn');
+            const collapseAllBtn = document.querySelector('.collapse-all-btn');
+            
+            const allContainers = document.querySelectorAll('.sub-items-container');
+            const expandedContainers = document.querySelectorAll('.sub-items-container.open');
+            
+            // Disable "Expand All" if all items are already expanded
+            expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
+            
+            // Disable "Collapse All" if all items are already collapsed
+            collapseAllBtn.disabled = expandedContainers.length === 0;
         }
         
         // Add footer button functionality
@@ -776,72 +811,71 @@
         
         
         
-        } //hsidebar
-        
-        // Call the setup function
-        setupHamburgerMenu();
-        
-        })(); // IIFE Ends
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //Hide the Save (save-qr-code) button from project
-        document.addEventListener("DOMContentLoaded", function () {
-        const saveButton = document.getElementById("save-qr-code");
-        if (saveButton) {
+    } //hsidebar
+    
+    // Call the setup function
+    setupHamburgerMenu();
+    
+})(); // IIFE Ends
+
+
+
+
+
+
+
+
+
+
+
+//Hide the Save (save-qr-code) button from project
+document.addEventListener("DOMContentLoaded", function () {
+    const saveButton = document.getElementById("save-qr-code");
+    if (saveButton) {
         saveButton.style.display = "none"; // Completely hide the button
-        }
-        });
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        let deferredPrompt; // Variable to hold the deferred prompt event
-        
-        // Listen for the beforeinstallprompt event
-        window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault(); // Prevent the default prompt from showing automatically
-        deferredPrompt = e; // Store the event so we can trigger it later
-        
-        // Optionally, show a custom install button here if needed
-        // document.getElementById('install-button').style.display = 'block'; 
-        
-        // Automatically trigger the prompt after a delay
-        setTimeout(() => {
-        deferredPrompt.prompt(); // Show the install prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-        // Handle the user's response
-        if (choiceResult.outcome === "accepted") {
-        console.log("User accepted the install prompt");
-        } else {
-        console.log("User dismissed the install prompt");
-        }
-        deferredPrompt = null; // Reset the deferred prompt
-        });
-        }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-        });               
-        
-        
-                
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let deferredPrompt; // Variable to hold the deferred prompt event
+
+// Listen for the beforeinstallprompt event
+window.addEventListener("beforeinstallprompt", (e) => {
+e.preventDefault(); // Prevent the default prompt from showing automatically
+deferredPrompt = e; // Store the event so we can trigger it later
+
+// Optionally, show a custom install button here if needed
+// document.getElementById('install-button').style.display = 'block'; 
+
+// Automatically trigger the prompt after a delay
+setTimeout(() => {
+deferredPrompt.prompt(); // Show the install prompt
+deferredPrompt.userChoice.then((choiceResult) => {
+// Handle the user's response
+if (choiceResult.outcome === "accepted") {
+console.log("User accepted the install prompt");
+} else {
+console.log("User dismissed the install prompt");
+}
+deferredPrompt = null; // Reset the deferred prompt
+});
+}, 3000); // Adjust delay as needed (e.g., 3 seconds)
+});               
+
+
