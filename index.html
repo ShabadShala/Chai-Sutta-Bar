@@ -823,7 +823,7 @@
             #scrapButton {
             all: unset; /* Reset all styles */
             position: fixed;
-            bottom: -1rem;
+            bottom: 0;
             right: calc(50% - 300px + 2rem); /* Align with 600px centered menu */
             font-size: 4rem;
             cursor: pointer; /* Pointer for better UX */
@@ -852,7 +852,7 @@
             
             /* Green when items present */
             #scrapButton.has-items img {
-            filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%) !important;
+            filter: invert(30%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%) !important;
             }
             
             @keyframes pulse-green {
@@ -884,12 +884,11 @@
             
             #scrapButton .counter-badge {
             position: absolute;
-            top: 2rem;
-            left:58%;
-            transform: translateX(-55%);
+            top: 1rem;
+
             color: white;
             font-weight: bold;
-            font-size: 3rem;
+            font-size: 5rem;
             font-weight: bold;
             background: none;
             width: auto;
@@ -933,9 +932,9 @@
             border: 3px solid transparent;
             border-top-color: #00ff00;
             border-left-color: #00ff00;
-            animation: rotate 1.5s linear infinite;
+            animation: rotate 5s linear infinite;
             box-shadow: 0 0 15px #00ff00,
-            inset 0 0 15px #00ff00;
+            inset 0 0 5px #00ff00;
             opacity: 0;
             transition: opacity 0.3s ease;
             }
