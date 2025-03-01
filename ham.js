@@ -768,25 +768,47 @@
             updateButtonsState();
         }
         
-        function copyToClipboard() {
-            const lines = [];
-            // all document.querySelectorAll('.feature-name').forEach(feature => {
-            document.querySelectorAll('.feature-name:not(.strikethrough)').forEach(feature => { // available
-                const level = parseInt(feature.closest('.toggle').dataset.level);
-                const prefix = '-'.repeat(level);
-                lines.push(prefix + feature.textContent.trim());
-            });
-            navigator.clipboard.writeText(lines.join('\n'));
-            
-            // Add a class to trigger animation
-            const copyBtn = document.querySelector('.copy-btn');
-            copyBtn.classList.add('clicked');
-            
-            // Remove class after animation completes
-            setTimeout(() => {
-                copyBtn.classList.remove('clicked');
-            }, 200);
+function copyToClipboard() {
+    const lines = [];
+    const htmlLines = [];
+    
+    document.querySelectorAll('.feature-name').forEach(feature => {
+        const level = parseInt(feature.closest('.toggle').dataset.level);
+        const prefix = '-'.repeat(level);
+
+        // Detect if the feature has strikethrough (from CSS)
+        const isStrikethrough = window.getComputedStyle(feature).textDecoration.includes("line-through");
+
+        // Plain text: Unicode strikethrough
+        let text = feature.textContent.trim();
+        if (isStrikethrough) {
+            text = text.split('').map(char => char + '\u0336').join('');
         }
+        lines.push(prefix + text);
+
+        // HTML format: Wrap with <s> for strikethrough
+        htmlLines.push(isStrikethrough ? `${prefix}<s>${feature.textContent.trim()}</s>` : prefix + feature.textContent.trim());
+    });
+
+    // Create an HTML format for the clipboard
+    const htmlContent = `<html><body>${htmlLines.join('<br>')}</body></html>`;
+    const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+    const textBlob = new Blob([lines.join('\n')], { type: 'text/plain' });
+
+    // Use Clipboard API to copy both plain text & HTML
+    navigator.clipboard.write([
+        new ClipboardItem({
+            'text/html': htmlBlob,  // Rich text (MS Word, Gmail, etc.)
+            'text/plain': textBlob   // Unicode strikethrough for Notepad, etc.
+        })
+    ]).catch(err => console.error("Clipboard copy failed:", err));
+
+    // Add animation effect
+    const copyBtn = document.querySelector('.copy-btn');
+    copyBtn.classList.add('clicked');
+    setTimeout(() => copyBtn.classList.remove('clicked'), 200);
+}
+
         
         
         function updateButtonsState() {
