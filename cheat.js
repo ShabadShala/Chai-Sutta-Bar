@@ -34,6 +34,15 @@ document.addEventListener('keydown', (e) => {
 
 // Cheat activation function
 function activateCheatMode() {
+     // 1. Clear search input and reset filters
+    const searchInput = document.getElementById('searchInput');
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    searchInput.focus();
+    
+    // Clear TAB filters
+    setActiveTab("allButton");
+    resetFilters();
     // 1. Expand all categories and add borders
     document.querySelectorAll('.category-header').forEach(header => {
         const items = header.nextElementSibling;
@@ -263,105 +272,3 @@ document.getElementById('devFill').addEventListener('click', () => {
 
 
 
-      
-        
- // cheat.js - Strict Activation Flow
-let cheatActive = false;
-let activationListenersAdded = false;
-let touchStartPoints = []; // Track multiple touch points
-
-function getWordUnderPointer(event) {
-    const x = event.clientX || (event.touches?.[0]?.clientX);
-    const y = event.clientY || (event.touches?.[0]?.clientY);
-    
-    const element = document.elementFromPoint(x, y);
-    if (!element?.classList?.contains('colAB')) return null;
-
-    const range = document.caretRangeFromPoint(x, y);
-    if (!range) return null;
-
-    const textNode = range.startContainer;
-    const offset = range.startOffset;
-    const text = textNode.textContent || '';
-
-    // Find word boundaries
-    let start = offset;
-    while (start > 0 && !/\s/.test(text[start - 1])) start--;
-    
-    let end = offset;
-    while (end < text.length && !/\s/.test(text[end])) end++;
-
-    return text.slice(start, end)
-        .trim()  // First remove whitespace
-        .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
-}
-
-function simulateSearchInput(word) {
-    const searchInput = document.getElementById('searchInput');
-    
-    // Show search UI elements
-    document.querySelector('.search-container').style.display = 'block';
-    document.getElementById('filterContainer').style.display = 'flex';
-    document.getElementById('clearButton').style.display = 'block';
-    
-    // Trigger search
-    searchInput.value = word;
-    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-}
-
-function handleCheatInteraction(event) {
-    if (!cheatActive) return;
-    
-    const word = getWordUnderPointer(event);
-    if (word) {
-        simulateSearchInput(word);
-        showFeedback(`CHEAT: Filtering by "${word}"`);
-    }
-}
-
-function addCheatListeners() {
-    if (activationListenersAdded) return;
-    
-    // Add click handler for desktop
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('.colAB')) {
-            handleCheatInteraction(e);
-        }
-    });
-    
-    activationListenersAdded = true;
-}
-
-// Detect Four-Finger Tap
-document.addEventListener('touchstart', (e) => {
-    touchStartPoints = e.touches.length; // Count touch points
-});
-
-document.addEventListener('touchend', (e) => {
-    if (touchStartPoints === 4) { // Ensure it was exactly 4 fingers
-        cheatActive = !cheatActive;
-        
-        if (cheatActive) {
-            addCheatListeners();
-            alert('Item Word Search activated. This may disturb menu browsing.\n\nTo deactivate: Press Ctrl+Shift+C or tap with 4 fingers again.');
-        } else {
-            alert('CHEAT MODE DEACTIVATED');
-        }
-    }
-    touchStartPoints = 0; // Reset after gesture detection
-});
-
-// Keyboard shortcut activation (Ctrl+Shift+C)
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.code === 'KeyC') {
-        e.preventDefault();
-        cheatActive = !cheatActive;
-        
-        if (cheatActive) {
-            addCheatListeners();
-            alert('Item Word Search activated. This may disturb menu browsing.\n\nTo deactivate: Press Ctrl+Shift+C or tap with 4 fingers.');
-        } else {
-            alert('CHEAT MODE DEACTIVATED');
-        }
-    }
-});

@@ -3,6 +3,7 @@
 
 
 
+
 // Get references to sidebar and phone icon
 let sidebar = document.getElementById('sidebar');
 let phoneIcon = document.querySelector('.phone-icon'); // Select existing phone.svg icon
@@ -205,8 +206,8 @@ fetch(miscUrl)
     else if (a9Value === "Message") {
         const b9Value = data[8] && data[8][1]; // B9 cell
         if (b9Value && b9Value.trim() !== "") {
-    //        if (b9Value && typeof b9Value === "string" && b9Value.trim().length > 0 && b9Value.trim().length <= 250) {
-    
+            //        if (b9Value && typeof b9Value === "string" && b9Value.trim().length > 0 && b9Value.trim().length <= 250) {
+            
             const messageOverlay = document.getElementById('messageOverlay');
             const messageText = document.getElementById('messageText');
             
