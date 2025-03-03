@@ -1,0 +1,14 @@
+[
+  {
+    "question": "How do I install the app?",
+    "answer": "Click the 'Install App' option in the menu and follow the prompts on your device."
+  },
+  {
+    "question": "How does Child Lock work?",
+    "answer": "Child Lock allows you to set a 5-digit PIN to restrict access to certain app features. Enable it in the settings menu."
+  },
+  {
+    "question": "Can I share the app with friends?",
+    "answer": "Yes! Use the 'Share App' option to send a link or QR code to others."
+  }
+]

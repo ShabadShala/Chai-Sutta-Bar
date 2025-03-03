@@ -94,18 +94,29 @@
         
         <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
         
-        
-        <!-- Add this inside .scrollable-content div in hsidebar -->
+        <!-- Child Lock -->
         <div class="hsidebar-option" id="childLockButton">
         <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon">
         <span>Child Lock: Disabled</span>
         </div>
         
-        <!-- Add Cheat Toggle Button Here -->
+        <!-- Word Search -->
         <div class="hsidebar-option" id="cheatToggleButton">
         <img src="icons/word.svg" alt="Word Search" class="menu-icon invert-icon">
         <span>Item Word Search: Inactive</span>
         </div>
+        
+        <!-- Clear Cache -->
+        <div class="hsidebar-option" id="clear-storage">
+        <img src="icons/trash.svg" alt="Clear Icon" class="menu-icon invert-icon">
+        Clear Local Storage
+        </div>
+        
+        <!-- FAQ -->
+<div class="hsidebar-option" id="faq-option">
+  <img src="icons/faq.svg" alt="FAQ Icon" class="menu-icon invert-icon">
+  FAQs
+</div>
         
         </div>
         
@@ -258,16 +269,22 @@
         }
         
         // opening modals separately
-        function openModalStandalone(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = 'flex'; // Use flex to center the modal
-                modal.style.top = '0'; // Reset top position
-                modal.style.left = '0'; // Reset left position
-                showOverlay(0.9); // Show the overlay
-                
-            }
+function openModalStandalone(modalId) {
+    // Close all other modals first
+    document.querySelectorAll('.modal').forEach(otherModal => {
+        if (otherModal.id !== modalId) {
+            otherModal.style.display = 'none';
         }
+    });
+    
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        showOverlay(0.9);
+    }
+}
         
         
         
@@ -295,12 +312,28 @@
             });
             
             // 3️⃣ Close on clicking outside the modal
-            modal.addEventListener("click", (e) => {
-                if (e.target === modal && modal.style.display != "none") { // Ensures it only closes when clicking the backdrop
-                    closeModal();
-                }
-            });            
+            if (modalId !== "pinModal") {
+                modal.addEventListener("click", (e) => {
+                    if (e.target === modal && modal.style.display !== "none") {
+                        closeModal();
+                    }
+                });
+            }  
+            
+            // 1️⃣ Close on clicking the cancel button
+            modal.querySelector(".cancel-btn")?.addEventListener("click", closeModal);
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -328,8 +361,6 @@
             });
         }
         
-        
-        
         // Disable pwa buton is installed
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
             const installOption = document.getElementById('install-app');
@@ -351,7 +382,7 @@
         
         
         
-        
+        // Share App
         const shareModal = document.createElement('div');
         shareModal.id = 'share-modal';
         shareModal.className = 'modal';
@@ -384,9 +415,6 @@
         
         document.body.appendChild(shareModal);
         
-        
-        
-        
         document.body.addEventListener('click', (event) => {
             if (event.target.closest('#share-app')) {
                 toggleSidebar(false); // Close the sidebar
@@ -395,9 +423,6 @@
         });
         
         setupModalTriggers('share-modal'); 
-        
-        
-        
         
         
         
@@ -420,7 +445,6 @@
                 url: url, // Only the URL is passed
             }).catch(error => console.log('Error sharing link:', error));
         });
-        
         
         
         
@@ -462,12 +486,7 @@
         
         
         
-        
-        
-        
-        
-        
-        
+        // Share QR Image
         document.addEventListener("DOMContentLoaded", function () {
             // Function to share the QR Code
             function shareQRCode() {
@@ -498,7 +517,9 @@
                 .catch(err => console.error("Error fetching QR Code:", err));
             }
             
-            // Function to print the QR Code
+            
+            
+            // Print the QR image
             function printQRCode() {
                 const qrImg = document.getElementById("qr-code-img");
                 if (!qrImg) {
@@ -554,7 +575,13 @@
         
         
         
-        // FeaturesModal
+        
+        
+        
+        
+        
+        
+        // App Features
         const featuresModal = document.createElement('div');
         featuresModal.id = 'features-modal';
         featuresModal.className = 'modal';
@@ -576,7 +603,6 @@
         </div>
         </div>`;
         document.body.appendChild(featuresModal);
-        setupModalTriggers('features-modal');
         
         // Add event listener for the menu option
         document.getElementById('app-features').addEventListener('click', () => {
@@ -585,8 +611,9 @@
             loadFeatures();
         });
         
-        // Updated data processing functions
+        setupModalTriggers('features-modal');
         
+        // Updated data processing functions        
         async function loadFeatures() {
             const container = document.getElementById('features');
             
@@ -762,8 +789,7 @@
         
         
         
-        // Keep the rest of your existing functions unchanged (buildList, addToggleListeners, etc.)
-        
+        // Keep the rest of your existing functions unchanged (buildList, addToggleListeners, etc.)        
         function transformGoogleData(features) {
             return Object.keys(features).map(category => ({
                 name: category,
@@ -880,6 +906,509 @@
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Clear Storage Modal
+        const clearStorageModal = document.createElement('div');
+        clearStorageModal.id = 'clear-storage-modal';
+        clearStorageModal.className = 'modal';
+        clearStorageModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn">&times;</div>
+        <h3 class="modal-header">Warning!</h3>
+        <div class="modal-body">
+        This will permanently delete all app data including:<br>
+        - Last Order<br>
+        - Child Lock PIN<br>
+        - Settings<br>
+        (The app will be restarted)<br>
+        Are you sure you want to continue?
+        </div>
+        <div class="modal-buttons">
+        <button id="confirm-clear" class="danger-btn">
+        <img src="icons/trash.svg" alt="Clear" width="14" height="14" class="invert-icon">
+        Clear
+        </button>
+        <button class="cancel-btn">Cancel</button>
+        </div>
+        </div>
+        `;
+        document.body.appendChild(clearStorageModal);
+        
+        // Add this with the other sidebar option event listeners
+        document.getElementById('clear-storage')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('clear-storage-modal');
+        });
+        
+        setupModalTriggers('clear-storage-modal'); 
+        
+        
+        // Add confirmation handler
+        document.getElementById('confirm-clear')?.addEventListener('click', () => {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.reload(true);
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Create Child Lock Modal Elements
+        const pinModal = document.createElement('div');
+        pinModal.id = 'pinModal';
+        pinModal.className = 'modal';
+        pinModal.innerHTML = `
+        <div class="modal-content" style="max-width: 300px">
+        <div class="close-btn">&times;</div>
+        <h3 class="modal-header">Child Lock</h3>
+        <div id="pinMessage" class="pin-message"></div>
+        <input type="number" 
+        id="pinInput" 
+        class="pin-input" 
+        placeholder="Enter 5-digit PIN" 
+        maxlength="5" 
+        inputmode="numeric">
+        <div class="modal-buttons">
+        <button id="confirmPin" class="confirm-btn">Confirm</button>
+        <button id="cancel-btn" class="cancel-btn">Cancel</button>
+        </div>
+        <div class="modal-buttons restart-container">
+        <button id="restartPin" class="restart-btn">
+        <img src="icons/startover.svg" 
+        alt="Restart" 
+        class="icon invert-icon">
+        Start Again
+        </button>
+        </div>
+        </div>`;
+        
+        document.body.appendChild(pinModal);
+                
+        // Add this with the other sidebar option event listeners
+        document.getElementById('childLockButton')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('pinModal');
+        });
+        
+        setupModalTriggers('pinModal'); 
+        
+        
+        
+        // Child Lock Implementation
+        let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            childLockState = JSON.parse(localStorage.getItem('childLock')) || { 
+                pin: null, 
+                isEnabled: false 
+            };
+            updateChildLockDisplay();
+            disableElements();
+            
+            const modal = document.getElementById('pinModal');
+            const closeButton = document.querySelector('#pinModal .close-btn');
+            const cancelButton = document.getElementById('cancelPin');
+            
+            if (closeButton) closeButton.addEventListener('click', () => modal.style.display = 'none');
+            if (cancelButton) cancelButton.addEventListener('click', () => modal.style.display = 'none');
+            
+            
+        });
+        
+        document.getElementById('childLockButton').addEventListener('click', toggleChildLock);
+        
+        function toggleChildLock() {
+            childLockState.isEnabled ? showPinModal('disable') : showPinModal('enable');
+        }
+        
+        function showPinModal(action) {
+            const modal = document.getElementById('pinModal');
+            const message = document.getElementById('pinMessage');
+            const pinInput = document.getElementById('pinInput');
+            const confirmBtn = document.getElementById('confirmPin');
+            const restartBtn = document.getElementById('restartPin');
+            
+            if (restartBtn) restartBtn.style.display = 'none'; // Hide restart button
+            
+            pinInput.value = '';
+            pinInput.disabled = false;
+            message.textContent = action === 'enable' ? 'Set 5-digit PIN:' : 'Enter PIN to disable:';
+            confirmBtn.disabled = true;
+            
+            modal.style.display = 'flex';
+            
+            confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+            pinInput.replaceWith(pinInput.cloneNode(true));
+            
+            const newConfirmBtn = document.getElementById('confirmPin');
+            const newPinInput = document.getElementById('pinInput');
+            
+            newPinInput.focus();
+            
+            if (action === 'enable') {
+                newConfirmBtn.onclick = () => handleFirstPinEntry(newPinInput, message, modal);
+                } else {
+                newConfirmBtn.onclick = () => handlePinSubmit(action, newPinInput, message, modal);
+            }
+            
+            newPinInput.onkeypress = (e) => {
+                if (e.key === 'Enter' && newPinInput.value.length === 5) newConfirmBtn.click();
+            };
+            
+            newPinInput.oninput = () => {
+                newPinInput.value = newPinInput.value.replace(/\D/g, '').slice(0, 5);
+                newConfirmBtn.disabled = newPinInput.value.length !== 5;
+            };
+        }
+        
+        function handleFirstPinEntry(pinInput, message, modal) {
+            const firstPin = pinInput.value;
+            if (firstPin.length !== 5 || isNaN(firstPin)) {
+                message.textContent = 'Invalid PIN! Must be 5 digits';
+                return;
+            }
+            pinInput.value = '';
+            message.textContent = 'Confirm 5-digit PIN:';
+            document.getElementById('confirmPin').disabled = true;
+            
+            pinInput.focus();
+            
+            document.getElementById('confirmPin').onclick = () => handleConfirmPinEntry(pinInput, message, modal, firstPin);
+        }
+        
+        function handleConfirmPinEntry(pinInput, message, modal, firstPin) {
+            const secondPin = pinInput.value;
+            
+            if (secondPin.length !== 5) {
+                message.textContent = 'Invalid PIN! Must be 5 digits';
+                return;
+            }
+            
+            if (secondPin !== firstPin) {
+                message.textContent = 'PINs do not match!';
+                pinInput.disabled = true;
+                document.getElementById('confirmPin').disabled = true;
+                
+                // Show Restart Button when PIN mismatch
+                const restartBtn = document.getElementById('restartPin');
+                restartBtn.style.display = 'block';
+                restartBtn.onclick = () => showPinModal('enable');
+                
+                return;
+            }
+            
+            childLockState = { pin: secondPin, isEnabled: true };
+            localStorage.setItem('childLock', JSON.stringify(childLockState));
+            
+            message.textContent = 'PIN set! Lock enabled';
+            updateChildLockDisplay();
+            disableElements();
+            
+       setTimeout(() => {
+    modal.style.display = 'none';
+    hideOverlay(); // Add this line
+}, 1000);
+      
+        }
+        
+        function handlePinSubmit(action, pinInput, message, modal, firstPin = null) {
+            const pin = pinInput.value;
+            
+            if (action === 'enable') {
+                if (pin !== firstPin) {
+                    pinInput.value = 'PINs do not match!';
+                    pinInput.disabled = true; // Disable input to prevent further typing
+                    document.getElementById('confirmPin').disabled = true;
+                    
+                    // Create "Start Again" button
+                    let restartBtn = document.createElement('button');
+                    restartBtn.textContent = "Start Again";
+                    restartBtn.onclick = () => showPinModal('enable');
+                    
+                    message.innerHTML = ''; // Clear existing message
+                    message.appendChild(restartBtn);
+                    
+                    return;
+                }
+                childLockState = { pin: pin, isEnabled: true };
+                message.textContent = 'PIN set! Lock enabled';
+                } else {
+                if (pin !== childLockState.pin) {
+                    message.textContent = 'Incorrect PIN!';
+                    return;
+                }
+                childLockState = { pin: null, isEnabled: false };
+                message.textContent = 'Lock disabled';
+            }
+            
+            localStorage.setItem('childLock', JSON.stringify(childLockState));
+            updateChildLockDisplay();
+            disableElements();
+            
+            setTimeout(() => {
+    modal.style.display = 'none';
+    hideOverlay(); // Add this line
+}, 1000);
+        }
+        
+        
+        function updateChildLockDisplay() {
+            const btn = document.getElementById('childLockButton');
+            const img = btn.querySelector('img');
+            const textSpan = btn.querySelector('span');
+            
+            if (childLockState.isEnabled) {
+                img.src = "icons/lock.svg";
+                textSpan.textContent = "Child Lock: Enabled";
+                } else {
+                img.src = "icons/unlock.svg";
+                textSpan.textContent = "Child Lock: Disabled";
+            }
+        }
+        
+        function disableElements() {
+            document.querySelectorAll('.child-lock-restricted').forEach(element => {
+                element.classList.toggle('child-locked', childLockState.isEnabled);
+                if (element.tagName === 'BUTTON') {
+                    element.disabled = childLockState.isEnabled;
+                }
+            });
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // FAQ Modal
+const faqModal = document.createElement('div');
+faqModal.id = 'faq-modal';
+faqModal.className = 'modal';
+faqModal.innerHTML = `
+<div class="modal-content">
+  <div class="close-btn">&times;</div>
+  <h3 class="modal-header">Frequently Asked Questions</h3>
+ <h4 class="modal-header">(Long press to copy answer)</h4>
+  <div class="faq-container" id="faq-container">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading FAQs...</div>
+  </div>
+</div>`;
+document.body.appendChild(faqModal);
+
+// Add event listener for the FAQ option
+document.getElementById('faq-option')?.addEventListener('click', () => {
+  toggleSidebar(false);
+  openModalStandalone('faq-modal');
+  loadFAQs();
+});
+
+setupModalTriggers('faq-modal');
+        
+
+
+       
+ async function loadFAQs() {
+  const container = document.getElementById('faq-container');
+  container.innerHTML = '<div class="loading-spinner"></div> Loading FAQs...';
+
+  // Add toast styling dynamically
+  const style = document.createElement('style');
+  style.textContent = `
+    .copy-toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 14px;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      animation: fadeInOut 2s ease-in-out;
+    }
+    
+    @keyframes fadeInOut {
+      0%,100% { opacity: 0; }
+      15%,85% { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  try {
+    const response = await fetch('faq.json');
+    if (!response.ok) throw new Error('Failed to fetch FAQs');
+    const faqs = await response.json();
+
+    container.innerHTML = '';
+    let activeFaq = null;
+
+    faqs.forEach((faq, index) => {
+      const faqItem = document.createElement('div');
+      faqItem.className = 'faq-item';
+      faqItem.innerHTML = `
+        <div class="faq-question">
+          ${faq.question}
+          <span class="toggle-arrow">▼</span>
+        </div>
+        <div class="faq-answer">${faq.answer}</div>
+      `;
+
+      const questionElement = faqItem.querySelector('.faq-question');
+      const answerElement = faqItem.querySelector('.faq-answer');
+      let pressTimer;
+
+      // Long-press copy functionality
+      const handleTouchStart = (e) => {
+        if (!faqItem.classList.contains('active')) return;
+        
+        e.preventDefault();
+        pressTimer = setTimeout(() => {
+          navigator.clipboard.writeText(answerElement.textContent.trim())
+            .then(() => showToast('Answer copied to clipboard!'))
+            .catch(() => showToast('Failed to copy text'));
+        }, 500);
+      };
+
+      const handleTouchEnd = (e) => {
+        e.preventDefault();
+        clearTimeout(pressTimer);
+      };
+
+      answerElement.addEventListener('touchstart', handleTouchStart);
+      answerElement.addEventListener('touchend', handleTouchEnd);
+      answerElement.addEventListener('touchcancel', handleTouchEnd);
+
+      questionElement.addEventListener('click', () => {
+        if (faqItem === activeFaq) {
+          faqItem.classList.remove('active');
+          activeFaq = null;
+          return;
+        }
+
+        if (activeFaq) activeFaq.classList.remove('active');
+        faqItem.classList.add('active');
+        activeFaq = faqItem;
+        faqItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      container.appendChild(faqItem);
+    });
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'copy-toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2000);
+    }
+  } catch (error) {
+    console.error('Error loading FAQs:', error);
+    container.innerHTML = '<div class="error-message">❌ Failed to load FAQs. Please try again later.</div>';
+  }
+}
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     } //hsidebar
     
     // Call the setup function
@@ -899,10 +1428,10 @@
 
 //Hide the Save (save-qr-code) button from project
 document.addEventListener("DOMContentLoaded", function () {
-    const saveButton = document.getElementById("save-qr-code");
-    if (saveButton) {
-        saveButton.style.display = "none"; // Completely hide the button
-    }
+const saveButton = document.getElementById("save-qr-code");
+if (saveButton) {
+saveButton.style.display = "none"; // Completely hide the button
+}
 });
 
 
@@ -926,25 +1455,25 @@ let deferredPrompt; // Variable to hold the deferred prompt event
 
 // Listen for the beforeinstallprompt event
 window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault(); // Prevent the default prompt from showing automatically
-    deferredPrompt = e; // Store the event so we can trigger it later
-    
-    // Optionally, show a custom install button here if needed
-    // document.getElementById('install-button').style.display = 'block'; 
-    
-    // Automatically trigger the prompt after a delay
-    setTimeout(() => {
-        deferredPrompt.prompt(); // Show the install prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            // Handle the user's response
-            if (choiceResult.outcome === "accepted") {
-                console.log("User accepted the install prompt");
-                } else {
-                console.log("User dismissed the install prompt");
-            }
-            deferredPrompt = null; // Reset the deferred prompt
-        });
-    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+e.preventDefault(); // Prevent the default prompt from showing automatically
+deferredPrompt = e; // Store the event so we can trigger it later
+
+// Optionally, show a custom install button here if needed
+// document.getElementById('install-button').style.display = 'block'; 
+
+// Automatically trigger the prompt after a delay
+setTimeout(() => {
+deferredPrompt.prompt(); // Show the install prompt
+deferredPrompt.userChoice.then((choiceResult) => {
+// Handle the user's response
+if (choiceResult.outcome === "accepted") {
+console.log("User accepted the install prompt");
+} else {
+console.log("User dismissed the install prompt");
+}
+deferredPrompt = null; // Reset the deferred prompt
+});
+}, 3000); // Adjust delay as needed (e.g., 3 seconds)
 });               
 
 
@@ -966,260 +1495,12 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 
 
-// Create Child Lock Modal Elements
-const pinModal = document.createElement('div');
-pinModal.id = 'pinModal';
-pinModal.className = 'pmodal';
 
-const modalContent = document.createElement('div');
-modalContent.className = 'modal-content';
-modalContent.style.maxWidth = '300px';
 
-const closeBtn = document.createElement('div');
-closeBtn.className = 'close-btn';
-closeBtn.innerHTML = '&times;';
-
-const modalHeader = document.createElement('h3');
-modalHeader.className = 'modal-header';
-modalHeader.textContent = 'Child Lock';
-
-const pinMessage = document.createElement('div');
-pinMessage.id = 'pinMessage';
-pinMessage.className = 'pin-message';
-
-const pinInput = document.createElement('input');
-pinInput.type = 'number';
-pinInput.id = 'pinInput';
-pinInput.className = 'pin-input';
-pinInput.placeholder = 'Enter 5-digit PIN';
-pinInput.maxLength = 5;
-pinInput.inputMode = 'numeric';
-
-// First Button Container
-const buttonContainer = document.createElement('div');
-buttonContainer.className = 'button-container';
-
-const confirmBtn = document.createElement('button');
-confirmBtn.id = 'confirmPin';
-confirmBtn.className = 'confirm-btn';
-confirmBtn.textContent = 'Confirm';
-
-const cancelBtn = document.createElement('button');
-cancelBtn.id = 'cancelPin';
-cancelBtn.className = 'cancel-btn';
-cancelBtn.textContent = 'Cancel';
-
-// Second Button Container (Restart)
-const restartContainer = document.createElement('div');
-restartContainer.className = 'button-container restart-container';
-
-const restartBtn = document.createElement('button');
-restartBtn.id = 'restartPin';
-restartBtn.className = 'restart-btn';
-
-const restartIcon = document.createElement('img');
-restartIcon.src = 'icons/startover.svg';
-restartIcon.alt = 'Restart';
-restartIcon.className = 'icon invert-icon';
-
-restartBtn.appendChild(restartIcon);
-restartBtn.appendChild(document.createTextNode(' Start Again'));
-
-// Assemble elements
-buttonContainer.appendChild(confirmBtn);
-buttonContainer.appendChild(cancelBtn);
-restartContainer.appendChild(restartBtn);
-
-modalContent.appendChild(closeBtn);
-modalContent.appendChild(modalHeader);
-modalContent.appendChild(pinMessage);
-modalContent.appendChild(pinInput);
-modalContent.appendChild(buttonContainer);
-modalContent.appendChild(restartContainer);
-
-pinModal.appendChild(modalContent);
-
-// Add modal to DOM
-document.body.appendChild(pinModal);
-
-
-
-
-
-
-// Child Lock Implementation
-let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
-
-document.addEventListener('DOMContentLoaded', () => {
-    childLockState = JSON.parse(localStorage.getItem('childLock')) || { 
-        pin: null, 
-        isEnabled: false 
-    };
-    updateChildLockDisplay();
-    disableElements();
-    
-    const modal = document.getElementById('pinModal');
-    const closeButton = document.querySelector('#pinModal .close-btn');
-    const cancelButton = document.getElementById('cancelPin');
-    
-    if (closeButton) closeButton.addEventListener('click', () => modal.style.display = 'none');
-    if (cancelButton) cancelButton.addEventListener('click', () => modal.style.display = 'none');
-    
-
-});
-
-document.getElementById('childLockButton').addEventListener('click', toggleChildLock);
-
-function toggleChildLock() {
-    childLockState.isEnabled ? showPinModal('disable') : showPinModal('enable');
-}
-
-function showPinModal(action) {
-    const modal = document.getElementById('pinModal');
-    const message = document.getElementById('pinMessage');
-    const pinInput = document.getElementById('pinInput');
-    const confirmBtn = document.getElementById('confirmPin');
-     const restartBtn = document.getElementById('restartPin');
-    
-    if (restartBtn) restartBtn.style.display = 'none'; // Hide restart button
-    
-    pinInput.value = '';
-    pinInput.disabled = false;
-    message.textContent = action === 'enable' ? 'Set 5-digit PIN:' : 'Enter PIN to disable:';
-    confirmBtn.disabled = true;
-    
-    modal.style.display = 'flex';
-    
-    confirmBtn.replaceWith(confirmBtn.cloneNode(true));
-    pinInput.replaceWith(pinInput.cloneNode(true));
-    
-    const newConfirmBtn = document.getElementById('confirmPin');
-    const newPinInput = document.getElementById('pinInput');
-    
-    newPinInput.focus();
-    
-    if (action === 'enable') {
-        newConfirmBtn.onclick = () => handleFirstPinEntry(newPinInput, message, modal);
-        } else {
-        newConfirmBtn.onclick = () => handlePinSubmit(action, newPinInput, message, modal);
-    }
-    
-    newPinInput.onkeypress = (e) => {
-        if (e.key === 'Enter' && newPinInput.value.length === 5) newConfirmBtn.click();
-    };
-    
-    newPinInput.oninput = () => {
-        newPinInput.value = newPinInput.value.replace(/\D/g, '').slice(0, 5);
-        newConfirmBtn.disabled = newPinInput.value.length !== 5;
-    };
-}
-
-function handleFirstPinEntry(pinInput, message, modal) {
-    const firstPin = pinInput.value;
-    if (firstPin.length !== 5 || isNaN(firstPin)) {
-        message.textContent = 'Invalid PIN! Must be 5 digits';
-        return;
-    }
-    pinInput.value = '';
-    message.textContent = 'Confirm 5-digit PIN:';
-    document.getElementById('confirmPin').disabled = true;
-    
-    pinInput.focus();
-    
-    document.getElementById('confirmPin').onclick = () => handleConfirmPinEntry(pinInput, message, modal, firstPin);
-}
-
-function handleConfirmPinEntry(pinInput, message, modal, firstPin) {
-    const secondPin = pinInput.value;
-    
-    if (secondPin.length !== 5) {
-        message.textContent = 'Invalid PIN! Must be 5 digits';
-        return;
-    }
-    
-    if (secondPin !== firstPin) {
-        message.textContent = 'PINs do not match!';
-        pinInput.disabled = true;
-        document.getElementById('confirmPin').disabled = true;
-
-        // Show Restart Button when PIN mismatch
-        const restartBtn = document.getElementById('restartPin');
-        restartBtn.style.display = 'block';
-        restartBtn.onclick = () => showPinModal('enable');
-
-        return;
-    }
-    
-    childLockState = { pin: secondPin, isEnabled: true };
-    localStorage.setItem('childLock', JSON.stringify(childLockState));
-    
-    message.textContent = 'PIN set! Lock enabled';
-    updateChildLockDisplay();
-    disableElements();
-    
-    setTimeout(() => modal.style.display = 'none', 1000);
-}
 
-function handlePinSubmit(action, pinInput, message, modal, firstPin = null) {
-    const pin = pinInput.value;
-    
-    if (action === 'enable') {
-        if (pin !== firstPin) {
-            pinInput.value = 'PINs do not match!';
-            pinInput.disabled = true; // Disable input to prevent further typing
-            document.getElementById('confirmPin').disabled = true;
-            
-            // Create "Start Again" button
-            let restartBtn = document.createElement('button');
-            restartBtn.textContent = "Start Again";
-            restartBtn.onclick = () => showPinModal('enable');
-            
-            message.innerHTML = ''; // Clear existing message
-            message.appendChild(restartBtn);
-            
-            return;
-        }
-        childLockState = { pin: pin, isEnabled: true };
-        message.textContent = 'PIN set! Lock enabled';
-        } else {
-        if (pin !== childLockState.pin) {
-            message.textContent = 'Incorrect PIN!';
-            return;
-        }
-        childLockState = { pin: null, isEnabled: false };
-        message.textContent = 'Lock disabled';
-    }
-    
-    localStorage.setItem('childLock', JSON.stringify(childLockState));
-    updateChildLockDisplay();
-    disableElements();
-    
-    setTimeout(() => modal.style.display = 'none', 1000);
-}
 
 
-function updateChildLockDisplay() {
-    const btn = document.getElementById('childLockButton');
-    const img = btn.querySelector('img');
-    const textSpan = btn.querySelector('span');
-    
-    if (childLockState.isEnabled) {
-        img.src = "icons/lock.svg";
-        textSpan.textContent = "Child Lock: Enabled";
-        } else {
-        img.src = "icons/unlock.svg";
-        textSpan.textContent = "Child Lock: Disabled";
-    }
-}
 
-function disableElements() {
-    document.querySelectorAll('.child-lock-restricted').forEach(element => {
-        element.classList.toggle('child-locked', childLockState.isEnabled);
-        if (element.tagName === 'BUTTON') {
-            element.disabled = childLockState.isEnabled;
-        }
-    });
-}
 
 
 
@@ -1252,82 +1533,71 @@ function disableElements() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// cheat.js - Strict Activation Flow
+// Deep Search
 let cheatActive = false;
 let activationListenersAdded = false;
 let touchStartPoints = []; // Track multiple touch points
 
 function getWordUnderPointer(event) {
-    const x = event.clientX || (event.touches?.[0]?.clientX);
-    const y = event.clientY || (event.touches?.[0]?.clientY);
-    
-    const element = document.elementFromPoint(x, y);
-    if (!element?.classList?.contains('colAB')) return null;
-    
-    const range = document.caretRangeFromPoint(x, y);
-    if (!range) return null;
-    
-    const textNode = range.startContainer;
-    const offset = range.startOffset;
-    const text = textNode.textContent || '';
-    
-    // Find word boundaries
-    let start = offset;
-    while (start > 0 && !/\s/.test(text[start - 1])) start--;
-    
-    let end = offset;
-    while (end < text.length && !/\s/.test(text[end])) end++;
-    
-    return text.slice(start, end)
-    .trim()  // First remove whitespace
-    .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
+const x = event.clientX || (event.touches?.[0]?.clientX);
+const y = event.clientY || (event.touches?.[0]?.clientY);
+
+const element = document.elementFromPoint(x, y);
+if (!element?.classList?.contains('colAB')) return null;
+
+const range = document.caretRangeFromPoint(x, y);
+if (!range) return null;
+
+const textNode = range.startContainer;
+const offset = range.startOffset;
+const text = textNode.textContent || '';
+
+// Find word boundaries
+let start = offset;
+while (start > 0 && !/\s/.test(text[start - 1])) start--;
+
+let end = offset;
+while (end < text.length && !/\s/.test(text[end])) end++;
+
+return text.slice(start, end)
+.trim()  // First remove whitespace
+.replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
 }
 
 function simulateSearchInput(word) {
-    const searchInput = document.getElementById('searchInput');
-    
-    // Show search UI elements
-    document.querySelector('.search-container').style.display = 'block';
-    document.getElementById('filterContainer').style.display = 'flex';
-    document.getElementById('clearButton').style.display = 'block';
-    
-    // Trigger search
-    searchInput.value = word;
-    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+const searchInput = document.getElementById('searchInput');
+
+// Show search UI elements
+document.querySelector('.search-container').style.display = 'block';
+document.getElementById('filterContainer').style.display = 'flex';
+document.getElementById('clearButton').style.display = 'block';
+
+// Trigger search
+searchInput.value = word;
+searchInput.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
 function handleCheatInteraction(event) {
-    if (!cheatActive) return;
-    
-    const word = getWordUnderPointer(event);
-    if (word) {
-        simulateSearchInput(word);
-        showFeedback(`CHEAT: Filtering by "${word}"`);
-    }
+if (!cheatActive) return;
+
+const word = getWordUnderPointer(event);
+if (word) {
+simulateSearchInput(word);
+showFeedback(`CHEAT: Filtering by "${word}"`);
+}
 }
 
 function addCheatListeners() {
-    if (activationListenersAdded) return;
-    
-    // Add click handler for desktop
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('.colAB')) {
-            handleCheatInteraction(e);
-        }
-    });
-    
-    activationListenersAdded = true;
+if (activationListenersAdded) return;
+
+// Add click handler for desktop
+document.addEventListener('click', (e) => {
+if (e.target.closest('.colAB')) {
+handleCheatInteraction(e);
+}
+});
+
+activationListenersAdded = true;
 }
 
 
@@ -1336,16 +1606,38 @@ function addCheatListeners() {
 
 // Add event listener for the cheat toggle button
 document.getElementById('cheatToggleButton')?.addEventListener('click', function() {
-    cheatActive = !cheatActive;
-    
-    // Update button text
-    const statusText = cheatActive ? 'Active' : 'Inactive';
-    this.querySelector('span').textContent = `Item Word Search: ${statusText}`;
-    
-    if (cheatActive) {
-        addCheatListeners();
-        alert('Item Word Search activated. This may disturb menu browsing.\n\nTo deactivate: Press Ctrl+Shift+C, tap with 4 fingers, or toggle this button again.');
-        } else {
-        alert('CHEAT MODE DEACTIVATED');
-    }
+cheatActive = !cheatActive;
+
+// Update button text
+const statusText = cheatActive ? 'Active' : 'Inactive';
+this.querySelector('span').textContent = `Item Word Search: ${statusText}`;
+
+if (cheatActive) {
+addCheatListeners();
+alert('Item Word Search activated. This may disturb menu browsing.\n\nTo deactivate: Press Ctrl+Shift+C, tap with 4 fingers, or toggle this button again.');
+} else {
+alert('CHEAT MODE DEACTIVATED');
+}
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

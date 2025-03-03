@@ -193,11 +193,46 @@
 
 
 
+/* Universal Modal Buttons */
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    cursor: pointer;
+    font-size: 8rem;
+    color: #444;
+    background: none;
+    border: none;
+    font-weight: bold;
+    transition: 0.3s;
+    z-index: 1000;
+}
 
 
+.close-btn:hover {
+    color: #ff4d4d;
+    transform: scale(1.1);
+}
 
+/* Clear Button */
+.cancel-btn {
+    background-color: #ff4444; /* Red color */
+    color: white;
+    padding: 1.5rem 3rem;
+    border: none;
+    border-radius: 1rem;
+    font-size: 4rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
 
-
+.cancel-btn:hover {
+    background-color: #cc0000; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarge button */
+}
 
 
 
@@ -446,26 +481,7 @@
     margin-bottom: 15px;
 }
 
-/* Close Button */
-.close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 2rem;
-    cursor: pointer;
-    font-size: 8rem;
-    color: #444;
-    background: none;
-    border: none;
-    font-weight: bold;
-    transition: 0.3s;
-    z-index: 1000;
-}
 
-
-.close-btn:hover {
-    color: #ff4d4d;
-    transform: scale(1.1);
-}
 
 /* QR Code Styling */
 .qrcode-container {
@@ -930,17 +946,7 @@
 }
 
 
-.cancel-btn {
-    background-color: #ff4444; /* Red color */
-    color: white;
-    padding: 1.5rem 3rem;
-    border: none;
-    border-radius: 1rem;
-    font-size: 4rem;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 1rem;
-}
+
 
 
 #confirmPin:disabled {
@@ -980,3 +986,193 @@
 .restart-btn:hover {
     background-color: darkgreen; /* Slightly darker green on hover */
 }
+
+
+
+
+
+
+/* Clear cache */
+.modal-body {
+  padding: 15px;
+  text-align: center;
+  color: #ff6b6b;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.danger-btn {
+  background: #dc3545 !important;
+  color: white !important;
+}
+
+.danger-btn:hover {
+  background: #bb2d3b !important;
+}
+
+
+
+
+
+
+
+
+
+
+/* Unified button styles for all modal actions */
+.modal-buttons button {
+    height: 10rem; /* Explicit height */
+    padding: 0; /* Reset padding */
+    margin: 0; /* Reset margin */
+    font-size: 4rem;
+    border-radius: 1rem;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1; /* Ensure consistent text alignment */
+    box-sizing: border-box; /* Include padding in height calculation */
+}
+
+
+/* Ensure buttons in both modals have the same height */
+#clear-storage-modal .modal-buttons button,
+#pinModal .modal-buttons button {
+    height: 8rem; /* Explicit height */
+    font-size: 4rem;
+    line-height: 1;
+    box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* FAQ Modal Styles */
+#faq-modal {
+  background: rgba(0, 0, 0, 0.8); /* Semi-transparent dark overlay */
+}
+
+#faq-modal .modal-content {
+  background: #ffffff; /* Pure white background */
+  color: #333333; /* Dark gray text for better readability */
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.faq-container {
+  padding: 10px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.faq-item {
+  border-bottom: 1px solid #e0e0e0; /* Light gray border */
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  text-align: left; /* Ensure all content is left-aligned */
+}
+
+.faq-question {
+  cursor: pointer;
+  padding: 12px 15px;
+  background: #f8f9fa; /* Very light gray background */
+  border-radius: 8px;
+  display: flex;
+
+  align-items: center;
+  font-weight: 700; /* Changed from 500 to 700 for bold text */
+  color: #2d3748; /* Dark blue-gray for text */
+  transition: all 0.2s ease;
+  text-align: left; /* Ensure question text is left-aligned */
+}
+
+.faq-question::before {
+  content: "Q: "; /* Add "Q:" before each question */
+  font-weight: 700; /* Bold */
+  color: #3182ce; /* Blue color for "Q:" */
+  margin-right: 5px;
+}
+
+.faq-question:hover {
+  background: #edf2f7; /* Slightly darker gray on hover */
+  transform: translateY(-1px);
+}
+
+.toggle-arrow {
+  font-size: 0.9em;
+  margin-left: 10px;
+  color: #4a5568; /* Medium gray for arrow */
+  transition: transform 0.3s ease;
+}
+
+.faq-item.active .toggle-arrow {
+  transform: rotate(180deg);
+  color: #3182ce; /* Blue color for active state */
+}
+
+.faq-answer {
+  display: none;
+  padding: 15px;
+  background: #ffffff;
+  border-radius: 8px;
+  margin-top: 10px;
+  line-height: 1.6;
+  color: #4a5568; /* Medium gray for answer text */
+  border-left: 3px solid #3182ce; /* Blue accent border */
+  text-align: left; /* Ensure answer text is left-aligned */
+}
+
+.faq-item.active .faq-answer {
+  display: block;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  border: 3px solid #f3f3f3; /* Light gray */
+  border-top: 3px solid #3182ce; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Error Message */
+.error-message {
+  color: #e53e3e; /* Red for errors */
+  text-align: center;
+  padding: 20px;
+  font-weight: 500;
+}
+
