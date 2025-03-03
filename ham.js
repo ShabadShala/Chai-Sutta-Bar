@@ -928,32 +928,25 @@ let deferredPrompt; // Variable to hold the deferred prompt event
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault(); // Prevent the default prompt from showing automatically
     deferredPrompt = e; // Store the event so we can trigger it later
-
-    // Check if the user dismissed it before
-    if (localStorage.getItem("pwa-dismissed") === "true") {
-        return; // Do not show the prompt again
-    }
-
+    
+    // Optionally, show a custom install button here if needed
+    // document.getElementById('install-button').style.display = 'block'; 
+    
     // Automatically trigger the prompt after a delay
     setTimeout(() => {
         deferredPrompt.prompt(); // Show the install prompt
         deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === "dismissed") {
-                console.log("User dismissed the install prompt");
-                localStorage.setItem("pwa-dismissed", "true"); // Stop showing the prompt
-            } else {
+            // Handle the user's response
+            if (choiceResult.outcome === "accepted") {
                 console.log("User accepted the install prompt");
+                } else {
+                console.log("User dismissed the install prompt");
             }
             deferredPrompt = null; // Reset the deferred prompt
         });
     }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-});
+});               
 
-// Listen for PWA installation to hide the prompt permanently
-window.addEventListener("appinstalled", () => {
-    console.log("PWA installed");
-    localStorage.setItem("pwa-dismissed", "true"); // Stop showing the prompt permanently
-});
 
 
 
