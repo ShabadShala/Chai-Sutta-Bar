@@ -928,24 +928,32 @@ let deferredPrompt; // Variable to hold the deferred prompt event
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault(); // Prevent the default prompt from showing automatically
     deferredPrompt = e; // Store the event so we can trigger it later
-    
-    // Optionally, show a custom install button here if needed
-    // document.getElementById('install-button').style.display = 'block'; 
-    
+
+    // Check if the user dismissed it before
+    if (localStorage.getItem("pwa-dismissed") === "true") {
+        return; // Do not show the prompt again
+    }
+
     // Automatically trigger the prompt after a delay
     setTimeout(() => {
         deferredPrompt.prompt(); // Show the install prompt
         deferredPrompt.userChoice.then((choiceResult) => {
-            // Handle the user's response
-            if (choiceResult.outcome === "accepted") {
-                console.log("User accepted the install prompt");
-                } else {
+            if (choiceResult.outcome === "dismissed") {
                 console.log("User dismissed the install prompt");
+                localStorage.setItem("pwa-dismissed", "true"); // Stop showing the prompt
+            } else {
+                console.log("User accepted the install prompt");
             }
             deferredPrompt = null; // Reset the deferred prompt
         });
     }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-});               
+});
+
+// Listen for PWA installation to hide the prompt permanently
+window.addEventListener("appinstalled", () => {
+    console.log("PWA installed");
+    localStorage.setItem("pwa-dismissed", "true"); // Stop showing the prompt permanently
+});
 
 
 
@@ -959,6 +967,87 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 
 
+
+
+
+
+
+
+// Create Child Lock Modal Elements
+const pinModal = document.createElement('div');
+pinModal.id = 'pinModal';
+pinModal.className = 'pmodal';
+
+const modalContent = document.createElement('div');
+modalContent.className = 'modal-content';
+modalContent.style.maxWidth = '300px';
+
+const closeBtn = document.createElement('div');
+closeBtn.className = 'close-btn';
+closeBtn.innerHTML = '&times;';
+
+const modalHeader = document.createElement('h3');
+modalHeader.className = 'modal-header';
+modalHeader.textContent = 'Child Lock';
+
+const pinMessage = document.createElement('div');
+pinMessage.id = 'pinMessage';
+pinMessage.className = 'pin-message';
+
+const pinInput = document.createElement('input');
+pinInput.type = 'number';
+pinInput.id = 'pinInput';
+pinInput.className = 'pin-input';
+pinInput.placeholder = 'Enter 5-digit PIN';
+pinInput.maxLength = 5;
+pinInput.inputMode = 'numeric';
+
+// First Button Container
+const buttonContainer = document.createElement('div');
+buttonContainer.className = 'button-container';
+
+const confirmBtn = document.createElement('button');
+confirmBtn.id = 'confirmPin';
+confirmBtn.className = 'confirm-btn';
+confirmBtn.textContent = 'Confirm';
+
+const cancelBtn = document.createElement('button');
+cancelBtn.id = 'cancelPin';
+cancelBtn.className = 'cancel-btn';
+cancelBtn.textContent = 'Cancel';
+
+// Second Button Container (Restart)
+const restartContainer = document.createElement('div');
+restartContainer.className = 'button-container restart-container';
+
+const restartBtn = document.createElement('button');
+restartBtn.id = 'restartPin';
+restartBtn.className = 'restart-btn';
+
+const restartIcon = document.createElement('img');
+restartIcon.src = 'icons/startover.svg';
+restartIcon.alt = 'Restart';
+restartIcon.className = 'icon invert-icon';
+
+restartBtn.appendChild(restartIcon);
+restartBtn.appendChild(document.createTextNode(' Start Again'));
+
+// Assemble elements
+buttonContainer.appendChild(confirmBtn);
+buttonContainer.appendChild(cancelBtn);
+restartContainer.appendChild(restartBtn);
+
+modalContent.appendChild(closeBtn);
+modalContent.appendChild(modalHeader);
+modalContent.appendChild(pinMessage);
+modalContent.appendChild(pinInput);
+modalContent.appendChild(buttonContainer);
+modalContent.appendChild(restartContainer);
+
+pinModal.appendChild(modalContent);
+
+// Add modal to DOM
+document.body.appendChild(pinModal);
 
 
 
@@ -983,9 +1072,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeButton) closeButton.addEventListener('click', () => modal.style.display = 'none');
     if (cancelButton) cancelButton.addEventListener('click', () => modal.style.display = 'none');
     
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) modal.style.display = 'none';
-    });
+
 });
 
 document.getElementById('childLockButton').addEventListener('click', toggleChildLock);
