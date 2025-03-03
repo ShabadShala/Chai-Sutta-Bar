@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        
+<meta name="apple-mobile-web-app-capable" content="yes">
+
         <meta charset="UTF-8">        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
         
@@ -53,17 +54,37 @@
             font-size: clamp(3px, 1vw, 3.5px);
             }        
             
-            .noscript-warning {
-            background-color: red;
-            color: white;
-            padding: 15px;
-            font-size: 18px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 9999;
-            }
+.noscript-warning {
+    background-color: red;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;  /* Ensure it starts from the very left */
+    right: 0; /* Ensure it fully spans to the right */
+    width: 100%; /* Use full width */
+    z-index: 9999;
+    margin: 0; /* Remove any margins */
+    box-sizing: border-box; /* Prevent padding from increasing width */
+}
+
+
+.noscript-warning button {
+    background: transparent; /* Makes button clear */
+    color: white;
+    margin-top: 15px;
+    padding: 8px 15px;
+    border: 2px solid white; /* Adds a visible border */
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.noscript-warning button:hover {
+    background: rgba(255, 255, 255, 0.2); /* Adds slight transparency effect on hover */
+}
+
             
             /* /* General Styles */
             body {
@@ -1809,35 +1830,8 @@
             
             
             
-            
-            .restart-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px; /* Adds space between rows */
-}
 
-.restart-btn {
-    background-color: #ff6666;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 4px;
-    
-    display: flex; /* Align icon and text properly */
-    align-items: center; /* Centers vertically */
-    gap: 8px; /* Space between icon and text */
-}
 
-.restart-btn .icon {
-    width: 16px; /* Adjust icon size */
-    height: 16px;
-}
-
-.restart-btn:hover {
-    background-color: #ff4d4d;
-}
 
         </style>
         <link rel="stylesheet" href="ham.css">
@@ -1846,11 +1840,15 @@
         <div class="rectangle"></div>
         
         <!-- This message will ONLY show if JavaScript is disabled -->
-        <noscript>
-            <div class="noscript-warning">
-                <p>JavaScript is disabled in your browser. Please enable it to open this web-app.</p>
-            </div>
-        </noscript>
+<noscript>
+    <div class="noscript-warning">
+        <p>JavaScript is disabled in your browser. Please enable it to open the web-app.</p>
+        <form>
+            <button type="submit">Retry</button>
+        </form>
+    </div>
+</noscript>
+
         
         
         
@@ -2056,6 +2054,83 @@
     
     
     <script>
+    
+    
+    
+    
+    
+    // Add to existing code
+let isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+
+// Save state to localStorage
+function saveAppState() {
+  const state = {
+    scrapItems,
+    offerCart,
+    scrollPosition: window.scrollY,
+    lastActive: Date.now()
+  };
+  localStorage.setItem('pwaState', JSON.stringify(state));
+}
+
+// Restore state from localStorage
+function restoreAppState() {
+  const saved = localStorage.getItem('pwaState');
+  if (saved) {
+    const state = JSON.parse(saved);
+    scrapItems = state.scrapItems || [];
+    offerCart = state.offerCart || [];
+    
+    // Restore UI state
+    updateScrapListDisplay();
+    updateCartDisplay();
+    window.scrollTo(0, state.scrollPosition);
+    
+    // Clear state after restoration
+    localStorage.removeItem('pwaState');
+  }
+}
+
+// Save state on these events
+['pagehide', 'blur', 'visibilitychange'].forEach(event => {
+  window.addEventListener(event, saveAppState);
+});
+
+// Restore state when app is launched from home screen
+if (isStandalone && window.performance.navigation.type === 0) {
+  restoreAppState();
+}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -3170,6 +3245,7 @@
     updateScrapButtonStatus();
     updateScrapCounter();
     updateOfferAddButtons();
+    saveAppState();
     
     // New: Remove dependent offers when scrap is empty
     if (scrapItems.length === 0) {
@@ -3945,6 +4021,8 @@
     const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
     totalOffers.textContent = `Total Offers: ${totalItems}`;
     toggleBtn.textContent = `Offer Cart (${totalItems})`;
+    
+     saveAppState(); // Add this line
     }
     
     
@@ -4287,7 +4365,7 @@
         </div>
 <div class="button-container restart-container">
     <button id="restartPin" class="restart-btn">
-        <img src="icons/startover.svg" alt="Restart" class="icon"> Start Again
+        <img src="icons/startover.svg" alt="Restart" class="icon invert-icon"> Start Again
     </button>
 </div>
 
