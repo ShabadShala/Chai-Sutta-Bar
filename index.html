@@ -4334,6 +4334,70 @@ if (isStandalone && window.performance.navigation.type === 0) {
     
     
     
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js').then(reg => {
+        setInterval(() => {
+            reg.update().then(() => {
+                if (reg.waiting) {
+                    console.log("New update found!");
+                    showUpdateNotification(reg);
+                }
+            });
+        }, 60 * 60 * 1000); // Check every 1 minute
+    });
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        console.log("New service worker activated! Reloading...");
+        window.location.reload();
+    });
+}
+
+function showUpdateNotification(reg) {
+    let updateDiv = document.createElement("div");
+    updateDiv.innerHTML = `
+        <div style="position: fixed; bottom: 10px; left: 10px; background: yellow; padding: 10px; border-radius: 5px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2);">
+            🔄 A new version is available. <button onclick="refreshApp()">Refresh</button>
+        </div>`;
+        document.body.appendChild(updateDiv);
+
+    window.refreshApp = function () {
+        reg.waiting.postMessage({ action: "skipWaiting" });
+    };
+}
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     </script>        
     <script src="app.js"></script> <!-- PWA -->                
