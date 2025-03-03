@@ -1,12 +1,8 @@
 {
   "name": "Chai Sutta Bar - Bagha Purana",
   "short_name": "CSB-BPA",
-  "start_url": "/?launcher=true", // Updated to support state restoration
-  "scope": "/",
+  "start_url": "https://shabadshala.github.io/Chai-Sutta-Bar/",
   "display": "standalone",
-  "background_color": "#212121", // Match your app's background color
-  "theme_color": "#fae68e", // Match your app's theme color
-  "description": "Biggest chai chain in India",
   "icons": [
     {
       "src": "icon-192.png",
@@ -22,25 +18,6 @@
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
-    }
-  ],
-  "related_applications": [],
-  "prefer_related_applications": false,
-  "orientation": "portrait", // Lock orientation for better UX
-  "categories": ["food", "restaurant", "chai"],
-  "screenshots": [],
-  "shortcuts": [
-    {
-      "name": "Order Now",
-      "short_name": "Order",
-      "description": "Place your order quickly",
-      "url": "/?shortcut=order"
-    },
-    {
-      "name": "Offers",
-      "short_name": "Offers",
-      "description": "Check current offers",
-      "url": "/?shortcut=offers"
     }
   ]
 }

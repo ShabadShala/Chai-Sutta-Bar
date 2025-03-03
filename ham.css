@@ -698,7 +698,7 @@
 .modal {
     display: none;
 }
-    
+
 
 /* Reduce gap between inner items' text and left-side border */
 .feature-list li {
@@ -847,53 +847,53 @@
 
 
 
-      
-            /* Child Lock Style */
-            .pin-input {
-            width: 100%;
-            padding: 1.5rem;
-            font-size: 5rem;
-            margin: 2rem 0;
-            text-align: center;
-            border: 2px solid #fae68e;
-            border-radius: 1rem;
-            }
-            
-            .pin-message {
-            font-size: 4rem;
-            color: #ff4444;
-            text-align: center;
-            min-height: 6rem;
-            margin: 1rem 0;
-            }
-            
-            .confirm-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1.5rem 3rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 4rem;
-            cursor: pointer;
-            width: 100%;
-            }
-            
-            .child-locked {
-            opacity: 0.5;
-            pointer-events: none;
-            position: relative;
-            }
-            
-            .child-locked::after {
-            content: "🔒";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 8rem;
-            z-index: 1000;
-            }
-            
+
+/* Child Lock Style */
+.pin-input {
+    width: 100%;
+    padding: 1.5rem;
+    font-size: 5rem;
+    margin: 2rem 0;
+    text-align: center;
+    border: 2px solid #fae68e;
+    border-radius: 1rem;
+}
+
+.pin-message {
+    font-size: 6rem;
+    color: #ff4444;
+    text-align: center;
+    min-height: 5rem;
+    margin: 1rem 0;
+}
+
+.confirm-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1.5rem 3rem;
+    border: none;
+   border-radius: 1rem;
+    font-size: 4rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.child-locked {
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+}
+
+.child-locked::after {
+    content: "🔒";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8rem;
+    z-index: 1000;
+}
+
 .pmodal { /* Changed from .modal */
     position: fixed;
     top: 0;
@@ -906,47 +906,77 @@
     align-items: center;
     z-index: 1050;
 }
-            
-            #pinModal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5); /* Full-screen overlay */
-            display: none; /* Hidden by default */
-            align-items: center;
-            justify-content: center;
-            z-index: 1050;
-            }
-            
-            #pinModal .modal-content {
-            background: white;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            width: 300px;
-            text-align: center;
-            }
-            
-            
-            .cancel-btn {
-            background-color: #ff4444; /* Red color */
-            color: white;
-            padding: 1.5rem 3rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 4rem;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 1rem;
-            }
-            
-            
-            #confirmPin:disabled {
-            background-color: gray;
-            cursor: not-allowed;
-            opacity: 0.6;
-            }
-            
-            
+
+#pinModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Full-screen overlay */
+    display: none; /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+
+#pinModal .modal-content {
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+}
+
+
+.cancel-btn {
+    background-color: #ff4444; /* Red color */
+    color: white;
+    padding: 1.5rem 3rem;
+    border: none;
+    border-radius: 1rem;
+    font-size: 4rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+
+#confirmPin:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+
+.restart-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Adds space between rows */
+}
+
+.restart-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+        font-size: 4rem;
+    cursor: pointer;
+    border-radius: 1rem;
+    
+    display: flex; /* Align icon and text properly */
+    align-items: center; /* Centers vertically */
+    gap: 3rem; /* Adjust spacing between icon and text */
+}
+
+.restart-btn .icon {
+    width: 12px; /* Adjust icon size */
+    height: 12px;
+    display: inline-block; /* Ensure it aligns properly */
+    vertical-align: middle; /* Helps with alignment */
+}
+
+.restart-btn:hover {
+    background-color: darkgreen; /* Slightly darker green on hover */
+}
