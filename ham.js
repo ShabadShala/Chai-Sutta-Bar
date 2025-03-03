@@ -92,8 +92,8 @@
         App Features
         </div>
         
-       <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
-
+        <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
+        
         
         <!-- Add this inside .scrollable-content div in hsidebar -->
         <div class="hsidebar-option" id="childLockButton">
@@ -102,10 +102,10 @@
         </div>
         
         <!-- Add Cheat Toggle Button Here -->
-<div class="hsidebar-option" id="cheatToggleButton">
-<img src="icons/word.svg" alt="Word Search" class="menu-icon invert-icon">
-<span>Item Word Search: Inactive</span>
-</div>
+        <div class="hsidebar-option" id="cheatToggleButton">
+        <img src="icons/word.svg" alt="Word Search" class="menu-icon invert-icon">
+        <span>Item Word Search: Inactive</span>
+        </div>
         
         </div>
         
@@ -114,818 +114,818 @@
         <!-- Footer -->
         <div class="footer-text" id="footer-info">
         <div class="footer-content">
-    <img src="icon-192.png" alt="CSB Logo" class="footer-logo">
-    <div>
-    Version 1.20.3 x64<br>Developed by ShabadShala
-    </div>
-    </div>
-    </div>
-    </div>`;
-    
-    hsidebarContainer.appendChild(hsidebar);
-    if (!document.body.contains(hsidebarContainer)) {
-    document.body.appendChild(hsidebarContainer);
-    }
-    
-    
-    
-    // sidebar-close-cross    
-    hsidebar.querySelector('#close-sidebar').addEventListener('click', () => toggleSidebar(false));
-    
-    // sidebar-close-outside
-    document.addEventListener('click', (event) => {
-    if (!hsidebar.contains(event.target) && !hamburgerButton.contains(event.target) && hsidebar.classList.contains('open')) {
-    setTimeout(() => toggleSidebar(false), 10);
-    }
-    });
-    
-    
-    // sidebar-close-Esc
-    document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-    toggleSidebar(true);
-    }
-    });
-    
-    // sidebar-close-Swipe Left to Close Sidebar (Mobile Gesture)
-    let startX, startY;
-    hsidebar.addEventListener('touchstart', (e) => {
-    const touchStart = e.touches[0];
-    startX = touchStart.clientX;
-    startY = touchStart.clientY;
-    });
-    
-    hsidebar.addEventListener('touchend', (e) => {
-    const touchEnd = e.changedTouches[0];
-    const deltaX = touchEnd.clientX - startX;
-    const deltaY = touchEnd.clientY - startY;
-    
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 30 && deltaX < 0) {
-    toggleSidebar(false);
-    }
-    });
-    
-    // sidebar-close-Back button on touch    
-    window.addEventListener("popstate", function () {
-    if (hsidebar.classList.contains("open")) {
-    toggleSidebar(false);
-    if (history.state && history.state.sidebarOpen) {
-    history.back();
-    } else {
-    history.replaceState(null, "", location.href);
-    }
-    }
-    });
-    
-    // Ensure a new history state is added when the sidebar is opened (For back button)
-    // Open-Close Sidebar
-    function toggleSidebar(forceClose = false) {
-    const sidebar = document.getElementById('hsidebar');
-    if (!sidebar) return;
-    const isOpen = sidebar.classList.contains('open');
-    
-    if (isOpen || forceClose) {
-    sidebar.classList.remove('open');
-    hideOverlay();
-    if (history.state && history.state.sidebarOpen) {
-    history.back(); // Properly navigate back if sidebar was opened
-    } else {
-    history.replaceState(null, "", location.href);
-    }
-    } else {
-    sidebar.classList.add('open');
-    showOverlay(0.9);
-    history.pushState({ sidebarOpen: true }, "", location.href);
-    }
-    }
-    
-    
-    // Update event listeners:
-    hamburgerButton.addEventListener('click', (e) => {
-    e.stopPropagation(); // Prevent body click event from closing instantly
-    toggleSidebar();
-    });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    function showOverlay(opacity = 0.9) {
-    const hoverlay = document.getElementById('hsidebar-overlay') || createOverlay();
-    hoverlay.style.display = 'block';
-    hoverlay.style.opacity = opacity;
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    }
-    
-    function hideOverlay() {
-    const hoverlay = document.getElementById('hsidebar-overlay');
-    if (hoverlay) {
-    hoverlay.style.display = 'none';
-    }
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-    }
-    
-    function createOverlay() {
-    const hoverlay = document.createElement('div');
-    hoverlay.id = 'hsidebar-overlay';
-    document.body.appendChild(hoverlay);
-    return hoverlay;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // opening modals inside the sidebar
-    function openModal(modalId, keepSidebar = false) {
-    document.getElementById(modalId).style.display = 'block';
-    showOverlay(0.9);
-    toggleSidebar(keepSidebar);
-    }
-    
-    // opening modals separately
-    function openModalStandalone(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-    modal.style.display = 'flex'; // Use flex to center the modal
-    modal.style.top = '0'; // Reset top position
-    modal.style.left = '0'; // Reset left position
-    showOverlay(0.9); // Show the overlay
-    
-    }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    function setupModalTriggers(modalId) {
-    const modal = document.getElementById(modalId);
-    if (!modal) return;
-    
-    function closeModal() {
-    modal.style.display = "none";
-    hideOverlay();
-    }
-    
-    // 1️⃣ Close on clicking the close button (X)
-    modal.querySelector(".close-btn")?.addEventListener("click", closeModal);
-    
-    // 2️⃣ Close on pressing the Escape key
-    document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.style.display != "none") closeModal();
-    });
-    
-    // 3️⃣ Close on clicking outside the modal
-    modal.addEventListener("click", (e) => {
-    if (e.target === modal && modal.style.display != "none") { // Ensures it only closes when clicking the backdrop
-    closeModal();
-    }
-    });            
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // Install App
-    const installAppButton = document.getElementById('install-app');
-    if (installAppButton) {
-    installAppButton.addEventListener('click', () => {
-    if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-    console.log(choiceResult.outcome === "accepted" ? "User installed the app" : "User dismissed the install prompt");
-    deferredPrompt = null;
-    });
-    } else {
-    alert("App installation is not available. Possible reasons may be:\n- App is already installed\n- You're trying this option on Desktop.");
-    
-    }
-    });
-    }
-    
-    
-    
-    // Disable pwa buton is installed
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-    const installOption = document.getElementById('install-app');
-    if (installOption) {
-    installOption.classList.add('disabled-option');
-    installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
-    }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    const shareModal = document.createElement('div');
-    shareModal.id = 'share-modal';
-    shareModal.className = 'modal';
-    shareModal.innerHTML = `
-    <div class="modal-content">
-    <div class="close-btn">&times;</div>
-    
-    <div class="qrcode-container">
-    <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
-    </div>
-    <div class="modal-buttons">
-    <button id="share-qr-code">
-    <img src="icons/share.svg" alt="Code" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-    Code
-    </button>
-    <button id="save-qr-code">
-    <img src="icons/save.svg" alt="Save" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-    Save
-    </button>
-    <button id="print-qr-code">
-    <img src="icons/print.svg" alt="Print" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-    Print
-    </button>
-    <button id="share-link">
-    <img src="icons/share.svg" alt="Link" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-    Link
-    </button>
-    </div>
-    </div>`;
-    
-    document.body.appendChild(shareModal);
-    
-    
-    
-    
-    document.body.addEventListener('click', (event) => {
-    if (event.target.closest('#share-app')) {
-    toggleSidebar(false); // Close the sidebar
-    openModalStandalone('share-modal'); // Open the share modal
-    }
-    });
-    
-    setupModalTriggers('share-modal'); 
-    
-    
-    
-    
-    
-    
-    // Share link
-    document.getElementById('share-link').addEventListener('click', async () => {
-    const text = 'Scan this QR code to open and install CSB-BPA app.';
-    const url = 'https://shabadshala.github.io/Chai-Sutta-Bar/';
-    
-    // Copy text manually
-    try {
-    await navigator.clipboard.writeText(`${text}`);
-    console.log('Text copied to clipboard.');
-    } catch (err) {
-    console.log('Failed to copy text:', err);
-    }
-    
-    // Proceed with sharing
-    navigator.share({
-    title: 'Share CSB-BPA Link',
-    url: url, // Only the URL is passed
-    }).catch(error => console.log('Error sharing link:', error));
-    });
-    
-    
-    
-    
-    //Save QR code image to local storage
-    document.getElementById('save-qr-code').addEventListener('click', async () => {
-    try {
-    const imgElement = document.getElementById('qr-code-img');
-    if (!imgElement) throw new Error('QR Code image element not found');
-    
-    let blob;
-    if (imgElement.src.startsWith('data:')) {
-    // If the image is already a data URL, convert it to a blob
-    blob = dataURLtoBlob(imgElement.src);
-    } else {
-    // Fetch the image from the file path
-    const response = await fetch(imgElement.src);
-    if (!response.ok) throw new Error('Failed to fetch QR code');
-    blob = await response.blob();
-    }
-    
-    // Create a URL for the blob
-    const url = URL.createObjectURL(blob);
-    
-    // Create a temporary anchor element to trigger the download
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
-    document.body.appendChild(a);
-    a.click(); // Trigger the download
-    document.body.removeChild(a); // Clean up
-    URL.revokeObjectURL(url); // Release the object URL
-    
-    console.log('QR code saved successfully');
-    } catch (error) {
-    console.error('Save failed:', error);
-    alert(`Save failed: ${error.message}`);
-    }
-    });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    document.addEventListener("DOMContentLoaded", function () {
-    // Function to share the QR Code
-    function shareQRCode() {
-    const qrImg = document.getElementById("qr-code-img");
-    if (!qrImg) {
-    alert("QR Code not found!");
-    return;
-    }
-    
-    // Convert QR code image to a Blob URL
-    fetch(qrImg.src)
-    .then(response => response.blob())
-    .then(blob => {
-    const file = new File([blob], "qrcode.png", { type: blob.type });
-    
-    if (navigator.share) {
-    navigator.share({
-    title: "Scan this QR Code",
-    text: "Scan this QR code to access the app.",
-    files: [file],
-    })
-    .then(() => console.log("Successfully shared"))
-    .catch(err => console.error("Error sharing:", err));
-    } else {
-    alert("Web Share API not supported. Please download and share manually.");
-    }
-    })
-    .catch(err => console.error("Error fetching QR Code:", err));
-    }
-    
-    // Function to print the QR Code
-    function printQRCode() {
-    const qrImg = document.getElementById("qr-code-img");
-    if (!qrImg) {
-    alert("QR Code not found!");
-    return;
-    }
-    
-    const printWindow = window.open("", "_blank");
-    
-    printWindow.document.write(`
-    <html>
-    <head>
-    <title>Print QR Code</title>
-    <style>
-    body { text-align: center; padding: 20px; }
-    img { max-width: 100%; height: auto; }
-    </style>
-    </head>
-    <body>
-    
-    <img src="${qrImg.src}" alt="QR Code">
-    
-    <script>
-    window.onload = function() { window.print(); };
-    </script>
-    
-    </body>
-    </html>
-    `);
-    
-    printWindow.document.close();
-    }
-    
-    
-    
-    // Attach event listeners
-    document.getElementById("share-qr-code")?.addEventListener("click", shareQRCode);
-    document.getElementById("print-qr-code")?.addEventListener("click", printQRCode);
-    });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // FeaturesModal
-    const featuresModal = document.createElement('div');
-    featuresModal.id = 'features-modal';
-    featuresModal.className = 'modal';
-    featuresModal.innerHTML = `
-    <div class="modal-content">
-    <div class="close-btn">&times;</div>
-    <h3 class="modal-header">App Features</h3>
-    <div id="features" class="features-container"></div>
-    <div class="modal-footer">
-    <button class="expand-all-btn" title="Expand All">
-    <img src="icons/expand-all.svg" alt="Expand">
-    </button>
-    <button class="collapse-all-btn" title="Collapse All">
-    <img src="icons/collapse-all.svg" alt="Collapse">
-    </button>
-    <button class="copy-btn" title="Copy Features">
-    <img src="icons/copy.svg" alt="Copy">
-    </button>
-    </div>
-    </div>`;
-    document.body.appendChild(featuresModal);
-    setupModalTriggers('features-modal');
-    
-    // Add event listener for the menu option
-    document.getElementById('app-features').addEventListener('click', () => {
-    toggleSidebar(false);
-    openModalStandalone('features-modal');
-    loadFeatures();
-    });
-    
-    // Updated data processing functions
-    
-    async function loadFeatures() {
-    const container = document.getElementById('features');
-    
-    // Disable footer buttons initially
-    document.querySelector('.expand-all-btn').disabled = true;
-    document.querySelector('.collapse-all-btn').disabled = true;
-    document.querySelector('.copy-btn').disabled = true;
-    
-    // Add loading spinner
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.id = 'loading-animation';
-    loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
-    container.innerHTML = '';
-    container.appendChild(loadingIndicator);
-    
-    try {
-    const baseUrl = scriptUrl;
-    const requestUrl = `${baseUrl}?sheet=features`;
-    
-    const response = await fetch(requestUrl);
-    const data = await response.json();
-    
-    if (Array.isArray(data) && data.length > 0) {
-    const groupedData = {};
-    
-    data.forEach(item => {
-    const keys = Object.keys(item);
-    const featureKey = keys[0]; // 1st column
-    const subFeatureKey = keys[1]; // 2nd column
-    const thirdColKey = keys[2]; // 3rd column (info text)
-    const fourthColKey = keys[3]; // 4th column (existing logic)
-    
-    const feature = item[featureKey]?.trim();
-    const subFeature = item[subFeatureKey]?.trim();
-    const thirdColValue = item[thirdColKey]?.trim() || '';
-    const fourthColValue = item[fourthColKey]?.trim() || '';
-    
-    if (feature) {
-    if (!groupedData[feature]) {
-    groupedData[feature] = {
-    fourthColValue: '',
-    thirdColValue: '',
-    subfeatures: {}
-    };
-    }
-    
-    if (subFeature) {
-    groupedData[feature].subfeatures[subFeature] = {
-    name: subFeature,
-    fourthColValue: fourthColValue,
-    thirdColValue: thirdColValue,
-    children: {}
-    };
-    } else {
-    groupedData[feature].fourthColValue = fourthColValue;
-    groupedData[feature].thirdColValue = thirdColValue;
-    }
-    }
-    });
-    
-    const transformedData = Object.entries(groupedData).map(([category, data]) => ({
-    name: category,
-    fourthColValue: data.fourthColValue,
-    thirdColValue: data.thirdColValue,
-    children: Object.values(data.subfeatures).map(sub => ({
-    name: sub.name,
-    fourthColValue: sub.fourthColValue,
-    thirdColValue: sub.thirdColValue,
-    children: sub.children
-    }))
-    }));
-    
-    container.innerHTML = buildList(transformedData);
-    addToggleListeners();
-    addInfoButtonListeners();
-    
-    // Enable footer buttons
-    document.querySelector('.expand-all-btn').disabled = false;
-    document.querySelector('.collapse-all-btn').disabled = true;
-    document.querySelector('.copy-btn').disabled = false;
-    } else {
-    container.innerHTML = '⚠ Features list not available.';
-    }
-    } catch (error) {
-    console.error('Error loading features:', error);
-    container.innerHTML = '❌ Failed to load features';
-    } finally {
-    const loadingElem = document.getElementById('loading-animation');
-    if (loadingElem) loadingElem.remove();
-    }
-    
-    // Updated buildList function
-    function buildList(items, level = 0) {
-    if (!items) return '';
-    return `<ul class="feature-list level-${level}">${items.map(item => {
-    const hasChildren = item.children && item.children.length > 0;
-    const indent = level * 10;
-    
-    
-    // Determine strikethrough
-    let shouldStrike = false;
-    if (level === 0) { // Top-level feature
-    shouldStrike = (item.fourthColValue === '' && !hasChildren);
-    } else { // Subfeature
-    shouldStrike = (item.fourthColValue === '');
-    }
-    
-    const strikeClass = shouldStrike ? 'strikethrough' : '';
-    
-    return `
-    <li style="padding-left: ${indent}px;">
-    <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
-    <div class="feature-content">
-    <span class="feature-name ${strikeClass}">${item.name}</span>
-    ${item.thirdColValue ? 
-    `<button class="info-btn" data-info="${item.thirdColValue.replace(/"/g, '&quot;')}">i</button>` : ''}
-    </div>
-    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
-    </div>
-    ${hasChildren ? `
-    <div class="sub-items-container">
-    ${buildList(item.children, level + 1)}
-    </div>
-    ` : ''}
-    </li>`;
-    }).join('')}</ul>`;
-    }
-    
-    
-    }
-    
-    
-    // Add info button handlers
-    function addInfoButtonListeners() {
-    document.querySelectorAll('.info-btn').forEach(button => {
-    button.addEventListener('click', function (e) {
-    e.stopPropagation();
-    
-    // Remove any existing tooltips before showing a new one
-    document.querySelectorAll('.info-tooltip').forEach(tip => tip.remove());
-    
-    // Create new tooltip
-    const tooltip = document.createElement('div');
-    tooltip.className = 'info-tooltip';
-    tooltip.textContent = this.dataset.info;
-    
-    // Position tooltip
-    const rect = this.getBoundingClientRect();
-    tooltip.style.left = `${rect.left}px`;
-    tooltip.style.top = `${rect.bottom + 4}px`;
-    
-    document.body.appendChild(tooltip);
-    
-    // Function to close tooltip
-    function closeTooltip(event) {
-    tooltip.remove();
-    document.removeEventListener('click', closeTooltip);
-    window.removeEventListener('scroll', closeTooltip, true);
-    window.removeEventListener('touchmove', closeTooltip, true);
-    }
-    
-    // ✅ Close on outside click
-    document.addEventListener('click', closeTooltip);
-    
-    // ✅ Close on scroll (Desktop & Touch Devices)
-    window.addEventListener('scroll', closeTooltip, true);
-    window.addEventListener('touchmove', closeTooltip, true); // 🔥 Ensures it works on touch devices
-    });
-    });
-    }
-    
-    
-    
-    
-    
-    // Keep the rest of your existing functions unchanged (buildList, addToggleListeners, etc.)
-    
-    function transformGoogleData(features) {
-    return Object.keys(features).map(category => ({
-    name: category,
-    children: features[category].map(feature => ({
-    name: feature,
-    children: []
-    }))
-    }));
-    }
-    
-    
-    
-    function addToggleListeners() {
-    document.querySelectorAll('.toggle.has-children').forEach(toggle => {
-    toggle.addEventListener('click', function() {
-    const icon = this.querySelector('.toggle-icon');
-    const container = this.parentElement.querySelector('.sub-items-container');
-    
-    // Collapse all other open items
-    document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
-    if (otherContainer !== container) {
-    otherContainer.classList.remove('open');
-    const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
-    if (otherIcon) {
-    otherIcon.classList.remove('open');
-    }
-    }
-    });
-    
-    // Toggle current item
-    container.classList.toggle('open');
-    icon.classList.toggle('open');
-    
-    updateButtonsState();
-    });
-    });
-    }
-    
-    // New utility functions
-    function expandAll() {
-    document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
-    document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
-    updateButtonsState();
-    }
-    
-    function collapseAll() {
-    document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
-    document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
-    updateButtonsState();
-    }
-    
-    function copyToClipboard() {
-    const lines = [];
-    const htmlLines = [];
-    
-    document.querySelectorAll('.feature-name').forEach(feature => {
-    const level = parseInt(feature.closest('.toggle').dataset.level);
-    const prefix = '-'.repeat(level);
-    
-    // Detect if the feature has strikethrough (from CSS)
-    const isStrikethrough = window.getComputedStyle(feature).textDecoration.includes("line-through");
-    
-    // Plain text: Unicode strikethrough
-    let text = feature.textContent.trim();
-    if (isStrikethrough) {
-    text = text.split('').map(char => char + '\u0336').join('');
-    }
-    lines.push(prefix + text);
-    
-    // HTML format: Wrap with <s> for strikethrough
-    htmlLines.push(isStrikethrough ? `${prefix}<s>${feature.textContent.trim()}</s>` : prefix + feature.textContent.trim());
-    });
-    
-    // Create an HTML format for the clipboard
-    const htmlContent = `<html><body>${htmlLines.join('<br>')}</body></html>`;
-    const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-    const textBlob = new Blob([lines.join('\n')], { type: 'text/plain' });
-    
-    // Use Clipboard API to copy both plain text & HTML
-    navigator.clipboard.write([
-    new ClipboardItem({
-    'text/html': htmlBlob,  // Rich text (MS Word, Gmail, etc.)
-    'text/plain': textBlob   // Unicode strikethrough for Notepad, etc.
-    })
-    ]).catch(err => console.error("Clipboard copy failed:", err));
-    
-    // Add animation effect
-    const copyBtn = document.querySelector('.copy-btn');
-    copyBtn.classList.add('clicked');
-    setTimeout(() => copyBtn.classList.remove('clicked'), 200);
-    }
-    
-    
-    
-    function updateButtonsState() {
-    const expandAllBtn = document.querySelector('.expand-all-btn');
-    const collapseAllBtn = document.querySelector('.collapse-all-btn');
-    
-    const allContainers = document.querySelectorAll('.sub-items-container');
-    const expandedContainers = document.querySelectorAll('.sub-items-container.open');
-    
-    // Disable "Expand All" if all items are already expanded
-    expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
-    
-    // Disable "Collapse All" if all items are already collapsed
-    collapseAllBtn.disabled = expandedContainers.length === 0;
-    }
-    
-    // Add footer button functionality
-    document.querySelector('.expand-all-btn').addEventListener('click', expandAll);
-    document.querySelector('.collapse-all-btn').addEventListener('click', collapseAll);
-    document.querySelector('.copy-btn').addEventListener('click', copyToClipboard);
-    
-    
-    
-    
+        <img src="icon-192.png" alt="CSB Logo" class="footer-logo">
+        <div>
+        Version 1.20.3 x64<br>Developed by ShabadShala
+        </div>
+        </div>
+        </div>
+        </div>`;
+        
+        hsidebarContainer.appendChild(hsidebar);
+        if (!document.body.contains(hsidebarContainer)) {
+            document.body.appendChild(hsidebarContainer);
+        }
+        
+        
+        
+        // sidebar-close-cross    
+        hsidebar.querySelector('#close-sidebar').addEventListener('click', () => toggleSidebar(false));
+        
+        // sidebar-close-outside
+        document.addEventListener('click', (event) => {
+            if (!hsidebar.contains(event.target) && !hamburgerButton.contains(event.target) && hsidebar.classList.contains('open')) {
+                setTimeout(() => toggleSidebar(false), 10);
+            }
+        });
+        
+        
+        // sidebar-close-Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                toggleSidebar(true);
+            }
+        });
+        
+        // sidebar-close-Swipe Left to Close Sidebar (Mobile Gesture)
+        let startX, startY;
+        hsidebar.addEventListener('touchstart', (e) => {
+            const touchStart = e.touches[0];
+            startX = touchStart.clientX;
+            startY = touchStart.clientY;
+        });
+        
+        hsidebar.addEventListener('touchend', (e) => {
+            const touchEnd = e.changedTouches[0];
+            const deltaX = touchEnd.clientX - startX;
+            const deltaY = touchEnd.clientY - startY;
+            
+            if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 30 && deltaX < 0) {
+                toggleSidebar(false);
+            }
+        });
+        
+        // sidebar-close-Back button on touch    
+        window.addEventListener("popstate", function () {
+            if (hsidebar.classList.contains("open")) {
+                toggleSidebar(false);
+                if (history.state && history.state.sidebarOpen) {
+                    history.back();
+                    } else {
+                    history.replaceState(null, "", location.href);
+                }
+            }
+        });
+        
+        // Ensure a new history state is added when the sidebar is opened (For back button)
+        // Open-Close Sidebar
+        function toggleSidebar(forceClose = false) {
+            const sidebar = document.getElementById('hsidebar');
+            if (!sidebar) return;
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen || forceClose) {
+                sidebar.classList.remove('open');
+                hideOverlay();
+                if (history.state && history.state.sidebarOpen) {
+                    history.back(); // Properly navigate back if sidebar was opened
+                    } else {
+                    history.replaceState(null, "", location.href);
+                }
+                } else {
+                sidebar.classList.add('open');
+                showOverlay(0.9);
+                history.pushState({ sidebarOpen: true }, "", location.href);
+            }
+        }
+        
+        
+        // Update event listeners:
+        hamburgerButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent body click event from closing instantly
+            toggleSidebar();
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function showOverlay(opacity = 0.9) {
+            const hoverlay = document.getElementById('hsidebar-overlay') || createOverlay();
+            hoverlay.style.display = 'block';
+            hoverlay.style.opacity = opacity;
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        }
+        
+        function hideOverlay() {
+            const hoverlay = document.getElementById('hsidebar-overlay');
+            if (hoverlay) {
+                hoverlay.style.display = 'none';
+            }
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        }
+        
+        function createOverlay() {
+            const hoverlay = document.createElement('div');
+            hoverlay.id = 'hsidebar-overlay';
+            document.body.appendChild(hoverlay);
+            return hoverlay;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // opening modals inside the sidebar
+        function openModal(modalId, keepSidebar = false) {
+            document.getElementById(modalId).style.display = 'block';
+            showOverlay(0.9);
+            toggleSidebar(keepSidebar);
+        }
+        
+        // opening modals separately
+        function openModalStandalone(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex'; // Use flex to center the modal
+                modal.style.top = '0'; // Reset top position
+                modal.style.left = '0'; // Reset left position
+                showOverlay(0.9); // Show the overlay
+                
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function setupModalTriggers(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            
+            function closeModal() {
+                modal.style.display = "none";
+                hideOverlay();
+            }
+            
+            // 1️⃣ Close on clicking the close button (X)
+            modal.querySelector(".close-btn")?.addEventListener("click", closeModal);
+            
+            // 2️⃣ Close on pressing the Escape key
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && modal.style.display != "none") closeModal();
+            });
+            
+            // 3️⃣ Close on clicking outside the modal
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal && modal.style.display != "none") { // Ensures it only closes when clicking the backdrop
+                    closeModal();
+                }
+            });            
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Install App
+        const installAppButton = document.getElementById('install-app');
+        if (installAppButton) {
+            installAppButton.addEventListener('click', () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        console.log(choiceResult.outcome === "accepted" ? "User installed the app" : "User dismissed the install prompt");
+                        deferredPrompt = null;
+                    });
+                    } else {
+                    alert("App installation is not available. Possible reasons may be:\n- App is already installed\n- You're trying this option on Desktop.");
+                    
+                }
+            });
+        }
+        
+        
+        
+        // Disable pwa buton is installed
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            const installOption = document.getElementById('install-app');
+            if (installOption) {
+                installOption.classList.add('disabled-option');
+                installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        const shareModal = document.createElement('div');
+        shareModal.id = 'share-modal';
+        shareModal.className = 'modal';
+        shareModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn">&times;</div>
+        
+        <div class="qrcode-container">
+        <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
+        </div>
+        <div class="modal-buttons">
+        <button id="share-qr-code">
+        <img src="icons/share.svg" alt="Code" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Code
+        </button>
+        <button id="save-qr-code">
+        <img src="icons/save.svg" alt="Save" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Save
+        </button>
+        <button id="print-qr-code">
+        <img src="icons/print.svg" alt="Print" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Print
+        </button>
+        <button id="share-link">
+        <img src="icons/share.svg" alt="Link" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Link
+        </button>
+        </div>
+        </div>`;
+        
+        document.body.appendChild(shareModal);
+        
+        
+        
+        
+        document.body.addEventListener('click', (event) => {
+            if (event.target.closest('#share-app')) {
+                toggleSidebar(false); // Close the sidebar
+                openModalStandalone('share-modal'); // Open the share modal
+            }
+        });
+        
+        setupModalTriggers('share-modal'); 
+        
+        
+        
+        
+        
+        
+        // Share link
+        document.getElementById('share-link').addEventListener('click', async () => {
+            const text = 'Scan this QR code to open and install CSB-BPA app.';
+            const url = 'https://shabadshala.github.io/Chai-Sutta-Bar/';
+            
+            // Copy text manually
+            try {
+                await navigator.clipboard.writeText(`${text}`);
+                console.log('Text copied to clipboard.');
+                } catch (err) {
+                console.log('Failed to copy text:', err);
+            }
+            
+            // Proceed with sharing
+            navigator.share({
+                title: 'Share CSB-BPA Link',
+                url: url, // Only the URL is passed
+            }).catch(error => console.log('Error sharing link:', error));
+        });
+        
+        
+        
+        
+        //Save QR code image to local storage
+        document.getElementById('save-qr-code').addEventListener('click', async () => {
+            try {
+                const imgElement = document.getElementById('qr-code-img');
+                if (!imgElement) throw new Error('QR Code image element not found');
+                
+                let blob;
+                if (imgElement.src.startsWith('data:')) {
+                    // If the image is already a data URL, convert it to a blob
+                    blob = dataURLtoBlob(imgElement.src);
+                    } else {
+                    // Fetch the image from the file path
+                    const response = await fetch(imgElement.src);
+                    if (!response.ok) throw new Error('Failed to fetch QR code');
+                    blob = await response.blob();
+                }
+                
+                // Create a URL for the blob
+                const url = URL.createObjectURL(blob);
+                
+                // Create a temporary anchor element to trigger the download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
+                document.body.appendChild(a);
+                a.click(); // Trigger the download
+                document.body.removeChild(a); // Clean up
+                URL.revokeObjectURL(url); // Release the object URL
+                
+                console.log('QR code saved successfully');
+                } catch (error) {
+                console.error('Save failed:', error);
+                alert(`Save failed: ${error.message}`);
+            }
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to share the QR Code
+            function shareQRCode() {
+                const qrImg = document.getElementById("qr-code-img");
+                if (!qrImg) {
+                    alert("QR Code not found!");
+                    return;
+                }
+                
+                // Convert QR code image to a Blob URL
+                fetch(qrImg.src)
+                .then(response => response.blob())
+                .then(blob => {
+                    const file = new File([blob], "qrcode.png", { type: blob.type });
+                    
+                    if (navigator.share) {
+                        navigator.share({
+                            title: "Scan this QR Code",
+                            text: "Scan this QR code to access the app.",
+                            files: [file],
+                        })
+                        .then(() => console.log("Successfully shared"))
+                        .catch(err => console.error("Error sharing:", err));
+                        } else {
+                        alert("Web Share API not supported. Please download and share manually.");
+                    }
+                })
+                .catch(err => console.error("Error fetching QR Code:", err));
+            }
+            
+            // Function to print the QR Code
+            function printQRCode() {
+                const qrImg = document.getElementById("qr-code-img");
+                if (!qrImg) {
+                    alert("QR Code not found!");
+                    return;
+                }
+                
+                const printWindow = window.open("", "_blank");
+                
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                    <title>Print QR Code</title>
+                    <style>
+                    body { text-align: center; padding: 20px; }
+                    img { max-width: 100%; height: auto; }
+                    </style>
+                    </head>
+                    <body>
+                    
+                    <img src="${qrImg.src}" alt="QR Code">
+                    
+                    <script>
+                    window.onload = function() { window.print(); };
+                    </script>
+                    
+                    </body>
+                    </html>
+                `);
+                
+                printWindow.document.close();
+            }
+            
+            
+            
+            // Attach event listeners
+            document.getElementById("share-qr-code")?.addEventListener("click", shareQRCode);
+            document.getElementById("print-qr-code")?.addEventListener("click", printQRCode);
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // FeaturesModal
+        const featuresModal = document.createElement('div');
+        featuresModal.id = 'features-modal';
+        featuresModal.className = 'modal';
+        featuresModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn">&times;</div>
+        <h3 class="modal-header">App Features</h3>
+        <div id="features" class="features-container"></div>
+        <div class="modal-footer">
+        <button class="expand-all-btn" title="Expand All">
+        <img src="icons/expand-all.svg" alt="Expand">
+        </button>
+        <button class="collapse-all-btn" title="Collapse All">
+        <img src="icons/collapse-all.svg" alt="Collapse">
+        </button>
+        <button class="copy-btn" title="Copy Features">
+        <img src="icons/copy.svg" alt="Copy">
+        </button>
+        </div>
+        </div>`;
+        document.body.appendChild(featuresModal);
+        setupModalTriggers('features-modal');
+        
+        // Add event listener for the menu option
+        document.getElementById('app-features').addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('features-modal');
+            loadFeatures();
+        });
+        
+        // Updated data processing functions
+        
+        async function loadFeatures() {
+            const container = document.getElementById('features');
+            
+            // Disable footer buttons initially
+            document.querySelector('.expand-all-btn').disabled = true;
+            document.querySelector('.collapse-all-btn').disabled = true;
+            document.querySelector('.copy-btn').disabled = true;
+            
+            // Add loading spinner
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'loading-animation';
+            loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
+            container.innerHTML = '';
+            container.appendChild(loadingIndicator);
+            
+            try {
+                const baseUrl = scriptUrl;
+                const requestUrl = `${baseUrl}?sheet=features`;
+                
+                const response = await fetch(requestUrl);
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    const groupedData = {};
+                    
+                    data.forEach(item => {
+                        const keys = Object.keys(item);
+                        const featureKey = keys[0]; // 1st column
+                        const subFeatureKey = keys[1]; // 2nd column
+                        const thirdColKey = keys[2]; // 3rd column (info text)
+                        const fourthColKey = keys[3]; // 4th column (existing logic)
+                        
+                        const feature = item[featureKey]?.trim();
+                        const subFeature = item[subFeatureKey]?.trim();
+                        const thirdColValue = item[thirdColKey]?.trim() || '';
+                        const fourthColValue = item[fourthColKey]?.trim() || '';
+                        
+                        if (feature) {
+                            if (!groupedData[feature]) {
+                                groupedData[feature] = {
+                                    fourthColValue: '',
+                                    thirdColValue: '',
+                                    subfeatures: {}
+                                };
+                            }
+                            
+                            if (subFeature) {
+                                groupedData[feature].subfeatures[subFeature] = {
+                                    name: subFeature,
+                                    fourthColValue: fourthColValue,
+                                    thirdColValue: thirdColValue,
+                                    children: {}
+                                };
+                                } else {
+                                groupedData[feature].fourthColValue = fourthColValue;
+                                groupedData[feature].thirdColValue = thirdColValue;
+                            }
+                        }
+                    });
+                    
+                    const transformedData = Object.entries(groupedData).map(([category, data]) => ({
+                        name: category,
+                        fourthColValue: data.fourthColValue,
+                        thirdColValue: data.thirdColValue,
+                        children: Object.values(data.subfeatures).map(sub => ({
+                            name: sub.name,
+                            fourthColValue: sub.fourthColValue,
+                            thirdColValue: sub.thirdColValue,
+                            children: sub.children
+                        }))
+                    }));
+                    
+                    container.innerHTML = buildList(transformedData);
+                    addToggleListeners();
+                    addInfoButtonListeners();
+                    
+                    // Enable footer buttons
+                    document.querySelector('.expand-all-btn').disabled = false;
+                    document.querySelector('.collapse-all-btn').disabled = true;
+                    document.querySelector('.copy-btn').disabled = false;
+                    } else {
+                    container.innerHTML = '⚠ Features list not available.';
+                }
+                } catch (error) {
+                console.error('Error loading features:', error);
+                container.innerHTML = '❌ Failed to load features';
+                } finally {
+                const loadingElem = document.getElementById('loading-animation');
+                if (loadingElem) loadingElem.remove();
+            }
+            
+            // Updated buildList function
+            function buildList(items, level = 0) {
+                if (!items) return '';
+                return `<ul class="feature-list level-${level}">${items.map(item => {
+                    const hasChildren = item.children && item.children.length > 0;
+                    const indent = level * 10;
+                    
+                    
+                    // Determine strikethrough
+                    let shouldStrike = false;
+                    if (level === 0) { // Top-level feature
+                        shouldStrike = (item.fourthColValue === '' && !hasChildren);
+                        } else { // Subfeature
+                        shouldStrike = (item.fourthColValue === '');
+                    }
+                    
+                    const strikeClass = shouldStrike ? 'strikethrough' : '';
+                    
+                    return `
+                    <li style="padding-left: ${indent}px;">
+                    <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
+                    <div class="feature-content">
+                    <span class="feature-name ${strikeClass}">${item.name}</span>
+                    ${item.thirdColValue ? 
+                    `<button class="info-btn" data-info="${item.thirdColValue.replace(/"/g, '&quot;')}">i</button>` : ''}
+                    </div>
+                    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+                    </div>
+                    ${hasChildren ? `
+                        <div class="sub-items-container">
+                        ${buildList(item.children, level + 1)}
+                        </div>
+                    ` : ''}
+                    </li>`;
+                }).join('')}</ul>`;
+            }
+            
+            
+        }
+        
+        
+        // Add info button handlers
+        function addInfoButtonListeners() {
+            document.querySelectorAll('.info-btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    
+                    // Remove any existing tooltips before showing a new one
+                    document.querySelectorAll('.info-tooltip').forEach(tip => tip.remove());
+                    
+                    // Create new tooltip
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'info-tooltip';
+                    tooltip.textContent = this.dataset.info;
+                    
+                    // Position tooltip
+                    const rect = this.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left}px`;
+                    tooltip.style.top = `${rect.bottom + 4}px`;
+                    
+                    document.body.appendChild(tooltip);
+                    
+                    // Function to close tooltip
+                    function closeTooltip(event) {
+                        tooltip.remove();
+                        document.removeEventListener('click', closeTooltip);
+                        window.removeEventListener('scroll', closeTooltip, true);
+                        window.removeEventListener('touchmove', closeTooltip, true);
+                    }
+                    
+                    // ✅ Close on outside click
+                    document.addEventListener('click', closeTooltip);
+                    
+                    // ✅ Close on scroll (Desktop & Touch Devices)
+                    window.addEventListener('scroll', closeTooltip, true);
+                    window.addEventListener('touchmove', closeTooltip, true); // 🔥 Ensures it works on touch devices
+                });
+            });
+        }
+        
+        
+        
+        
+        
+        // Keep the rest of your existing functions unchanged (buildList, addToggleListeners, etc.)
+        
+        function transformGoogleData(features) {
+            return Object.keys(features).map(category => ({
+                name: category,
+                children: features[category].map(feature => ({
+                    name: feature,
+                    children: []
+                }))
+            }));
+        }
+        
+        
+        
+        function addToggleListeners() {
+            document.querySelectorAll('.toggle.has-children').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const icon = this.querySelector('.toggle-icon');
+                    const container = this.parentElement.querySelector('.sub-items-container');
+                    
+                    // Collapse all other open items
+                    document.querySelectorAll('.sub-items-container.open').forEach(otherContainer => {
+                        if (otherContainer !== container) {
+                            otherContainer.classList.remove('open');
+                            const otherIcon = otherContainer.parentElement.querySelector('.toggle-icon.open');
+                            if (otherIcon) {
+                                otherIcon.classList.remove('open');
+                            }
+                        }
+                    });
+                    
+                    // Toggle current item
+                    container.classList.toggle('open');
+                    icon.classList.toggle('open');
+                    
+                    updateButtonsState();
+                });
+            });
+        }
+        
+        // New utility functions
+        function expandAll() {
+            document.querySelectorAll('.sub-items-container').forEach(container => container.classList.add('open'));
+            document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.add('open'));
+            updateButtonsState();
+        }
+        
+        function collapseAll() {
+            document.querySelectorAll('.sub-items-container').forEach(container => container.classList.remove('open'));
+            document.querySelectorAll('.toggle-icon').forEach(icon => icon.classList.remove('open'));
+            updateButtonsState();
+        }
+        
+        function copyToClipboard() {
+            const lines = [];
+            const htmlLines = [];
+            
+            document.querySelectorAll('.feature-name').forEach(feature => {
+                const level = parseInt(feature.closest('.toggle').dataset.level);
+                const prefix = '-'.repeat(level);
+                
+                // Detect if the feature has strikethrough (from CSS)
+                const isStrikethrough = window.getComputedStyle(feature).textDecoration.includes("line-through");
+                
+                // Plain text: Unicode strikethrough
+                let text = feature.textContent.trim();
+                if (isStrikethrough) {
+                    text = text.split('').map(char => char + '\u0336').join('');
+                }
+                lines.push(prefix + text);
+                
+                // HTML format: Wrap with <s> for strikethrough
+                htmlLines.push(isStrikethrough ? `${prefix}<s>${feature.textContent.trim()}</s>` : prefix + feature.textContent.trim());
+            });
+            
+            // Create an HTML format for the clipboard
+            const htmlContent = `<html><body>${htmlLines.join('<br>')}</body></html>`;
+            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+            const textBlob = new Blob([lines.join('\n')], { type: 'text/plain' });
+            
+            // Use Clipboard API to copy both plain text & HTML
+            navigator.clipboard.write([
+                new ClipboardItem({
+                    'text/html': htmlBlob,  // Rich text (MS Word, Gmail, etc.)
+                    'text/plain': textBlob   // Unicode strikethrough for Notepad, etc.
+                })
+            ]).catch(err => console.error("Clipboard copy failed:", err));
+            
+            // Add animation effect
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.classList.add('clicked');
+            setTimeout(() => copyBtn.classList.remove('clicked'), 200);
+        }
+        
+        
+        
+        function updateButtonsState() {
+            const expandAllBtn = document.querySelector('.expand-all-btn');
+            const collapseAllBtn = document.querySelector('.collapse-all-btn');
+            
+            const allContainers = document.querySelectorAll('.sub-items-container');
+            const expandedContainers = document.querySelectorAll('.sub-items-container.open');
+            
+            // Disable "Expand All" if all items are already expanded
+            expandAllBtn.disabled = allContainers.length > 0 && allContainers.length === expandedContainers.length;
+            
+            // Disable "Collapse All" if all items are already collapsed
+            collapseAllBtn.disabled = expandedContainers.length === 0;
+        }
+        
+        // Add footer button functionality
+        document.querySelector('.expand-all-btn').addEventListener('click', expandAll);
+        document.querySelector('.collapse-all-btn').addEventListener('click', collapseAll);
+        document.querySelector('.copy-btn').addEventListener('click', copyToClipboard);
+        
+        
+        
+        
     } //hsidebar
     
     // Call the setup function
     setupHamburgerMenu();
     
-    })(); // IIFE Ends
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //Hide the Save (save-qr-code) button from project
-    document.addEventListener("DOMContentLoaded", function () {
+})(); // IIFE Ends
+
+
+
+
+
+
+
+
+
+
+
+//Hide the Save (save-qr-code) button from project
+document.addEventListener("DOMContentLoaded", function () {
     const saveButton = document.getElementById("save-qr-code");
     if (saveButton) {
-    saveButton.style.display = "none"; // Completely hide the button
+        saveButton.style.display = "none"; // Completely hide the button
     }
-    });
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    let deferredPrompt; // Variable to hold the deferred prompt event
-    
-    // Listen for the beforeinstallprompt event
-    window.addEventListener("beforeinstallprompt", (e) => {
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let deferredPrompt; // Variable to hold the deferred prompt event
+
+// Listen for the beforeinstallprompt event
+window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault(); // Prevent the default prompt from showing automatically
     deferredPrompt = e; // Store the event so we can trigger it later
     
@@ -934,37 +934,37 @@
     
     // Automatically trigger the prompt after a delay
     setTimeout(() => {
-    deferredPrompt.prompt(); // Show the install prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-    // Handle the user's response
-    if (choiceResult.outcome === "accepted") {
-    console.log("User accepted the install prompt");
-    } else {
-    console.log("User dismissed the install prompt");
-    }
-    deferredPrompt = null; // Reset the deferred prompt
-    });
+        deferredPrompt.prompt(); // Show the install prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            // Handle the user's response
+            if (choiceResult.outcome === "accepted") {
+                console.log("User accepted the install prompt");
+                } else {
+                console.log("User dismissed the install prompt");
+            }
+            deferredPrompt = null; // Reset the deferred prompt
+        });
     }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-    });               
-    
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+});               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Child Lock Implementation
 let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
 
@@ -975,11 +975,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     updateChildLockDisplay();
     disableElements();
-
+    
     const modal = document.getElementById('pinModal');
     const closeButton = document.querySelector('#pinModal .close-btn');
     const cancelButton = document.getElementById('cancelPin');
-
+    
     if (closeButton) closeButton.addEventListener('click', () => modal.style.display = 'none');
     if (cancelButton) cancelButton.addEventListener('click', () => modal.style.display = 'none');
     
@@ -999,29 +999,35 @@ function showPinModal(action) {
     const message = document.getElementById('pinMessage');
     const pinInput = document.getElementById('pinInput');
     const confirmBtn = document.getElementById('confirmPin');
-
+     const restartBtn = document.getElementById('restartPin');
+    
+    if (restartBtn) restartBtn.style.display = 'none'; // Hide restart button
+    
     pinInput.value = '';
+    pinInput.disabled = false;
     message.textContent = action === 'enable' ? 'Set 5-digit PIN:' : 'Enter PIN to disable:';
     confirmBtn.disabled = true;
-
+    
     modal.style.display = 'flex';
-
+    
     confirmBtn.replaceWith(confirmBtn.cloneNode(true));
     pinInput.replaceWith(pinInput.cloneNode(true));
-
+    
     const newConfirmBtn = document.getElementById('confirmPin');
     const newPinInput = document.getElementById('pinInput');
-
+    
+    newPinInput.focus();
+    
     if (action === 'enable') {
         newConfirmBtn.onclick = () => handleFirstPinEntry(newPinInput, message, modal);
-    } else {
+        } else {
         newConfirmBtn.onclick = () => handlePinSubmit(action, newPinInput, message, modal);
     }
-
+    
     newPinInput.onkeypress = (e) => {
         if (e.key === 'Enter' && newPinInput.value.length === 5) newConfirmBtn.click();
     };
-
+    
     newPinInput.oninput = () => {
         newPinInput.value = newPinInput.value.replace(/\D/g, '').slice(0, 5);
         newConfirmBtn.disabled = newPinInput.value.length !== 5;
@@ -1037,8 +1043,10 @@ function handleFirstPinEntry(pinInput, message, modal) {
     pinInput.value = '';
     message.textContent = 'Confirm 5-digit PIN:';
     document.getElementById('confirmPin').disabled = true;
-
-    document.getElementById('confirmPin').onclick = () => handlePinSubmit('enable', pinInput, message, modal, firstPin);
+    
+    pinInput.focus();
+    
+    document.getElementById('confirmPin').onclick = () => handleConfirmPinEntry(pinInput, message, modal, firstPin);
 }
 
 function handleConfirmPinEntry(pinInput, message, modal, firstPin) {
@@ -1048,13 +1056,20 @@ function handleConfirmPinEntry(pinInput, message, modal, firstPin) {
         message.textContent = 'Invalid PIN! Must be 5 digits';
         return;
     }
-
+    
     if (secondPin !== firstPin) {
-        message.textContent = 'PINs do not match! Start over.';
-        setTimeout(() => showPinModal('enable'), 1000);
+        message.textContent = 'PINs do not match!';
+        pinInput.disabled = true;
+        document.getElementById('confirmPin').disabled = true;
+
+        // Show Restart Button when PIN mismatch
+        const restartBtn = document.getElementById('restartPin');
+        restartBtn.style.display = 'block';
+        restartBtn.onclick = () => showPinModal('enable');
+
         return;
     }
-
+    
     childLockState = { pin: secondPin, isEnabled: true };
     localStorage.setItem('childLock', JSON.stringify(childLockState));
     
@@ -1070,15 +1085,23 @@ function handlePinSubmit(action, pinInput, message, modal, firstPin = null) {
     
     if (action === 'enable') {
         if (pin !== firstPin) {
-            message.textContent = 'PINs do not match! Starting over...';
-            setTimeout(() => {
-                showPinModal('enable'); // Restart the PIN setup process
-            }, 1000);
+            pinInput.value = 'PINs do not match!';
+            pinInput.disabled = true; // Disable input to prevent further typing
+            document.getElementById('confirmPin').disabled = true;
+            
+            // Create "Start Again" button
+            let restartBtn = document.createElement('button');
+            restartBtn.textContent = "Start Again";
+            restartBtn.onclick = () => showPinModal('enable');
+            
+            message.innerHTML = ''; // Clear existing message
+            message.appendChild(restartBtn);
+            
             return;
         }
         childLockState = { pin: pin, isEnabled: true };
         message.textContent = 'PIN set! Lock enabled';
-    } else {
+        } else {
         if (pin !== childLockState.pin) {
             message.textContent = 'Incorrect PIN!';
             return;
@@ -1094,20 +1117,20 @@ function handlePinSubmit(action, pinInput, message, modal, firstPin = null) {
     setTimeout(() => modal.style.display = 'none', 1000);
 }
 
+
 function updateChildLockDisplay() {
     const btn = document.getElementById('childLockButton');
-    const img = btn.querySelector('img'); // Get the icon image
+    const img = btn.querySelector('img');
     const textSpan = btn.querySelector('span');
-
+    
     if (childLockState.isEnabled) {
-        img.src = "icons/lock.svg"; // Show lock icon when enabled
+        img.src = "icons/lock.svg";
         textSpan.textContent = "Child Lock: Enabled";
-    } else {
-        img.src = "icons/unlock.svg"; // Show unlock icon when disabled
+        } else {
+        img.src = "icons/unlock.svg";
         textSpan.textContent = "Child Lock: Disabled";
     }
 }
-
 
 function disableElements() {
     document.querySelectorAll('.child-lock-restricted').forEach(element => {
@@ -1158,9 +1181,9 @@ function disableElements() {
 
 
 
-      
-        
- // cheat.js - Strict Activation Flow
+
+
+// cheat.js - Strict Activation Flow
 let cheatActive = false;
 let activationListenersAdded = false;
 let touchStartPoints = []; // Track multiple touch points
@@ -1171,24 +1194,24 @@ function getWordUnderPointer(event) {
     
     const element = document.elementFromPoint(x, y);
     if (!element?.classList?.contains('colAB')) return null;
-
+    
     const range = document.caretRangeFromPoint(x, y);
     if (!range) return null;
-
+    
     const textNode = range.startContainer;
     const offset = range.startOffset;
     const text = textNode.textContent || '';
-
+    
     // Find word boundaries
     let start = offset;
     while (start > 0 && !/\s/.test(text[start - 1])) start--;
     
     let end = offset;
     while (end < text.length && !/\s/.test(text[end])) end++;
-
+    
     return text.slice(start, end)
-        .trim()  // First remove whitespace
-        .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
+    .trim()  // First remove whitespace
+    .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
 }
 
 function simulateSearchInput(word) {
@@ -1242,7 +1265,7 @@ document.getElementById('cheatToggleButton')?.addEventListener('click', function
     if (cheatActive) {
         addCheatListeners();
         alert('Item Word Search activated. This may disturb menu browsing.\n\nTo deactivate: Press Ctrl+Shift+C, tap with 4 fingers, or toggle this button again.');
-    } else {
+        } else {
         alert('CHEAT MODE DEACTIVATED');
     }
 });
