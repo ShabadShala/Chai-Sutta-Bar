@@ -484,39 +484,43 @@
 
 
 /* QR Code Styling */
+/* QR Code Styling */
 .qrcode-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    overflow: hidden;
+    height: auto;
+    padding-bottom: 0; /* Remove excess space below */
 }
 
 .qrcode {
     width: 100%;
     max-width: 500px;
-    height: auto; /* Maintains aspect ratio */
-    object-fit: cover;
-    object-position: top;
+    height: auto;
+    object-fit: cover; /* Keeps proper scaling */
+    object-position: top; /* Ensures no top cut */
     border-radius: 8px;
-    clip-path: inset(0 0 20% 0); /* Crops 20% from the bottom */
+    clip-path: inset(0px 0px 20% 0px);
+    display: block;
+    margin-bottom: -25%; /* Pulls the image up slightly */
 }
-
 
 /* Button Section */
 .modal-buttons {
     display: flex;
     justify-content: center;
     gap: 12px;
-    margin-top: -20%;
+    margin-top: 1rem; /* Ensures space between QR code and buttons */
     margin-bottom: 3rem;
     flex-wrap: wrap;
 }
 
 .modal-buttons button {
     flex: 1;
-    padding: 2rem;
+    padding: 1rem;
     border: none;
-    font-size: 5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     max-width: 100px;
     background: #007bff;
@@ -525,6 +529,9 @@
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+
+
 
 .modal-buttons button:hover {
     background: #0056b3;
@@ -709,10 +716,6 @@
 
 #features-modal .close-btn {
     top: 1rem;
-}
-
-.modal {
-    display: none;
 }
 
 
@@ -910,7 +913,7 @@
     z-index: 1000;
 }
 
-.pmodal { /* Changed from .modal */
+.pmodal { 
     position: fixed;
     top: 0;
     left: 0;
@@ -1067,14 +1070,14 @@
 
 /* FAQ Modal Styles */
 #faq-modal {
-  background: rgba(0, 0, 0, 0.8); /* Semi-transparent dark overlay */
+  background: rgba(0, 0, 0, 0.8);
 }
 
 #faq-modal .modal-content {
-  background: #ffffff; /* Pure white background */
-  color: #333333; /* Dark gray text for better readability */
+  background: #ffffff;
+  color: #333;
   border-radius: 12px;
-  max-width: 600px;
+  max-width: 90%;
   width: 90%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -1086,60 +1089,55 @@
 }
 
 .faq-item {
-  border-bottom: 1px solid #e0e0e0; /* Light gray border */
+  border-bottom: 1px solid #e0e0e0;
   margin-bottom: 15px;
   padding-bottom: 15px;
-  text-align: left; /* Ensure all content is left-aligned */
 }
 
 .faq-question {
   cursor: pointer;
-  padding: 12px 15px;
-  background: #f8f9fa; /* Very light gray background */
+  padding: 12px 0;
+  background: #f8f9fa;
   border-radius: 8px;
   display: flex;
-
   align-items: center;
-  font-weight: 700; /* Changed from 500 to 700 for bold text */
-  color: #2d3748; /* Dark blue-gray for text */
-  transition: all 0.2s ease;
-  text-align: left; /* Ensure question text is left-aligned */
+  font-weight: 700;
+  color: #2d3748;
+  transition: 0.2s ease;
+  text-align: left;
 }
 
 .faq-question::before {
-  content: "Q: "; /* Add "Q:" before each question */
-  font-weight: 700; /* Bold */
-  color: #3182ce; /* Blue color for "Q:" */
+  content: "Que: ";
+  font-weight: 700;
+  color: #3182ce;
   margin-right: 5px;
 }
 
 .faq-question:hover {
-  background: #edf2f7; /* Slightly darker gray on hover */
+  background: #edf2f7;
   transform: translateY(-1px);
 }
 
 .toggle-arrow {
   font-size: 0.9em;
   margin-left: 10px;
-  color: #4a5568; /* Medium gray for arrow */
+  color: #4a5568;
   transition: transform 0.3s ease;
 }
 
 .faq-item.active .toggle-arrow {
   transform: rotate(180deg);
-  color: #3182ce; /* Blue color for active state */
+  color: #3182ce;
 }
 
 .faq-answer {
   display: none;
-  padding: 15px;
+  padding: 10px 0;
   background: #ffffff;
-  border-radius: 8px;
-  margin-top: 10px;
+  border-left: 3px solid #3182ce;
   line-height: 1.6;
-  color: #4a5568; /* Medium gray for answer text */
-  border-left: 3px solid #3182ce; /* Blue accent border */
-  text-align: left; /* Ensure answer text is left-aligned */
+  color: #4a5568;
 }
 
 .faq-item.active .faq-answer {
@@ -1149,8 +1147,8 @@
 
 /* Loading Spinner */
 .loading-spinner {
-  border: 3px solid #f3f3f3; /* Light gray */
-  border-top: 3px solid #3182ce; /* Blue */
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3182ce;
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -1170,9 +1168,20 @@
 
 /* Error Message */
 .error-message {
-  color: #e53e3e; /* Red for errors */
+  color: #e53e3e;
   text-align: center;
   padding: 20px;
   font-weight: 500;
 }
 
+.small-text {
+  font-size: 5rem; /* Adjust size */
+  color: #666; /* Optional: Lighter color */
+}
+
+
+
+
+.modal {
+    display: none;
+}
