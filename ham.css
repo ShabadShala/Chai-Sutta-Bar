@@ -867,6 +867,81 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.settings-header {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.settings-header:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.settings-options {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.settings-options.show {
+  display: block !important;
+}
+
+.toggle-icon {
+  transition: transform 0.3s;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(90deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.starry-background.disabled {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Child Lock Style */
 .pin-input {
     width: 100%;
@@ -989,6 +1064,11 @@
 .restart-btn:hover {
     background-color: darkgreen; /* Slightly darker green on hover */
 }
+
+
+
+
+
 
 
 
