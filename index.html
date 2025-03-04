@@ -2058,80 +2058,7 @@
     
     
     
-    
-    // Add to existing code
-let isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-
-// Save state to localStorage
-function saveAppState() {
-  const state = {
-    scrapItems,
-    offerCart,
-    scrollPosition: window.scrollY,
-    lastActive: Date.now()
-  };
-  localStorage.setItem('pwaState', JSON.stringify(state));
-}
-
-// Restore state from localStorage
-function restoreAppState() {
-  const saved = localStorage.getItem('pwaState');
-  if (saved) {
-    const state = JSON.parse(saved);
-    scrapItems = state.scrapItems || [];
-    offerCart = state.offerCart || [];
-    
-    // Restore UI state
-    updateScrapListDisplay();
-    updateCartDisplay();
-    window.scrollTo(0, state.scrollPosition);
-    
-    // Clear state after restoration
-    localStorage.removeItem('pwaState');
-  }
-}
-
-// Save state on these events
-['pagehide', 'blur', 'visibilitychange'].forEach(event => {
-  window.addEventListener(event, saveAppState);
-});
-
-// Restore state when app is launched from home screen
-if (isStandalone && window.performance.navigation.type === 0) {
-  restoreAppState();
-}
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
     
     
     
@@ -2942,7 +2869,7 @@ if (isStandalone && window.performance.navigation.type === 0) {
     // Insert empty warning message
     scrapItemsContainer.innerHTML = `
     <div class="empty-warning">
-    <img src="empty.svg" alt="Cart Icon" width="60" height="60">
+    <img src="icons/empty.svg" alt="Cart Icon" width="60" height="60">
     <p class="empty-text">
     Tap the <strong>Rate</strong> of items from 
     <a href="#" id="mainMenuLink" class="main-menu-link">Main Menu</a>
@@ -4344,7 +4271,7 @@ if ('serviceWorker' in navigator) {
                     showUpdateNotification(reg);
                 }
             });
-        }, 60 * 60 * 1000); // Check every 1 minute
+        }, 60 * 60 * 1000); // Check every 1 hour
     });
 
     navigator.serviceWorker.addEventListener('controllerchange', () => {
