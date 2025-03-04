@@ -206,55 +206,71 @@ document.getElementById('devFill').addEventListener('click', () => {
     // Clear existing data
     // scrapItems = [];
     // offerCart = [];
-    
+
     // Get all menu items from the DOM
     const menuItems = Array.from(document.querySelectorAll('.menu-item'));
-    
-    // Generate 20 random scrap items from real menu data
+
+    // Generate 20 random scrap items
     for (let i = 0; i < 20; i++) {
         const randomItem = menuItems[Math.floor(Math.random() * menuItems.length)];
-        const itemName = randomItem.querySelector('.colAB').textContent.trim();
-        const itemRate = randomItem.querySelector('.colCDE').textContent.match(/\d+/)[0]; // Extract first number as rate
+        const colAB = randomItem.querySelector('.colAB').textContent.trim();
+        const colCDE = randomItem.querySelector('.colCDE').textContent.trim();
         
+        // Get category details
+        const categoryHeader = randomItem.closest('.category-items').previousElementSibling;
+        const categoryName = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
+        const columnValues = {
+            C: categoryHeader.dataset.columnC || '',
+            D: categoryHeader.dataset.columnD || '',
+            E: categoryHeader.dataset.columnE || ''
+        };
+
+        // Extract rate and column
+        const rateMatch = colCDE.match(/(\d+)/);
+        const rate = rateMatch ? rateMatch[0] : '0';
+        const column = colCDE.includes(rate) 
+            ? colCDE.split(' / ').findIndex(part => part.includes(rate)) + 1 
+            : 1;
+        const columnKey = ['C', 'D', 'E'][column] || 'C';
+
+        // Build item name with category and column value
+        const itemName = `${categoryName} - ${colAB.split('(')[0].trim()}`;
+        const columnValue = columnValues[columnKey];
+        const fullItemName = columnValue ? `${itemName} (${columnValue})` : itemName;
+
         scrapItems.push({
-            name: itemName,
-            rate: itemRate
+            name: fullItemName,
+            rate: rate
         });
     }
-    
-    // Generate 4 random offers from real offer data
-    const offerItems = Array.from(document.querySelectorAll('.offer-item'));
+
+    // Generate 4 random offers from offersData
     for (let i = 0; i < 4; i++) {
-        const randomOffer = offerItems[Math.floor(Math.random() * offerItems.length)];
-        const offerTitle = randomOffer.querySelector('.offer-title').textContent.trim();
-        const offerDescription = randomOffer.querySelector('.offer-description').textContent.trim();
-        const offerDates = randomOffer.querySelector('.offer-dates').textContent.trim();
-        const dependencies = randomOffer.querySelector('.add-offer-btn').dataset.dependencies === 'Yes';
-        const allowOnce = randomOffer.querySelector('.add-offer-btn').dataset.allowOnce === 'Yes';
-        
+        const randomOffer = offersData[Math.floor(Math.random() * offersData.length)];
+        if (!randomOffer) continue;
+
         offerCart.push({
-            title: offerTitle,
-            description: offerDescription,
-            dates: [offerDates],
+            title: randomOffer[1],
+            description: randomOffer[2],
+            dates: [formatDate(randomOffer[0]) + (randomOffer[3] ? ` to ${formatDate(randomOffer[3])}` : '')],
             count: 1,
-            dependent: dependencies,
-            allowOnce: allowOnce
+            dependent: randomOffer[5] === 'Yes',
+            allowOnce: randomOffer[4] === 'Yes'
         });
     }
-    
+
     // Update displays
     updateScrapListDisplay();
     updateCartDisplay();
     updateScrapButtonStatus();
     updateScrapCounter();
-    showFeedback('DEV: Random data loaded from real items!');
-    
+    showFeedback('DEV: Demo data loaded!');
+
     // Show both panels
     document.getElementById('scrapList').style.display = 'flex';
     document.getElementById('offer-cart').style.display = 'block';
     document.querySelector('.scrap-overlay').style.display = 'block';
 });
-
 
 
 
