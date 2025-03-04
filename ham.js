@@ -968,18 +968,56 @@
         const faqModal = document.createElement('div');
         faqModal.id = 'faq-modal';
         faqModal.className = 'modal';
-        faqModal.innerHTML = `
-        <div class="modal-content">
-        <div class="close-btn">&times;</div>
-        <h3 class="modal-header">Frequently Asked Questions</h3>
-        <span class="small-text">(Long press to copy answer)</span>
+faqModal.innerHTML = `
+<div class="modal-content">
+  <div class="close-btn">&times;</div>
+  <h3 class="modal-header">Frequently Asked Questions</h3>
+  <span class="small-text">(Long press to copy answer)</span>
+  <input type="text" id="faq-search" class="faq-search" placeholder="Search questions...">
+  <div class="faq-container" id="faq-container">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading FAQs...</div>
+  </div>
+</div>`;
+     document.body.appendChild(faqModal);
+     
+// Add search box styles
+const searchStyle = document.createElement('style');
+searchStyle.textContent = `
+.faq-search {
+  width: 75%;
+  padding: 8px 16px;
+  margin: 10px auto;
+  display: block;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+}
+`;
+document.head.appendChild(searchStyle)
+   
+   
+   // Search functionality
+function filterFAQs(searchTerm) {
+  const faqItems = document.querySelectorAll('#faq-container .faq-item');
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question').textContent.toLowerCase();
+    item.style.display = question.includes(searchTerm) ? 'block' : 'none';
+  });
+}
+
+document.getElementById('faq-search')?.addEventListener('input', function(e) {
+  filterFAQs(e.target.value.toLowerCase());
+});
+
+// Modified FAQ option click handler
+document.getElementById('faq-option')?.addEventListener('click', () => {
+  toggleSidebar(false);
+  openModalStandalone('faq-modal');
+  document.getElementById('faq-search').value = ''; // Reset search on open
+  loadFAQs();
+});
         
-        <div class="faq-container" id="faq-container">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Loading FAQs...</div>
-        </div>
-        </div>`;
-        document.body.appendChild(faqModal);
         
         // Add event listener for the FAQ option
         document.getElementById('faq-option')?.addEventListener('click', () => {
@@ -1089,6 +1127,9 @@
                     document.body.appendChild(toast);
                     setTimeout(() => toast.remove(), 2000);
                 }
+                 // After populating FAQs
+    const searchTerm = document.getElementById('faq-search').value.toLowerCase();
+    if (searchTerm) filterFAQs(searchTerm);
                 } catch (error) {
                 console.error('Error loading FAQs:', error);
                 container.innerHTML = '<div class="error-message">❌ Failed to load FAQs. Please try again later.</div>';
