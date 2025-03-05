@@ -543,38 +543,49 @@
             
             
             // Print the QR image
-            function printQRCode() {
-                const qrImg = document.getElementById("qr-code-img");
-                if (!qrImg) {
-                    alert("QR Code not found!");
-                    return;
-                }
-                
-                const printWindow = window.open("", "_blank");
-                
-                printWindow.document.write(`
-                    <html>
-                    <head>
-                    <title>Print QR Code</title>
-                    <style>
-                    body { text-align: center; padding: 20px; }
-                    img { max-width: 100%; height: auto; }
-                    </style>
-                    </head>
-                    <body>
-                    
-                    <img src="${qrImg.src}" alt="QR Code">
-                    
-                    <script>
-                    window.onload = function() { window.print(); };
-                    </script>
-                    
-                    </body>
-                    </html>
-                `);
-                
-                printWindow.document.close();
-            }
+function printQRCode() {
+    const qrImg = document.getElementById("qr-code-img");
+    if (!qrImg) {
+        alert("QR Code not found!");
+        return;
+    }
+
+    const printWindow = window.open("", "_blank");
+
+    printWindow.document.write(`
+        <html>
+        <head>
+        <title>Print QR Code</title>
+        <style>
+        @page { 
+            size: A4; 
+            margin: 20mm; 
+        }
+        body { 
+            text-align: center; 
+            padding: 20px; 
+        }
+        img { 
+            max-width: 100%; 
+            height: auto; 
+        }
+        </style>
+        </head>
+        <body>
+
+        <img src="${qrImg.src}" alt="QR Code">
+
+        <script>
+        window.onload = function() { window.print(); };
+        </script>
+
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+}
+
             
             
             
