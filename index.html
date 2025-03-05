@@ -604,9 +604,8 @@
             
             #searchInput {
             width: 100%;
-            padding: 1.5rem;
-            padding-left: 11rem;
-            padding-right: 11rem;
+            padding: 1.5rem 9rem;
+            
             font-size: 6rem;
             border: 1px solid #fae68e;  /* Converted 2px to 0.125rem */
             border-radius: 0 5rem 5rem 0;              /* Increased from 3rem to 5rem for more roundness */
@@ -617,6 +616,7 @@
             
             #searchInput::placeholder {
             color: #888;
+            font-size: 0.9em;
             }
             
             .search-clear-btn {
@@ -636,51 +636,23 @@
             
             /* Search Lens (Magnifying Glass Icon) */
             .search-lens {
-            position: absolute;
-            left: 2.2rem; /* Adjust based on input padding */
-            font-size: 5rem;
-            color: white;
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            }
-            
-            /* Hide the lens if input has text */
-            .hide-lens .search-lens {
-            display: none;
-            }
-            
-            /* Animate the lens when hovering on the search bar */
-            .search-input-wrapper:hover .search-lens {
-            animation: shake 0.5s ease-in-out;
-            }
-            
-            /* Shake Animation */
-            @keyframes shake {
-            0% {
-            transform: translateX(0);
-            }
-            25% {
-            transform: translateX(-0.3125rem); /* 5px ≈ 0.3125rem */
-            }
-            50% {
-            transform: translateX(0.3125rem);  /* 5px ≈ 0.3125rem */
-            }
-            75% {
-            transform: translateX(-0.3125rem); /* 5px ≈ 0.3125rem */
-            }
-            100% {
-            transform: translateX(0);
-            }
+            position: absolute;            
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;   
+            margin-left: 2rem;
             }
             
             
+            .search-lens:hover {
+            transform: translateY(-50%) translateX(5px);
+            }
             
             #filterContainer {
-            display: flex;
-            
+            display: flex;           
             align-items: center; /* Aligns items vertically */
-            width: 100%; /* Ensures full width */
-            
+            width: 100%; /* Ensures full width */            
             margin-bottom: 1rem; 
             font-size: 5rem;
             gap: 3rem; /* Gap between 3-button element and total-items-found */
@@ -895,7 +867,10 @@
             .category-header {
             transition: all var(--transition-speed, 0.3s) ease;
             
-            background: linear-gradient(90deg, rgba(250,230,142,0.1) 0%, rgba(64,224,208,0.05) 100%);
+            /* background: linear-gradient(90deg, rgba(250,230,142,0.1) 0%, rgba(64,224,208,0.05) 100%); */
+            background: linear-gradient(90deg, #212121 0%, rgba(64,224,208,0.05) 100%);
+            
+            
             }
             
             .category-header:hover {
@@ -1178,8 +1153,8 @@
             
             
             .button-icon {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             }
             
             
@@ -1558,13 +1533,15 @@
             
             .offer-item button.add-offer-btn {
             position: absolute;
-            top: 2rem;
-            left: 2rem;
+            top: 1rem;
+            right: 1rem;
             background: #007bff;
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 2rem;
+            padding: 0 2rem;
+            
+            border-radius: 1rem;
+            font-size: 6rem;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s ease;
@@ -1785,8 +1762,10 @@
             box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.8); /* Glowing effect */            
             }
             
-            
-            
+            /* Hide from main screen */
+            #visitorCounter {
+            display: none !important;
+            }
             
             
             
@@ -2027,11 +2006,10 @@
             <!-- Search Bar -->
             <div class="search-container">                
                 <div class="search-input-wrapper">
-                    <span id="magnifierIcon" class="search-lens">&#128270;</span>
-                    
+                    <span>
+                        <img src="icons/lens.svg" alt="Word Search" class="search-lens invert-icon">
+                    </span>                    
                     <input type="text" id="searchInput" name="searchInput" maxlength="10" placeholder="item or rate" autocomplete="on">
-                    
-                    
                     <span id="clearButton" class="search-clear-btn" style="display: none;">×</span>
                 </div>
                 
@@ -2166,6 +2144,43 @@
         </button>
         
         
+        
+        
+        
+        
+        
+        
+        <div id="counters-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h3 style="color: white;">CSB-BPA Counters</h3>
+                
+                <div class="counter-grid">
+                    <div class="counter-item">
+                        <img src="icons/users.svg" alt="Visitors" class="counter-icon">
+                        <span id="modal-visitorCounter">0000</span>
+                        <span class="counter-label">Visitors</span>
+                    </div>
+                    <div class="counter-item">
+                        <img src="icons/eye.svg" alt="Views" class="counter-icon">
+                        <span id="modal-viewsCounter">0000</span>
+                        <span class="counter-label">Views</span>
+                    </div>
+                    <div class="counter-item">
+                        <img src="icons/likes.svg" alt="Likes" class="counter-icon">
+                        <span id="modal-likeCounter">0000</span>
+                        <span class="counter-label">Likes</span>
+                    </div>
+                    <div class="counter-item">
+                        <img src="icons/orders.svg" alt="Orders" class="counter-icon">
+                        <span id="modal-orderNumber">0000</span>
+                        <span class="counter-label">Orders</span>
+                    </div>
+                </div>
+                
+                <h3 style="color: white; font-size: 4rem;">- Misrosoft Counters -</h3>
+            </div>
+        </div>
         
         <script>
             
@@ -2305,7 +2320,7 @@
             document.getElementById("toggle-cart").style.display = "none"; // Hide
             
             // google script URL
-            const scriptUrl = "https://script.google.com/macros/s/AKfycbz5f6T9duaepzAs_V8iF9lgc9W-72TncPPeBHT9mch6tDDoOpG885UW_9HSucEhf-70yg/exec";
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbwL-df0wEbrbZoebYhWuYZASWBkzHvMgrjQDg6AUrV4oHZTAd1y3lbyEDolErve_blZAg/exec";
             
             //Disable context menu, cut-copy-paste
             document.addEventListener('contextmenu', event => event.preventDefault());
@@ -2548,7 +2563,7 @@
                             data-end="${offer[3] || ''}"
                             data-allow-once="${offer[4] || 'No'}" 
                             data-dependencies="${offer[5] || 'No'}">
-                            Add
+                            +
                             </button>
                             <h2 class="offer-title">${offer[1]}</h2>
                             <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
@@ -2705,1199 +2720,1229 @@
                 searchInput.focus();
                 resetHeaders();
                 
-                 // Add this tab visibility control
-    const tabContainer = document.querySelector('.tab-container');
-    tabContainer.style.display = 'flex';
+                // Add this tab visibility control
+                const tabContainer = document.querySelector('.tab-container');
+                tabContainer.style.display = 'flex';
             });
             
-        
-        
-        
-        // Fetch data from Google Script URL
-        fetch(scriptUrl)
-        .then(response => response.json())
-        .then(data => {
-        
-        
-        // Expiry check
-        if (data.error) {  
-        alert(data.error); // Show error from backend
-        return;
-        }
-        
-        
-        
-        const menuDiv = document.getElementById('menu');
-        let currentCategory = null;
-        
-        // Store all category item containers for collapsing
-        const categoryItemsContainers = [];
-        
-        console.log("Fetched data:", data); // Debugging data fetching
-        
-        data.forEach(row => {
-        const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
-        
-        // Apply different colors to column C, D, and E and join them with " / "
-        // Original code where you create colCDEElement:
-        const mergedcolCDE = [
-        row.columnC ? `<span style="color: #40E0D0;" data-column="C">${row.columnC}</span>` : '',
-        row.columnD ? `<span style="color: #00FF7F;" data-column="D">${row.columnD}</span>` : '',
-        //                            row.columnE ? `<span style="color: #E6E6FA;" data-column="E">${row.columnE}</span>` : ''
-        row.columnE ? `<span style="color: #F8BBD0;" data-column="E">${row.columnE}</span>` : ''
-        
-        ].filter(col => col).join(' / ');
-        
-        const colCDEElement = document.createElement('span');
-        colCDEElement.classList.add('colCDE');
-        colCDEElement.innerHTML = mergedcolCDE;  // This now contains data-column attributes
-        
-        console.log("Merged colCDE:", mergedcolCDE); // Debugging merged colCDE
-        
-        // Check if columnC is empty or is a category header
-        const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
-        
-        console.log("Is category?", isCategory); // Debugging category check
-        
-        if (isCategory) {
-        const categoryHeaderDiv = document.createElement('div');
-        categoryHeaderDiv.classList.add('category-header');
-        
-        // MODIFIED: Store individual column values as data attributes
-        categoryHeaderDiv.dataset.columnC = row.columnC || '';
-        categoryHeaderDiv.dataset.columnD = row.columnD || '';
-        categoryHeaderDiv.dataset.columnE = row.columnE || '';
-        categoryHeaderDiv.dataset.columnF = row.columnF || '';
-        
-        
-        const leftPart = document.createElement('span');
-        leftPart.classList.add('left');
-        leftPart.textContent = mergedColAB;
-        
-        const rightPart = document.createElement('span');
-        rightPart.classList.add('right');
-        rightPart.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
-        
-        categoryHeaderDiv.appendChild(leftPart);
-        categoryHeaderDiv.appendChild(rightPart);
-        
-        const categoryItemsDiv = document.createElement('div');
-        categoryItemsDiv.classList.add('category-items');
-        
-        // Toggle category items visibility on click
-        categoryHeaderDiv.addEventListener('click', () => {
-        // Reset all other headers to default collapsed size and show only the first column
-        document.querySelectorAll('.category-header').forEach(header => {
-        header.style.fontSize = '7rem'; // Set collapsed size
-        header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
-        header.classList.remove('visible-border'); // Add this line
-        });
-        
-        document.querySelectorAll('.category-items').forEach(container => {
-        if (container !== categoryItemsDiv) {
-        container.style.display = 'none';
-        container.classList.remove('visible-border'); // Add this line
-        }
-        });
-        
-        // Toggle visibility and adjust styles accordingly
-        if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
-        categoryItemsDiv.style.display = 'block';
-        categoryHeaderDiv.style.fontSize = '6rem';
-        categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show right column
-        categoryHeaderDiv.classList.add('visible-border');
-        categoryItemsDiv.classList.add('visible-border');
-        } else {
-        categoryItemsDiv.style.display = 'none';
-        categoryHeaderDiv.classList.remove('visible-border');
-        categoryItemsDiv.classList.remove('visible-border');
-        }
-        });
-        
-        // Initial state: Increase font size for collapsed categories and hide second column
-        categoryHeaderDiv.style.fontSize = '7rem';
-        categoryHeaderDiv.querySelector('.right').style.display = 'none';
-        
-        menuDiv.appendChild(categoryHeaderDiv);
-        menuDiv.appendChild(categoryItemsDiv);
-        
-        categoryItemsContainers.push(categoryItemsDiv);                    
-        currentCategory = categoryItemsDiv;
-        } else if (currentCategory) {
-        const menuItemDiv = document.createElement('div');
-        menuItemDiv.classList.add('menu-item');
-        menuItemDiv.style.marginBottom = '0';
-        
-        const lineDiv = document.createElement('div');
-        lineDiv.classList.add('menu-item-line');
-        
-        const colABElement = document.createElement('span');
-        colABElement.classList.add('colAB');
-        colABElement.textContent = mergedColAB;
-        
-        const colCDEElement = document.createElement('span');
-        colCDEElement.classList.add('colCDE');
-        colCDEElement.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
-        
-        lineDiv.appendChild(colABElement);
-        lineDiv.appendChild(colCDEElement);                        
-        menuItemDiv.appendChild(lineDiv);
-        currentCategory.appendChild(menuItemDiv);
-        }
-        });
-        
-        categoryItemsContainers.forEach(container => {
-        container.style.display = 'none';
-        });
-        
-        //Show elements
-        // document.querySelector('.header').style.display = 'flex'; // Show header
-        document.querySelector(".search-container").style.display = "block"; // Search container               
-        document.querySelector(".tab-container").style.display = "flex"; // Tabs               
-        document.querySelector('.footer-container').style.display = 'block'; // Show footer
-        
-        
-        // Modify the loading overlay hide code to show the image overlay
-        document.getElementById('loadingOverlay').style.display = 'none';
-        
-        
-        
-        // Set the image source when the overlay is shown
-        document.getElementById('imageOverlay').addEventListener('click', () => {
-        document.getElementById('driveImage').src = imageUrl;
-        });
-        
-        
-        
-        })
-        .catch(error => {
-        console.error("Error fetching data:", error);
-        document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
-        });
-        
-        
-        
-        // Add this code where you initialize other JavaScript
-        const fileId = "1_YZByTcu5rHIobQoOS1AZ_NjNCz98m8T";
-        const timestamp = new Date().getTime();
-        const imageUrl = `https://lh3.googleusercontent.com/d/${fileId}?t=${timestamp}`; 
-        
-        
-        // Close image overlay
-        document.getElementById('closeImage').addEventListener('click', () => {
-        document.getElementById('imageOverlay').style.display = 'none';
-        });
-        
-        // Optional: Close when clicking outside image
-        document.getElementById('imageOverlay').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('imageOverlay')) {
-        document.getElementById('imageOverlay').style.display = 'none';
-        }
-        });               
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // Modify toggleScrapList function
-        function toggleScrapList() {
-        const overlay = document.querySelector('.scrap-overlay');
-        const scrapList = document.getElementById('scrapList');
-        const offerCartElement = document.getElementById('offer-cart');
-        
-        
-        // Check if both carts are empty
-        const hasScrapItems = scrapItems.length > 0;
-        const hasCartItems = offerCart.length > 0;
-        
-        if (!hasScrapItems && !hasCartItems) {
-        if (isWarningVisible) {
-        // Close warning if it's already visible
-        closeScrapList();
-        isWarningVisible = false;
-        } else {
-        // Show warning if not visible
-        showEmptyWarningInScrapList();
-        isWarningVisible = true;
-        }
-        return;
-        }
-        
-        
-        // Toggle visibility based on content
-        scrapVisible = !scrapVisible;
-        
-        // Show/hide scrap list only if it has items
-        scrapList.style.display = hasScrapItems && scrapVisible ? 'flex' : 'none';
-        
-        // Show/hide offer cart only if it has items
-        offerCartElement.style.display = hasCartItems && scrapVisible ? 'block' : 'none';
-        
-        // Update positions if showing
-        if (scrapVisible) {
-        overlay.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-        updateCartPosition();
-        scrapListObserver.observe(scrapList);
-        } else {
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
-        scrapListObserver.unobserve(scrapList);
-        }
-        isWarningVisible = false;
-        }
-        
-        // Add overlay click handler
-        document.querySelector('.scrap-overlay').addEventListener('click', () => {
-        closeScrapList();
-        closeOfferCart();
-        });
-        
-        
-        
-        // Empty-warning
-        function showEmptyWarningInScrapList() {
-        const scrapList = document.getElementById('scrapList');
-        const scrapItemsContainer = document.getElementById('scrapItems');
-        const totalPrice = document.getElementById('totalPrice');
-        const buttonContainer = document.querySelector('.button-container');
-        const h2 = scrapList.querySelector('h2');
-        
-        // Update heading
-        h2.textContent = 'No Item!';
-        h2.style.color = '#d32f2f';
-        
-        // Display scrap list overlay
-        scrapList.style.display = 'flex';
-        document.querySelector('.scrap-overlay').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-        scrapVisible = true;
-        
-        // Insert empty warning message
-        scrapItemsContainer.innerHTML = `
-        <div class="empty-warning">
-        <img src="icons/empty.svg" alt="Cart Icon" width="60" height="60">
-        <p class="empty-text">
-        Tap the <strong>Rate</strong> of items from 
-        <a href="#" id="mainMenuLink" class="main-menu-link">Main Menu</a>
-        </p>
-        <p class="empty-text">OR</p>
-        <div class="button-container-center">
-        <button id="repeatLastOrder" class="smart-pick-btn">
-        
-        Repeat Last Order
-        </button>
-        </div>
-        <p class="empty-text">OR </p>
-        <p class="empty-text">use <strong>Magic</strong> button to add a random item</p>
-        <div class="button-container-center">
-        <button id="smartPickBtn" class="smart-pick-btn">
-        <img src="icons/magic.svg" alt="Magic" class="button-icon">
-        Magic Pick
-        <img src="icons/magic.svg" alt="Magic" class="button-icon">
-        </button>
-        
-        
-        </p>
-        </div>
-        </div>
-        `;
-        
-        // ✅ Add event listener to "Main Menu" link to run closeModal()
-        document.getElementById("mainMenuLink").addEventListener("click", (event) => {
-        event.preventDefault(); // Prevent default link behavior
-        closeModal(); // Close modal when clicking "Main Menu"
-        });
-        
-        
-        // Hide irrelevant elements
-        totalPrice.style.display = 'none';
-        buttonContainer.style.display = 'none';
-        isWarningVisible = true;
-        
-        // Add event listener with animation effect and delay
-        document.getElementById('smartPickBtn').addEventListener('click', () => {
-        triggerMagicAnimation(() => {
-        setTimeout(() => {
-        addRandomItem(); // Add item AFTER animation plays
-        // closeModal(); // Hide modal after adding item
-        }, 500); // Delay closing modal
-        });
-        });
-        
-        // Repeat Last Order functionality
-        const repeatButton = document.getElementById('repeatLastOrder');
-        
-        repeatButton.addEventListener('click', () => {
-        const lastOrder = localStorage.getItem('lastOrder');
-        
-        if (!lastOrder) {
-        repeatButton.disabled = true; // Fully disable the button
-        repeatButton.style.pointerEvents = 'none'; // Prevent clicks
-        repeatButton.style.opacity = '0.5'; // Make it visibly disabled
-        
-        // Show message below the button
-        let message = document.getElementById('orderMessage');
-        if (!message) {
-        message = document.createElement('p');
-        message.id = 'orderMessage';
-        message.textContent = "No previous order found";
-        message.style.color = 'red';
-        message.style.fontWeight = 'bold';
-        
-        message.style.marginTop = '8px';
-        message.style.fontSize = '14px';
-        repeatButton.parentNode.insertBefore(message, repeatButton.nextSibling);
-        }
-        
-        return;
-        }
-        
-        triggerRepeatAnimation(() => {
-        setTimeout(() => {
-        try {
-        const parsedOrder = JSON.parse(lastOrder);
-        scrapItems = parsedOrder;
-        updateScrapListDisplay();
-        handleScrapItemsChange();
-        } catch (error) {
-        console.error('Error loading last order:', error);
-        showFeedback('Error loading last order');
-        }
-        }, 500); // Delay processing
-        });
-        });
-        
-        }
-        
-        
-        
-        // ✅ Function to trigger animation before processing
-        function triggerRepeatAnimation(callback) {
-        const button = document.getElementById('repeatLastOrder');
-        
-        // Remove and re-add the animation class to restart the animation
-        button.classList.remove('repeat-animation');
-        void button.offsetWidth; // Force reflow to apply animation again
-        button.classList.add('repeat-animation');
-        
-        // Execute callback AFTER animation completes (800ms)
-        setTimeout(() => {
-        button.classList.remove('repeat-animation');
-        if (callback) callback();
-        }, 500);
-        }
-        
-        
-        // Function to trigger magic animation
-        function triggerMagicAnimation(callback) {
-        const btn = document.getElementById('smartPickBtn');
-        
-        // Add glow effect
-        btn.classList.add('magic-glow');
-        
-        // Create sparkles
-        for (let i = 0; i < 8; i++) {
-        let sparkle = document.createElement('div');
-        sparkle.classList.add('magic-sparkle');
-        document.body.appendChild(sparkle);
-        
-        // Random position near the button
-        let xOffset = Math.random() * 100 - 50;
-        let yOffset = Math.random() * 50 - 25;
-        let scale = Math.random() * 0.8 + 0.3;
-        
-        sparkle.style.left = `${btn.offsetLeft + btn.offsetWidth / 2 + xOffset}px`;
-        sparkle.style.top = `${btn.offsetTop + yOffset}px`;
-        sparkle.style.transform = `scale(${scale})`;
-        
-        // Remove after animation
-        setTimeout(() => sparkle.remove(), 500);
-        }
-        
-        // Remove glow effect after animation
-        setTimeout(() => {
-        btn.classList.remove('magic-glow');
-        if (callback) callback(); // Call function after animation
-        }, 500);
-        }
-        
-        // Function to close modal after animation
-        function closeModal() {
-        document.getElementById('scrapList').style.display = 'none';
-        document.querySelector('.scrap-overlay').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        scrapVisible = false;
-        }
-        
-        
-        
-        document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('smartPickBtn2').addEventListener('click', addRandomItem);
-        });
-        
-        
-        
-        function showOrderListWarning() {                            
-        let existingModal = document.getElementById('orderListWarningModal');
-        if (existingModal) {
-        existingModal.remove(); 
-        isWarningVisible = false;
-        return;
-        }
-        
-        let modal = document.createElement('div');
-        modal.id = 'orderListWarningModal';
-        modal.className = 'modal-overlay';
-        
-        let contentEnglish = `
-        <p><strong>Order list is empty.</strong></p>
-        <ul>
-        <li>Tap <b>rate</b> to add an item. In the order list, you can <b>increase, decrease or remove</b> items.</li>
-        </ul>
-        `;
-        
-        let contentPunjabi = `
-        <p><strong>ਆਰਡਰ ਸੂਚੀ ਖਾਲੀ ਹੈ।</strong></p>
-        <ul>
-        <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ <b>ਰੇਟ</b> ਛੂਹੋ। ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ, ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਘਟਾ, ਵਧਾ ਜਾਂ ਕੱਢ</b> ਸਕਦੇ ਹੋ</li>
-        </ul>
-        `;
-        
-        modal.innerHTML = `
-        <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <div id="modalText">${contentEnglish}</div>
-        <div id="toggleContainer" class="toggle-container">
-        <div id="toggleButton" class="split-toggle">
-        <div id="englishSide" class="toggle-half active">Eng</div>
-        <div id="punjabiSide" class="toggle-half">ਪੰਜਾਬੀ</div>
-        </div>
-        </div>
-        </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        const toggleButton = document.getElementById('toggleButton');
-        const modalText = document.getElementById('modalText');
-        const englishSide = document.getElementById('englishSide');
-        const punjabiSide = document.getElementById('punjabiSide');
-        let isEnglish = true;
-        
-        toggleButton.addEventListener('click', () => {
-        isEnglish = !isEnglish;
-        if (isEnglish) {
-        modalText.innerHTML = contentEnglish;
-        englishSide.classList.add('active');
-        punjabiSide.classList.remove('active');
-        } else {
-        modalText.innerHTML = contentPunjabi;
-        punjabiSide.classList.add('active');
-        englishSide.classList.remove('active');
-        }
-        });
-        
-        function closeModal() {
-        modal.remove();
-        isWarningVisible = false;
-        
-        // Add this line to ensure scrap overlay is hidden
-        document.querySelector('.scrap-overlay').style.display = 'none';
-        }
-        
-        const autoCloseTimer = setTimeout(closeModal, 60000);
-        
-        modal.querySelector('.close-button').addEventListener('click', () => {
-        clearTimeout(autoCloseTimer);
-        closeModal();
-        });
-        
-        modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-        clearTimeout(autoCloseTimer);
-        closeModal();
-        }
-        });
-        
-        isWarningVisible = true;
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        let scrapItems = [];
-        let scrapVisible = false;                                                        
-        // Add these JavaScript modifications
-        
-        // Add variable to track warning visibility
-        let isWarningVisible = false;
-        
-        // Scrap Button Functionality
-        document.getElementById('scrapButton').addEventListener('click', function(e) {
-        // Prevent event from bubbling up to document listener
-        e.stopPropagation();
-        toggleScrapList();
-        });
-        
-        function updateScrapButtonStatus() {
-        const scrapButton = document.getElementById('scrapButton');
-        const hasOfferItems = offerCart.length > 0;
-        const scrapButtonImg = document.querySelector('#scrapButton img');
-        
-        // Check if either scrapItems or offerCart has items
-        const hasItems = scrapItems.length > 0 || offerCart.length > 0;
-        
-        // scrapButton.classList.toggle('has-items', hasItems);
-        scrapButton.classList.toggle('offer-has-items', hasOfferItems);
-        //  scrapButton.classList.toggle('has-items', scrapItems.length > 0 || hasOfferItems);
-        scrapButton.classList.toggle('has-items', scrapItems.length > 0);
-        
-        // Optional: Add subtle pulse animation when items are added
-        if (hasItems) {
-        scrapButton.style.animation = 'pulse-green 1s ease';
-        setTimeout(() => scrapButton.style.animation = '', 1000);
-        }
-        }
-        
-        
-        // Add this to your existing function
-        function handleScrapItemsChange() {
-        updateScrapListDisplay();
-        updateScrapButtonStatus();
-        updateScrapCounter();
-        updateOfferAddButtons();
-        
-        
-        // New: Remove dependent offers when scrap is empty
-        if (scrapItems.length === 0) {
-        const dependentOffersRemoved = offerCart.filter(group => group.dependent);
-        offerCart = offerCart.filter(group => !group.dependent);
-        
-        if (dependentOffersRemoved.length > 0) {
-        showFeedback('Dependent offers removed');
-        updateCartDisplay();
-        updateOfferAddButtons();
-        updateScrapButtonStatus();
-        }
-        }
-        updateCartDisplay(); 
-        }
-        
-        
-        // Add this function to update the counter
-        function updateScrapCounter() {
-        const counter = document.querySelector('#scrapButton .counter-badge');
-        counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
-        counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
-        
-        
-        // Add animation when items are added
-        if(scrapItems.length > 0) {
-        counter.style.transform = 'scale(1.2)';
-        setTimeout(() => counter.style.transform = 'scale(1)', 200);
-        }
-        } 
-        
-        
-        
-        
-        
-        // Add items to scrap list when clicking rates
-        document.getElementById('menu').addEventListener('click', (e) => {
-        
-        const rateElement = e.target.closest('.colCDE span, .colCDE');
-        if (rateElement && rateElement.textContent.match(/₹?\d+/)) {
-        const menuItemLine = rateElement.closest('.menu-item-line');
-        
-        // Get which column was clicked (C/D/E)
-        const column = rateElement.getAttribute('data-column');
-        
-        // Get category header
-        const categoryHeader = menuItemLine.closest('.menu-item')
-        .closest('.category-items')
-        .previousElementSibling;
-        
-        // Get the specific column value from category header
-        const columnValue = categoryHeader.dataset[`column${column}`]?.trim();
-        
-        // Build category name (without column value)
-        const categoryName = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
-        
-        // Build item name
-        let itemName = menuItemLine.querySelector('.colAB').textContent.split('(')[0].trim();
-        
-        // Add column value to item name if it exists
-        if (columnValue) {
-        itemName += ` (${columnValue})`;
-        }
-        
-        // Combine names
-        const combinedName = `${categoryName} - ${itemName}`;
-        
-        // Rest of your existing click handling code...
-        const clickedRate = rateElement.textContent.replace('₹', '').trim();
-        
-        if (clickedRate.includes('/')) {
-        showTapFeedbackInCenter('❌');
-        playBeep(600, 0.15);
-        } else {
-        animateRateMovement(rateElement);                                
-        scrapItems.push({ 
-        name: combinedName, 
-        rate: clickedRate 
-        });
-        }
-        
-        
-        updateScrapListDisplay();
-        }
-        handleScrapItemsChange();
-        });
-        
-        // Rate add animation
-        function animateRateMovement(sourceElement) {
-        const scrapButton = document.getElementById('scrapButton');                        
-        
-        // Get positions of the source element and the scrap button
-        const sourceRect = sourceElement.getBoundingClientRect();
-        const targetRect = scrapButton.getBoundingClientRect();                        
-        
-        // Create a floating clone of the rate element
-        const floatingClone = document.createElement('div');
-        floatingClone.textContent = sourceElement.textContent;
-        floatingClone.style.position = 'fixed';
-        floatingClone.style.left = `${sourceRect.left}px`;
-        floatingClone.style.top = `${sourceRect.top}px`;
-        floatingClone.style.fontSize = '16px';
-        floatingClone.style.fontWeight = 'bold';
-        floatingClone.style.background = '#ffcc00';
-        floatingClone.style.padding = '5px 10px';
-        floatingClone.style.borderRadius = '5px';
-        floatingClone.style.boxShadow = '0px 2px 5px rgba(0,0,0,0.2)';
-        floatingClone.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
-        floatingClone.style.zIndex = '1000';
-        
-        document.body.appendChild(floatingClone);                        
-        
-        // Force repaint before moving
-        requestAnimationFrame(() => {
-        floatingClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px) scale(0.5)`;
-        floatingClone.style.opacity = '0';
-        });                        
-        
-        // Remove the element after animation
-        setTimeout(() => {
-        floatingClone.remove();
-        }, 500);
-        }
-        
-        
-        // Miss rate indication
-        function showTapFeedbackInCenter(symbol) {
-        const feedbackElement = document.createElement('div');
-        feedbackElement.textContent = symbol;
-        feedbackElement.style.position = 'fixed';
-        
-        // Center horizontally and vertically
-        feedbackElement.style.left = `${window.innerWidth / 2}px`;
-        feedbackElement.style.top = `${window.innerHeight / 2}px`;
-        
-        feedbackElement.style.transform = 'translate(-50%, -50%) scale(0)'; // Center and start small
-        feedbackElement.style.fontSize = '6rem';
-        feedbackElement.style.fontWeight = 'bold';
-        feedbackElement.style.color = 'red';
-        feedbackElement.style.transition = 'transform 0.3s ease-out, opacity 0.5s ease-out';
-        feedbackElement.style.zIndex = '1000';
-        
-        document.body.appendChild(feedbackElement);
-        
-        // Trigger zoom-in effect
-        requestAnimationFrame(() => {
-        feedbackElement.style.transform = 'translate(-50%, -50%) scale(2)';
-        });
-        
-        // Remove feedback after animation
-        setTimeout(() => {
-        feedbackElement.remove();
-        }, 500);
-        }
-        
-        // Miss tone
-        let audioCtx; // Declare outside to initialize later
-        let oscillator;
-        
-        document.addEventListener("click", () => {
-        if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        } else if (audioCtx.state === "suspended") {
-        audioCtx.resume();
-        }
-        }, { once: true }); // Runs only once
-        
-        function playBeep(frequency, duration) {
-        if (!audioCtx) {
-        console.warn("AudioContext not initialized yet. User interaction required.");
-        return;
-        }
-        
-        if (audioCtx.state === "suspended") {
-        audioCtx.resume().then(() => {
-        generateBeep(frequency, duration);
-        });
-        } else {
-        generateBeep(frequency, duration);
-        }
-        }
-        
-        function generateBeep(frequency, duration) {
-        if (oscillator) {
-        oscillator.stop(); // Stop previous beep before starting a new one
-        }
-        
-        oscillator = audioCtx.createOscillator();
-        let gainNode = audioCtx.createGain();
-        
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        
-        oscillator.start();
-        setTimeout(() => {
-        oscillator.stop();
-        }, duration * 1000);
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        function updateScrapListDisplay() {
-        const scrapContainer = document.getElementById('scrapItems');
-        // const totalPrice = document.getElementById('totalPrice');                       
-        const buttonContainer = document.querySelector('.button-container');
-        const scrapList = document.getElementById('scrapList');
-        const h2 = scrapList.querySelector('h2');
-        
-        
-        
-        if (scrapItems.length > 0) {
-        // Reset h2 text when items are present
-        h2.textContent = 'Selected Items';
-        // totalPrice.style.display = 'block';
-        buttonContainer.style.display = 'flex';
-        
-        }
-        
-        // Step 1: Combine duplicate items and calculate quantities
-        const itemMap = new Map();
-        scrapItems.forEach((item) => {
-        const key = `${item.name}-${item.rate}`;
-        if (itemMap.has(key)) {
-        itemMap.get(key).qty++;
-        } else {
-        itemMap.set(key, { ...item, qty: 1 });
-        }
-        });
-        
-        // Step 2: Convert map values to array and sort alphabetically by item name
-        // Step 2: Convert map values to array and sort alphabetically by item name
-        const sortedItems = Array.from(itemMap.values()).sort((a, b) => {
-        const nameA = a.name.replace(/[^a-zA-Z]/g, '').toLowerCase(); // Extract only English characters
-        const nameB = b.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
-        return nameA.localeCompare(nameB);
-        });
-        
-        
-        // Step 3: Generate HTML for sorted items with quantity stepper
-        scrapContainer.innerHTML = sortedItems.map((groupedItem) => `
-        <div class="scrap-item">
-        <div class="scrap-item-name"><strong>${groupedItem.name.replace(/\((.*?)\)/g, '<span class="column-value">($1)</span>')}</strong></div>
-        <div class="scrap-item-rate">
-        <div class="qty-stepper">
-        <button class="decrement-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">-</button>
-        <span class="qty-display">${groupedItem.qty}</span>
-        <button class="increment-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">+</button>
-        </div>
-        <span> ₹${groupedItem.rate}</span>
-        </div>
-        <span class="delete-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">✕</span>
-        </div>
-        `).join('');
-        
-        // Step 4: Calculate total quantity and total price
-        const totalQuantity = sortedItems.reduce((acc, item) => acc + item.qty, 0); // Total quantity
-        const totalPrice = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0); // Total price
-        
-        // Step 5: Update the total price element to include total quantity
-        const totalPriceElement = document.getElementById('totalPrice');
-        totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item' : 'items'} - Total: ₹${totalPrice.toFixed(0)}`;
-        
-        
-        // Always reset these elements when updating display
-        totalPriceElement.style.display = scrapItems.length > 0 ? 'block' : 'none';
-        buttonContainer.style.display = scrapItems.length > 0 ? 'flex' : 'none';
-        
-        
-        // Step 5: scrap-increment-button
-        document.querySelectorAll('.increment-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const name = e.target.dataset.name;
-        const rate = e.target.dataset.rate;
-        const currentCount = scrapItems.filter(item =>
-        item.name === name && item.rate === rate
-        ).length;
-        
-        if (currentCount < 99) {
-        scrapItems.push({ name, rate });
-        updateScrapListDisplay();
-        updateScrapCounter();
-        updateIncrementButtonState(name, rate); // Update increment button state
-        updateDecrementButtonState(name, rate); // Ensure decrement button updates as well
-        }
-        });
-        
-        // Initial button state setup (when the list first loads)
-        updateIncrementButtonState(btn.dataset.name, btn.dataset.rate);
-        });
-        
-        function updateIncrementButtonState(name, rate) {
-        const currentCount = scrapItems.filter(item =>
-        item.name === name && item.rate === rate
-        ).length;
-        
-        const incrementButtons = document.querySelectorAll(`.increment-btn[data-name="${name}"][data-rate="${rate}"]`);
-        
-        incrementButtons.forEach(btn => {
-        btn.disabled = currentCount >= 99;
-        });
-        
-        
-        }
-        
-        // scrap-decrement-button                        
-        document.querySelectorAll('.decrement-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const name = e.target.dataset.name;
-        const rate = e.target.dataset.rate;
-        const currentCount = scrapItems.filter(item =>
-        item.name === name && item.rate === rate
-        ).length;
-        
-        if (currentCount === 1) {
-        // Remove all instances if quantity is 1
-        scrapItems = scrapItems.filter(item =>
-        item.name !== name || item.rate !== rate
-        );
-        } else {
-        // Remove last instance of this item
-        let lastIndex = -1;
-        for (let i = scrapItems.length - 1; i >= 0; i--) {
-        if (scrapItems[i].name === name && scrapItems[i].rate === rate) {
-        lastIndex = i;
-        break;
-        }
-        }
-        if (lastIndex !== -1) scrapItems.splice(lastIndex, 1);
-        }
-        
-        updateScrapListDisplay();
-        updateScrapCounter();
-        updateDecrementButtonState(name, rate); // Update button state after changes
-        });
-        
-        // Initial button state setup (when the list first loads)
-        updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
-        });
-        
-        function updateDecrementButtonState(name, rate) {
-        const currentCount = scrapItems.filter(item =>
-        item.name === name && item.rate === rate
-        ).length;
-        
-        const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
-        
-        decrementButtons.forEach(btn => {
-        btn.disabled = currentCount <= 1;
-        });
-        }
-        
-        
-        // scrap-delete-button
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const name = e.target.dataset.name;
-        const rate = e.target.dataset.rate;
-        
-        // Remove the item from scrapItems
-        scrapItems = scrapItems.filter(item => item.name !== name || item.rate !== rate);
-        
-        // Check if scrapItems is empty
-        if (scrapItems.length === 0) {
-        
-        closeScrapList();
-        showFeedback("Order list cleared"); // Show feedback message
-        }
-        handleScrapItemsChange();
-        updateScrapListDisplay();
-        });
-        });
-        updateCartPosition(); 
-        }
-        
-        
-        
-        // Function to trim the first non-English character from a string
-        function trimLeftNonEnglish(text) {
-        return text.replace(/^[^A-Za-z]+/, '');
-        }                    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // Scrap-order button
-        document.getElementById('orderScrap').addEventListener('click', async () => {
-        if (scrapItems.length === 0) {
-        showOrderListWarning();
-        return;
-        }                        
-        
-        const orderNumber = cachedOrderNumber + 1;
-        
-        // Group items by name and rate to calculate quantities
-        const itemMap = new Map();
-        scrapItems.forEach((item) => {
-        const key = `${item.name}-${item.rate}`;
-        itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
-        });
-        
-        const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
-        
-        // Generate order text with quantities and total per row
-        let orderText = sortedItems.map(item => {
-        let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
-        return item.qty > 1 
-        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-        }).join('\n');                        
-        
-        // Calculate total cost
-        let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
-        
-        // Calculate total number of items
-        let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
-        
-        // List of food-related emojis
-        let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '🎊', '💝'];
-        
-        // Select a random emoji
-        let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
-        
-        let message = encodeURIComponent(
-        `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
-        `${sortedItems.map(item => {
-        let itemTotal = item.qty * parseFloat(item.rate);
-        return item.qty > 1 
-        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-        }).join('\n\n')}\n${'-'.repeat(30)}\n` +
-        `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
-        );
-        
-        
-        window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
-        
-        // Add this line to save to localStorage
-        localStorage.setItem('lastOrder', JSON.stringify(scrapItems));
-        
-        
-        // Clear the scrap list after ordering
-        scrapItems = [];
-        updateScrapListDisplay();
-        handleScrapItemsChange();
-        closeScrapList();
-        showFeedback("Order sent. List cleared!"); // Optional feedback
-        
-        
-        updateCounter('updateOrders');
-        cachedOrderNumber = orderNumber;
-        });
-        
-        // scrap-clear button
-        document.getElementById('clearScrap').addEventListener('click', () => {
-        const scrapList = document.getElementById('scrapList');
-        const overlay = document.querySelector('.scrap-overlay');
-        
-        // Clear scrap items
-        scrapItems = [];
-        updateScrapListDisplay();
-        showFeedback("Order list cleared");
-        
-        // Close the scrap list
-        scrapList.style.display = 'none';
-        scrapVisible = false;
-        
-        // Only hide overlay if offer cart is also empty
-        if (offerCart.length === 0) {
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
-        }
-        
-        handleScrapItemsChange();
-        });  
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        let offersData = [];
-        let offerNsg = '';
-        let offerCart = [];
-        // Add these variables at the top with other cart variables
-        let offerCartVisible = false;
-        
-        // Offer Section
-        function formatDate(dateString) {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = date.toLocaleString('en-US', { month: 'short' });
-        const year = date.getFullYear().toString().slice(-2);
-        return `${day}-${month}-${year}`;
-        }
-        
+            
+            
+            
+            // Fetch data from Google Script URL
+            fetch(scriptUrl)
+            .then(response => response.json())
+            .then(data => {
+                
+                
+                // Expiry check
+                if (data.error) {  
+                    alert(data.error); // Show error from backend
+                    return;
+                }
+                
+                
+                
+                const menuDiv = document.getElementById('menu');
+                let currentCategory = null;
+                
+                // Store all category item containers for collapsing
+                const categoryItemsContainers = [];
+                
+                console.log("Fetched data:", data); // Debugging data fetching
+                
+                data.forEach(row => {
+                    const mergedColAB = row.columnB.trim() !== "" ? row.columnA + " (" + row.columnB + ")" : row.columnA;
+                    
+                    // Apply different colors to column C, D, and E and join them with " / "
+                    // Original code where you create colCDEElement:
+                    const mergedcolCDE = [
+                    row.columnC ? `<span style="color: #40E0D0;" data-column="C">${row.columnC}</span>` : '',
+                    row.columnD ? `<span style="color: #00FF7F;" data-column="D">${row.columnD}</span>` : '',
+                    //                            row.columnE ? `<span style="color: #E6E6FA;" data-column="E">${row.columnE}</span>` : ''
+                    row.columnE ? `<span style="color: #F8BBD0;" data-column="E">${row.columnE}</span>` : ''
+                    
+                    ].filter(col => col).join(' / ');
+                    
+                    const colCDEElement = document.createElement('span');
+                    colCDEElement.classList.add('colCDE');
+                    colCDEElement.innerHTML = mergedcolCDE;  // This now contains data-column attributes
+                    
+                    console.log("Merged colCDE:", mergedcolCDE); // Debugging merged colCDE
+                    
+                    // Check if columnC is empty or is a category header
+                    const isCategory = (String(row.columnC).trim() === "" || (isNaN(String(row.columnC)) && String(row.columnC).trim() !== "-"));
+                    
+                    console.log("Is category?", isCategory); // Debugging category check
+                    
+                    if (isCategory) {
+                        const categoryHeaderDiv = document.createElement('div');
+                        categoryHeaderDiv.classList.add('category-header');
+                        
+                        // MODIFIED: Store individual column values as data attributes
+                        categoryHeaderDiv.dataset.columnC = row.columnC || '';
+                        categoryHeaderDiv.dataset.columnD = row.columnD || '';
+                        categoryHeaderDiv.dataset.columnE = row.columnE || '';
+                        categoryHeaderDiv.dataset.columnF = row.columnF || '';
+                        
+                        
+                        const leftPart = document.createElement('span');
+                        leftPart.classList.add('left');
+                        leftPart.textContent = mergedColAB;
+                        
+                        const rightPart = document.createElement('span');
+                        rightPart.classList.add('right');
+                        rightPart.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
+                        
+                        categoryHeaderDiv.appendChild(leftPart);
+                        categoryHeaderDiv.appendChild(rightPart);
+                        
+                        const categoryItemsDiv = document.createElement('div');
+                        categoryItemsDiv.classList.add('category-items');
+                        
+                        // Toggle category items visibility on click
+                        categoryHeaderDiv.addEventListener('click', () => {
+                            // Reset all other headers to default collapsed size and show only the first column
+                            document.querySelectorAll('.category-header').forEach(header => {
+                                header.style.fontSize = '7rem'; // Set collapsed size
+                                header.querySelector('.right').style.display = 'none'; // Ensure second column is hidden
+                                header.classList.remove('visible-border'); // Add this line
+                            });
+                            
+                            document.querySelectorAll('.category-items').forEach(container => {
+                                if (container !== categoryItemsDiv) {
+                                    container.style.display = 'none';
+                                    container.classList.remove('visible-border'); // Add this line
+                                }
+                            });
+                            
+                            // Toggle visibility and adjust styles accordingly
+                            if (categoryItemsDiv.style.display === 'none' || categoryItemsDiv.style.display === '') {
+                                categoryItemsDiv.style.display = 'block';
+                                categoryHeaderDiv.style.fontSize = '6rem';
+                                categoryHeaderDiv.querySelector('.right').style.display = 'inline'; // Show right column
+                                categoryHeaderDiv.classList.add('visible-border');
+                                categoryItemsDiv.classList.add('visible-border');
+                                } else {
+                                categoryItemsDiv.style.display = 'none';
+                                categoryHeaderDiv.classList.remove('visible-border');
+                                categoryItemsDiv.classList.remove('visible-border');
+                            }
+                        });
+                        
+                        // Initial state: Increase font size for collapsed categories and hide second column
+                        categoryHeaderDiv.style.fontSize = '7rem';
+                        categoryHeaderDiv.querySelector('.right').style.display = 'none';
+                        
+                        menuDiv.appendChild(categoryHeaderDiv);
+                        menuDiv.appendChild(categoryItemsDiv);
+                        
+                        categoryItemsContainers.push(categoryItemsDiv);                    
+                        currentCategory = categoryItemsDiv;
+                        } else if (currentCategory) {
+                        const menuItemDiv = document.createElement('div');
+                        menuItemDiv.classList.add('menu-item');
+                        menuItemDiv.style.marginBottom = '0';
+                        
+                        const lineDiv = document.createElement('div');
+                        lineDiv.classList.add('menu-item-line');
+                        
+                        const colABElement = document.createElement('span');
+                        colABElement.classList.add('colAB');
+                        colABElement.textContent = mergedColAB;
+                        
+                        const colCDEElement = document.createElement('span');
+                        colCDEElement.classList.add('colCDE');
+                        colCDEElement.innerHTML = mergedcolCDE;  // Use innerHTML to render the colored spans
+                        
+                        lineDiv.appendChild(colABElement);
+                        lineDiv.appendChild(colCDEElement);                        
+                        menuItemDiv.appendChild(lineDiv);
+                        currentCategory.appendChild(menuItemDiv);
+                    }
+                });
+                
+                categoryItemsContainers.forEach(container => {
+                    container.style.display = 'none';
+                });
+                
+                //Show elements
+                // document.querySelector('.header').style.display = 'flex'; // Show header
+                document.querySelector(".search-container").style.display = "block"; // Search container               
+                document.querySelector(".tab-container").style.display = "flex"; // Tabs               
+                document.querySelector('.footer-container').style.display = 'block'; // Show footer
+                
+                
+                // Modify the loading overlay hide code to show the image overlay
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                
+                
+                // Set the image source when the overlay is shown
+                document.getElementById('imageOverlay').addEventListener('click', () => {
+                    document.getElementById('driveImage').src = imageUrl;
+                });
+                
+                
+                
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
+            });
+            
+            
+            
+            // Add this code where you initialize other JavaScript
+            const fileId = "1_YZByTcu5rHIobQoOS1AZ_NjNCz98m8T";
+            const timestamp = new Date().getTime();
+            const imageUrl = `https://lh3.googleusercontent.com/d/${fileId}?t=${timestamp}`; 
+            
+            
+            // Close image overlay
+            document.getElementById('closeImage').addEventListener('click', () => {
+                document.getElementById('imageOverlay').style.display = 'none';
+            });
+            
+            // Optional: Close when clicking outside image
+            document.getElementById('imageOverlay').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('imageOverlay')) {
+                    document.getElementById('imageOverlay').style.display = 'none';
+                }
+            });               
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Modify toggleScrapList function
+            function toggleScrapList() {
+                const overlay = document.querySelector('.scrap-overlay');
+                const scrapList = document.getElementById('scrapList');
+                const offerCartElement = document.getElementById('offer-cart');
+                
+                
+                // Check if both carts are empty
+                const hasScrapItems = scrapItems.length > 0;
+                const hasCartItems = offerCart.length > 0;
+                
+                if (!hasScrapItems && !hasCartItems) {
+                    if (isWarningVisible) {
+                        // Close warning if it's already visible
+                        closeScrapList();
+                        isWarningVisible = false;
+                        } else {
+                        // Show warning if not visible
+                        showEmptyWarningInScrapList();
+                        isWarningVisible = true;
+                    }
+                    return;
+                }
+                
+                
+                // Toggle visibility based on content
+                scrapVisible = !scrapVisible;
+                
+                // Show/hide scrap list only if it has items
+                scrapList.style.display = hasScrapItems && scrapVisible ? 'flex' : 'none';
+                
+                // Show/hide offer cart only if it has items
+                offerCartElement.style.display = hasCartItems && scrapVisible ? 'block' : 'none';
+                
+                // Update positions if showing
+                if (scrapVisible) {
+                    overlay.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    updateCartPosition();
+                    scrapListObserver.observe(scrapList);
+                    } else {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                    scrapListObserver.unobserve(scrapList);
+                }
+                isWarningVisible = false;
+            }
+            
+            // Add overlay click handler
+            document.querySelector('.scrap-overlay').addEventListener('click', () => {
+                closeScrapList();
+                closeOfferCart();
+            });
+            
+            
+            
+            // Empty-warning
+            function showEmptyWarningInScrapList() {
+                const scrapList = document.getElementById('scrapList');
+                const scrapItemsContainer = document.getElementById('scrapItems');
+                const totalPrice = document.getElementById('totalPrice');
+                const buttonContainer = document.querySelector('.button-container');
+                const h2 = scrapList.querySelector('h2');
+                
+                // Update heading
+                h2.textContent = 'Begin shopping';
+                h2.style.color = '#d32f2f';
+                
+                // Display scrap list overlay
+                scrapList.style.display = 'flex';
+                document.querySelector('.scrap-overlay').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                scrapVisible = true;
+                
+                // Insert empty warning message
+                scrapItemsContainer.innerHTML = `
+                <div class="empty-warning">
+                <img src="icons/empty.svg" alt="Cart Icon" width="60" height="60">
+                <p class="empty-text">
+                Tap the <strong>Rate</strong> of items from 
+                <a href="#" id="mainMenuLink" class="main-menu-link">Main Menu</a>
+                </p>
+                <p class="empty-text">OR</p>
+                <div class="button-container-center">
+                <button id="repeatLastOrder" class="smart-pick-btn">
+                
+                Repeat Last Order
+                </button>
+                </div>
+                <p class="empty-text">OR </p>
+                <p class="empty-text">use <strong>Magic</strong> button to add a random item</p>
+                <div class="button-container-center">
+                <button id="smartPickBtn" class="smart-pick-btn">
+                <img src="icons/magic.svg" alt="Magic" class="button-icon">
+                Magic Pick
+                <img src="icons/magic.svg" alt="Magic" class="button-icon">
+                </button>
+                
+                
+                </p>
+                </div>
+                </div>
+                `;
+                
+                // ✅ Add event listener to "Main Menu" link to run closeModal()
+                document.getElementById("mainMenuLink").addEventListener("click", (event) => {
+                    event.preventDefault(); // Prevent default link behavior
+                    closeModal(); // Close modal when clicking "Main Menu"
+                });
+                
+                
+                // Hide irrelevant elements
+                totalPrice.style.display = 'none';
+                buttonContainer.style.display = 'none';
+                isWarningVisible = true;
+                
+                // Add event listener with animation effect and delay
+                document.getElementById('smartPickBtn').addEventListener('click', () => {
+                    triggerMagicAnimation(() => {
+                        setTimeout(() => {
+                            addRandomItem(); // Add item AFTER animation plays
+                            // closeModal(); // Hide modal after adding item
+                        }, 500); // Delay closing modal
+                    });
+                });
+                
+                // Repeat Last Order functionality
+                const repeatButton = document.getElementById('repeatLastOrder');
+                
+                repeatButton.addEventListener('click', () => {
+                    const lastOrder = localStorage.getItem('lastOrder');
+                    
+                    if (!lastOrder) {
+                        repeatButton.disabled = true; // Fully disable the button
+                        repeatButton.style.pointerEvents = 'none'; // Prevent clicks
+                        repeatButton.style.opacity = '0.5'; // Make it visibly disabled
+                        
+                        // Show message below the button
+                        let message = document.getElementById('orderMessage');
+                        if (!message) {
+                            message = document.createElement('p');
+                            message.id = 'orderMessage';
+                            message.textContent = "No previous order found";
+                            message.style.color = 'red';
+                            message.style.fontWeight = 'bold';
+                            
+                            message.style.marginTop = '8px';
+                            message.style.fontSize = '14px';
+                            repeatButton.parentNode.insertBefore(message, repeatButton.nextSibling);
+                        }
+                        
+                        return;
+                    }
+                    
+                    triggerRepeatAnimation(() => {
+                        setTimeout(() => {
+                            try {
+                                const parsedOrder = JSON.parse(lastOrder);
+                                scrapItems = parsedOrder;
+                                updateScrapListDisplay();
+                                handleScrapItemsChange();
+                                } catch (error) {
+                                console.error('Error loading last order:', error);
+                                showFeedback('Error loading last order');
+                            }
+                        }, 500); // Delay processing
+                    });
+                });
+                
+            }
+            
+            
+            
+            // ✅ Function to trigger animation before processing
+            function triggerRepeatAnimation(callback) {
+                const button = document.getElementById('repeatLastOrder');
+                
+                // Remove and re-add the animation class to restart the animation
+                button.classList.remove('repeat-animation');
+                void button.offsetWidth; // Force reflow to apply animation again
+                button.classList.add('repeat-animation');
+                
+                // Execute callback AFTER animation completes (800ms)
+                setTimeout(() => {
+                    button.classList.remove('repeat-animation');
+                    if (callback) callback();
+                }, 500);
+            }
+            
+            
+            // Function to trigger magic animation
+            function triggerMagicAnimation(callback) {
+                const btn = document.getElementById('smartPickBtn');
+                
+                // Add glow effect
+                btn.classList.add('magic-glow');
+                
+                // Create sparkles
+                for (let i = 0; i < 8; i++) {
+                    let sparkle = document.createElement('div');
+                    sparkle.classList.add('magic-sparkle');
+                    document.body.appendChild(sparkle);
+                    
+                    // Random position near the button
+                    let xOffset = Math.random() * 100 - 50;
+                    let yOffset = Math.random() * 50 - 25;
+                    let scale = Math.random() * 0.8 + 0.3;
+                    
+                    sparkle.style.left = `${btn.offsetLeft + btn.offsetWidth / 2 + xOffset}px`;
+                    sparkle.style.top = `${btn.offsetTop + yOffset}px`;
+                    sparkle.style.transform = `scale(${scale})`;
+                    
+                    // Remove after animation
+                    setTimeout(() => sparkle.remove(), 500);
+                }
+                
+                // Remove glow effect after animation
+                setTimeout(() => {
+                    btn.classList.remove('magic-glow');
+                    if (callback) callback(); // Call function after animation
+                }, 500);
+            }
+            
+            // Function to close modal after animation
+            function closeModal() {
+                document.getElementById('scrapList').style.display = 'none';
+                document.querySelector('.scrap-overlay').style.display = 'none';
+                document.body.style.overflow = 'auto';
+                scrapVisible = false;
+            }
+            
+            
+            
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('smartPickBtn2').addEventListener('click', addRandomItem);
+            });
+            
+            
+            
+            function showOrderListWarning() {                            
+                let existingModal = document.getElementById('orderListWarningModal');
+                if (existingModal) {
+                    existingModal.remove(); 
+                    isWarningVisible = false;
+                    return;
+                }
+                
+                let modal = document.createElement('div');
+                modal.id = 'orderListWarningModal';
+                modal.className = 'modal-overlay';
+                
+                let contentEnglish = `
+                <p><strong>Order list is empty.</strong></p>
+                <ul>
+                <li>Tap <b>rate</b> to add an item. In the order list, you can <b>increase, decrease or remove</b> items.</li>
+                </ul>
+                `;
+                
+                let contentPunjabi = `
+                <p><strong>ਆਰਡਰ ਸੂਚੀ ਖਾਲੀ ਹੈ।</strong></p>
+                <ul>
+                <li>ਚੀਜ਼ਾਂ ਪਾਉਣ ਲਈ <b>ਰੇਟ</b> ਛੂਹੋ। ਆਰਡਰ ਸੂਚੀ ਵਿੱਚੋਂ, ਤੁਸੀਂ ਚੀਜ਼ਾਂ <b>ਘਟਾ, ਵਧਾ ਜਾਂ ਕੱਢ</b> ਸਕਦੇ ਹੋ</li>
+                </ul>
+                `;
+                
+                modal.innerHTML = `
+                <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <div id="modalText">${contentEnglish}</div>
+                <div id="toggleContainer" class="toggle-container">
+                <div id="toggleButton" class="split-toggle">
+                <div id="englishSide" class="toggle-half active">Eng</div>
+                <div id="punjabiSide" class="toggle-half">ਪੰਜਾਬੀ</div>
+                </div>
+                </div>
+                </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                const toggleButton = document.getElementById('toggleButton');
+                const modalText = document.getElementById('modalText');
+                const englishSide = document.getElementById('englishSide');
+                const punjabiSide = document.getElementById('punjabiSide');
+                let isEnglish = true;
+                
+                toggleButton.addEventListener('click', () => {
+                    isEnglish = !isEnglish;
+                    if (isEnglish) {
+                        modalText.innerHTML = contentEnglish;
+                        englishSide.classList.add('active');
+                        punjabiSide.classList.remove('active');
+                        } else {
+                        modalText.innerHTML = contentPunjabi;
+                        punjabiSide.classList.add('active');
+                        englishSide.classList.remove('active');
+                    }
+                });
+                
+                function closeModal() {
+                    modal.remove();
+                    isWarningVisible = false;
+                    
+                    // Add this line to ensure scrap overlay is hidden
+                    document.querySelector('.scrap-overlay').style.display = 'none';
+                }
+                
+                const autoCloseTimer = setTimeout(closeModal, 60000);
+                
+                modal.querySelector('.close-button').addEventListener('click', () => {
+                    clearTimeout(autoCloseTimer);
+                    closeModal();
+                });
+                
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        clearTimeout(autoCloseTimer);
+                        closeModal();
+                    }
+                });
+                
+                isWarningVisible = true;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            let scrapItems = [];
+            let scrapVisible = false;                                                        
+            // Add these JavaScript modifications
+            
+            // Add variable to track warning visibility
+            let isWarningVisible = false;
+            
+            // Scrap Button Functionality
+            document.getElementById('scrapButton').addEventListener('click', function(e) {
+                // Prevent event from bubbling up to document listener
+                e.stopPropagation();
+                toggleScrapList();
+            });
+            
+            function updateScrapButtonStatus() {
+                const scrapButton = document.getElementById('scrapButton');
+                const hasOfferItems = offerCart.length > 0;
+                const scrapButtonImg = document.querySelector('#scrapButton img');
+                
+                // Check if either scrapItems or offerCart has items
+                const hasItems = scrapItems.length > 0 || offerCart.length > 0;
+                
+                // scrapButton.classList.toggle('has-items', hasItems);
+                scrapButton.classList.toggle('offer-has-items', hasOfferItems);
+                //  scrapButton.classList.toggle('has-items', scrapItems.length > 0 || hasOfferItems);
+                scrapButton.classList.toggle('has-items', scrapItems.length > 0);
+                
+                // Optional: Add subtle pulse animation when items are added
+                if (hasItems) {
+                    scrapButton.style.animation = 'pulse-green 1s ease';
+                    setTimeout(() => scrapButton.style.animation = '', 1000);
+                }
+            }
+            
+            
+            // Add this to your existing function
+            function handleScrapItemsChange() {
+                updateScrapListDisplay();
+                updateScrapButtonStatus();
+                updateScrapCounter();
+                updateOfferAddButtons();
+                
+                
+                // New: Remove dependent offers when scrap is empty
+                if (scrapItems.length === 0) {
+                    const dependentOffersRemoved = offerCart.filter(group => group.dependent);
+                    offerCart = offerCart.filter(group => !group.dependent);
+                    
+                    if (dependentOffersRemoved.length > 0) {
+                        showFeedback('Dependent offers removed');
+                        updateCartDisplay();
+                        updateOfferAddButtons();
+                        updateScrapButtonStatus();
+                    }
+                }
+                updateCartDisplay();
+                saveScrapItems();
+            }
+            
+            
+            // Add this function to update the counter
+            function updateScrapCounter() {
+                const counter = document.querySelector('#scrapButton .counter-badge');
+                counter.textContent = scrapItems.length > 0 ? scrapItems.length : ''; 
+                counter.style.display = scrapItems.length > 0 ? 'inline-block' : 'none';
+                
+                
+                // Add animation when items are added
+                if(scrapItems.length > 0) {
+                    counter.style.transform = 'scale(1.2)';
+                    setTimeout(() => counter.style.transform = 'scale(1)', 200);
+                }
+            } 
+            
+            
+            
+            
+            
+            // Add items to scrap list when clicking rates
+            document.getElementById('menu').addEventListener('click', (e) => {
+                
+                const rateElement = e.target.closest('.colCDE span, .colCDE');
+                if (rateElement && rateElement.textContent.match(/₹?\d+/)) {
+                    const menuItemLine = rateElement.closest('.menu-item-line');
+                    
+                    // Get which column was clicked (C/D/E)
+                    const column = rateElement.getAttribute('data-column');
+                    
+                    // Get category header
+                    const categoryHeader = menuItemLine.closest('.menu-item')
+                    .closest('.category-items')
+                    .previousElementSibling;
+                    
+                    // Get the specific column value from category header
+                    const columnValue = categoryHeader.dataset[`column${column}`]?.trim();
+                    
+                    // Build category name (without column value)
+                    const categoryName = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
+                    
+                    // Build item name
+                    let itemName = menuItemLine.querySelector('.colAB').textContent.split('(')[0].trim();
+                    
+                    // Add column value to item name if it exists
+                    if (columnValue) {
+                        itemName += ` (${columnValue})`;
+                    }
+                    
+                    // Combine names
+                    const combinedName = `${categoryName} - ${itemName}`;
+                    
+                    // Rest of your existing click handling code...
+                    const clickedRate = rateElement.textContent.replace('₹', '').trim();
+                    
+                    if (clickedRate.includes('/')) {
+                        showTapFeedbackInCenter('❌');
+                        playBeep(600, 0.15);
+                        } else {
+                        animateRateMovement(rateElement);                                
+                        scrapItems.push({ 
+                            name: combinedName, 
+                            rate: clickedRate 
+                        });
+                    }
+                    
+                    
+                    updateScrapListDisplay();
+                }
+                handleScrapItemsChange();
+            });
+            
+            // Rate add animation
+            function animateRateMovement(sourceElement) {
+                const scrapButton = document.getElementById('scrapButton');                        
+                
+                // Get positions of the source element and the scrap button
+                const sourceRect = sourceElement.getBoundingClientRect();
+                const targetRect = scrapButton.getBoundingClientRect();                        
+                
+                // Create a floating clone of the rate element
+                const floatingClone = document.createElement('div');
+                floatingClone.textContent = sourceElement.textContent;
+                floatingClone.style.position = 'fixed';
+                floatingClone.style.left = `${sourceRect.left}px`;
+                floatingClone.style.top = `${sourceRect.top}px`;
+                floatingClone.style.fontSize = '16px';
+                floatingClone.style.fontWeight = 'bold';
+                floatingClone.style.background = '#ffcc00';
+                floatingClone.style.padding = '5px 10px';
+                floatingClone.style.borderRadius = '5px';
+                floatingClone.style.boxShadow = '0px 2px 5px rgba(0,0,0,0.2)';
+                floatingClone.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+                floatingClone.style.zIndex = '1000';
+                
+                document.body.appendChild(floatingClone);                        
+                
+                // Force repaint before moving
+                requestAnimationFrame(() => {
+                    floatingClone.style.transform = `translate(${targetRect.left - sourceRect.left}px, ${targetRect.top - sourceRect.top}px) scale(0.5)`;
+                    floatingClone.style.opacity = '0';
+                });                        
+                
+                // Remove the element after animation
+                setTimeout(() => {
+                    floatingClone.remove();
+                }, 500);
+            }
+            
+            
+            // Miss rate indication
+            function showTapFeedbackInCenter(symbol) {
+                const feedbackElement = document.createElement('div');
+                feedbackElement.textContent = symbol;
+                feedbackElement.style.position = 'fixed';
+                
+                // Center horizontally and vertically
+                feedbackElement.style.left = `${window.innerWidth / 2}px`;
+                feedbackElement.style.top = `${window.innerHeight / 2}px`;
+                
+                feedbackElement.style.transform = 'translate(-50%, -50%) scale(0)'; // Center and start small
+                feedbackElement.style.fontSize = '6rem';
+                feedbackElement.style.fontWeight = 'bold';
+                feedbackElement.style.color = 'red';
+                feedbackElement.style.transition = 'transform 0.3s ease-out, opacity 0.5s ease-out';
+                feedbackElement.style.zIndex = '1000';
+                
+                document.body.appendChild(feedbackElement);
+                
+                // Trigger zoom-in effect
+                requestAnimationFrame(() => {
+                    feedbackElement.style.transform = 'translate(-50%, -50%) scale(2)';
+                });
+                
+                // Remove feedback after animation
+                setTimeout(() => {
+                    feedbackElement.remove();
+                }, 500);
+            }
+            
+            // Miss tone
+            let audioCtx; // Declare outside to initialize later
+            let oscillator;
+            
+            document.addEventListener("click", () => {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    } else if (audioCtx.state === "suspended") {
+                    audioCtx.resume();
+                }
+            }, { once: true }); // Runs only once
+            
+            function playBeep(frequency, duration) {
+                if (!audioCtx) {
+                    console.warn("AudioContext not initialized yet. User interaction required.");
+                    return;
+                }
+                
+                if (audioCtx.state === "suspended") {
+                    audioCtx.resume().then(() => {
+                        generateBeep(frequency, duration);
+                    });
+                    } else {
+                    generateBeep(frequency, duration);
+                }
+            }
+            
+            function generateBeep(frequency, duration) {
+                if (oscillator) {
+                    oscillator.stop(); // Stop previous beep before starting a new one
+                }
+                
+                oscillator = audioCtx.createOscillator();
+                let gainNode = audioCtx.createGain();
+                
+                oscillator.type = "sine";
+                oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                setTimeout(() => {
+                    oscillator.stop();
+                }, duration * 1000);
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            function updateScrapListDisplay() {
+                const scrapContainer = document.getElementById('scrapItems');
+                // const totalPrice = document.getElementById('totalPrice');                       
+                const buttonContainer = document.querySelector('.button-container');
+                const scrapList = document.getElementById('scrapList');
+                const h2 = scrapList.querySelector('h2');
+                
+                
+                
+                if (scrapItems.length > 0) {
+                    // Reset h2 text when items are present
+                    h2.textContent = 'Selected Items';
+                    // totalPrice.style.display = 'block';
+                    buttonContainer.style.display = 'flex';
+                    
+                }
+                
+                // Step 1: Combine duplicate items and calculate quantities
+                const itemMap = new Map();
+                scrapItems.forEach((item) => {
+                    const key = `${item.name}-${item.rate}`;
+                    if (itemMap.has(key)) {
+                        itemMap.get(key).qty++;
+                        } else {
+                        itemMap.set(key, { ...item, qty: 1 });
+                    }
+                });
+                
+                // Step 2: Convert map values to array and sort alphabetically by item name
+                // Step 2: Convert map values to array and sort alphabetically by item name
+                const sortedItems = Array.from(itemMap.values()).sort((a, b) => {
+                    const nameA = a.name.replace(/[^a-zA-Z]/g, '').toLowerCase(); // Extract only English characters
+                    const nameB = b.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+                
+                
+                // Step 3: Generate HTML for sorted items with quantity stepper
+                scrapContainer.innerHTML = sortedItems.map((groupedItem) => `
+                <div class="scrap-item">
+                <div class="scrap-item-name"><strong>${groupedItem.name.replace(/\((.*?)\)/g, '<span class="column-value">($1)</span>')}</strong></div>
+                <div class="scrap-item-rate">
+                <div class="qty-stepper">
+                <button class="decrement-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">-</button>
+                <span class="qty-display">${groupedItem.qty}</span>
+                <button class="increment-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">+</button>
+                </div>
+                <span> ₹${groupedItem.rate}</span>
+                </div>
+                <span class="delete-btn" data-name="${groupedItem.name}" data-rate="${groupedItem.rate}">✕</span>
+                </div>
+                `).join('');
+                
+                // Step 4: Calculate total quantity and total price
+                const totalQuantity = sortedItems.reduce((acc, item) => acc + item.qty, 0); // Total quantity
+                const totalPrice = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0); // Total price
+                
+                // Step 5: Update the total price element to include total quantity
+                const totalPriceElement = document.getElementById('totalPrice');
+                totalPriceElement.textContent = `${totalQuantity} ${totalQuantity === 1 ? 'item' : 'items'} - Total: ₹${totalPrice.toFixed(0)}`;
+                
+                
+                // Always reset these elements when updating display
+                totalPriceElement.style.display = scrapItems.length > 0 ? 'block' : 'none';
+                buttonContainer.style.display = scrapItems.length > 0 ? 'flex' : 'none';
+                
+                
+                // Step 5: scrap-increment-button
+                document.querySelectorAll('.increment-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const name = e.target.dataset.name;
+                        const rate = e.target.dataset.rate;
+                        const currentCount = scrapItems.filter(item =>
+                        item.name === name && item.rate === rate
+                        ).length;
+                        
+                        if (currentCount < 99) {
+                            scrapItems.push({ name, rate });
+                            updateScrapListDisplay();
+                            updateScrapCounter();
+                            updateIncrementButtonState(name, rate); // Update increment button state
+                            updateDecrementButtonState(name, rate); // Ensure decrement button updates as well
+                        }
+                    });
+                    
+                    // Initial button state setup (when the list first loads)
+                    updateIncrementButtonState(btn.dataset.name, btn.dataset.rate);
+                });
+                
+                function updateIncrementButtonState(name, rate) {
+                    const currentCount = scrapItems.filter(item =>
+                    item.name === name && item.rate === rate
+                    ).length;
+                    
+                    const incrementButtons = document.querySelectorAll(`.increment-btn[data-name="${name}"][data-rate="${rate}"]`);
+                    
+                    incrementButtons.forEach(btn => {
+                        btn.disabled = currentCount >= 99;
+                    });
+                    
+                    
+                }
+                
+                // scrap-decrement-button                        
+                document.querySelectorAll('.decrement-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const name = e.target.dataset.name;
+                        const rate = e.target.dataset.rate;
+                        const currentCount = scrapItems.filter(item =>
+                        item.name === name && item.rate === rate
+                        ).length;
+                        
+                        if (currentCount === 1) {
+                            // Remove all instances if quantity is 1
+                            scrapItems = scrapItems.filter(item =>
+                            item.name !== name || item.rate !== rate
+                            );
+                            } else {
+                            // Remove last instance of this item
+                            let lastIndex = -1;
+                            for (let i = scrapItems.length - 1; i >= 0; i--) {
+                                if (scrapItems[i].name === name && scrapItems[i].rate === rate) {
+                                    lastIndex = i;
+                                    break;
+                                }
+                            }
+                            if (lastIndex !== -1) scrapItems.splice(lastIndex, 1);
+                        }
+                        
+                        updateScrapListDisplay();
+                        updateScrapCounter();
+                        updateDecrementButtonState(name, rate); // Update button state after changes
+                    });
+                    
+                    // Initial button state setup (when the list first loads)
+                    updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
+                });
+                
+                function updateDecrementButtonState(name, rate) {
+                    const currentCount = scrapItems.filter(item =>
+                    item.name === name && item.rate === rate
+                    ).length;
+                    
+                    const decrementButtons = document.querySelectorAll(`.decrement-btn[data-name="${name}"][data-rate="${rate}"]`);
+                    
+                    decrementButtons.forEach(btn => {
+                        btn.disabled = currentCount <= 1;
+                    });
+                }
+                
+                
+                // scrap-delete-button
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const name = e.target.dataset.name;
+                        const rate = e.target.dataset.rate;
+                        
+                        // Remove the item from scrapItems
+                        scrapItems = scrapItems.filter(item => item.name !== name || item.rate !== rate);
+                        
+                        // Check if scrapItems is empty
+                        if (scrapItems.length === 0) {
+                            
+                            closeScrapList();
+                            showFeedback("Order list cleared"); // Show feedback message
+                        }
+                        handleScrapItemsChange();
+                        updateScrapListDisplay();
+                    });
+                });
+                updateCartPosition(); 
+            }
+            
+            
+            
+            // Function to trim the first non-English character from a string
+            function trimLeftNonEnglish(text) {
+                return text.replace(/^[^A-Za-z]+/, '');
+            }                    
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Scrap-order button
+            document.getElementById('orderScrap').addEventListener('click', async () => {
+                if (scrapItems.length === 0) {
+                    showOrderListWarning();
+                    return;
+                }                        
+                
+                const orderNumber = cachedOrderNumber + 1;
+                
+                // Group items by name and rate to calculate quantities
+                const itemMap = new Map();
+                scrapItems.forEach((item) => {
+                    const key = `${item.name}-${item.rate}`;
+                    itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
+                });
+                
+                const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+                
+                // Generate order text with quantities and total per row
+                let orderText = sortedItems.map(item => {
+                    let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
+                    return item.qty > 1 
+                    ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                    : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                }).join('\n');                        
+                
+                // Calculate total cost
+                let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
+                
+                // Calculate total number of items
+                let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
+                
+                // List of food-related emojis
+                let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '🎊', '💝'];
+                
+                // Select a random emoji
+                let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
+                
+                let message = encodeURIComponent(
+                `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
+                `${sortedItems.map(item => {
+                let itemTotal = item.qty * parseFloat(item.rate);
+                return item.qty > 1 
+                ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                }).join('\n\n')}\n${'-'.repeat(30)}\n` +
+                `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
+                );
+                
+                
+                window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
+                
+                // Add this line to save to localStorage
+                localStorage.setItem('lastOrder', JSON.stringify(scrapItems));
+                
+                
+                // Clear the scrap list after ordering
+                scrapItems = [];
+                localStorage.removeItem('scrapList'); // Add this line
+                updateScrapListDisplay();
+                handleScrapItemsChange();
+                closeScrapList();
+                showFeedback("Order sent. List cleared!"); // Optional feedback
+                
+                
+                updateCounter('updateOrders');
+                cachedOrderNumber = orderNumber;
+            });
+            
+            // scrap-clear button
+            document.getElementById('clearScrap').addEventListener('click', () => {
+                const scrapList = document.getElementById('scrapList');
+                const overlay = document.querySelector('.scrap-overlay');
+                
+                // Clear scrap items
+                scrapItems = [];
+                localStorage.removeItem('scrapList'); // Add this line
+                updateScrapListDisplay();
+                showFeedback("Order list cleared");
+                
+                // Close the scrap list
+                scrapList.style.display = 'none';
+                scrapVisible = false;
+                
+                // Only hide overlay if offer cart is also empty
+                if (offerCart.length === 0) {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+                
+                handleScrapItemsChange();
+            });  
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Add this in the script section
+            function saveScrapItems() {
+                localStorage.setItem('scrapList', JSON.stringify(scrapItems));
+            }
+            
+            function loadScrapItems() {
+                const saved = localStorage.getItem('scrapList');
+                if (saved) {
+                    try {
+                        scrapItems = JSON.parse(saved);
+                        handleScrapItemsChange();
+                        } catch (e) {
+                        console.error('Error loading scrap items:', e);
+                        localStorage.removeItem('scrapList');
+                    }
+                }
+            }
+            
+            
+            
+           // Add this in the DOMContentLoaded event listener
+document.addEventListener("DOMContentLoaded", function () {
+  loadScrapItems();
+  setActiveTab("allButton");
+}); 
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            let offersData = [];
+            let offerNsg = '';
+            let offerCart = [];
+            // Add these variables at the top with other cart variables
+            let offerCartVisible = false;
+            
+            // Offer Section
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = date.toLocaleString('en-US', { month: 'short' });
+                const year = date.getFullYear().toString().slice(-2);
+                return `${day}-${month}-${year}`;
+            }
+            
         // Offer elements
         const offersButton = document.getElementById('offers-button');
         const offersContainer = document.getElementById('offers-container');
@@ -3943,7 +3988,7 @@
         data-end="${offer[3] || ''}"
         data-allow-once="${offer[4] || 'No'}" 
         data-dependencies="${offer[5] || 'No'}">
-        Add
+        +
         </button>
         <h2 class="offer-title">${offer[1]}</h2>
         <p class="offer-dates">${formatDate(offer[0])} ${offer[3] ? `to ${formatDate(offer[3])}` : ''}</p>
@@ -4511,4 +4556,4 @@
         
         
         </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
