@@ -19,6 +19,8 @@
                                 updateCounter('updateViews').then(data => {
                                     document.getElementById('viewsCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> views`;
                                     
+                                    document.getElementById('modal-viewsCounter').textContent = 
+  String(data.count).padStart(4, '0');
                                 });
                                 } else {
                                 // If the user is returning, just fetch the current views count
@@ -59,6 +61,8 @@
                                 updateCounter('updateVisitors').then(data => {
                                     document.getElementById('visitorCounter').innerHTML = `<span style="color: white;">${String(data.count).padStart(4, '0')}</span> users`;
                                     
+document.getElementById('modal-visitorCounter').textContent = 
+  String(data.count).padStart(4, '0');                                    
                                 });
                                 } else {
                                 updateCounter('getVisitors').then(data => {
@@ -94,6 +98,9 @@
                                     animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
                                     showFeedback('Thank you!');
                                 });
+                                
+                                document.getElementById('modal-likeCounter').textContent = 
+  String(data.count).padStart(3, '0');
                                 } else {
                                 localStorage.removeItem(likeKey);
                                 likeIcon.classList.remove('liked');

@@ -129,7 +129,7 @@
 
         <!-- Word Search -->
         <div class="hsidebar-option" id="cheatToggleButton">
-        <img src="icons/word.svg" alt="Word Search" class="menu-icon invert-icon">
+        <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
         <span> Word Search: Inactive</span>
         </div>
         
@@ -1279,7 +1279,7 @@ if (toggleStarryBg) {
     const starryBg = document.querySelector('.starry-background');
     starryBg?.classList.toggle('disabled', !isEnabled);
     toggleStarryBg.querySelector('span').textContent = `Starry Background: ${isEnabled ? 'On' : 'Off'}`;
-
+    
     // Click handler
     toggleStarryBg.addEventListener('click', function() {
         isEnabled = !starryBg.classList.toggle('disabled');
@@ -1598,6 +1598,95 @@ if (toggleStarryBg) {
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+
+
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Update modal counters
+function updateModalCounters() {
+  document.getElementById('modal-visitorCounter').textContent = 
+    document.getElementById('visitorCounter').querySelector('span').textContent;
+    
+  document.getElementById('modal-viewsCounter').textContent = 
+    document.getElementById('viewsCounter').querySelector('span').textContent;
+
+  document.getElementById('modal-likeCounter').textContent = 
+    document.getElementById('likeCounter').textContent;
+
+  // Fetch order number from server
+  fetch(`${scriptUrl}?sheet=counter&action=getOrders`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('modal-orderNumber').textContent = 
+        String(data.count).padStart(4, '0');
+    });
+}
+
+// Show counters modal when footer is clicked
+document.getElementById('footer-info').addEventListener('click', () => {
+  // Open modal using universal function
+   toggleSidebar(false);
+  openModalStandalone('counters-modal');
+  
+  // Update counters after modal is opened
+  updateModalCounters();
+});
+        
+        setupModalTriggers('counters-modal'); 
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         
     } //hsidebar

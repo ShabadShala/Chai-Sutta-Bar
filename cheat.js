@@ -38,7 +38,7 @@ function activateCheatMode() {
     const searchInput = document.getElementById('searchInput');
     searchInput.value = '';
     searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-    searchInput.focus();
+   
     
     // Clear TAB filters
     setActiveTab("allButton");
