@@ -87,10 +87,7 @@
         Share App
         </div>
         
-        <div class="hsidebar-option" id="app-features">
-        <img src="icons/feature.svg" alt="Features Icon" class="menu-icon invert-icon">
-        App Features
-        </div>        
+      
         
         <!-- FAQ -->
         <div class="hsidebar-option" id="faq-option">
@@ -100,7 +97,7 @@
         
         <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
         
-       
+        
         <!-- Settings Section -->
         <div class="settings-section">
         <div class="settings-header hsidebar-option">
@@ -115,23 +112,24 @@
         
         <div class="settings-options" style="display: none;">
         
-                <!-- Starry Background Toggle -->
-<div class="hsidebar-option" id="toggle-starry-background">
-    <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon">
-    <span>Starry Background: On</span>
-</div>
-
-        <!-- Child Lock -->
-        <div class="hsidebar-option" id="childLockButton">
-        <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon">
-        <span>Child Lock: Disabled</span>
-        </div>                    
-
+        <!-- Starry Background Toggle -->
+        <div class="hsidebar-option" id="toggle-starry-background">
+        <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon">
+        <span>Starry Background: On</span>
+        </div>
+        
+                
         <!-- Word Search -->
         <div class="hsidebar-option" id="cheatToggleButton">
         <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
         <span> Word Search: Inactive</span>
         </div>
+        
+        <!-- Child Lock -->
+        <div class="hsidebar-option" id="childLockButton">
+        <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon">
+        <span>Child Lock: Disabled</span>
+        </div>                    
         
         <!-- Clear Cache -->
         <div class="hsidebar-option" id="clear-storage">
@@ -148,7 +146,8 @@
         <!-- Footer -->
         <div class="footer-text" id="footer-info">
         <div class="footer-content">
-        <img src="icon-192.png" alt="CSB Logo" class="footer-logo">
+        <img src="icons/dashboard.svg" alt="Counters" class="footer-logo invert-icon">
+        
         <div>
         Version 1.20.3 x64<br>Developed by ShabadShala
         </div>
@@ -543,49 +542,49 @@
             
             
             // Print the QR image
-function printQRCode() {
-    const qrImg = document.getElementById("qr-code-img");
-    if (!qrImg) {
-        alert("QR Code not found!");
-        return;
-    }
-
-    const printWindow = window.open("", "_blank");
-
-    printWindow.document.write(`
-        <html>
-        <head>
-        <title>Print QR Code</title>
-        <style>
-        @page { 
-            size: A4; 
-            margin: 20mm; 
-        }
-        body { 
-            text-align: center; 
-            padding: 20px; 
-        }
-        img { 
-            max-width: 100%; 
-            height: auto; 
-        }
-        </style>
-        </head>
-        <body>
-
-        <img src="${qrImg.src}" alt="QR Code">
-
-        <script>
-        window.onload = function() { window.print(); };
-        </script>
-
-        </body>
-        </html>
-    `);
-
-    printWindow.document.close();
-}
-
+            function printQRCode() {
+                const qrImg = document.getElementById("qr-code-img");
+                if (!qrImg) {
+                    alert("QR Code not found!");
+                    return;
+                }
+                
+                const printWindow = window.open("", "_blank");
+                
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                    <title>Print QR Code</title>
+                    <style>
+                    @page { 
+                    size: A4; 
+                    margin: 20mm; 
+                    }
+                    body { 
+                    text-align: center; 
+                    padding: 20px; 
+                    }
+                    img { 
+                    max-width: 100%; 
+                    height: auto; 
+                    }
+                    </style>
+                    </head>
+                    <body>
+                    
+                    <img src="${qrImg.src}" alt="QR Code">
+                    
+                    <script>
+                    window.onload = function() { window.print(); };
+                    </script>
+                    
+                    </body>
+                    </html>
+                `);
+                
+                printWindow.document.close();
+            }
+            
             
             
             
@@ -979,55 +978,55 @@ function printQRCode() {
         const faqModal = document.createElement('div');
         faqModal.id = 'faq-modal';
         faqModal.className = 'modal';
-faqModal.innerHTML = `
-<div class="modal-content">
-  <div class="close-btn">&times;</div>
-  <h3 class="modal-header">Frequently Asked Questions</h3>
-  <span class="small-text">(Long press to copy answer)</span>
-  <input type="text" id="faq-search" class="faq-search" placeholder="Search questions...">
-  <div class="faq-container" id="faq-container">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Loading FAQs...</div>
-  </div>
-</div>`;
-     document.body.appendChild(faqModal);
-     
-// Add search box styles
-const searchStyle = document.createElement('style');
-searchStyle.textContent = `
-.faq-search {
-  width: 75%;
-  padding: 8px 16px;
-  margin: 10px auto;
-  display: block;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  outline: none;
-}
-`;
-document.head.appendChild(searchStyle)
-   
-   
-   // Search functionality
-function filterFAQs(searchTerm) {
-  const faqItems = document.querySelectorAll('#faq-container .faq-item');
-  faqItems.forEach(item => {
-    const question = item.querySelector('.faq-question').textContent.toLowerCase();
-    item.style.display = question.includes(searchTerm) ? 'block' : 'none';
-  });
-}
-
-document.getElementById('faq-search')?.addEventListener('input', function(e) {
-  filterFAQs(e.target.value.toLowerCase());
-});
-
-// Modified FAQ option click handler
-document.getElementById('faq-option')?.addEventListener('click', () => {
-  toggleSidebar(false);
-  openModalStandalone('faq-modal');
-  document.getElementById('faq-search').value = ''; // Reset search on open
-  loadFAQs();
-});
+        faqModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn">&times;</div>
+        <h3 class="modal-header">Frequently Asked Questions</h3>
+        <span class="small-text">(Long press to copy answer)</span>
+        <input type="text" id="faq-search" class="faq-search" placeholder="Search questions...">
+        <div class="faq-container" id="faq-container">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading FAQs...</div>
+        </div>
+        </div>`;
+        document.body.appendChild(faqModal);
+        
+        // Add search box styles
+        const searchStyle = document.createElement('style');
+        searchStyle.textContent = `
+        .faq-search {
+        width: 75%;
+        padding: 8px 16px;
+        margin: 10px auto;
+        display: block;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+        }
+        `;
+        document.head.appendChild(searchStyle)
+        
+        
+        // Search functionality
+        function filterFAQs(searchTerm) {
+            const faqItems = document.querySelectorAll('#faq-container .faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                item.style.display = question.includes(searchTerm) ? 'block' : 'none';
+            });
+        }
+        
+        document.getElementById('faq-search')?.addEventListener('input', function(e) {
+            filterFAQs(e.target.value.toLowerCase());
+        });
+        
+        // Modified FAQ option click handler
+        document.getElementById('faq-option')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('faq-modal');
+            document.getElementById('faq-search').value = ''; // Reset search on open
+            loadFAQs();
+        });
         
         
         // Add event listener for the FAQ option
@@ -1138,9 +1137,9 @@ document.getElementById('faq-option')?.addEventListener('click', () => {
                     document.body.appendChild(toast);
                     setTimeout(() => toast.remove(), 2000);
                 }
-                 // After populating FAQs
-    const searchTerm = document.getElementById('faq-search').value.toLowerCase();
-    if (searchTerm) filterFAQs(searchTerm);
+                // After populating FAQs
+                const searchTerm = document.getElementById('faq-search').value.toLowerCase();
+                if (searchTerm) filterFAQs(searchTerm);
                 } catch (error) {
                 console.error('Error loading FAQs:', error);
                 container.innerHTML = '<div class="error-message">❌ Failed to load FAQs. Please try again later.</div>';
@@ -1202,44 +1201,44 @@ document.getElementById('faq-option')?.addEventListener('click', () => {
         
         
         
-     // Initialize settings in collapsed state
-const settingsSection = document.querySelector('.settings-section');
-const settingsOptions = settingsSection.querySelector('.settings-options');
-const toggleIcon = settingsSection.querySelector('.toggle-icon');
-
-// Function to collapse settings
-function collapseSettings() {
-  settingsOptions.classList.remove('show');
-  settingsOptions.style.height = '0';
-  toggleIcon.classList.remove('rotated');
-}
-
-// Toggle settings on header click
-settingsSection.querySelector('.settings-header').addEventListener('click', function(e) {
-  e.stopPropagation();
-  const isOpening = !settingsOptions.classList.contains('show');
-  
-  if (isOpening) {
-    settingsOptions.classList.add('show');
-    settingsOptions.style.height = `${settingsOptions.scrollHeight}px`;
-    toggleIcon.classList.add('rotated');
-  } else {
-    collapseSettings();
-  }
-});
-
-// Collapse settings when clicking anywhere else in the sidebar
-document.querySelector('.hsidebar-content').addEventListener('click', function(e) {
-  if (!settingsSection.contains(e.target)) {
-    collapseSettings();
-  }
-});
-
-
-// Initialize settings in collapsed state when sidebar opens
-document.getElementById('hamburger-button').addEventListener('click', function() {
-  collapseSettings();
-});
+        // Initialize settings in collapsed state
+        const settingsSection = document.querySelector('.settings-section');
+        const settingsOptions = settingsSection.querySelector('.settings-options');
+        const toggleIcon = settingsSection.querySelector('.toggle-icon');
+        
+        // Function to collapse settings
+        function collapseSettings() {
+            settingsOptions.classList.remove('show');
+            settingsOptions.style.height = '0';
+            toggleIcon.classList.remove('rotated');
+        }
+        
+        // Toggle settings on header click
+        settingsSection.querySelector('.settings-header').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpening = !settingsOptions.classList.contains('show');
+            
+            if (isOpening) {
+                settingsOptions.classList.add('show');
+                settingsOptions.style.height = `${settingsOptions.scrollHeight}px`;
+                toggleIcon.classList.add('rotated');
+                } else {
+                collapseSettings();
+            }
+        });
+        
+        // Collapse settings when clicking anywhere else in the sidebar
+        document.querySelector('.hsidebar-content').addEventListener('click', function(e) {
+            if (!settingsSection.contains(e.target)) {
+                collapseSettings();
+            }
+        });
+        
+        
+        // Initialize settings in collapsed state when sidebar opens
+        document.getElementById('hamburger-button').addEventListener('click', function() {
+            collapseSettings();
+        });
         
         
         
@@ -1261,46 +1260,46 @@ document.getElementById('hamburger-button').addEventListener('click', function()
         
         
         
-// Toggle Starry Background
-const toggleStarryBg = document.getElementById('toggle-starry-background');
-if (toggleStarryBg) {
-    // Initialize from localStorage or set default to false if not set
-    let isEnabled = localStorage.getItem('starryBackgroundEnabled');
-    if (isEnabled === null) {
-        // First-time installation: Set default to false
-        isEnabled = false;
-        localStorage.setItem('starryBackgroundEnabled', isEnabled);
-    } else {
-        // Convert stored string to boolean
-        isEnabled = isEnabled === 'true';
-    }
-
-    // Apply the initial state
-    const starryBg = document.querySelector('.starry-background');
-    starryBg?.classList.toggle('disabled', !isEnabled);
-    toggleStarryBg.querySelector('span').textContent = `Starry Background: ${isEnabled ? 'On' : 'Off'}`;
-    
-    // Click handler
-    toggleStarryBg.addEventListener('click', function() {
-        isEnabled = !starryBg.classList.toggle('disabled');
-        this.querySelector('span').textContent = `Starry Background: ${isEnabled ? 'On' : 'Off'}`;
-        localStorage.setItem('starryBackgroundEnabled', isEnabled);
-    });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // Toggle Starry Background
+        const toggleStarryBg = document.getElementById('toggle-starry-background');
+        if (toggleStarryBg) {
+            // Initialize from localStorage or set default to false if not set
+            let isEnabled = localStorage.getItem('starryBackgroundEnabled');
+            if (isEnabled === null) {
+                // First-time installation: Set default to false
+                isEnabled = false;
+                localStorage.setItem('starryBackgroundEnabled', isEnabled);
+                } else {
+                // Convert stored string to boolean
+                isEnabled = isEnabled === 'true';
+            }
+            
+            // Apply the initial state
+            const starryBg = document.querySelector('.starry-background');
+            starryBg?.classList.toggle('disabled', !isEnabled);
+            toggleStarryBg.querySelector('span').textContent = `Starry Background: ${isEnabled ? 'On' : 'Off'}`;
+            
+            // Click handler
+            toggleStarryBg.addEventListener('click', function() {
+                isEnabled = !starryBg.classList.toggle('disabled');
+                this.querySelector('span').textContent = `Starry Background: ${isEnabled ? 'On' : 'Off'}`;
+                localStorage.setItem('starryBackgroundEnabled', isEnabled);
+            });
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -1538,7 +1537,7 @@ if (toggleStarryBg) {
         
         
         
-     
+        
         
         
         // Clear Storage Modal
@@ -1584,7 +1583,6 @@ if (toggleStarryBg) {
             window.location.reload(true);
         });
         
-           
         
         
         
@@ -1608,15 +1606,16 @@ if (toggleStarryBg) {
         
         
         
-
-
-
-
-
-
-
-
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -1641,52 +1640,52 @@ if (toggleStarryBg) {
         
         
         // Update modal counters
-function updateModalCounters() {
-  document.getElementById('modal-visitorCounter').textContent = 
-    document.getElementById('visitorCounter').querySelector('span').textContent;
-    
-  document.getElementById('modal-viewsCounter').textContent = 
-    document.getElementById('viewsCounter').querySelector('span').textContent;
-
-  document.getElementById('modal-likeCounter').textContent = 
-    document.getElementById('likeCounter').textContent;
-
-  // Fetch order number from server
-  fetch(`${scriptUrl}?sheet=counter&action=getOrders`)
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('modal-orderNumber').textContent = 
-        String(data.count).padStart(4, '0');
-    });
-}
-
-// Show counters modal when footer is clicked
-document.getElementById('footer-info').addEventListener('click', () => {
-  // Open modal using universal function
-   toggleSidebar(false);
-  openModalStandalone('counters-modal');
-  
-  // Update counters after modal is opened
-  updateModalCounters();
-});
+        function updateModalCounters() {
+            document.getElementById('modal-visitorCounter').textContent = 
+            document.getElementById('visitorCounter').querySelector('span').textContent;
+            
+            document.getElementById('modal-viewsCounter').textContent = 
+            document.getElementById('viewsCounter').querySelector('span').textContent;
+            
+            document.getElementById('modal-likeCounter').textContent = 
+            document.getElementById('likeCounter').textContent;
+            
+            // Fetch order number from server
+            fetch(`${scriptUrl}?sheet=counter&action=getOrders`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('modal-orderNumber').textContent = 
+                String(data.count).padStart(4, '0');
+            });
+        }
+        
+        // Show counters modal when footer is clicked
+        document.getElementById('footer-info').addEventListener('click', () => {
+            // Open modal using universal function
+            toggleSidebar(false);
+            openModalStandalone('counters-modal');
+            
+            // Update counters after modal is opened
+            updateModalCounters();
+        });
         
         setupModalTriggers('counters-modal'); 
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
     } //hsidebar
