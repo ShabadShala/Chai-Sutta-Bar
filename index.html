@@ -2381,6 +2381,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       }
     }, 1000);
+    
+        // Close functionality
+    document.getElementById('closeWelcome').addEventListener('click', () => {
+      welcomeOverlay.style.display = 'none';
+    });
+
+    // Close when clicking outside
+    welcomeOverlay.addEventListener('click', (e) => {
+      if (e.target === welcomeOverlay) {
+        welcomeOverlay.style.display = 'none';
+      }
+    });
   }
 });
             
