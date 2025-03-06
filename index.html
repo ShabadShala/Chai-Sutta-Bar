@@ -2049,7 +2049,10 @@
   .confetti:nth-child(2) { left: 50%; animation-delay: 0.5s; }
   .confetti:nth-child(3) { right: 10%; animation-delay: 1s; }  
             
-            
+      /* Add this media query for mobile detection */
+@media (display-mode: browser) {
+  .welcome-overlay { display: none !important; }
+}      
             
             
             
@@ -2357,28 +2360,27 @@
             
             
             
-            document.addEventListener('DOMContentLoaded', function() {
-  // Check if first visit
-  if (!localStorage.getItem('hasVisited')) {
-    const welcomeOverlay = document.getElementById('welcomeOverlay');
-    
-    // Show welcome message after 1 second
+// Modified detection logic
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if launched as installed PWA
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                      window.navigator.standalone;
+
+  // Check if first PWA launch
+  if (isStandalone && !localStorage.getItem('pwaWelcomeShown')) {
     setTimeout(() => {
-      welcomeOverlay.style.display = 'flex';
-      localStorage.setItem('hasVisited', 'true');
-    }, 1000);
-
-    // Close functionality
-    document.getElementById('closeWelcome').addEventListener('click', () => {
-      welcomeOverlay.style.display = 'none';
-    });
-
-    // Close when clicking outside
-    welcomeOverlay.addEventListener('click', (e) => {
-      if (e.target === welcomeOverlay) {
-        welcomeOverlay.style.display = 'none';
+      document.getElementById('welcomeOverlay').style.display = 'flex';
+      localStorage.setItem('pwaWelcomeShown', 'true');
+      
+      // Send installation confirmation to analytics
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.active.postMessage({
+            type: 'PWA_INSTALLATION_CONFIRMED'
+          });
+        });
       }
-    });
+    }, 1000);
   }
 });
             
