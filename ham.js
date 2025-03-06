@@ -982,7 +982,7 @@
         <div class="modal-content">
         <div class="close-btn">&times;</div>
         <h3 class="modal-header">Frequently Asked Questions</h3>
-        <span class="small-text">(Long press to copy answer)</span>
+
         <input type="text" id="faq-search" class="faq-search" placeholder="Search questions...">
         <div class="faq-container" id="faq-container">
         <div class="loading-spinner"></div>

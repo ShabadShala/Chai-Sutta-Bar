@@ -209,7 +209,6 @@
     z-index: 1000;
 }
 
-
 .close-btn:hover {
     color: #ff4d4d;
     transform: scale(1.1);
@@ -248,14 +247,14 @@
     margin-bottom: 5rem;
 }
 
-
 .hsidebar-content {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
+
 .hsidebar-option {
-    padding: 2rem;
+    padding: 1.5rem;
     margin: 2rem;
     cursor: pointer;
     font-size: 5rem;
@@ -341,7 +340,7 @@
     color: #fae68e;
     margin: 3rem auto; /* Reduced margin */
     margin-bottom: 5rem;
-    margin-top: 10rem;
+    margin-top: 7rem;
 }
 
 /* Like Icon */
@@ -1151,27 +1150,31 @@
 /* FAQ Modal Styles */
 #faq-modal {
   background: rgba(0, 0, 0, 0.8);
+   z-index: 1003;
 }
 
 #faq-modal .modal-content {
   background: #ffffff;
   color: #333;
   border-radius: 12px;
+
   max-width: 550px;
   width: 90%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+   z-index: 1003;
 }
 
 .faq-container {
-  padding: 10px;
+  padding: 5px;
   max-height: 70vh;
   overflow-y: auto;
+
 }
 
 .faq-item {
   border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .faq-question {
@@ -1188,7 +1191,7 @@
 }
 
 .faq-question::before {
-  content: "Que: ";
+  content: "Q: ";
   font-weight: 700;
   color: #3182ce;
   margin-right: 5px;
@@ -1213,11 +1216,12 @@
 
 .faq-answer {
   display: none;
-  padding: 10px 0;
+  padding: 5px;
   background: #ffffff;
   border-left: 3px solid #3182ce;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #4a5568;
+   text-align: justify;
 }
 
 .faq-item.active .faq-answer {
@@ -1334,6 +1338,53 @@
 #counters-modal .close-btn:hover {
   color: #ff4444 !important; /* Red on hover */
 }
+
+
+
+
+
+
+/* Full-width background for the App Features option */
+#counters-modal .app-info {
+    width: 90%; /* Reduce width to 90% */
+    background-color: rgba(255, 255, 255, 0.1); /* Light background */
+    border-radius: 8px; /* Rounded corners */
+    padding: 12px; /* Padding for spacing */
+    margin: 16px auto; /* Auto margins to center horizontally */
+    color: #00FF00;
+    text-align: center; /* Center text */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    gap: 8px; /* Space between icon and text */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+
+/* Hover effect for the App Features option */
+#counters-modal .app-info:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Slightly darker on hover */
+}
+
+/* Ensure the icon is properly aligned */
+#counters-modal .app-info img {
+    width: 20px; /* Adjust icon size */
+    height: 20px; /* Adjust icon size */
+    filter: invert(1); /* Ensure icon is visible on dark background */
+}
+
+
+.app-info .menu-icon {
+   margin-right: 0;            
+}
+
+
+
+
+
+
+
+
 
 
 
