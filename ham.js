@@ -1138,7 +1138,7 @@
                 });
                 
                 // Initialize button states
-updateFAQButtonsState();
+                updateFAQButtonsState();
                 
                 function showToast(message) {
                     const toast = document.createElement('div');
@@ -1694,6 +1694,14 @@ updateFAQButtonsState();
                 document.getElementById('modal-orderNumber').textContent = 
                 String(data.count).padStart(4, '0');
             });
+            
+             // Add installs counter
+            fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('modal-installsCounter').textContent = 
+                String(data.count).padStart(4, '0');
+            });
         }
         
         // Show counters modal when footer is clicked
@@ -1707,6 +1715,34 @@ updateFAQButtonsState();
         });
         
         setupModalTriggers('counters-modal'); 
+        
+        
+        
+        
+        
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         

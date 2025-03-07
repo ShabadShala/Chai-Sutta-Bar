@@ -145,8 +145,64 @@ document.getElementById('modal-visitorCounter').textContent =
                     }
                     
                     
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+                      
+        // Add this near other counter functions
+        function setupInstallsCounter() {
+            // Check if installed
+            const isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            
+            if (isInstalled) {
+                const dbName = 'CSBInstallsDB';
+                const request = indexedDB.open(dbName, 1);
+                
+                request.onupgradeneeded = function(event) {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains('installs')) {
+                        db.createObjectStore('installs');
+                    }
+                };
+                
+                request.onsuccess = function(event) {
+                    const db = event.target.result;
+                    const tx = db.transaction('installs', 'readwrite');
+                    const store = tx.objectStore('installs');
                     
-                    
+                    store.get('installRecorded').onsuccess = function(e) {
+                        if (!e.target.result) {
+                            // Only increment if not previously recorded
+                            fetch(`${scriptUrl}?sheet=counter&action=updateInstalls`)
+                            .then(() => store.put(true, 'installRecorded'))
+                            .catch(console.error);
+                        }
+                    };
+                };
+            }
+            
+            // Update display counter
+            fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('modal-installsCounter').textContent = 
+                String(data.count).padStart(4, '0');
+            });
+        }
+        
+        
                     
                     // Initialize counters when the page loads
                     document.addEventListener('DOMContentLoaded', () => {
@@ -159,6 +215,8 @@ document.getElementById('modal-visitorCounter').textContent =
                         setupLikeButton();
                         
                         initializeOrderNumber();
+                        
+                          setupInstallsCounter();
                         
                     });
                     

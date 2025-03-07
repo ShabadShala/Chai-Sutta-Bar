@@ -1329,6 +1329,10 @@
   margin-top: 1rem;
 }
 
+/* Add to existing icon styles */
+.download-icon {
+    filter: invert(72%) sepia(51%) saturate(351%) hue-rotate(121deg) brightness(89%) contrast(91%);
+}
 
 
 
