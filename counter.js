@@ -162,47 +162,73 @@ document.getElementById('modal-visitorCounter').textContent =
               
                       
         // Add this near other counter functions
-        function setupInstallsCounter() {
-            // Check if installed
-            const isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+// Add this with other counter functions
+function setupInstallsCounter() {
+    // Check if running in installed mode
+    const isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    
+    if (!isInstalled) return;
+
+    const dbName = 'CSBInstallsDB';
+    const storeName = 'installs';
+    const key = 'installRecorded';
+
+    // Helper function to promisify IndexedDB operations
+    function idbRequest(request) {
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    // Async function to handle install tracking
+    async function trackInstall() {
+        try {
+            // Open database
+            const db = await idbRequest(indexedDB.open(dbName, 1));
             
-            if (isInstalled) {
-                const dbName = 'CSBInstallsDB';
-                const request = indexedDB.open(dbName, 1);
+            // Create object store if needed
+            if (!db.objectStoreNames.contains(storeName)) {
+                db.close();
+                const upgradedDb = await idbRequest(indexedDB.open(dbName, 2));
+                upgradedDb.createObjectStore(storeName);
+                upgradedDb.close();
+            }
+
+            // Check if we already recorded this install
+            const tempDb = await idbRequest(indexedDB.open(dbName, 2));
+            const tx = tempDb.transaction(storeName, 'readwrite');
+            const store = tx.objectStore(storeName);
+            
+            const existingRecord = await idbRequest(store.get(key));
+            
+            if (!existingRecord) {
+                // Only increment if first time
+                await fetch(`${scriptUrl}?sheet=counter&action=updateInstalls`);
                 
-                request.onupgradeneeded = function(event) {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains('installs')) {
-                        db.createObjectStore('installs');
-                    }
-                };
-                
-                request.onsuccess = function(event) {
-                    const db = event.target.result;
-                    const tx = db.transaction('installs', 'readwrite');
-                    const store = tx.objectStore('installs');
-                    
-                    store.get('installRecorded').onsuccess = function(e) {
-                        if (!e.target.result) {
-                            // Only increment if not previously recorded
-                            fetch(`${scriptUrl}?sheet=counter&action=updateInstalls`)
-                            .then(() => store.put(true, 'installRecorded'))
-                            .catch(console.error);
-                        }
-                    };
-                };
+                // Mark as recorded
+                await idbRequest(store.put(true, key));
+                await tx.complete;
             }
             
-            // Update display counter
-            fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
+            tempDb.close();
+        } catch (error) {
+            console.error('Install tracking failed:', error);
+        }
+    }
+
+    // Run tracking and update display
+    trackInstall().finally(() => {
+        // Always update counter display
+        fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
             .then(res => res.json())
             .then(data => {
                 document.getElementById('modal-installsCounter').textContent = 
-                String(data.count).padStart(4, '0');
+                    String(data.count).padStart(4, '0');
             });
-        }
-        
-        
+    });
+}
+ 
                     
                     // Initialize counters when the page loads
                     document.addEventListener('DOMContentLoaded', () => {
