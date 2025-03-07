@@ -1354,6 +1354,19 @@
   color: #ff4444 !important; /* Red on hover */
 }
 
+/* Center the 5th counter in the grid */
+.counter-item:nth-child(5) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 50%; /* Optional: Adjust width if needed */
+}
+
+/* Ensure all labels have same font size */
+.counter-label {
+    font-size: 6rem !important; /* Force consistent font size */
+}
+
+
 
 
 
