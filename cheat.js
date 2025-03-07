@@ -152,27 +152,6 @@ function addRandomItem() {
         showFeedback('DEV: Random item added!');    
 }
 
-// Keyboard shortcut: Ctrl + Shift + P
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') {
-        e.preventDefault(); // Prevent browser conflicts
-        addRandomItem(); // Call the function
-    }
-});
-
-// Touch Gesture: Two-Finger Long Press (1 second)
-document.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 2) { // Detects two fingers
-        longPressTimer = setTimeout(() => {
-            addRandomItem(); // Trigger after 1 second
-        }, 1000); // 1000ms = 1 second
-    }
-});
-
-document.addEventListener('touchend', () => {
-    clearTimeout(longPressTimer); // Cancel if fingers are lifted early
-});
-
 
 
 

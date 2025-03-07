@@ -87,7 +87,7 @@
         Share App
         </div>
         
-      
+        
         
         <!-- FAQ -->
         <div class="hsidebar-option" id="faq-option">
@@ -115,10 +115,10 @@
         <!-- Starry Background Toggle -->
         <div class="hsidebar-option" id="toggle-starry-background">
         <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon">
-        <span>Starry Background: On</span>
+        <span>Starry Back: On</span>
         </div>
         
-                
+        
         <!-- Word Search -->
         <div class="hsidebar-option" id="cheatToggleButton">
         <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
@@ -658,7 +658,7 @@
             // Add loading spinner
             const loadingIndicator = document.createElement('div');
             loadingIndicator.id = 'loading-animation';
-            loadingIndicator.innerHTML = `<div class="loading-spinner"></div> Loading...`;
+            loadingIndicator.innerHTML = `<div class="loading-spinner"></div>`;
             container.innerHTML = '';
             container.appendChild(loadingIndicator);
             
@@ -982,11 +982,18 @@
         <div class="modal-content">
         <div class="close-btn">&times;</div>
         <h3 class="modal-header">Frequently Asked Questions</h3>
-
         <input type="text" id="faq-search" class="faq-search" placeholder="Search questions...">
         <div class="faq-container" id="faq-container">
         <div class="loading-spinner"></div>
         <div class="loading-text">Loading FAQs...</div>
+        </div>
+        <div class="modal-footer">
+        <button class="expand-all-btn" title="Expand All">
+        <img src="icons/expand-all.svg" alt="Expand">
+        </button>
+        <button class="collapse-all-btn" title="Collapse All">
+        <img src="icons/collapse-all.svg" alt="Collapse">
+        </button>
         </div>
         </div>`;
         document.body.appendChild(faqModal);
@@ -1118,17 +1125,20 @@
                         if (faqItem === activeFaq) {
                             faqItem.classList.remove('active');
                             activeFaq = null;
-                            return;
+                            } else {
+                            if (activeFaq) activeFaq.classList.remove('active');
+                            faqItem.classList.add('active');
+                            activeFaq = faqItem;
                         }
-                        
-                        if (activeFaq) activeFaq.classList.remove('active');
-                        faqItem.classList.add('active');
-                        activeFaq = faqItem;
+                        updateFAQButtonsState();
                         faqItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     });
                     
                     container.appendChild(faqItem);
                 });
+                
+                // Initialize button states
+updateFAQButtonsState();
                 
                 function showToast(message) {
                     const toast = document.createElement('div');
@@ -1144,12 +1154,34 @@
                 console.error('Error loading FAQs:', error);
                 container.innerHTML = '<div class="error-message">❌ Failed to load FAQs. Please try again later.</div>';
             }
+            
         }
         
         
+        function expandAllFAQs() {
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.add('active'));
+            updateFAQButtonsState();
+        }
+        
+        function collapseAllFAQs() {
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+            updateFAQButtonsState();
+        }
+        
+        function updateFAQButtonsState() {
+            const allFAQs = document.querySelectorAll('.faq-item');
+            const expandedFAQs = document.querySelectorAll('.faq-item.active');
+            const expandBtn = document.querySelector('#faq-modal .expand-all-btn');
+            const collapseBtn = document.querySelector('#faq-modal .collapse-all-btn');
+            
+            expandBtn.disabled = expandedFAQs.length === allFAQs.length;
+            collapseBtn.disabled = expandedFAQs.length === 0;
+        }
         
         
-        
+        // Add after FAQ modal creation
+        document.querySelector('#faq-modal .expand-all-btn').addEventListener('click', expandAllFAQs);
+        document.querySelector('#faq-modal .collapse-all-btn').addEventListener('click', collapseAllFAQs);
         
         
         
@@ -1277,14 +1309,19 @@
             // Apply the initial state
             const starryBg = document.querySelector('.starry-background');
             starryBg?.classList.toggle('disabled', !isEnabled);
-            toggleStarryBg.querySelector('span').textContent = `Starry Background: ${isEnabled ? 'On' : 'Off'}`;
+            toggleStarryBg.querySelector('span').textContent = `Starry Back: ${isEnabled ? 'On' : 'Off'}`;
             
             // Click handler
             toggleStarryBg.addEventListener('click', function() {
                 isEnabled = !starryBg.classList.toggle('disabled');
-                this.querySelector('span').textContent = `Starry Background: ${isEnabled ? 'On' : 'Off'}`;
+                this.querySelector('span').textContent = `Starry Back: ${isEnabled ? 'On' : 'Off'}`;
                 localStorage.setItem('starryBackgroundEnabled', isEnabled);
+                
+                // Close the sidebar when toggling the starry background
+                toggleSidebar(false);
             });
+            
+            
         }
         
         
@@ -1889,13 +1926,13 @@ document.getElementById('cheatToggleButton')?.addEventListener('click', function
     
     // Update button text
     const statusText = cheatActive ? 'Active' : 'Inactive';
-    this.querySelector('span').textContent = `Item Word Search: ${statusText}`;
+    this.querySelector('span').textContent = `Item Search: ${statusText}`;
     
     if (cheatActive) {
         addCheatListeners();
-        alert('Item Word Search activated. This may disturb menu browsing.\n\nTo deactivate: Press Ctrl+Shift+C, tap with 4 fingers, or toggle this button again.');
+        alert('Item Search feature activated.');
         } else {
-        alert('CHEAT MODE DEACTIVATED');
+        alert('Item Search feature deactivated');
     }
 });
 

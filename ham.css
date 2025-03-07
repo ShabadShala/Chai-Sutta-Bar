@@ -1263,7 +1263,18 @@
   color: #666; /* Optional: Lighter color */
 }
 
+.modal-footer button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 5px;
+  
+}
 
 
 
