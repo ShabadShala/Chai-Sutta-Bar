@@ -160,73 +160,72 @@ document.getElementById('modal-visitorCounter').textContent =
               
               
               
-                      
-        // Add this near other counter functions
-// Add this with other counter functions
 function setupInstallsCounter() {
-    // Check if running in installed mode
     const isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     
     if (!isInstalled) return;
 
-    const dbName = 'CSBInstallsDB';
-    const storeName = 'installs';
-    const key = 'installRecorded';
+    const DB_NAME = 'CSBInstallsDB';
+    const STORE_NAME = 'installs';
+    const KEY = 'installRecorded';
 
-    // Helper function to promisify IndexedDB operations
-    function idbRequest(request) {
-        return new Promise((resolve, reject) => {
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error);
-        });
-    }
-
-    // Async function to handle install tracking
     async function trackInstall() {
         try {
-            // Open database
-            const db = await idbRequest(indexedDB.open(dbName, 1));
-            
-            // Create object store if needed
-            if (!db.objectStoreNames.contains(storeName)) {
-                db.close();
-                const upgradedDb = await idbRequest(indexedDB.open(dbName, 2));
-                upgradedDb.createObjectStore(storeName);
-                upgradedDb.close();
-            }
-
-            // Check if we already recorded this install
-            const tempDb = await idbRequest(indexedDB.open(dbName, 2));
-            const tx = tempDb.transaction(storeName, 'readwrite');
-            const store = tx.objectStore(storeName);
-            
-            const existingRecord = await idbRequest(store.get(key));
-            
-            if (!existingRecord) {
-                // Only increment if first time
-                await fetch(`${scriptUrl}?sheet=counter&action=updateInstalls`);
+            // Open database with explicit version handling
+            const db = await new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 3);
                 
-                // Mark as recorded
-                await idbRequest(store.put(true, key));
-                await tx.complete;
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = reject;
+            });
+
+            const tx = db.transaction(STORE_NAME, 'readwrite');
+            const store = tx.objectStore(STORE_NAME);
+            
+            // Check existing record using get()
+            const existingRecord = await new Promise(resolve => {
+                const request = store.get(KEY);
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => resolve(null);
+            });
+
+            if (!existingRecord) {
+                // Generate unique installation ID
+                const installId = crypto.randomUUID();
+                
+                await fetch(`${scriptUrl}?sheet=counter&action=updateInstalls&installId=${installId}`);
+                
+                // Store both flag and install ID
+                await Promise.all([
+                    new Promise(r => store.put(true, KEY).onsuccess = r),
+                    new Promise(r => store.put(installId, 'installId').onsuccess = r)
+                ]);
+                
+                await tx.done;
             }
             
-            tempDb.close();
+            db.close();
         } catch (error) {
-            console.error('Install tracking failed:', error);
+            console.error('Install tracking error:', error);
+        } finally {
+            // Always update display
+            fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('modal-installsCounter').textContent = 
+                        String(data.count).padStart(4, '0');
+                });
         }
     }
 
-    // Run tracking and update display
-    trackInstall().finally(() => {
-        // Always update counter display
-        fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('modal-installsCounter').textContent = 
-                    String(data.count).padStart(4, '0');
-            });
-    });
+    trackInstall();
 }
  
                     
