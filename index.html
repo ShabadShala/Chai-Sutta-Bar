@@ -2318,15 +2318,17 @@
                 <h3 style="color: white;">CSB-BPA Dashboard</h3>
                 
                 <div class="counter-grid">
+                                    <!-- Inside the counters-modal content (search for existing counters) -->
+                    <div class="counter-item">
+                        <img src="icons/download.svg" alt="Installs" class="counter-icon">
+                        <span id="modal-installsCounter">0000</span>
+                        <!--        <div class="counter-label">Installs</div> -->
+                        <span class="counter-label">Installs</span> <!-- Changed from div to span -->
+                    </div>
                     <div class="counter-item">
                         <img src="icons/likes.svg" alt="Likes" class="counter-icon">
                         <span id="modal-likeCounter">0000</span>
                         <span class="counter-label">Likes</span>
-                    </div>
-                    <div class="counter-item">
-                        <img src="icons/orders.svg" alt="Orders" class="counter-icon">
-                        <span id="modal-orderNumber">0000</span>
-                        <span class="counter-label">Orders</span>
                     </div>
                     <div class="counter-item">
                         <img src="icons/users.svg" alt="Users" class="counter-icon">
@@ -2338,12 +2340,12 @@
                         <span id="modal-viewsCounter">0000</span>
                         <span class="counter-label">Views</span>
                     </div>
-                    <!-- Inside the counters-modal content (search for existing counters) -->
                     <div class="counter-item">
-                        <img src="icons/download.svg" alt="Installs" class="counter-icon">
-                        <span id="modal-installsCounter">0000</span>
-                        <div class="counter-label">Installs</div>
+                        <img src="icons/orders.svg" alt="Orders" class="counter-icon">
+                        <span id="modal-orderNumber">0000</span>
+                        <span class="counter-label">Orders</span>
                     </div>
+
                 </div>
                 
                 <div class="app-info" id="app-features">
