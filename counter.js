@@ -159,74 +159,58 @@ document.getElementById('modal-visitorCounter').textContent =
               
               
               
-              
 function setupInstallsCounter() {
+    // 1. Check if app is installed
     const isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    
     if (!isInstalled) return;
 
+    // 2. IndexedDB setup
     const DB_NAME = 'CSBInstallsDB';
-    const STORE_NAME = 'installs';
+    const STORE_NAME = 'installStore';
     const KEY = 'installRecorded';
 
-    async function trackInstall() {
-        try {
-            // Open database with explicit version handling
-            const db = await new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 3);
-                
-                request.onupgradeneeded = (event) => {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(STORE_NAME)) {
-                        db.createObjectStore(STORE_NAME);
-                    }
-                };
-                
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = reject;
-            });
+    const request = indexedDB.open(DB_NAME, 1);
+    
+    request.onupgradeneeded = function(event) {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME);
+        }
+    };
 
-            const tx = db.transaction(STORE_NAME, 'readwrite');
-            const store = tx.objectStore(STORE_NAME);
+    request.onsuccess = function(event) {
+        const db = event.target.result;
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        
+        // 3. Check existing record
+        store.get(KEY).onsuccess = function(e) {
+            const hasRecord = !!e.target.result;
             
-            // Check existing record using get()
-            const existingRecord = await new Promise(resolve => {
-                const request = store.get(KEY);
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = () => resolve(null);
-            });
-
-            if (!existingRecord) {
-                // Generate unique installation ID
-                const installId = crypto.randomUUID();
-                
-                await fetch(`${scriptUrl}?sheet=counter&action=updateInstalls&installId=${installId}`);
-                
-                // Store both flag and install ID
-                await Promise.all([
-                    new Promise(r => store.put(true, KEY).onsuccess = r),
-                    new Promise(r => store.put(installId, 'installId').onsuccess = r)
-                ]);
-                
-                await tx.done;
+            // 4. Only increment if no existing record
+            if (!hasRecord) {
+                fetch(`${scriptUrl}?sheet=counter&action=updateInstalls`)
+                    .then(() => {
+                        // 5. Mark as recorded AFTER successful increment
+                        store.put(true, KEY);
+                    })
+                    .catch(console.error);
             }
             
-            db.close();
-        } catch (error) {
-            console.error('Install tracking error:', error);
-        } finally {
-            // Always update display
+            // 6. Always update display counter
             fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
                 .then(res => res.json())
                 .then(data => {
                     document.getElementById('modal-installsCounter').textContent = 
                         String(data.count).padStart(4, '0');
                 });
-        }
-    }
-
-    trackInstall();
+        };
+        
+        tx.oncomplete = () => db.close();
+    };
 }
+
+
  
                     
                     // Initialize counters when the page loads
