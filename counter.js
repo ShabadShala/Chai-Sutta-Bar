@@ -184,9 +184,15 @@ const InstallCounter = (() => {
         const tx = db.transaction(STORE_NAME, 'readwrite');
         const store = tx.objectStore(STORE_NAME);
         
-        const existingRecord = await new Promise(resolve => {
-            store.get(KEY).onsuccess = e => resolve(e.target.result);
-        });
+const existingRecord = await new Promise(resolve => {
+    const request = store.get(KEY);
+    request.onsuccess = e => {
+        console.log('Existing Record:', e.target.result); // Debugging log
+        resolve(e.target.result);
+    };
+    request.onerror = e => console.error('IndexedDB Error:', e);
+});
+
 
         if (!existingRecord) {
             // 4. Critical section - only one increment per install
@@ -216,7 +222,8 @@ const InstallCounter = (() => {
     };
 })();
 
-
+// Initialize when app loads
+document.addEventListener('DOMContentLoaded', InstallCounter.init);
 
 
 
