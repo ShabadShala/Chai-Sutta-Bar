@@ -122,7 +122,7 @@
         <!-- Word Search -->
         <div class="hsidebar-option" id="cheatToggleButton">
         <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
-        <span> Word Search: Inactive</span>
+        <span> Item Word Search: Inactive</span>
         </div>
         
         <!-- Child Lock -->
@@ -134,7 +134,7 @@
         <!-- Clear Cache -->
         <div class="hsidebar-option" id="clear-storage">
         <img src="icons/trash.svg" alt="Clear Icon" class="menu-icon invert-icon">
-        Clear Cache
+        Clear App Data
         </div>
         </div>
         </div>

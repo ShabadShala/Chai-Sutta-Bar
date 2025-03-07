@@ -1157,15 +1157,15 @@
   background: #ffffff;
   color: #333;
   border-radius: 12px;
-
-  max-width: 550px;
-  width: 90%;
+margin: 0;
+  max-width: 575px;
+  width: 95%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
    z-index: 1003;
 }
 
 .faq-container {
-  padding: 5px;
+  padding: 0;
   max-height: 70vh;
   overflow-y: auto;
 
@@ -1173,13 +1173,13 @@
 
 .faq-item {
   border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .faq-question {
   cursor: pointer;
-  padding: 12px 0;
+  padding: 5px 0;
   background: #f8f9fa;
   border-radius: 8px;
   display: flex;
@@ -1188,12 +1188,13 @@
   color: #2d3748;
   transition: 0.2s ease;
   text-align: left;
+   margin: 0;
 }
 
 .faq-question::before {
-  content: "Q: ";
+  content: "? ";
   font-weight: 700;
-  color: #3182ce;
+  color:red;
   margin-right: 5px;
 }
 
@@ -1216,9 +1217,9 @@
 
 .faq-answer {
   display: none;
-  padding: 5px;
+  padding: 5px 10px;
   background: #ffffff;
-  border-left: 3px solid #3182ce;
+  border-left: 2px solid #3182ce;
   line-height: 1.5;
   color: #4a5568;
    text-align: justify;
@@ -1374,11 +1375,12 @@
 
 /* Full-width background for the App Features option */
 #counters-modal .app-info {
-    width: 90%; /* Reduce width to 90% */
+    width: 75%; /* Reduce width to 90% */
     background-color: rgba(255, 255, 255, 0.1); /* Light background */
     border-radius: 8px; /* Rounded corners */
-    padding: 12px; /* Padding for spacing */
-    margin: 16px auto; /* Auto margins to center horizontally */
+    padding: 8px; /* Padding for spacing */
+    margin: 5px auto; /* Auto margins to center horizontally */
+    
     color: #00FF00;
     text-align: center; /* Center text */
     display: flex; /* Flexbox for alignment */

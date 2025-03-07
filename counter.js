@@ -78,41 +78,92 @@ function setupLikeButton() {
     const likeIcon = document.getElementById('likeIcon');
     const likeCounterElement = document.getElementById('likeCounter');
     const likeKey = 'csb_like';
-    
-    updateCounter('getLikes').then(data => {
-        likeCounterElement.textContent = String(data.count).padStart(3, '0');
-    });
-    
-    if (localStorage.getItem(likeKey)) {
-        likeIcon.classList.add('liked');
+    const DB_NAME = 'LikeDB';
+    const STORE_NAME = 'likesStore';
+
+    // Function to check if the like status exists in IndexedDB
+    function getLikeStatus() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, 1);
+            request.onupgradeneeded = () => {
+                request.result.createObjectStore(STORE_NAME);
+            };
+            request.onsuccess = () => {
+                const db = request.result;
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const getRequest = store.get(likeKey);
+
+                getRequest.onsuccess = () => resolve(getRequest.result);
+                getRequest.onerror = reject;
+                tx.oncomplete = () => db.close();
+            };
+            request.onerror = reject;
+        });
     }
-    
-    document.getElementById('likeContainer').addEventListener('click', () => {
-        if (!localStorage.getItem(likeKey)) {
-            localStorage.setItem(likeKey, 'true');
+
+    // Function to set the like status in IndexedDB
+    function setLikeStatus(value) {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, 1);
+            request.onupgradeneeded = () => {
+                request.result.createObjectStore(STORE_NAME);
+            };
+            request.onsuccess = () => {
+                const db = request.result;
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                const putRequest = value ? store.put(true, likeKey) : store.delete(likeKey);
+
+                putRequest.onsuccess = resolve;
+                putRequest.onerror = reject;
+                tx.oncomplete = () => db.close();
+            };
+            request.onerror = reject;
+        });
+    }
+
+    // Update the counter display
+    updateCounter('getLikes').then(data => {
+        likeCounterElement.textContent = String(data.count).padStart(4, '0');
+    });
+
+    // Check if liked and update UI
+    getLikeStatus().then(status => {
+        if (status) {
+            likeIcon.classList.add('liked');
+        }
+    });
+
+    document.getElementById('likeContainer').addEventListener('click', async () => {
+        const isLiked = await getLikeStatus();
+
+        if (!isLiked) {
+            await setLikeStatus(true);
             likeIcon.classList.add('liked');
             startBlinking(likeCounterElement);
-            
+
             updateCounter('incrementLikes').then(data => {
                 stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                animateCounter(likeCounterElement, String(data.count).padStart(4, '0'));
                 showFeedback('Thank you!');
             });
-            
-            document.getElementById('modal-likeCounter').textContent = 
-            String(data.count).padStart(3, '0');
-            } else {
-            localStorage.removeItem(likeKey);
+
+            document.getElementById('modal-likeCounter').textContent =
+                String(data.count).padStart(3, '0');
+        } else {
+            await setLikeStatus(false);
             likeIcon.classList.remove('liked');
             startBlinking(likeCounterElement);
-            
+
             updateCounter('decrementLikes').then(data => {
                 stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(3, '0'));
+                animateCounter(likeCounterElement, String(data.count).padStart(4, '0'));
             });
         }
     });
 }
+
 
 // Apply existing pop animation
 function animateCounter(element, newValue) {
