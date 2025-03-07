@@ -1533,7 +1533,7 @@
             }
             
             .offer-item button.add-offer-btn {
-            position: absolute;
+             position: absolute;
             top: 1rem;
             right: 1rem;
             background: #007bff;
@@ -1549,16 +1549,42 @@
             }
             
             .offer-item button.add-offer-btn:disabled {
+              position: absolute;
             background: #6c757d;
             cursor: not-allowed;
             }
-            
-            
-            
-            
-            
-            
-            
+
+/* Improved tooltip styling */
+.add-offer-btn {
+  position: relative;
+}
+
+.add-offer-btn:disabled {
+  position: relative;
+  cursor: not-allowed;
+}
+
+.add-offer-btn[disabled]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 8px); /* Position below button */
+  left: 100%;
+  transform: translateX(-100%);
+  background: #d9534f; /* Solid alert red */
+  color: #fff; /* White text */
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 4rem;
+  font-weight: bold;
+  white-space: nowrap;
+  z-index: 10000;
+  pointer-events: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+  border: 2px solid #b52b27; /* Darker red border */
+  opacity: 1; /* Always fully visible */
+}
+
+
             
             
             
@@ -2086,7 +2112,7 @@
                             <div class="confetti"></div>
                         </div>
                         <h1>Welcome to Chai Sutta Bar (Bagha Purana)</h1>
-                    </div>
+                        </div>
                     <div class="welcome-body">
                         <p class="welcome-text">
                             Experience the perfect blend of tradition and taste.<br>
@@ -2318,18 +2344,18 @@
                 <h3 style="color: white;">CSB-BPA Dashboard</h3>
                 
                 <div class="counter-grid">
-                                    <!-- Inside the counters-modal content (search for existing counters) -->
-                    <div class="counter-item">
-                        <img src="icons/download.svg" alt="Installs" class="counter-icon">
-                        <span id="modal-installsCounter">0000</span>
-                        <!--        <div class="counter-label">Installs</div> -->
-                        <span class="counter-label">Installs</span> <!-- Changed from div to span -->
-                    </div>
+                    <!-- Inside the counters-modal content (search for existing counters) -->
                     <div class="counter-item">
                         <img src="icons/likes.svg" alt="Likes" class="counter-icon">
                         <span id="modal-likeCounter">0000</span>
                         <span class="counter-label">Likes</span>
                     </div>
+                    <div class="counter-item">
+                        <img src="icons/download.svg" alt="Installs" class="counter-icon">
+                        <span id="modal-installsCounter">0000</span>
+                        <!--        <div class="counter-label">Installs</div> -->
+                        <span class="counter-label">Installs</span> <!-- Changed from div to span -->
+                    </div>                    
                     <div class="counter-item">
                         <img src="icons/users.svg" alt="Users" class="counter-icon">
                         <span id="modal-visitorCounter">0000</span>
@@ -2344,8 +2370,7 @@
                         <img src="icons/orders.svg" alt="Orders" class="counter-icon">
                         <span id="modal-orderNumber">0000</span>
                         <span class="counter-label">Orders</span>
-                    </div>
-
+                    </div>                    
                 </div>
                 
                 <div class="app-info" id="app-features">
@@ -4236,21 +4261,36 @@
             
             
             
-            function updateOfferAddButtons() {
-                const addButtons = document.querySelectorAll('.add-offer-btn');
-                addButtons.forEach(button => {
-                    const offerItem = button.closest('.offer-item');
-                    const offerTitle = offerItem.querySelector('.offer-title').textContent;
-                    const allowOnce = button.dataset.allowOnce === 'Yes';
-                    const dependencies = button.dataset.dependencies === 'Yes';
-                    
-                    // Check if offer exists in cart (regardless of quantity)
-                    const existsInCart = offerCart.some(item => item.title === offerTitle);
-                    
-                    button.disabled = (dependencies && scrapItems.length === 0) || 
-                    (allowOnce && existsInCart);
-                });
-            }
+function updateOfferAddButtons() {
+    const addButtons = document.querySelectorAll('.add-offer-btn');
+    addButtons.forEach(button => {
+        const offerItem = button.closest('.offer-item');
+        const offerTitle = offerItem.querySelector('.offer-title').textContent;
+        const allowOnce = button.dataset.allowOnce === 'Yes';
+        const dependencies = button.dataset.dependencies === 'Yes';
+        const existsInCart = offerCart.some(item => item.title === offerTitle);
+
+        let disabled = false;
+        let tooltip = '';
+
+        // Check conditions
+        if (dependencies && scrapItems.length === 0) {
+            disabled = true;
+            tooltip = 'Dependent';
+        } else if (allowOnce && existsInCart) {
+            disabled = true;
+            tooltip = 'Once Only';
+        }
+
+        // Update button state
+        button.disabled = disabled;
+        button.dataset.tooltip = tooltip; // Add this line
+        
+        // Visual feedback
+        button.style.cursor = disabled ? 'not-allowed' : 'pointer';
+        button.style.opacity = disabled ? '0.6' : '1';
+    });
+}
             
             // Modify the click handler to group by title
             document.getElementById('offers-container').addEventListener('click', function(e) {
