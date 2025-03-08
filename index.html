@@ -500,7 +500,7 @@
             left: 50%; /* Move the header to the center horizontally */
             transform: translateX(-50%);
             background-color: #212121; /* Match the body background */
-            z-index: 101; /* Ensure the header stays above other content */
+            z-index: 100; /* Ensure the header stays above other content */
             padding: 1.5rem; /* Adjust padding as needed */
             box-shadow: 0 0.4rem 3rem rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
             /* border-bottom: 1px solid #fae68e; /* Adds a border */     */
@@ -652,7 +652,6 @@
             display: flex;           
             align-items: center; /* Aligns items vertically */
             width: 100%; /* Ensures full width */            
-            margin-bottom: 1rem; 
             font-size: 5rem;
             gap: 3rem; /* Gap between 3-button element and total-items-found */
             flex: 0 0 100%; /* Takes full width to move to next line */
@@ -745,14 +744,12 @@
             width: 100%;
             max-width: 600px;
             background-color: #212121;
-            padding-top: 0;
-            padding-bottom: 1rem;
             margin: 0 auto;
             }
             
             .tab-button {
             width: 33.33%;
-            padding: 5px;
+            padding: 1rem;
             font-size: 16px;
             cursor: pointer;
             border: 1px solid #424242;
@@ -984,6 +981,15 @@
             border-radius: 0;
             }
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
             .scrap-overlay {
             position: fixed;
             top: 0;
@@ -992,7 +998,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
-            z-index: 100; /* Below scrapList's 2000 but above content */
+            z-index: 99; /* Below scrapList's 2000 but above content */
             display: none;
             }
             
@@ -1303,19 +1309,18 @@
             #scrapList, #offer-cart {
             display: none; /* Ensure it is hidden initially */
             position: fixed;
-            top: 8%;
+            top: var(--header-bottom, 8%);
             left: 50%;
             transform: translateX(-50%);
             width: 350px;
             max-width: 90vw;
             max-height: 55vh; /* Ensures modal doesn't exceed viewport */
-            background: rgba(255, 255, 255, 0.95);
-            
+            background: rgba(255, 255, 255, 0.95);            
             border-radius: 1rem;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             overflow: hidden;
             flex-direction: column;
-            z-index: 102;
+            z-index: 100;
             }   
             
             /* Scrap Content */
@@ -1473,7 +1478,7 @@
             #offers-container {
             width: 100%;
             max-width: 450px;
-            margin: 3rem auto;
+            margin: 1rem auto;
             display: none;
             text-align: center;
             }
@@ -1507,7 +1512,7 @@
             .offer-item {
             background: #333;
             border-radius: 3rem;
-            padding: 2rem;
+            padding: 1rem;
             margin-bottom: 2rem;
             transition: transform 0.2s ease;
             border: 2px solid #CCFFE6;
@@ -2360,8 +2365,7 @@
             
             
             
-            
-            
+     
             
             
             
@@ -4594,7 +4598,15 @@
             
             
             
-            
+                    document.addEventListener("DOMContentLoaded", function () {
+    const header = document.querySelector(".header");
+    if (header) {
+        const headerHeight = header.offsetHeight; // Get header height
+        document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 18}px`);
+    }
+});
+
+           
             
             
             
@@ -4621,7 +4633,7 @@
                     } else {
                     // Reset to default centered position
                     offerCart.style.position = 'fixed';
-                    offerCart.style.top = '8%'; // Default position when scrapList is empty
+                    offerCart.style.top = 'var(--header-bottom, 8%)'; // Default position when scrapList is empty
                     offerCart.style.left = '50%'; // Keep it centered
                     offerCart.style.transform = 'translateX(-50%)';
                     offerCart.style.width = ''; // Reset width
