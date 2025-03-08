@@ -144,7 +144,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: sticky;
     top: 0;
-
+    
     line-height: 1.5;
     align-items: center; /* Vertically center logo and text */
     gap: 3rem; /* Consistent gap between logo and text */
@@ -183,7 +183,7 @@
     font-size: 8rem;
     color: #f1f1f1; /* Lighter color for contrast */
     cursor: pointer;
-   z-index: 1006;
+    z-index: 1006;
 }
 
 #close-sidebar:hover {
@@ -206,7 +206,8 @@
     border: none;
     font-weight: bold;
     transition: 0.3s;
-
+    z-index: 1111;
+    
 }
 
 .close-btn:hover {
@@ -339,8 +340,7 @@
     font-weight: bold;
     color: #fae68e;
     margin: 3rem auto; /* Reduced margin */
-    margin-bottom: 5rem;
-    margin-top: 7rem;
+    margin: 3rem auto;
 }
 
 /* Like Icon */
@@ -836,7 +836,7 @@
     padding: 8px 12px;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-
+    
     max-width: 300px;
     font-size: 14px;
     color: black;
@@ -885,29 +885,29 @@
 
 
 .settings-header {
-  cursor: pointer;
-  transition: background-color 0.3s;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .settings-header:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .settings-options {
-  transition: all 0.3s ease;
-  overflow: hidden;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .settings-options.show {
-  display: block !important;
+    display: block !important;
 }
 
 .toggle-icon {
-  transition: transform 0.3s;
+    transition: transform 0.3s;
 }
 
 .toggle-icon.rotated {
-  transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
 
@@ -965,7 +965,7 @@
     color: white;
     padding: 1.5rem 3rem;
     border: none;
-   border-radius: 1rem;
+    border-radius: 1rem;
     font-size: 4rem;
     cursor: pointer;
     width: 100%;
@@ -984,7 +984,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 8rem;
-
+    
 }
 
 .pmodal { 
@@ -997,7 +997,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
+    
 }
 
 #pinModal {
@@ -1010,7 +1010,7 @@
     display: none; /* Hidden by default */
     align-items: center;
     justify-content: center;
-
+    
 }
 
 #pinModal .modal-content {
@@ -1044,7 +1044,7 @@
     color: white;
     border: none;
     padding: 6px 12px;
-        font-size: 4rem;
+    font-size: 4rem;
     cursor: pointer;
     border-radius: 1rem;
     
@@ -1076,27 +1076,27 @@
 
 /* Clear cache */
 .modal-body {
-  padding: 15px;
-  text-align: center;
-  color: #ff6b6b;
-  font-size: 0.9em;
-  line-height: 1.5;
+    padding: 15px;
+    text-align: center;
+    color: #ff6b6b;
+    font-size: 0.9em;
+    line-height: 1.5;
 }
 
 .modal-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 5px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 5px;
 }
 
 .danger-btn {
-  background: #dc3545 !important;
-  color: white !important;
+    background: #dc3545 !important;
+    color: white !important;
 }
 
 .danger-btn:hover {
-  background: #bb2d3b !important;
+    background: #bb2d3b !important;
 }
 
 
@@ -1149,136 +1149,153 @@
 
 /* FAQ Modal Styles */
 #faq-modal {
-  background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.8);    
+}
 
+#faq-modal.modal {
+  overflow: hidden;
 }
 
 #faq-modal .modal-content {
-  background: #ffffff;
-  color: #333;
-  border-radius: 12px;
-margin: 0;
-  max-width: 575px;
-  width: 95%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
+    background: #ffffff;
+    color: #333;
+    border-radius: 12px;
+    margin: 0;
+    max-width: 575px;
+    width: 95%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);  
+    
+     max-height: 90vh;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .faq-container {
-  padding: 0;
-  max-height: 70vh;
-  overflow-y: auto;
-
-}
+    max-height: auto;
+    overflow-y: auto;
+    flex: 1;
+  padding: 10px 0;
+    }
 
 .faq-item {
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 5px;
-  padding-bottom: 5px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 .faq-question {
-  cursor: pointer;
-  padding: 5px 0;
-  background: #f8f9fa;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  color: #2d3748;
-  transition: 0.2s ease;
-  text-align: left;
-   margin: 0;
+    cursor: pointer;
+    padding: 5px 0;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: #2d3748;
+    transition: 0.2s ease;
+    text-align: left;
+    margin: 0;
 }
 
 .faq-question::before {
-  content: "? ";
-  font-weight: 700;
-  color:red;
-  margin-right: 5px;
+    content: "? ";
+    font-weight: 700;
+    color:red;
+    margin-right: 5px;
 }
 
 .faq-question:hover {
-  background: #edf2f7;
-  transform: translateY(-1px);
+    background: #edf2f7;
+    transform: translateY(-1px);
 }
 
 .toggle-arrow {
-  font-size: 0.9em;
-  margin-left: 10px;
-  color: #4a5568;
-  transition: transform 0.3s ease;
+    font-size: 0.9em;
+    margin-left: 10px;
+    color: #4a5568;
+    transition: transform 0.3s ease;
 }
 
 .faq-item.active .toggle-arrow {
-  transform: rotate(180deg);
-  color: #3182ce;
+    transform: rotate(180deg);
+    color: #3182ce;
 }
 
 .faq-answer {
-  display: none;
-  padding: 5px 10px;
-  background: #ffffff;
-  border-left: 2px solid #3182ce;
-  line-height: 1.5;
-  color: #4a5568;
-   text-align: justify;
+    display: none;
+    padding: 5px 10px;
+    background: #ffffff;
+    border-left: 2px solid #3182ce;
+    line-height: 1.5;
+    color: #4a5568;
+    text-align: justify;
 }
 
 .faq-item.active .faq-answer {
-  display: block;
-  animation: fadeIn 0.3s ease-in;
+    display: block;
+    animation: fadeIn 0.3s ease-in;
 }
 
-/* Loading Spinner */
-.loading-spinner {
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #3182ce;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Error Message */
 .error-message {
-  color: #e53e3e;
-  text-align: center;
-  padding: 20px;
-  font-weight: 500;
+    color: #e53e3e;
+    text-align: center;
+    padding: 20px;
+    font-weight: 500;
 }
 
 .small-text {
-  font-size: 5rem; /* Adjust size */
-  color: #666; /* Optional: Lighter color */
+    font-size: 5rem; /* Adjust size */
+    color: #666; /* Optional: Lighter color */
 }
 
 .modal-footer button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .modal-footer {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  padding-top: 5px;
-  
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding-top: 5px;    
 }
 
+#faq-modal .modal-footer {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 3rem;
 
+  margin-bottom: -4rem;
+}
 
+.copy-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 14px;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  15%, 85% { opacity: 1; }
+}
 
 
 
@@ -1290,44 +1307,44 @@ margin: 0;
 
 /* Counters Modal */
 #counters-modal .modal-content {
-  max-width: 600px;
-  background: #2c3e50;
+    max-width: 600px;
+    background: #2c3e50;
 }
 
 .counter-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 2rem;
 }
 
 .counter-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: rgba(255,255,255,0.1);
-  padding: 2rem;
-  border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    padding: 2rem;
+    border-radius: 1rem;
 }
 
 .counter-icon {
-  width: 7rem;
-  height: 7rem;
-  margin-bottom: 1rem;
-  filter: invert(1);
+    width: 7rem;
+    height: 7rem;
+    margin-bottom: 1rem;
+    filter: invert(1);
 }
 
 .counter-item span {
-  font-family: 'Digital-7', monospace;
-  font-size: 6rem;
-  color: #fae68e;
+    font-family: 'Digital-7', monospace;
+    font-size: 6rem;
+    color: #fae68e;
 }
 
 .counter-label {
-  font-family: Arial, sans-serif;
-  font-size: 3rem;
-  color: #fff;
-  margin-top: 1rem;
+    font-family: Arial, sans-serif;
+    font-size: 3rem;
+    color: #fff;
+    margin-top: 1rem;
 }
 
 /* Add to existing icon styles */
@@ -1339,8 +1356,8 @@ margin: 0;
 
 /* Add this to your existing CSS */
 #footer-info {
-  cursor: pointer; /* Changes to hand pointer */
-  transition: all 0.3s ease; /* Smooth hover effect */
+    cursor: pointer; /* Changes to hand pointer */
+    transition: all 0.3s ease; /* Smooth hover effect */
 }
 
 
@@ -1348,11 +1365,11 @@ margin: 0;
 
 /* Update the close button styles */
 #counters-modal .close-btn {
-  color: white !important; /* Force white color */
+    color: white !important; /* Force white color */
 }
 
 #counters-modal .close-btn:hover {
-  color: #ff4444 !important; /* Red on hover */
+    color: #ff4444 !important; /* Red on hover */
 }
 
 /* Center the 5th counter in the grid */
@@ -1405,7 +1422,7 @@ margin: 0;
 
 
 .app-info .menu-icon {
-   margin-right: 0;            
+    margin-right: 0;            
 }
 
 

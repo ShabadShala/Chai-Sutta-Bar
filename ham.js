@@ -294,6 +294,8 @@
         
         // opening modals separately
         function openModalStandalone(modalId) {
+            // Add overflow hidden to html element
+            document.documentElement.style.overflow = 'hidden';
             // Close all other modals first
             document.querySelectorAll('.modal').forEach(otherModal => {
                 if (otherModal.id !== modalId) {
@@ -324,6 +326,8 @@
             
             function closeModal() {
                 modal.style.display = "none";
+                // Add overflow reset
+                document.documentElement.style.overflow = '';
                 hideOverlay();
             }
             
@@ -379,7 +383,8 @@
                         deferredPrompt = null;
                     });
                     } else {
-                    alert("App installation is not available. Possible reasons may be:\n- App is already installed\n- You're trying this option on Desktop.");
+                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed.\n- ON WINDOWS, this method does not work. Install from the browser's menu.");
+                    
                     
                 }
             });
@@ -632,7 +637,7 @@
         <button class="collapse-all-btn" title="Collapse All">
         <img src="icons/collapse-all.svg" alt="Collapse">
         </button>
-        <button class="copy-btn" title="Copy Features">
+        <button class="copy-btn" title="Copy Features" style="display: none;">
         <img src="icons/copy.svg" alt="Copy">
         </button>
         </div>
@@ -776,8 +781,6 @@
                     </li>`;
                 }).join('')}</ul>`;
             }
-            
-            
         }
         
         
@@ -1052,41 +1055,35 @@
         
         async function loadFAQs() {
             const container = document.getElementById('faq-container');
-            container.innerHTML = '<div class="loading-spinner"></div> Loading FAQs...';
-            
-            // Add toast styling dynamically
-            const style = document.createElement('style');
-            style.textContent = `
-            .copy-toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 14px;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            animation: fadeInOut 2s ease-in-out;
-            }
-            
-            @keyframes fadeInOut {
-            0%,100% { opacity: 0; }
-            15%,85% { opacity: 1; }
-            }
-            `;
-            document.head.appendChild(style);
             
             try {
-                const response = await fetch('faq.json');
-                if (!response.ok) throw new Error('Failed to fetch FAQs');
+                // Show loading spinner
+                container.innerHTML = '<div class="loading-spinner"></div> Loading FAQs...';
+                
+                // Add timeout for slow networks (10 seconds)
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Timeout loading FAQs')), 10000)
+                );
+                
+                // Fetch FAQs data with timeout
+                const response = await Promise.race([
+                    fetch('faq.json'),
+                    timeoutPromise
+                ]);
+                
+                // Check if response is valid
+                if (!response.ok) {
+                    throw new Error('Failed to fetch FAQs');
+                }
+                
+                // Parse JSON data
                 const faqs = await response.json();
                 
+                // Clear loading spinner
                 container.innerHTML = '';
-                let activeFaq = null;
                 
+                // Render FAQs
+                let activeFaq = null;
                 faqs.forEach((faq, index) => {
                     const faqItem = document.createElement('div');
                     faqItem.className = 'faq-item';
@@ -1105,7 +1102,6 @@
                     // Long-press copy functionality
                     const handleTouchStart = (e) => {
                         if (!faqItem.classList.contains('active')) return;
-                        
                         e.preventDefault();
                         pressTimer = setTimeout(() => {
                             navigator.clipboard.writeText(answerElement.textContent.trim())
@@ -1119,10 +1115,12 @@
                         clearTimeout(pressTimer);
                     };
                     
+                    // Add event listeners for touch devices
                     answerElement.addEventListener('touchstart', handleTouchStart);
                     answerElement.addEventListener('touchend', handleTouchEnd);
                     answerElement.addEventListener('touchcancel', handleTouchEnd);
                     
+                    // Toggle FAQ on click
                     questionElement.addEventListener('click', () => {
                         if (faqItem === activeFaq) {
                             faqItem.classList.remove('active');
@@ -1142,6 +1140,7 @@
                 // Initialize button states
                 updateFAQButtonsState();
                 
+                // Show toast message
                 function showToast(message) {
                     const toast = document.createElement('div');
                     toast.className = 'copy-toast';
@@ -1149,14 +1148,16 @@
                     document.body.appendChild(toast);
                     setTimeout(() => toast.remove(), 2000);
                 }
-                // After populating FAQs
+                
+                // Filter FAQs if search term exists
                 const searchTerm = document.getElementById('faq-search').value.toLowerCase();
                 if (searchTerm) filterFAQs(searchTerm);
+                
                 } catch (error) {
                 console.error('Error loading FAQs:', error);
+                // Show error message
                 container.innerHTML = '<div class="error-message">❌ Failed to load FAQs. Please try again later.</div>';
             }
-            
         }
         
         
@@ -1680,29 +1681,36 @@
         
         // Update modal counters
         function updateModalCounters() {
+            // Update synchronous counters (already loaded)
             document.getElementById('modal-visitorCounter').textContent = 
             document.getElementById('visitorCounter').querySelector('span').textContent;
-            
             document.getElementById('modal-viewsCounter').textContent = 
             document.getElementById('viewsCounter').querySelector('span').textContent;
-            
             document.getElementById('modal-likeCounter').textContent = 
             document.getElementById('likeCounter').textContent;
             
-            // Fetch order number from server
+            // Fetch order number with loading spinner
+            const orderNumberElement = document.getElementById('modal-orderNumber');
+            orderNumberElement.innerHTML = '<div class="loading-spinner"></div>'; // Add spinner
             fetch(`${scriptUrl}?sheet=counter&action=getOrders`)
             .then(res => res.json())
             .then(data => {
-                document.getElementById('modal-orderNumber').textContent = 
-                String(data.count).padStart(4, '0');
+                orderNumberElement.textContent = String(data.count).padStart(4, '0');
+            })
+            .catch(() => {
+                orderNumberElement.textContent = '0000';
             });
             
-            // Add installs counter
+            // Fetch installs counter with loading spinner
+            const installsElement = document.getElementById('modal-installsCounter');
+            installsElement.innerHTML = '<div class="loading-spinner"></div>'; // Add spinner
             fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
             .then(res => res.json())
             .then(data => {
-                document.getElementById('modal-installsCounter').textContent = 
-                String(data.count).padStart(4, '0');
+                installsElement.textContent = String(data.count).padStart(4, '0');
+            })
+            .catch(() => {
+                installsElement.textContent = '0000';
             });
         }
         
