@@ -241,7 +241,7 @@
             border-radius: 1rem;
             font-size: 4rem;
             display: none;
-            z-index: 3000;
+            z-index: 9999;
             }           
             
             
@@ -261,7 +261,7 @@
             display: flex;
             justify-content: center;
             align-items: flex-start; /* Align towards top */
-            z-index: 5000;
+            z-index: 2000;
             }
             
             .loading-container {
@@ -391,7 +391,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 10000; /* Higher than everything else */
+            z-index: 2001; /* Higher than everything else */
             backdrop-filter: blur(5px);            
             }
             
@@ -441,7 +441,7 @@
             color: white;
             background: rgba(0, 0, 0, 0.6);
             box-shadow: 0 0 30px yellow;
-            z-index: 10000;
+            z-index: 2002;
             
             /* Flexbox to center content */
             display: flex;
@@ -500,11 +500,10 @@
             left: 50%; /* Move the header to the center horizontally */
             transform: translateX(-50%);
             background-color: #212121; /* Match the body background */
-            z-index: 1001; /* Ensure the header stays above other content */
+            z-index: 101; /* Ensure the header stays above other content */
             padding: 1.5rem; /* Adjust padding as needed */
             box-shadow: 0 0.4rem 3rem rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
             /* border-bottom: 1px solid #fae68e; /* Adds a border */     */
-            z-index: 1001; 
             }
             
             .scrollable {
@@ -627,7 +626,7 @@
             cursor: pointer;
             font-size: 8rem;
             color: white;
-            z-index: 10;
+
             }
             
             .search-clear-btn:hover {
@@ -913,7 +912,7 @@
             right: calc(50% - 300px);
             font-size: 4rem;
             cursor: pointer; /* Pointer for better UX */
-            z-index: 1001;            
+            z-index: 103;            
             /* Circular button */
             width: 13rem;
             height: 13rem;
@@ -923,7 +922,6 @@
             background-color: #CD5C5C; /* Single solid color */
             border-radius: 50%; /* Makes it a circle */
             box-shadow: 0 0 15px #CD5C5C; /* Glow effect */
-            z-index: 1600;
             }
             
             #scrapButton img {
@@ -994,7 +992,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
-            z-index: 1500; /* Below scrapList's 2000 but above content */
+            z-index: 100; /* Below scrapList's 2000 but above content */
             display: none;
             }
             
@@ -1312,11 +1310,12 @@
             max-width: 90vw;
             max-height: 55vh; /* Ensures modal doesn't exceed viewport */
             background: rgba(255, 255, 255, 0.95);
-            z-index: 2000;
+            
             border-radius: 1rem;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             overflow: hidden;
             flex-direction: column;
+            z-index: 102;
             }   
             
             /* Scrap Content */
@@ -1447,7 +1446,7 @@
             transition: all 0.3s ease-in-out;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             display: none; /* Hidden by default */
-            z-index: 90;
+         
             animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
             
             }
@@ -1565,7 +1564,7 @@
             /* Toggle Offer Cart Button */
             #toggle-cart {
             position: relative;
-            z-index: 500;
+       
             padding: 1rem 2rem;
             background: #4CAF50;
             color: white;
@@ -1788,7 +1787,7 @@
             transform: translateY(-50%) scaleX(-1); /* Center vertically */
             width: 5rem; /* Adjust icon size */
             height: auto;  
-            z-index: 10;
+    
             }
             
             .phone-icon:hover {
@@ -1807,7 +1806,7 @@
             height: 100%;
             overflow: hidden;
             pointer-events: none;
-            z-index: 1000; /* Keeps sidebar above other content */
+           
             }
             
             #sidebar {
@@ -1945,7 +1944,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 100000;
+            z-index: 10000;
             animation: fadeIn 0.5s ease-out;
             }
             
@@ -4726,7 +4725,7 @@
                 cursor: pointer;
                 font-size: 4rem;
                 transition: transform 0.1s, box-shadow 0.1s;
-                z-index: 1000;">
+                z-index: 1001;">
                 Refresh<br>Updates
                 </button>`;
                 document.body.appendChild(updateDiv);
