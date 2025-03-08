@@ -1,13 +1,6 @@
-
-
-
-
-
-
 // Get references to sidebar and phone icon
 let sidebar = document.getElementById('sidebar');
 let phoneIcon = document.querySelector('.phone-icon'); // Select existing phone.svg icon
-
 
 // Function to toggle sidebar
 function toggleSidebar(event) {
@@ -30,15 +23,12 @@ document.addEventListener("click", function(event) {
 // Add event listeners
 phoneIcon.addEventListener('click', toggleSidebar);
 
-
 const miscUrl = scriptUrl + "?sheet=misc&raw=true";    
 
 fetch(miscUrl)
 .then(response => response.json())
 .then(data => {
     if (data && data.length >= 2) {
-        
-       
         // Fetch delivery phone number from B3 cell
         let deliveryPhone = data[3][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
         if (deliveryPhone) {
@@ -96,80 +86,60 @@ fetch(miscUrl)
             whatsappOfferNumber = '+91' + offerWhatsappNumber; // Add country code
         }
         
-        
         // Extract Open and Close times from Google Sheets
         const openTimeStr = data[0][1]; // Example: "09.30am"
         const closeTimeStr = data[1][1]; // Example: "10.45pm"
         
-        // Get current date
-        const now = new Date();
-        const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Get today's date without time
+        // Validate time format
+        if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
+            console.error('Invalid time format detected');
+            return;
+        }
         
-        // Convert the date in data[2][0] to a Date object (assuming it's already in dd/mm/yy format and can be parsed directly)
-        const dataDate = new Date(data[2][0]); // This assumes the date is in a format that JavaScript can parse directly (e.g., mm/dd/yyyy or yyyy/mm/dd)
+        // Parse times once
+        const openTime = parseCustomTime(openTimeStr);
+        const closeTime = parseCustomTime(closeTimeStr);
+        const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
+        const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
         
-        // Check if data[2][0] is today's date and data[2][1] is not empty
-        if (dataDate.getTime() === currentDate.getTime() && data[2][1] !== "") {
-            // If the date is today and data[2][1] is not empty, set statusMessage to data[2][1]
-            statusMessage = `<span style="color: #FFA500;">${data[2][1]}</span>`;
+        // Function to update status in real-time
+        function updateStatus() {
+            const now = new Date();
+            const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            let statusMessage;
+
+            // Check if there's a special message for today
+            const dataDate = new Date(data[2][0]);
+            if (dataDate.getTime() === currentDate.getTime() && data[2][1] !== "") {
+                statusMessage = `<span style="color: #FFA500;">${data[2][1]}</span>`;
             } else {
-            // Check if either openTimeStr or closeTimeStr is empty
-            if (!openTimeStr || !closeTimeStr) {
-                // If one or both times are missing, don't display anything
-                const timeElem = document.querySelector('.open-close');
-                if (timeElem) {
-                    timeElem.innerHTML = "";
-                }
-                return; // Exit the function
-            }
-            
-            // Add validation for time format
-            if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
-                console.error('Invalid time format detected');
-                return;
-            }
-            
-            // Convert Open and Close times to Date objects
-            const openTime = parseCustomTime(openTimeStr);
-            const closeTime = parseCustomTime(closeTimeStr);
-            
-            // Get current time
-            const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes since midnight
-            
-            // Convert Open and Close times to minutes since midnight
-            const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
-            const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
-            
-            // Compare times based on minutes from midnight
-            if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
-                const timeLeft = closeTimeInMinutes - currentTime;
-                const blinkClass = timeLeft <= 30 ? 'blink' : '';
-                statusMessage = `<span style="color: #00FF00; font-weight: bold;">Open</span> <span class="${blinkClass}">until ${formatTime(closeTime)}</span>`;
+                // Determine if open or closed
+                if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
+                    const timeLeft = closeTimeInMinutes - currentTime;
+                    const blinkClass = timeLeft <= 30 ? 'blink' : '';
+                    statusMessage = `<span style="color: #00FF00; font-weight: bold;">Open</span> <span class="${blinkClass}">until ${formatTime(closeTime)}</span>`;
                 } else {
-                let timeUntilOpen = openTimeInMinutes - currentTime;
-                
-                // Check if the opening time is on the next day
-                if (timeUntilOpen < 0) {
-                    // Calculate the time difference until the next day's opening
-                    const minutesInDay = 24 * 60;
-                    timeUntilOpen = minutesInDay + timeUntilOpen; // Add a full day's worth of minutes
+                    let timeUntilOpen = openTimeInMinutes - currentTime;
+                    if (timeUntilOpen < 0) timeUntilOpen += 1440; // Add 24hrs in minutes
+                    const blinkClass = timeUntilOpen <= 30 ? 'blink' : '';
+                    statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ <span class="${blinkClass}">Opens ${formatTime(openTime)}</span>`;
                 }
-                
-                
-                const blinkClass = timeUntilOpen <= 30 ? 'blink' : '';
-                statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ <span class="${blinkClass}">Opens ${formatTime(openTime)}</span>`;
+            }
+
+            // Update the display
+            const timeElem = document.querySelector('.open-close');
+            if (timeElem) {
+                timeElem.innerHTML = statusMessage;
             }
         }
-        
-        // Update the display
-        const timeElem = document.querySelector('.open-close');
-        if (timeElem) {
-            timeElem.innerHTML = statusMessage;
-        }
-        
-        
-        
-        
+
+        // Initial update
+        updateStatus();
+
+        // Update every 30 seconds
+        setInterval(updateStatus, 15000);
+
         // Inside the Misc data fetch .then block, after processing other data:
         const a9Value = data[8] && data[8][0]; // A9 cell (row 8, column 0)
         if (a9Value === "Image") {
@@ -182,70 +152,49 @@ fetch(miscUrl)
                     }, 5000);
                 }
             });
-        }
-    } 
-    // Check A9 cell and image size
-    const a9Value = data[8] && data[8][0];
-    if (a9Value === "Image") {
-        checkImageSize().then(valid => {
-            if (valid) {
-                document.getElementById('imageOverlay').style.display = 'flex';
-                document.getElementById('driveImage').src = imageUrl;
+        } else if (a9Value === "Message") {
+            const b9Value = data[8] && data[8][1]; // B9 cell
+            if (b9Value && b9Value.trim() !== "") {
+                const messageOverlay = document.getElementById('messageOverlay');
+                const messageText = document.getElementById('messageText');
+                
+                // Set message content
+                messageText.textContent = b9Value;
+                
+                // Show the overlay
+                messageOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                // Close button handler
+                document.getElementById('closeMessage').onclick = () => {
+                    messageOverlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                };
+                
+                // Click outside to close
+                messageOverlay.addEventListener('click', (e) => {
+                    if (e.target === messageOverlay) {
+                        messageOverlay.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                // Auto-close after 5 seconds
                 setTimeout(() => {
-                    document.getElementById('imageOverlay').style.display = 'none';
+                    if (messageOverlay.style.display === 'flex') {
+                        messageOverlay.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
                 }, 5000);
             }
-        });
-    } // Inside the Misc data fetch .then block
-    else if (a9Value === "Message") {
-        const b9Value = data[8] && data[8][1]; // B9 cell
-        if (b9Value && b9Value.trim() !== "") {
-            //        if (b9Value && typeof b9Value === "string" && b9Value.trim().length > 0 && b9Value.trim().length <= 250) {
-            
-            const messageOverlay = document.getElementById('messageOverlay');
-            const messageText = document.getElementById('messageText');
-            
-            // Set message content
-            messageText.textContent = b9Value;
-            
-            // Show the overlay
-            messageOverlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            
-            // Close button handler
-            document.getElementById('closeMessage').onclick = () => {
-                messageOverlay.style.display = 'none';
-                document.body.style.overflow = '';
-            };
-            
-            // Click outside to close
-            messageOverlay.addEventListener('click', (e) => {
-                if (e.target === messageOverlay) {
-                    messageOverlay.style.display = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-            
-            // Auto-close after 5 seconds
-            setTimeout(() => {
-                if (messageOverlay.style.display === 'flex') {
-                    messageOverlay.style.display = 'none';
-                    document.body.style.overflow = '';
-                }
-            }, 5000);
         }
     }
-    
-    
-    
 })
 .catch(error => {
     console.error("Error fetching Misc data:", error);
-    
-    
 });
 
-
+// Function to check image size
 function checkImageSize() {
     return fetch(imageUrl)
     .then(response => {
@@ -256,11 +205,8 @@ function checkImageSize() {
     .catch(() => false);
 }
 
-
-
 // Function to parse custom time format (hh.mmap)
 function parseCustomTime(timeStr) {
-    // Extract hour, minute, and period using regex
     const match = timeStr.match(/(\d{1,2})\.(\d{2})(am|pm)/i);
     if (!match) {
         console.error('Invalid time format:', timeStr);
@@ -274,7 +220,7 @@ function parseCustomTime(timeStr) {
     // Convert to 24-hour format
     if (period === 'pm' && hour !== 12) {
         hour += 12;
-        } else if (period === 'am' && hour === 12) {
+    } else if (period === 'am' && hour === 12) {
         hour = 0;
     }
     
@@ -290,11 +236,3 @@ function formatTime(date) {
     const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
     return `${formattedHours}:${formattedMinutes} ${period}`;
 }
-
-
-
-
-
-
-
-

@@ -81,7 +81,7 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.6); /* Slightly darker backdrop */            
     backdrop-filter: blur(5px); /* Adds a blur effect to the background */
-    z-index: 100;
+    z-index: 1002;
     flex-direction: column;
 }
 
@@ -95,7 +95,7 @@
     max-width: 600px;
     width: 100%;
     height: 100%;
-    z-index: 1002;
+    z-index: 1003;
     overflow: hidden;
     pointer-events: none; /* Allow clicks through container when closed */            
 }
@@ -110,7 +110,7 @@
     backdrop-filter: blur(8px);
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
     transition: left 0.3s ease;
-    z-index: 1002;
+    z-index: 1004;
     padding-top: 40px;
     border-radius: 0 15px 15px 0;
     color: #e0e0e0;
@@ -144,7 +144,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: sticky;
     top: 0;
-    z-index: 1;
+
     line-height: 1.5;
     align-items: center; /* Vertically center logo and text */
     gap: 3rem; /* Consistent gap between logo and text */
@@ -183,7 +183,7 @@
     font-size: 8rem;
     color: #f1f1f1; /* Lighter color for contrast */
     cursor: pointer;
-    z-index: 1003; /* Ensures it is on top of other content */
+   z-index: 1006;
 }
 
 #close-sidebar:hover {
@@ -206,7 +206,7 @@
     border: none;
     font-weight: bold;
     transition: 0.3s;
-    z-index: 1000;
+
 }
 
 .close-btn:hover {
@@ -449,7 +449,7 @@
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1012;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
     display: flex;
@@ -836,7 +836,7 @@
     padding: 8px 12px;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    z-index: 1000;
+
     max-width: 300px;
     font-size: 14px;
     color: black;
@@ -984,7 +984,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 8rem;
-    z-index: 1000;
+
 }
 
 .pmodal { 
@@ -997,7 +997,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1050;
+
 }
 
 #pinModal {
@@ -1010,7 +1010,7 @@
     display: none; /* Hidden by default */
     align-items: center;
     justify-content: center;
-    z-index: 1050;
+
 }
 
 #pinModal .modal-content {
@@ -1150,7 +1150,7 @@
 /* FAQ Modal Styles */
 #faq-modal {
   background: rgba(0, 0, 0, 0.8);
-   z-index: 1003;
+
 }
 
 #faq-modal .modal-content {
@@ -1161,7 +1161,7 @@ margin: 0;
   max-width: 575px;
   width: 95%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-   z-index: 1003;
+
 }
 
 .faq-container {

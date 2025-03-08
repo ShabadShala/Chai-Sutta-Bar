@@ -253,6 +253,7 @@
             hoverlay.style.display = 'block';
             hoverlay.style.opacity = opacity;
             document.body.style.overflow = 'hidden';
+            document.body.style.touchAction = 'none'; // Disable touch scrolling
             document.documentElement.style.overflow = 'hidden';
         }
         
@@ -262,6 +263,7 @@
                 hoverlay.style.display = 'none';
             }
             document.body.style.overflow = '';
+            document.body.style.touchAction = '';
             document.documentElement.style.overflow = '';
         }
         
@@ -1695,7 +1697,7 @@
                 String(data.count).padStart(4, '0');
             });
             
-             // Add installs counter
+            // Add installs counter
             fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
             .then(res => res.json())
             .then(data => {
@@ -1720,8 +1722,8 @@
         
         
         
-
-
+        
+        
         
         
         
