@@ -429,8 +429,18 @@
 
 
 
+.scrollable-modal {
+  overflow: hidden;
+  touch-action: none; /* Prevent touch scrolling on background */
+}
 
-
+/* Add this to your stylesheet */
+.scroll-lock {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
 
 
 
@@ -456,6 +466,7 @@
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(5px);
+     overflow: hidden;
 }
 
 .modal-content {
@@ -470,6 +481,10 @@
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease-in-out;
     position: relative;
+     max-height: 90vh;
+      overflow-y: auto;
+      display: flex;
+  flex-direction: column;
 }
 
 /* Title Styling */
@@ -756,13 +771,12 @@
 }
 
 .modal-footer {
-    position: sticky;
-    bottom: 0;
-    background: white;
-    padding: 2px;    
-    display: flex;
-    gap: 10px;
-    justify-content: center; /* Center buttons horizontally */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: inherit;
+  border-top: 1px solid rgba(0,0,0,0.1);
 }
 
 .modal-footer button {
@@ -1172,7 +1186,7 @@
 }
 
 .faq-container {
-    max-height: auto;
+    max-height: 70vh;
     overflow-y: auto;
     flex: 1;
   padding: 10px 0;
@@ -1230,6 +1244,7 @@
     line-height: 1.5;
     color: #4a5568;
     text-align: justify;
+    overflow-wrap: break-word;
 }
 
 .faq-item.active .faq-answer {

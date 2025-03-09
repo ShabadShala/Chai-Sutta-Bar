@@ -248,24 +248,24 @@
         
         
         
-        function showOverlay(opacity = 0.9) {
-            const hoverlay = document.getElementById('hsidebar-overlay') || createOverlay();
-            hoverlay.style.display = 'block';
-            hoverlay.style.opacity = opacity;
-            document.body.style.overflow = 'hidden';
-            document.body.style.touchAction = 'none'; // Disable touch scrolling
-            document.documentElement.style.overflow = 'hidden';
-        }
-        
-        function hideOverlay() {
-            const hoverlay = document.getElementById('hsidebar-overlay');
-            if (hoverlay) {
-                hoverlay.style.display = 'none';
-            }
-            document.body.style.overflow = '';
-            document.body.style.touchAction = '';
-            document.documentElement.style.overflow = '';
-        }
+function showOverlay(opacity = 0.9) {
+  const hoverlay = document.getElementById('hsidebar-overlay') || createOverlay();
+  hoverlay.style.display = 'block';
+  hoverlay.style.opacity = opacity;
+  
+  // Add scroll lock class to body
+  document.documentElement.classList.add('scroll-lock');
+  document.body.classList.add('scroll-lock');
+}
+
+function hideOverlay() {
+  const hoverlay = document.getElementById('hsidebar-overlay');
+  if (hoverlay) hoverlay.style.display = 'none';
+  
+  // Remove scroll lock
+  document.documentElement.classList.remove('scroll-lock');
+  document.body.classList.remove('scroll-lock');
+}
         
         function createOverlay() {
             const hoverlay = document.createElement('div');
@@ -311,12 +311,6 @@
                 showOverlay(0.9);
             }
         }
-        
-        
-        
-        
-        
-        
         
         
         
@@ -785,44 +779,43 @@
         
         
         // Add info button handlers
-        function addInfoButtonListeners() {
-            document.querySelectorAll('.info-btn').forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    
-                    // Remove any existing tooltips before showing a new one
-                    document.querySelectorAll('.info-tooltip').forEach(tip => tip.remove());
-                    
-                    // Create new tooltip
-                    const tooltip = document.createElement('div');
-                    tooltip.className = 'info-tooltip';
-                    tooltip.textContent = this.dataset.info;
-                    
-                    // Position tooltip
-                    const rect = this.getBoundingClientRect();
-                    tooltip.style.left = `${rect.left}px`;
-                    tooltip.style.top = `${rect.bottom + 4}px`;
-                    
-                    document.body.appendChild(tooltip);
-                    
-                    // Function to close tooltip
-                    function closeTooltip(event) {
-                        tooltip.remove();
-                        document.removeEventListener('click', closeTooltip);
-                        window.removeEventListener('scroll', closeTooltip, true);
-                        window.removeEventListener('touchmove', closeTooltip, true);
-                    }
-                    
-                    // ✅ Close on outside click
-                    document.addEventListener('click', closeTooltip);
-                    
-                    // ✅ Close on scroll (Desktop & Touch Devices)
-                    window.addEventListener('scroll', closeTooltip, true);
-                    window.addEventListener('touchmove', closeTooltip, true); // 🔥 Ensures it works on touch devices
-                });
-            });
-        }
-        
+// Inside addInfoButtonListeners function
+function addInfoButtonListeners() {
+    document.querySelectorAll('.info-btn').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.stopPropagation();
+            
+            // Remove existing tooltips
+            document.querySelectorAll('.info-tooltip').forEach(tip => tip.remove());
+            
+            // Create new tooltip with fixed positioning
+            const tooltip = document.createElement('div');
+            tooltip.className = 'info-tooltip';
+            tooltip.textContent = this.dataset.info;
+            tooltip.style.position = 'fixed'; // Changed from absolute to fixed
+            tooltip.style.zIndex = '9999'; // Ensure higher than modal
+            
+            // Position using getBoundingClientRect
+            const rect = this.getBoundingClientRect();
+            tooltip.style.left = `${rect.left}px`;
+            tooltip.style.top = `${rect.bottom + 4}px`;
+            
+            document.body.appendChild(tooltip);
+            
+            // Close tooltip on interactions
+            function closeTooltip() {
+                tooltip.remove();
+                document.removeEventListener('click', closeTooltip);
+                window.removeEventListener('scroll', closeTooltip, true);
+                window.removeEventListener('touchmove', closeTooltip, true);
+            }
+            
+            document.addEventListener('click', closeTooltip);
+            window.addEventListener('scroll', closeTooltip, true);
+            window.addEventListener('touchmove', closeTooltip, true);
+        });
+    });
+}
         
         
         
@@ -1719,7 +1712,7 @@
             // Open modal using universal function
             toggleSidebar(false);
             openModalStandalone('counters-modal');
-            
+             loadFeatures();
             // Update counters after modal is opened
             updateModalCounters();
         });
