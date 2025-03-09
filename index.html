@@ -2171,7 +2171,7 @@
             
             #locationStatus {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 5rem;
             }
             
             /* Add these styles to your existing CSS */
@@ -2540,57 +2540,48 @@
         <div id="deliveryModal" class="order-modal-overlay" style="display:none;">
             <div class="order-modal-content">
                 <span class="close-button">&times;</span>
-                <h2>Contact Details</h2>
+                <h2>Delivery Details<br><small>(Optional)</small></h2>
                 <form id="deliveryForm">
-                    <div class="order-type">
-                        <label>
-                            <input type="radio" name="orderType" value="dinein" checked> Dine-in/Takeaway
-                        </label>
-                        <label>
-                            <input type="radio" name="orderType" value="delivery"> Delivery
-                        </label>
-                    </div>
-                    
                     <div id="deliveryFields">
                         <div class="form-group">
                             <label>Date & Time</label>
-                            <input type="datetime-local" id="deliveryTime">
+                            <div style="display: flex; gap: 4px;">
+                                <input type="datetime-local" id="deliveryTime">
+                                <button type="button" id="clearDate">✖️</button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="phone">Mobile Number <span style="color: red;">*</span></label>
+                            <label for="phone">Mobile Number</label>
                             <div style="display:flex;gap:5px">
-                                <input type="tel" id="phone" 
-                                maxlength="11" 
-                                pattern="\d{5}-\d{5}" 
-                                placeholder="12345-67890" 
-                                title="Enter 10 digits in the format 12345-67890"
-                                required>
+                                <input type="tel" id="phone" maxlength="11" pattern="\d{5}-\d{5}" placeholder="12345-67890" title="Enter 10 digits in the format 12345-67890">
                                 <button type="button" id="pickContact">📱</button>
                             </div>                            
                         </div>
                         
                         <div class="form-group">
-                            <label>Name (25 characters max.)</label>
+                            <label>Name (25 chars max.)</label>
                             <input type="text" id="customerName" maxlength="25">
                         </div>
                         
                         <div class="address-method">
-                            <label>
-                                <input type="radio" name="addressMethod" value="manual" checked>Address
-                            </label>
-                            <label>
-                                <input type="radio" name="addressMethod" value="location"> Location
-                            </label>
+                            <label>Address (100 chars max.)</label>
                         </div>
                         
+                        
+                        
                         <div id="addressInput">
-                            <textarea id="manualAddress" placeholder="Enter full address"></textarea>
+                            <textarea id="manualAddress" placeholder="Enter address" maxlength="100"></textarea>
+                        </div>
+                        
+                        <div class="address-method">
+                            <label>
+                                <input type="checkbox" name="locationAddress" value="location"> Location
+                            </label>
                         </div>
                         
                         <div id="locationStatus" style="display:none"></div>
                     </div>
-                    
                     <button type="submit">Confirm Order</button>
                 </form>
                 
@@ -4974,24 +4965,11 @@
             });
             
             // Initialize form state on modal open
-function showDeliveryModal() {
-    const modal = document.getElementById('deliveryModal');
-    modal.style.display = 'flex';
-    
-    // Reset form and set Dine-in as default
-    document.getElementById('deliveryForm').reset();
-    document.querySelector('[name="orderType"][value="dinein"]').checked = true;
-    
-    // Disable all delivery fields including phone by default
-    document.querySelectorAll('#deliveryFields input, #deliveryFields textarea').forEach(input => {
-        input.required = false;
-        input.disabled = true;
-    });
-    
-    const phoneField = document.getElementById('phone');
-    phoneField.required = false;
-    phoneField.disabled = true;
-}
+            function showDeliveryModal() {
+                const modal = document.getElementById('deliveryModal');
+                modal.style.display = 'flex';
+                document.getElementById('deliveryForm').reset();
+            }
             
             
             
@@ -5009,35 +4987,36 @@ function showDeliveryModal() {
             
             // Toggle delivery fields
             // Toggle delivery fields and phone requirement
-// Toggle delivery fields and phone number
-document.querySelectorAll('[name="orderType"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
-        const isDelivery = e.target.value === 'delivery';
-        const deliveryFields = document.getElementById('deliveryFields');
-        const phoneField = document.getElementById('phone');
-        
-        // Enable/disable phone field and set it as required only for delivery
-        phoneField.required = isDelivery;
-        phoneField.disabled = !isDelivery;
-
-        // All other fields remain optional and disabled unless it's a delivery
-        deliveryFields.querySelectorAll('input:not(#phone), textarea').forEach(input => {
-            input.required = false;
-            input.disabled = !isDelivery;
-        });
-    });
-});
-
+            // Toggle delivery fields and phone number
+            document.querySelectorAll('[name="orderType"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const isDelivery = e.target.value === 'delivery';
+                    const deliveryFields = document.getElementById('deliveryFields');
+                    const phoneField = document.getElementById('phone');
+                    
+                    // Enable/disable phone field and set it as required only for delivery
+                    phoneField.required = isDelivery;
+                    phoneField.disabled = !isDelivery;
+                    
+                    // All other fields remain optional and disabled unless it's a delivery
+                    deliveryFields.querySelectorAll('input:not(#phone), textarea').forEach(input => {
+                        input.required = false;
+                        input.disabled = !isDelivery;
+                    });
+                });
+            });
+            
             
             // Contact picker
             // Contact picker
             document.getElementById('pickContact').addEventListener('click', async () => {
-                if ('contacts' in navigator && 'get' in navigator.contacts) {
+                if (navigator.contacts && navigator.contacts.select) {
                     try {
-                        const [contact] = await navigator.contacts.select(['name', 'tel']);
+                        const contacts = await navigator.contacts.select(['name', 'tel'], { multiple: false });
+                        const contact = contacts[0];
                         if (contact) {
                             let phone = contact.tel?.[0] || '';
-                            phone = phone.replace(/\D/g, '').slice(0, 10); // Keep only 10 digits
+                            phone = phone.replace(/\D/g, '').slice(0, 10);
                             if (phone.length > 5) {
                                 phone = phone.slice(0, 5) + '-' + phone.slice(5);
                             }
@@ -5047,12 +5026,14 @@ document.querySelectorAll('[name="orderType"]').forEach(radio => {
                         } catch (error) {
                         console.error('Error picking contact:', error);
                     }
+                    } else {
+                    console.error('Contact Picker API not supported on this browser.');
                 }
             });
             
             // Auto-insert dash after 5 digits on manual input
             document.getElementById('phone').addEventListener('input', function (e) {
-                let value = e.target.value.replace(/\D/g, '').slice(0, 10); // Allow only digits, max 10
+                let value = e.target.value.replace(/\D/g, '').slice(0, 10);
                 if (value.length > 5) {
                     value = value.slice(0, 5) + '-' + value.slice(5);
                 }
@@ -5060,12 +5041,45 @@ document.querySelectorAll('[name="orderType"]').forEach(radio => {
             });
             
             
-            // Geolocation
-            document.querySelector('[value="location"]').addEventListener('change', (e) => {
-                if (e.target.checked) {
-                    getLocation();
+            document.querySelector('[value="location"]').addEventListener('change', () => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+                        // Display or use the location as needed
+                        document.getElementById('locationStatus').textContent = `Lat: ${latitude}, Lon: ${longitude}`;
+                        document.getElementById('locationStatus').style.display = 'block';
+                    },
+                    (error) => {
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                            alert('Permission denied. Please allow location access.');
+                            break;
+                            case error.POSITION_UNAVAILABLE:
+                            alert('Location information is unavailable.');
+                            break;
+                            case error.TIMEOUT:
+                            alert('Location request timed out.');
+                            break;
+                            default:
+                            alert('An unknown error occurred.');
+                            break;
+                        }
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000, // 10 seconds timeout
+                        maximumAge: 0
+                    }
+                    );
+                    } else {
+                    alert('Geolocation is not supported by this browser.');
                 }
             });
+            
+            
             
             function getLocation() {
                 if (navigator.geolocation) {
@@ -5076,41 +5090,59 @@ document.querySelectorAll('[name="orderType"]').forEach(radio => {
                         const lng = position.coords.longitude;
                         document.getElementById('locationStatus').innerHTML = `
                         Location captured!<br>
-                        <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>
-                        `;
+                        <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
                     },
                     error => {
-                        document.getElementById('locationStatus').textContent = 
-                        'Error getting location: ' + error.message;
+                        document.getElementById('locationStatus').textContent = 'Error getting location: ' + error.message;
                     }
                     );
                 }
             }
             
             // Form submission
-document.getElementById('deliveryForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const orderType = document.querySelector('[name="orderType"]:checked').value;
-    const phone = document.getElementById('phone').value;
-    
-    // Only validate phone if delivery is selected
-    if (orderType === 'delivery' && !phone) {
-        showFeedback('Please enter the phone number for delivery');
-        return;
-    }
-    
-    // Prepare form data
-    const formData = {
-        orderType,
-        phone: phone || '',
-        name: document.getElementById('customerName').value || '',
-        address: document.getElementById('manualAddress').value || '',
-    };
-
-    sendCombinedOrder(formData);
-    document.getElementById('deliveryModal').style.display = 'none';
-});
+            document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const deliveryInput = document.getElementById('deliveryTime');
+                const deliveryTime = deliveryInput.value;
+                
+                if (deliveryTime) {
+                    const selectedTime = new Date(deliveryTime).getTime();
+                    const currentTimePlus10Min = new Date().getTime() + 10 * 60000;
+                    
+                    if (selectedTime < currentTimePlus10Min) {
+                        deliveryInput.setCustomValidity('Should be at least 10 minutes from now or leave it blank.');
+                        deliveryInput.reportValidity();
+                        return;
+                        } else {
+                        deliveryInput.setCustomValidity(''); // Clear if valid
+                    }
+                    } else {
+                    deliveryInput.setCustomValidity(''); // Allow blank input and clear previous messages
+                }
+                
+                
+                
+                const formData = {
+                    phone: document.getElementById('phone').value || '',
+                    name: document.getElementById('customerName').value || '',
+                    address: document.getElementById('manualAddress').value || '',
+                    deliveryTime: deliveryTime
+                };
+                sendCombinedOrder(formData);
+                document.getElementById('deliveryModal').style.display = 'none';
+            });
+            
+            document.getElementById('clearDate').addEventListener('click', function() {
+                const deliveryInput = document.getElementById('deliveryTime');
+                deliveryInput.value = ''; // Clear the input
+                deliveryInput.setCustomValidity(''); // Clear any validation messages
+            });
+            
+            
+            function sendCombinedOrder(data) {
+                console.log('Order Data:', data);
+                // Logic to process the order
+            }
             
             
             function sendCombinedOrder(formData) {
