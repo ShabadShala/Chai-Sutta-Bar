@@ -4026,27 +4026,29 @@
             // Select a random emoji
             let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
             
-            let message = encodeURIComponent(
-            `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
-            `${sortedItems.map(item => {
-            let itemTotal = item.qty * parseFloat(item.rate);
-            return item.qty > 1 
-            ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-            : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-            }).join('\n\n')}\n${'-'.repeat(30)}\n` +
-            `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
-            );
-            
-            message += '\n\n🎊 Offers\n';
-            
-            // Append offers message
-            if (offerCart.length > 0) {
-                offerCart.forEach((group, index) => {
-                    group.dates.forEach(date => {
-                        message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
-                    });
-                });
-            }
+let message = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
+`${sortedItems.map(item => {
+    let itemTotal = item.qty * parseFloat(item.rate);
+    return item.qty > 1 
+    ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+    : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+}).join('\n\n')}\n${'-'.repeat(30)}\n` +
+`*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`;
+
+message += '\n\n🎊 *Offers*\n\n';
+
+// Append offers message
+if (offerCart.length > 0) {
+    offerCart.forEach((group) => {
+        group.dates.forEach(date => {
+            message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n`;
+        });
+    });
+}
+
+// Encode the full message before using it
+message = encodeURIComponent(message);
+
             
             
             window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
