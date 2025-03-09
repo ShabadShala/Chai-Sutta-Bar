@@ -2103,9 +2103,9 @@
             }
             
             /* Ensure proper spacing in both containers */
-#scrapList .button-container-all,
-#offer-cart .button-container-all {
-}
+            #scrapList .button-container-all,
+            #offer-cart .button-container-all {
+            }
         </style>
         <link rel="stylesheet" href="ham.css">
     </head>
@@ -3635,7 +3635,7 @@
                 // Show closeOffer button if scrapItems has items
                 closeOfferButton.style.display = scrapItems.length > 0 ? 'none' : 'block';
                 
-               
+                
                 // New: Remove dependent offers when scrap is empty
                 if (scrapItems.length === 0) {
                     const dependentOffersRemoved = offerCart.filter(group => group.dependent);
@@ -3646,6 +3646,7 @@
                         updateCartDisplay();
                         updateOfferAddButtons();
                         updateScrapButtonStatus();
+                         saveOfferCart();
                     }
                 }
                 updateCartDisplay();
@@ -3654,33 +3655,33 @@
             }
             
             // Function to update the visibility and position of .button-container-all
-function updateButtonContainerAll() {
-    const buttonContainerAll = document.querySelector('.button-container-all');
-    const closeOfferButton = document.getElementById('closeOffer');
-
-    // Show closeOffer button if scrapItems has items
-    closeOfferButton.style.display = scrapItems.length > 0 ? 'none' : 'block';
-
-    // Determine where to display .button-container-all
-    if (offerCart.length > 0) {
-        // Move to offer-cart
-        const offerContent = document.querySelector('#offer-cart .offers-content');
-        if (buttonContainerAll.parentNode !== offerContent) {
-            offerContent.appendChild(buttonContainerAll);
-        }
-        buttonContainerAll.style.display = 'flex';
-    } else if (scrapItems.length > 0) {
-        // Move to scrapList
-        const scrapContent = document.querySelector('#scrapList .scrap-content');
-        if (buttonContainerAll.parentNode !== scrapContent) {
-            scrapContent.appendChild(buttonContainerAll);
-        }
-        buttonContainerAll.style.display = 'flex';
-    } else {
-        // Hide if both are empty
-        buttonContainerAll.style.display = 'none';
-    }
-}
+            function updateButtonContainerAll() {
+                const buttonContainerAll = document.querySelector('.button-container-all');
+                const closeOfferButton = document.getElementById('closeOffer');
+                
+                // Show closeOffer button if scrapItems has items
+                closeOfferButton.style.display = scrapItems.length > 0 ? 'none' : 'block';
+                
+                // Determine where to display .button-container-all
+                if (offerCart.length > 0) {
+                    // Move to offer-cart
+                    const offerContent = document.querySelector('#offer-cart .offers-content');
+                    if (buttonContainerAll.parentNode !== offerContent) {
+                        offerContent.appendChild(buttonContainerAll);
+                    }
+                    buttonContainerAll.style.display = 'flex';
+                    } else if (scrapItems.length > 0) {
+                    // Move to scrapList
+                    const scrapContent = document.querySelector('#scrapList .scrap-content');
+                    if (buttonContainerAll.parentNode !== scrapContent) {
+                        scrapContent.appendChild(buttonContainerAll);
+                    }
+                    buttonContainerAll.style.display = 'flex';
+                    } else {
+                    // Hide if both are empty
+                    buttonContainerAll.style.display = 'none';
+                }
+            }
             
             // Add this function to update the counter
             function updateScrapCounter() {
@@ -3964,6 +3965,7 @@ function updateButtonContainerAll() {
                     
                     // Initial button state setup (when the list first loads)
                     updateIncrementButtonState(btn.dataset.name, btn.dataset.rate);
+                    saveScrapItems();
                 });
                 
                 function updateIncrementButtonState(name, rate) {
@@ -4014,6 +4016,8 @@ function updateButtonContainerAll() {
                     
                     // Initial button state setup (when the list first loads)
                     updateDecrementButtonState(btn.dataset.name, btn.dataset.rate);
+                    
+                    saveScrapItems();
                 });
                 
                 function updateDecrementButtonState(name, rate) {
@@ -4211,13 +4215,31 @@ function updateButtonContainerAll() {
             // Add this in the DOMContentLoaded event listener
             document.addEventListener("DOMContentLoaded", function () {
                 loadScrapItems();
+                loadOfferCart(); // Add this line
                 setActiveTab("allButton");
             }); 
             
             
             
             
+            // Add these functions
+function saveOfferCart() {
+    localStorage.setItem('offerCart', JSON.stringify(offerCart));
+}
             
+            function loadOfferCart() {
+                const saved = localStorage.getItem('offerCart');
+                if (saved) {
+                    try {
+                        offerCart = JSON.parse(saved);
+                        updateCartDisplay();
+                        updateScrapButtonStatus();
+                        } catch (e) {
+                        console.error('Error loading offer cart:', e);
+                        localStorage.removeItem('offerCart');
+                    }
+                }
+            }
             
             
             
@@ -4338,6 +4360,7 @@ function updateButtonContainerAll() {
                     button.disabled = (dependencies && scrapItems.length === 0) || 
                     (allowOnce && existsInCart);
                 });
+                
             }
             
             // Modify the click handler to group by title
@@ -4378,13 +4401,14 @@ function updateButtonContainerAll() {
                             dependent: dependencies,
                             allowOnce: allowOnce // Add allowOnce flag
                         });
+                        saveOfferCart(); // Add this line
                     }
                     animateRateMovement(offerItem);
                     showFeedback('Offer added!');
                     updateOfferAddButtons();
                     updateScrapButtonStatus();
                     updateCartDisplay();
-                    
+                     saveOfferCart(); // Persist after ANY offer addition
                 }
             });                  
             
@@ -4421,9 +4445,9 @@ function updateButtonContainerAll() {
             
             // Update cart display with stepper
             function updateCartDisplay() {
-                            // Ensure button-container-all is in the correct container
-    updateButtonContainerAll(); 
-    
+                // Ensure button-container-all is in the correct container
+                updateButtonContainerAll(); 
+                
                 const cartItems = document.getElementById('cart-items');
                 const totalOffers = document.getElementById('totalOffers');
                 const toggleBtn = document.getElementById('toggle-cart');
@@ -4466,6 +4490,7 @@ function updateButtonContainerAll() {
                         updateCartDisplay();
                         updateScrapButtonStatus();
                         showFeedback('Offer removed');
+                        saveOfferCart(); // Add this line
                     });
                 });
                 
@@ -4473,7 +4498,7 @@ function updateButtonContainerAll() {
                 totalOffers.textContent = `Total Offers: ${totalItems}`;
                 toggleBtn.textContent = `Offer Cart (${totalItems})`;
                 
-
+                
             }
             
             
@@ -4505,6 +4530,7 @@ function updateButtonContainerAll() {
                 updateCartDisplay();
                 updateOfferAddButtons();
                 updateScrapButtonStatus();
+                saveOfferCart(); // Add this line
             }                 
             
             
@@ -4541,6 +4567,7 @@ function updateButtonContainerAll() {
                 
                 // Clear the cart after ordering
                 offerCart = [];
+                localStorage.removeItem('offerCart'); // Add this line
                 updateCartDisplay();
                 showFeedback('Offers sent! Cart cleared');
                 closeOfferCart();
@@ -4552,12 +4579,13 @@ function updateButtonContainerAll() {
             
             function clearOfferCart() {
                 offerCart = [];
+                localStorage.removeItem('offerCart'); // Add this line
                 updateCartDisplay();
                 updateOfferAddButtons();
                 updateScrapButtonStatus();
                 showFeedback('Offer cart cleared!');
                 closeOfferCart();
-                    updateButtonContainerAll(); 
+                updateButtonContainerAll(); 
             }
             
             
@@ -4780,6 +4808,8 @@ function updateButtonContainerAll() {
                 // Clear both lists
                 scrapItems = [];
                 offerCart = [];
+                localStorage.removeItem('scrapList');
+                localStorage.removeItem('offerCart'); // Add this line
                 handleScrapItemsChange();
                 updateCartDisplay();
                 closeScrapList();
@@ -4793,6 +4823,7 @@ function updateButtonContainerAll() {
                 updateCartDisplay();
                 showFeedback("All items cleared!");
                 closeScrapList();
+                 saveOfferCart();
             }
             
             // Add event listeners for the new buttons
