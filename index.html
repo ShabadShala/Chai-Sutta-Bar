@@ -13,7 +13,6 @@
         
         <link rel="manifest" href="manifest.json">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
-
         
         <script type="application/ld+json">
             {
@@ -628,7 +627,7 @@
             cursor: pointer;
             font-size: 8rem;
             color: white;
-
+            
             }
             
             .search-clear-btn:hover {
@@ -1453,7 +1452,7 @@
             transition: all 0.3s ease-in-out;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             display: none; /* Hidden by default */
-         
+            
             animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
             
             }
@@ -1571,7 +1570,7 @@
             /* Toggle Offer Cart Button */
             #toggle-cart {
             position: relative;
-       
+            
             padding: 1rem 2rem;
             background: #4CAF50;
             color: white;
@@ -1794,7 +1793,7 @@
             transform: translateY(-50%) scaleX(-1); /* Center vertically */
             width: 5rem; /* Adjust icon size */
             height: auto;  
-    
+            
             }
             
             .phone-icon:hover {
@@ -1813,7 +1812,7 @@
             height: 100%;
             overflow: hidden;
             pointer-events: none;
-           
+            
             }
             
             #sidebar {
@@ -2062,6 +2061,7 @@
             
             
             
+
         </style>
         <link rel="stylesheet" href="ham.css">
     </head>
@@ -2266,7 +2266,9 @@
                     <button id="orderScrap" class="child-lock-restricted">Order</button>
                     <button id="smartPickBtn2" class="smart-pick-btn"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
                     <button id="clearScrap">Clear</button>
-                </div>                
+                </div>      
+                <!-- Inside the #scrapList .scrap-content div, after existing button-container -->
+
             </div>
         </div> 
         
@@ -2276,7 +2278,7 @@
                 <h2 style="font-size: 6rem;">Selected Offers</h2>
                 <div id="cart-items"></div>
                 <div id="totalOffers" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total Offers: 0</div>
-                <div class="button-container">
+                <div class="button-container" style="display: none;>
                     <button id="order-offers" class="order-btn child-lock-restricted">Order</button>
                     <button id="clear-offers" class="clear-btn">Clear</button>
                 </div>
@@ -2367,7 +2369,7 @@
             
             
             
-     
+            
             
             
             
@@ -4035,8 +4037,18 @@
                 `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
                 );
                 
+                    // Generate offers message
+    let offerMessage = '';
+    if (offerCart.length > 0) {
+        offerMessage = '\n\n🎊 OFFERS 🎊\n' + offerCart.map(group => {
+            return group.dates.map(date => 
+                `*${group.title}*\n${date}\n${group.description}`
+            ).join('\n');
+        }).join('\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n');
+    }
                 
-                window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
+                
+                window.open(`https://wa.me/${whatsappOfferNumber}?text=${message + offerMessage}`, '_blank');
                 
                 // Add this line to save to localStorage
                 localStorage.setItem('lastOrder', JSON.stringify(scrapItems));
@@ -4044,6 +4056,7 @@
                 
                 // Clear the scrap list after ordering
                 scrapItems = [];
+                offerCart = [];
                 localStorage.removeItem('scrapList'); // Add this line
                 updateScrapListDisplay();
                 handleScrapItemsChange();
@@ -4055,28 +4068,15 @@
                 cachedOrderNumber = orderNumber;
             });
             
+            
             // scrap-clear button
             document.getElementById('clearScrap').addEventListener('click', () => {
-                const scrapList = document.getElementById('scrapList');
-                const overlay = document.querySelector('.scrap-overlay');
-                
-                // Clear scrap items
                 scrapItems = [];
-                localStorage.removeItem('scrapList'); // Add this line
-                updateScrapListDisplay();
-                showFeedback("Order list cleared");
-                
-                // Close the scrap list
-                scrapList.style.display = 'none';
-                scrapVisible = false;
-                
-                // Only hide overlay if offer cart is also empty
-                if (offerCart.length === 0) {
-                    overlay.style.display = 'none';
-                    document.body.style.overflow = '';
-                }
-                
+                offerCart = [];
                 handleScrapItemsChange();
+                updateCartDisplay();
+                showFeedback("All items cleared!");
+                closeScrapList();
             });  
             
             
@@ -4600,15 +4600,88 @@
             
             
             
-                    document.addEventListener("DOMContentLoaded", function () {
-    const header = document.querySelector(".header");
-    if (header) {
-        const headerHeight = header.offsetHeight; // Get header height
-        document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 18}px`);
-    }
-});
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
-           
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                const header = document.querySelector(".header");
+                if (header) {
+                    const headerHeight = header.offsetHeight; // Get header height
+                    document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 18}px`);
+                }
+            });
+            
+            
             
             
             
