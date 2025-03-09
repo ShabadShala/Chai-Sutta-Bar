@@ -3596,11 +3596,11 @@
                     offerCartButtonContainer.classList.toggle('hide-buttons', scrapItems.length > 0);
                 }
                 
-                 // Toggle class to hide #closeOffer button when scrapItems has items
-        const offerCart = document.getElementById('offer-cart');
-        if (offerCart) {
-            offerCart.classList.toggle('hide-close-button', scrapItems.length > 0);
-        }
+                // Toggle class to hide #closeOffer button when scrapItems has items
+                const offerCart = document.getElementById('offer-cart');
+                if (offerCart) {
+                    offerCart.classList.toggle('hide-close-button', scrapItems.length > 0);
+                }
                 
                 // Existing logic for dependent offers
                 if (scrapItems.length === 0) {
@@ -4094,15 +4094,20 @@
             
             // scrap-clear button
             document.getElementById('clearScrap').addEventListener('click', () => {
-                scrapItems = [];
+                scrapItems = [];   
+                closeScrapList();
+                
                 offerCart = [];
+                closeOfferCart();
+                
                 handleScrapItemsChange();
+                updateScrapButtonStatus();
                 updateCartDisplay();
                 showFeedback("All items cleared!");
-                closeScrapList();
+                
+                
+                
             });  
-            
-            
             
             
             
