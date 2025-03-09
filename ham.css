@@ -1179,24 +1179,28 @@
     width: 95%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);  
     
-     max-height: 90vh;
-  height: auto;
+     height: 90vh;
+
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .faq-container {
 
-    min-height: 50vh; 
+    min-height: 0; 
     overflow-y: auto;
     flex: 1;
   padding: 10px 0;
+  will-change: transform;
     }
 
 .faq-item {
     border-bottom: 1px solid #e0e0e0;
     margin-bottom: 5px;
     padding-bottom: 5px;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .faq-question {
@@ -1246,11 +1250,16 @@
     color: #4a5568;
     text-align: justify;
     overflow-wrap: break-word;
+    max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
 }
 
 .faq-item.active .faq-answer {
     display: block;
     animation: fadeIn 0.3s ease-in;
+    max-height: 500px; /* Adjust based on your needs */
+  overflow-y: auto; /* Enable scrolling for long answers */
 }
 
 
@@ -1312,6 +1321,30 @@
   0%, 100% { opacity: 0; }
   15%, 85% { opacity: 1; }
 }
+
+
+/* Custom Scrollbar for FAQ Container */
+.faq-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.faq-container::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+}
+
+.faq-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.faq-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.faq-answer::-webkit-scrollbar {
+  width: 6px;
+}
+
 
 
 
@@ -1455,6 +1488,11 @@
 .modal {
     display: none;
 }
+
+
+
+
+
 
 
 

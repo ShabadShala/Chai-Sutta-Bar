@@ -1114,18 +1114,35 @@ function addInfoButtonListeners() {
                     answerElement.addEventListener('touchcancel', handleTouchEnd);
                     
                     // Toggle FAQ on click
-                    questionElement.addEventListener('click', () => {
-                        if (faqItem === activeFaq) {
-                            faqItem.classList.remove('active');
-                            activeFaq = null;
-                            } else {
-                            if (activeFaq) activeFaq.classList.remove('active');
-                            faqItem.classList.add('active');
-                            activeFaq = faqItem;
-                        }
-                        updateFAQButtonsState();
-                        faqItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    });
+  // Update question click handler
+  questionElement.addEventListener('click', () => {
+    const wasActive = faqItem.classList.contains('active');
+    
+    // Close all FAQs first
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    
+    // Toggle if not already active
+    if (!wasActive) {
+      faqItem.classList.add('active');
+      
+      // Scroll to show full question with answer
+      setTimeout(() => {
+        const answerHeight = answerElement.scrollHeight;
+        const container = document.querySelector('.faq-container');
+        const scrollTop = faqItem.offsetTop - container.offsetTop;
+        
+        // Only scroll if answer doesn't fit
+        if (answerHeight > container.clientHeight) {
+          container.scrollTo({
+            top: scrollTop,
+            behavior: 'smooth'
+          });
+        }
+      }, 300);
+    }
+  });
                     
                     container.appendChild(faqItem);
                 });
