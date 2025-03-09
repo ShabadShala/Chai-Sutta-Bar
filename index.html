@@ -2278,7 +2278,7 @@
                 <h2 style="font-size: 6rem;">Selected Offers</h2>
                 <div id="cart-items"></div>
                 <div id="totalOffers" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total Offers: 0</div>
-                <div class="button-container" style="display: none;>
+                <div class="button-container">
                 <button id="order-offers" class="order-btn child-lock-restricted">Order</button>
                 <button id="clear-offers" class="clear-btn">Clear</button>
             </div>
@@ -4039,10 +4039,10 @@ let message = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` 
 
 // Append offers message
 if (offerCart.length > 0) {
-    message += '\n\n🎊\n*Offers:*\n〰️〰️〰️〰️〰️〰️〰️〰\n';
+    message += '\n\n🎊\n*Offers:*\n〰️〰️〰️〰️〰️〰️〰️\n';
     offerCart.forEach((group) => {
         group.dates.forEach(date => {
-            message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️〰\n`;
+            message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️\n`;
         });
     });
 }
@@ -4540,7 +4540,7 @@ message = encodeURIComponent(message);
         // scrap-close-cross
         document.getElementById('closeScrap').addEventListener('click', function() {
             closeScrapList();
-            closeOfferCart()
+            closeOfferCart();
         });
         
         // Modify close functions
