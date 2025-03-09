@@ -1562,13 +1562,6 @@
             
             
             
-            /* Add this CSS to hide the buttons */
-            #offer-cart .button-container.hide-buttons .order-btn,
-            #offer-cart .button-container.hide-buttons .clear-btn,
-            #offer-cart.hide-close-button #closeOffer {
-            display: none !important;
-            }
-            
             
             
             
@@ -2068,7 +2061,51 @@
             
             
             
+            /* Add to existing styles */
+            .button-container-all {
+            display: none;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 2rem;
+            }
             
+            #orderAll, #clearAll {
+            flex: 1;
+            padding: 2rem;
+            font-size: 4rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            }
+            
+            #orderAll {
+            background-color: #2196F3;
+            color: white;
+            }
+            
+            #orderAll:hover {
+            background-color: #1976D2;
+            }
+            
+            #clearAll {
+            background-color: #9C27B0;
+            color: white;
+            }
+            
+            #clearAll:hover {
+            background-color: #7B1FA2;
+            }
+            
+            
+            /* 1. Hide specified buttons */
+            #orderScrap, #clearScrap, .order-btn, .clear-btn {
+            display: none !important;
+            }
+            
+            /* Ensure proper spacing in both containers */
+#scrapList .button-container-all,
+#offer-cart .button-container-all {
+}
         </style>
         <link rel="stylesheet" href="ham.css">
     </head>
@@ -2271,13 +2308,18 @@
                 </div>
                 <div class="button-container">
                     <button id="orderScrap" class="child-lock-restricted">Order</button>
-                    <button id="smartPickBtn2" class="smart-pick-btn"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
                     <button id="clearScrap">Clear</button>
                 </div>      
-                <!-- Inside the #scrapList .scrap-content div, after existing button-container -->
-                
             </div>
         </div> 
+        
+        <!-- Inside the #scrapList .scrap-content div, after existing button-container -->
+        <div class="button-container-all">
+            <button id="orderAll">OrderAll</button>
+            <button id="smartPickBtn2" class="smart-pick-btn"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
+            <button id="clearAll">ClearAll</button>
+        </div>
+        
         
         <div id="offer-cart" style="display: none;">
             <div class="offers-content">                        
@@ -3583,26 +3625,18 @@
             
             
             // Add this to your existing function
-            // Modify the handleScrapItemsChange function
             function handleScrapItemsChange() {
                 updateScrapListDisplay();
                 updateScrapButtonStatus();
                 updateScrapCounter();
                 updateOfferAddButtons();
                 
-                // Toggle class to hide buttons in offer-cart when scrapItems has items
-                const offerCartButtonContainer = document.querySelector('#offer-cart .button-container');
-                if (offerCartButtonContainer) {
-                    offerCartButtonContainer.classList.toggle('hide-buttons', scrapItems.length > 0);
-                }
+                const closeOfferButton = document.getElementById('closeOffer');
+                // Show closeOffer button if scrapItems has items
+                closeOfferButton.style.display = scrapItems.length > 0 ? 'none' : 'block';
                 
-                // Toggle class to hide #closeOffer button when scrapItems has items
-                const offerCart = document.getElementById('offer-cart');
-                if (offerCart) {
-                    offerCart.classList.toggle('hide-close-button', scrapItems.length > 0);
-                }
-                
-                // Existing logic for dependent offers
+               
+                // New: Remove dependent offers when scrap is empty
                 if (scrapItems.length === 0) {
                     const dependentOffersRemoved = offerCart.filter(group => group.dependent);
                     offerCart = offerCart.filter(group => !group.dependent);
@@ -3616,8 +3650,37 @@
                 }
                 updateCartDisplay();
                 saveScrapItems();
+                updateButtonContainerAll(); // Add this line
             }
             
+            // Function to update the visibility and position of .button-container-all
+function updateButtonContainerAll() {
+    const buttonContainerAll = document.querySelector('.button-container-all');
+    const closeOfferButton = document.getElementById('closeOffer');
+
+    // Show closeOffer button if scrapItems has items
+    closeOfferButton.style.display = scrapItems.length > 0 ? 'none' : 'block';
+
+    // Determine where to display .button-container-all
+    if (offerCart.length > 0) {
+        // Move to offer-cart
+        const offerContent = document.querySelector('#offer-cart .offers-content');
+        if (buttonContainerAll.parentNode !== offerContent) {
+            offerContent.appendChild(buttonContainerAll);
+        }
+        buttonContainerAll.style.display = 'flex';
+    } else if (scrapItems.length > 0) {
+        // Move to scrapList
+        const scrapContent = document.querySelector('#scrapList .scrap-content');
+        if (buttonContainerAll.parentNode !== scrapContent) {
+            scrapContent.appendChild(buttonContainerAll);
+        }
+        buttonContainerAll.style.display = 'flex';
+    } else {
+        // Hide if both are empty
+        buttonContainerAll.style.display = 'none';
+    }
+}
             
             // Add this function to update the counter
             function updateScrapCounter() {
@@ -4045,30 +4108,16 @@
                 // Select a random emoji
                 let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
                 
-                let message = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
+                let message = encodeURIComponent(
+                `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n` +
                 `${sortedItems.map(item => {
                 let itemTotal = item.qty * parseFloat(item.rate);
                 return item.qty > 1 
                 ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
                 : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
                 }).join('\n\n')}\n${'-'.repeat(30)}\n` +
-                `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`;
-                
-                
-                
-                // Append offers message
-                if (offerCart.length > 0) {
-                    message += '\n\n🎊\n*Offers:*\n〰️〰️〰️〰️〰️〰️〰️\n';
-                    offerCart.forEach((group) => {
-                        group.dates.forEach(date => {
-                            message += `*${group.title}*\n${date}\n${group.description}\n〰️〰️〰️〰️〰️〰️〰️\n`;
-                        });
-                    });
-                }
-                
-                // Encode the full message before using it
-                message = encodeURIComponent(message);
-                
+                `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}`
+                );
                 
                 
                 window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
@@ -4079,39 +4128,42 @@
                 
                 // Clear the scrap list after ordering
                 scrapItems = [];
-                closeScrapList();
                 localStorage.removeItem('scrapList'); // Add this line
-                
-                offerCart = [];
-                closeOfferCart();                
-                
                 updateScrapListDisplay();
-                updateScrapButtonStatus();
                 handleScrapItemsChange();
-                
+                closeScrapList();
                 showFeedback("Order sent. List cleared!"); // Optional feedback
+                
                 
                 updateCounter('updateOrders');
                 cachedOrderNumber = orderNumber;
             });
             
-            
             // scrap-clear button
             document.getElementById('clearScrap').addEventListener('click', () => {
-                scrapItems = [];   
-                closeScrapList();
+                const scrapList = document.getElementById('scrapList');
+                const overlay = document.querySelector('.scrap-overlay');
                 
-                offerCart = [];
-                closeOfferCart();
+                // Clear scrap items
+                scrapItems = [];
+                localStorage.removeItem('scrapList'); // Add this line
+                updateScrapListDisplay();
+                showFeedback("Order list cleared");
+                
+                // Close the scrap list
+                scrapList.style.display = 'none';
+                scrapVisible = false;
+                
+                // Only hide overlay if offer cart is also empty
+                if (offerCart.length === 0) {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
                 
                 handleScrapItemsChange();
-                updateScrapButtonStatus();
-                updateCartDisplay();
-                showFeedback("All items cleared!");
-                
-                
-                
             });  
+            
+            
             
             
             
@@ -4369,6 +4421,9 @@
             
             // Update cart display with stepper
             function updateCartDisplay() {
+                            // Ensure button-container-all is in the correct container
+    updateButtonContainerAll(); 
+    
                 const cartItems = document.getElementById('cart-items');
                 const totalOffers = document.getElementById('totalOffers');
                 const toggleBtn = document.getElementById('toggle-cart');
@@ -4418,7 +4473,7 @@
                 totalOffers.textContent = `Total Offers: ${totalItems}`;
                 toggleBtn.textContent = `Offer Cart (${totalItems})`;
                 
-                
+
             }
             
             
@@ -4502,6 +4557,7 @@
                 updateScrapButtonStatus();
                 showFeedback('Offer cart cleared!');
                 closeOfferCart();
+                    updateButtonContainerAll(); 
             }
             
             
@@ -4568,7 +4624,7 @@
             // scrap-close-cross
             document.getElementById('closeScrap').addEventListener('click', function() {
                 closeScrapList();
-                closeOfferCart();
+                closeOfferCart()
             });
             
             // Modify close functions
@@ -4674,6 +4730,80 @@
             
             
             
+            // Add these functions to your script
+            function orderAll() {
+                if (scrapItems.length === 0 && offerCart.length === 0) {
+                    showFeedback("Both lists are empty!");
+                    return;
+                }
+                
+                // Generate scrap items message
+                let scrapMessage = '';
+                if (scrapItems.length > 0) {
+                    const itemMap = new Map();
+                    scrapItems.forEach((item) => {
+                        const key = `${item.name}-${item.rate}`;
+                        itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
+                    });
+                    
+                    const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+                    scrapMessage = sortedItems.map(item => {
+                        const itemTotal = item.qty * parseFloat(item.rate);
+                        return item.qty > 1 
+                        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                    }).join('\n');
+                }
+                
+                // Generate offers message
+                let offerMessage = '';
+                if (offerCart.length > 0) {
+                    offerMessage = '\n\n🎊 OFFERS 🎊\n' + offerCart.map(group => {
+                        return group.dates.map(date => 
+                        `*${group.title}*\n${date}\n${group.description}`
+                        ).join('\n');
+                    }).join('\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n');
+                }
+                
+                // Combine messages
+                const orderNumber = cachedOrderNumber + 1;
+                const message = encodeURIComponent(
+                `☕️ *Combined Order No. ${orderNumber}* ☕️\n${'-'.repeat(30)}\n` +
+                scrapMessage +
+                offerMessage +
+                `\n${'-'.repeat(30)}\n` +
+                `Thank you for your order!`
+                );
+                
+                window.open(`https://wa.me/${whatsappOfferNumber}?text=${message}`, '_blank');
+                
+                // Clear both lists
+                scrapItems = [];
+                offerCart = [];
+                handleScrapItemsChange();
+                updateCartDisplay();
+                closeScrapList();
+                showFeedback("Combined order sent!");
+            }
+            
+            function clearAll() {
+                scrapItems = [];
+                offerCart = [];
+                handleScrapItemsChange();
+                updateCartDisplay();
+                showFeedback("All items cleared!");
+                closeScrapList();
+            }
+            
+            // Add event listeners for the new buttons
+            document.getElementById('orderAll').addEventListener('click', orderAll);
+            document.getElementById('clearAll').addEventListener('click', clearAll);
+            
+            
+            
+            
+            
+            
             
             
             
@@ -4709,7 +4839,7 @@
                 const header = document.querySelector(".header");
                 if (header) {
                     const headerHeight = header.offsetHeight; // Get header height
-                    document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 18}px`);
+                    document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 20}px`);
                 }
             });
             
@@ -4733,7 +4863,7 @@
                     // Position offer-cart below scrapList but keep it centered
                     const scrapListRect = scrapList.getBoundingClientRect();
                     offerCart.style.position = 'fixed';
-                    offerCart.style.top = `${scrapListRect.bottom + 10}px`;
+                    offerCart.style.top = `${scrapListRect.bottom + 2}px`;
                     offerCart.style.left = '50%'; // Center it horizontally
                     offerCart.style.transform = 'translateX(-50%)'; // Adjust centering
                     offerCart.style.width = `${scrapList.offsetWidth}px`; // Optional: Match width
