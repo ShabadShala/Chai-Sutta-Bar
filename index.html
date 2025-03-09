@@ -4079,13 +4079,17 @@
                 
                 // Clear the scrap list after ordering
                 scrapItems = [];
-                offerCart = [];
-                localStorage.removeItem('scrapList'); // Add this line
-                updateScrapListDisplay();
-                handleScrapItemsChange();
                 closeScrapList();
-                showFeedback("Order sent. List cleared!"); // Optional feedback
+                localStorage.removeItem('scrapList'); // Add this line
                 
+                offerCart = [];
+                closeOfferCart();                
+                
+                updateScrapListDisplay();
+                updateScrapButtonStatus();
+                handleScrapItemsChange();
+                
+                showFeedback("Order sent. List cleared!"); // Optional feedback
                 
                 updateCounter('updateOrders');
                 cachedOrderNumber = orderNumber;
