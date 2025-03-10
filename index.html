@@ -5246,29 +5246,31 @@ document.getElementById('deliveryForm').addEventListener('submit', function(e) {
                 offerMessage +
                 `\n${'-'.repeat(30)}\n`;
                 
-                // Append delivery details only if delivery is selected
-                // Start with the basic message structure
-                message += `\nDelivery Details:\n`;
-                
-                // Append only non-blank fields
-                if (formData.deliveryTime) {
-                    message += `⏰ ${formData.deliveryTime}\n`;
-                }
-                if (formData.name) {
-                    message += `👤 ${formData.name}\n`;
-                }
-                if (formData.phone) {
-                    message += `📞 ${formData.phone}\n`;
-                }
-                if (formData.address) {
-                    message += `🏠 ${formData.address}\n`;
-                }
-                if (userLocation) {
-                    message += `📍 Location: ${userLocation}\n`;
-                }
+
+// Append delivery details only if at least one field is non-empty
+if (formData.deliveryTime || formData.name || formData.phone || formData.address || userLocation) {
+    message += `\nDelivery Details:\n`;
+
+    if (formData.deliveryTime) {
+        message += `⏰ ${formData.deliveryTime}\n`;
+    }
+    if (formData.name) {
+        message += `👤 ${formData.name}\n`;
+    }
+    if (formData.phone) {
+        message += `📞 ${formData.phone}\n`;
+    }
+    if (formData.address) {
+        message += `🏠 ${formData.address}\n`;
+    }
+    if (userLocation) {
+        message += `📍: ${userLocation}\n`;
+    }
+}
+
                 
                 // Add the separator only if any details were added
-                if (formData.deliveryTime || formData.phone || formData.name || formData.address) {
+                if (formData.deliveryTime || formData.phone || formData.name || formData.address || userLocation) {
                     message += `${'-'.repeat(30)}\n`;
                 }
                 
