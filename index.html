@@ -2123,29 +2123,11 @@
             
             
             
-            
-            .order-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-            display: flex; /* Use flex to center the modal */
-            justify-content: center;
-            align-items: center;
-            z-index: 10000; /* Ensure it's above everything else */
-            opacity: 0; /* Start hidden */
-            visibility: hidden; /* Start hidden */
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            }
-            
-            .order-modal-overlay.active {
-            opacity: 1; /* Show when active */
-            visibility: visible; /* Show when active */
-            }
-            
             .order-modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: white;
             padding: 2rem;
             border-radius: 10px;
@@ -2153,15 +2135,19 @@
             width: 90%;
             max-width: 500px;
             font-size: 5rem;
-            transform: scale(0.9); /* Start slightly smaller */
-            opacity: 0; /* Start hidden */
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 10000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: none; /* Hidden by default */
             }
             
-            .order-modal-overlay.active .order-modal-content {
-            transform: scale(1); /* Scale up when active */
-            opacity: 1; /* Show when active */
+            .order-modal-content.active {
+            display: block;
             }
+            
+            .hidden {
+            display: none !important;
+            }
+            
             
             .form-group {
             margin: 4rem 0;
@@ -2633,59 +2619,57 @@
         
         
         <!-- Add this modal structure before </body> -->
-        <div id="deliveryModal" class="order-modal-overlay">
-            <div class="order-modal-content">
-                <span class="close-button">&times;</span>
-                <h2>Delivery Details<br><small>(Optional)</small></h2>
-                <form id="deliveryForm">
-                    <div id="deliveryFields">
-                        <div class="form-group">
-                            <label>Date-Time</label>
-                            <div style="display: flex; gap: 4px;">
-                                <input type="datetime-local" id="deliveryTime">
-                                <button type="button" id="clearDate">✖</button>
-                            </div>
+        <div id="deliveryModal" class="order-modal-content hidden">
+            <span class="close-button">&times;</span>
+            <h2>Delivery Details<br><small>(Optional)</small></h2>
+            <form id="deliveryForm">
+                <div id="deliveryFields">
+                    <div class="form-group">
+                        <label>Date-Time</label>
+                        <div style="display: flex; gap: 4px;">
+                            <input type="datetime-local" id="deliveryTime">
+                            <button type="button" id="clearDate">✖</button>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Mobile Number</label>
-                            <div style="display:flex;gap:5px">
-                                <input type="tel" id="phone" maxlength="11" pattern="\d{5}-\d{5}" placeholder="12345-67890" title="Enter 10 digits in the format 12345-67890">
-                                <button type="button" id="pickContact">📱</button>
-                            </div>                            
-                        </div>
-                        
-                        
-                        <div class="form-group">
-                            <label>Contact Person (25 chars max.)</label>
-                            <input type="text" id="customerName" maxlength="25">
-                        </div>
-                        
-                        <div class="address-method">
-                            <label>Address (100 chars max.)</label>
-                        </div>
-                        
-                        <div id="addressInput">
-                            <textarea id="manualAddress" placeholder="Enter address" maxlength="100"></textarea>
-                        </div>
-                        
-                        <div class="address-method">
-                            <label>
-                                <input type="checkbox" name="locationAddress" value="location"> Check/Attach Location
-                            </label>
-                        </div>
-                        
-                        <div id="locationStatus" style="display:none"></div>
                     </div>
-                    <!-- Inside the deliveryModal's form element, before the closing </form> tag -->
-                    <div class="modal-button-container">
-                        <button type="button" id="cancelOrder" class="cancel-btn">Cancel Order</button>
-                        <button type="submit">Confirm Order</button>
+                    
+                    <div class="form-group">
+                        <label for="phone">Mobile Number</label>
+                        <div style="display:flex;gap:5px">
+                            <input type="tel" id="phone" maxlength="11" pattern="\d{5}-\d{5}" placeholder="12345-67890" title="Enter 10 digits in the format 12345-67890">
+                            <button type="button" id="pickContact">📱</button>
+                        </div>                            
                     </div>
-                </form>
+                    
+                    <div class="form-group">
+                        <label>Contact Person (25 chars max.)</label>
+                        <input type="text" id="customerName" maxlength="25">
+                    </div>
+                    
+                    <div class="address-method">
+                        <label>Address (100 chars max.)</label>
+                    </div>
+                    
+                    <div id="addressInput">
+                        <textarea id="manualAddress" placeholder="Enter address" maxlength="100"></textarea>
+                    </div>
+                    
+                    <div class="address-method">
+                        <label>
+                            <input type="checkbox" name="locationAddress" value="location"> Check/Attach Location
+                        </label>
+                    </div>
+                    
+                    <div id="locationStatus" style="display:none"></div>
+                </div>
                 
-            </div>
-        </div>    
+                <div class="modal-button-container">
+                    <button type="button" id="cancelOrder" class="cancel-btn">Cancel Order</button>
+                    <button type="submit">Confirm Order</button>
+                </div>
+            </form>
+        </div>
+        
+        
         
         <script>
             
@@ -5053,17 +5037,21 @@
             
             
             // Function to show the delivery modal
+            // Function to show the delivery modal
             function showDeliveryModal() {
                 const modal = document.getElementById('deliveryModal');
-                modal.classList.add('active'); // Add active class to show the modal
+                modal.classList.remove('hidden'); // Remove hidden to display the modal
+                modal.classList.add('active');    // Add active for any animation or styling
                 document.getElementById('deliveryForm').reset();
             }
             
             // Function to hide the delivery modal
             function hideDeliveryModal() {
                 const modal = document.getElementById('deliveryModal');
-                modal.classList.remove('active'); // Remove active class to hide the modal
+                modal.classList.remove('active'); // Remove active for transition
+                modal.classList.add('hidden');    // Add hidden to completely hide the modal
             }
+            
             
             // Close button handler
             document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
@@ -5146,12 +5134,16 @@
                 return R * c; // Distance in kilometers
             }
             
+            
             let userLocation = ''; // Global variable to store the location
             const locationCheckbox = document.querySelector('[value="location"]');
             const locationStatus = document.getElementById('locationStatus');
             
             locationCheckbox.addEventListener('change', () => {
                 if (locationCheckbox.checked) {
+                    locationStatus.innerHTML = '<span>Loading...</span>';
+                    locationStatus.style.display = 'block';
+                    
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(
                         (position) => {
@@ -5172,10 +5164,9 @@
                                 <span style="color: green;">Delivery available!</span><br>
                                 <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
                             }
-                            
-                            locationStatus.style.display = 'block';
                         },
                         (error) => {
+                            locationStatus.style.display = 'none'; // Hide the loading message on error
                             switch (error.code) {
                                 case error.PERMISSION_DENIED:
                                 alert('Permission denied. Please allow location access.');
@@ -5199,11 +5190,14 @@
                         );
                         } else {
                         alert('Geolocation is not supported by this browser.');
+                        locationStatus.style.display = 'none';
                     }
                     } else {
                     userLocation = '';
+                    locationStatus.style.display = 'none'; // Hide status if checkbox is unchecked
                 }
             });
+            
             
             
             // Form submission
@@ -5253,74 +5247,115 @@
             });
             
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             // Send order to WA
             function sendCombinedOrder(formData) {
-                // Generate scrap items message
-                let scrapMessage = '';
-                if (scrapItems.length > 0) {
-                    const itemMap = new Map();
-                    scrapItems.forEach((item) => {
-                        const key = `${item.name}-${item.rate}`;
-                        itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
-                    });
-                    
-                    const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
-                    scrapMessage = sortedItems.map(item => {
-                        const itemTotal = item.qty * parseFloat(item.rate);
-                        return item.qty > 1 
-                        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-                        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-                    }).join('\n');
-                }
-                
-                // Generate offers message
-                let offerMessage = '';
-                if (offerCart.length > 0) {
-                    offerMessage = '\n\n🎊 OFFERS 🎊\n' + offerCart.map(group => {
-                        return group.dates.map(date => 
-                        `*${group.title}*\n${date}\n${group.description}`
-                        ).join('\n');
-                    }).join('\n〰️〰️〰️〰️〰️〰️〰️〰️〰\n');
-                }
-                
-                // Combine messages
                 const orderNumber = cachedOrderNumber + 1;
-                localStorage.setItem('lastOrderNumber', orderNumber);
+                
+                // List of food-related emojis
+                let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '🎊', '💝'];
+                
+                // Select a random emoji
+                let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
+                
+                let messageHeader = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n`;
                 
                 
-                let message = `☕️ *Order No. ${orderNumber}* ☕️\n${'-'.repeat(30)}\n` +
-                scrapMessage +
-                offerMessage +
-                `\n${'-'.repeat(30)}\n`;
+                // scrap message
+                // Group items by name and rate to calculate quantities
+                const itemMap = new Map();
+                scrapItems.forEach((item) => {
+                    const key = `${item.name}-${item.rate}`;
+                    itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
+                });
+                
+                const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+                
+                // Generate order text with quantities and total per row
+                let orderText = sortedItems.map(item => {
+                    let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
+                    return item.qty > 1 
+                    ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                    : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                }).join('\n');                        
+                
+                // Calculate total cost
+                let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
+                
+                // Calculate total number of items
+                let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
+                
+                let scrapMessage = 
+                `${sortedItems.map(item => {
+                let itemTotal = item.qty * parseFloat(item.rate);
+                return item.qty > 1 
+                ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                }).join('\n')}\n${'-'.repeat(30)}\n` +
+                `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}\n`;
                 
                 
-                // Append delivery details only if at least one field is non-empty
+                
+                // offer Message
+                let offerMessage = '🎊\n';
+                offerCart.forEach((group, index) => {
+                    group.dates.forEach(date => {
+                        offerMessage += `*${group.title}*\n${date}\n${group.description}\n${'~'.repeat(20)}\n`;
+                    });
+                });
+                
+
+
+
+
+                 let deliveryDetail = '';
+                
+                 // Append delivery details only if at least one field is non-empty
                 if (formData.deliveryTime || formData.name || formData.phone || formData.address || userLocation) {
-                    message += `\nDelivery Details:\n`;
+                    deliveryDetail = `\n*Delivery Details:*\n`;
                     
                     if (formData.deliveryTime) {
-                        message += `⏰ ${formData.deliveryTime}\n`;
+                        deliveryDetail += `⏰ ${formData.deliveryTime}\n`;
                     }
                     if (formData.phone) {
-                        message += `📞 ${formData.phone}\n`;
+                        deliveryDetail += `📞 ${formData.phone}\n`;
                     }
                     if (formData.name) {
-                        message += `👤 ${formData.name}\n`;
+                        deliveryDetail += `👤 ${formData.name}\n`;
                     }
                     if (formData.address) {
-                        message += `🏠 ${formData.address}\n`;
+                        deliveryDetail += `🏠 ${formData.address}\n`;
                     }
                     if (userLocation) {
-                        message += `📍 ${userLocation}\n`;
+                        deliveryDetail += `📍 ${userLocation}\n`;
                     }
                     
-                    message += `${'-'.repeat(30)}\n`;
-                }                
+                    deliveryDetail += `${'-'.repeat(30)}\n`;
+                }        
                 
-                message += `Thank you for your order!`;
+                
+                
+                
+                
+                
+                let messageFooter = `Thank you for your order!`;
                 
                 // Encode and send via WhatsApp
-                const encodedMessage = encodeURIComponent(message);
+                const encodedMessage = encodeURIComponent(messageHeader + scrapMessage + offerMessage + deliveryDetail + messageFooter);
                 window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
                 
                 // Clear both lists
@@ -5355,7 +5390,7 @@
             
             
             // Cancel Order button handler
-           document.getElementById('cancelOrder').addEventListener('click', function(e) {
+            document.getElementById('cancelOrder').addEventListener('click', function(e) {
                 e.preventDefault();
                 hideDeliveryModal();
                 // showFeedback("Order cancelled");
@@ -5570,4 +5605,4 @@
         <script src="cheat.js"></script> <!-- Cheats, Dev tools -->         
         
     </body>
-</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
