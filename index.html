@@ -2590,7 +2590,7 @@
                                 <button type="button" id="clearDate">✖</button>
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
                             <label>Contact Person (25 chars max.)</label>
                             <input type="text" id="customerName" maxlength="25">
@@ -2607,14 +2607,14 @@
                         <div class="address-method">
                             <label>Address (100 chars max.)</label>
                         </div>
-                                                
+                        
                         <div id="addressInput">
                             <textarea id="manualAddress" placeholder="Enter address" maxlength="100"></textarea>
                         </div>
                         
                         <div class="address-method">
                             <label>
-                                <input type="checkbox" name="locationAddress" value="location"> Location
+                                <input type="checkbox" name="locationAddress" value="location"> Check Delivery Location
                             </label>
                         </div>
                         
@@ -5077,47 +5077,77 @@
             });
             
             // Location
-            document.querySelector('[value="location"]').addEventListener('change', () => {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        // Store location as Google Maps link
-                        userLocation = `https://maps.google.com/?q=${lat},${lng}`;
-                        document.getElementById('locationStatus').innerHTML = `
-                        Location captured!<br>
-                        <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-                        document.getElementById('locationStatus').style.display = 'block';
-                    },
-                    (error) => {
-                        switch (error.code) {
-                            case error.PERMISSION_DENIED:
-                            alert('Permission denied. Please allow location access.');
-                            break;
-                            case error.POSITION_UNAVAILABLE:
-                            alert('Location information is unavailable.');
-                            break;
-                            case error.TIMEOUT:
-                            alert('Location request timed out.');
-                            break;
-                            default:
-                            alert('An unknown error occurred.');
-                            break;
-                        }
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 10000, // 10 seconds timeout
-                        maximumAge: 0
-                    }
-                    );
-                    } else {
-                    alert('Geolocation is not supported by this browser.');
-                }
-            });
+            // Fixed delivery center coordinates
+            const centerLat = 30.6668;
+            const centerLng = 75.0641;
             
+            // Function to calculate distance using Haversine formula
+            function calculateDistance(lat1, lng1, lat2, lng2) {
+                const toRad = (value) => (value * Math.PI) / 180;
+                const R = 6371; // Earth's radius in kilometers
+                const dLat = toRad(lat2 - lat1);
+                const dLng = toRad(lng2 - lng1);
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c; // Distance in kilometers
+            }
+            
+// Location capture and distance validation
+document.querySelector('[value="location"]').addEventListener('change', () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                
+                // Calculate distance
+                const distance = calculateDistance(lat, lng, centerLat, centerLng);
+                
+                userLocation = `https://maps.google.com/?q=${lat},${lng}`;
+                
+                if (distance > 15) {
+                    document.getElementById('locationStatus').innerHTML = `
+                    <span style="color: red;">Delivery not available at this location.</span><br>
+                    <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                } else {
+                    document.getElementById('locationStatus').innerHTML = `
+                    <span style="color: green;">Delivery available!</span><br>
+                    <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                }
+                
+                document.getElementById('locationStatus').style.display = 'block';
+            },
+            (error) => {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        alert('Permission denied. Please allow location access.');
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert('Location information is unavailable.');
+                        break;
+                    case error.TIMEOUT:
+                        alert('Location request timed out.');
+                        break;
+                    default:
+                        alert('An unknown error occurred.');
+                        break;
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000, // 10 seconds timeout
+                maximumAge: 0
+            }
+        );
+    } else {
+        alert('Geolocation is not supported by this browser.');
+    }
+});
+
             let userLocation = ''; // Global variable to store the location
+            
             
             function getLocation() {
                 if (navigator.geolocation) {
@@ -5220,7 +5250,7 @@
                 // Combine messages
                 const orderNumber = cachedOrderNumber + 1;
                 localStorage.setItem('lastOrderNumber', orderNumber);
-     
+                
                 
                 let message = `☕️ *Order No. ${orderNumber}* ☕️\n${'-'.repeat(30)}\n` +
                 scrapMessage +
@@ -5269,9 +5299,9 @@
                 updateCartDisplay();               
                 showFeedback("Combined order sent!");
                 
-                                        updateCounter('updateOrders');
-                        cachedOrderNumber = orderNumber;
-
+                updateCounter('updateOrders');
+                cachedOrderNumber = orderNumber;
+                
             }
             
             document.getElementById('clearAll').addEventListener('click', clearAll);
