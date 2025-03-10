@@ -2174,10 +2174,9 @@
             font-size: 5rem;
             }
             
-            /* Add these styles to your existing CSS */
-            
             /* Center the Order Details heading */
             .order-modal-content h2 {
+            font-size: 6rem;
             text-align: center;
             width: 100%;
             margin: 1rem 0;
@@ -2225,6 +2224,47 @@
             align-items: center;
             padding: 3rem;
             }
+            
+            #deliveryModal .order-modal-content {
+            position: relative; /* Add this line */
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            color: #333;
+            width: 90%;
+            max-width: 500px;
+            font-size: 5rem;
+            }
+            
+            #deliveryModal .close-button {
+            font-size: 6rem; /* Adjust this value */
+            color: black;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            position: absolute; /* This will now be relative to .order-modal-content */
+            top: 1rem;
+            right: 2rem;
+            }
+            
+            #deliveryModal .close-button:hover {
+            color: #ff4444; /* Optional: Change hover color */
+            }
+            
+            #clearDate {
+            font-size: 4rem; /* Adjust this value to your desired size */
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            margin-left: 0.5rem; /* Adjust spacing between input and button */
+            color: #ff4444; /* Red color for visibility */
+            transition: color 0.3s ease;
+            }
+            
+            #clearDate:hover {
+            color: #cc0000  !important; /* Darker red on hover */
+            }
+            
             
             
         </style>
@@ -2544,11 +2584,16 @@
                 <form id="deliveryForm">
                     <div id="deliveryFields">
                         <div class="form-group">
-                            <label>Date & Time</label>
+                            <label>Date-Time</label>
                             <div style="display: flex; gap: 4px;">
                                 <input type="datetime-local" id="deliveryTime">
-                                <button type="button" id="clearDate">✖️</button>
+                                <button type="button" id="clearDate">✖</button>
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contact Person (25 chars max.)</label>
+                            <input type="text" id="customerName" maxlength="25">
                         </div>
                         
                         <div class="form-group">
@@ -2559,17 +2604,10 @@
                             </div>                            
                         </div>
                         
-                        <div class="form-group">
-                            <label>Name (25 chars max.)</label>
-                            <input type="text" id="customerName" maxlength="25">
-                        </div>
-                        
                         <div class="address-method">
                             <label>Address (100 chars max.)</label>
                         </div>
-                        
-                        
-                        
+                                                
                         <div id="addressInput">
                             <textarea id="manualAddress" placeholder="Enter address" maxlength="100"></textarea>
                         </div>
@@ -2791,7 +2829,7 @@
             
             // Declarations
             // Initialize order number from localStorage
-            let cachedOrderNumber = parseInt(localStorage.getItem('lastOrderNumber')) || 0;                  
+            let cachedOrderNumber = null;                  
             
             
             function showFeedback(message) {
@@ -4986,9 +5024,7 @@
                 }
             });
             
-            // Toggle delivery fields
-            // Toggle delivery fields and phone requirement
-            // Toggle delivery fields and phone number
+            //Name
             document.querySelectorAll('[name="orderType"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     const isDelivery = e.target.value === 'delivery';
@@ -5008,7 +5044,6 @@
             });
             
             
-            // Contact picker
             // Contact picker
             document.getElementById('pickContact').addEventListener('click', async () => {
                 if (navigator.contacts && navigator.contacts.select) {
@@ -5041,20 +5076,20 @@
                 e.target.value = value;
             });
             
-            
-document.querySelector('[value="location"]').addEventListener('change', () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                // Store location as Google Maps link
-                userLocation = `https://maps.google.com/?q=${lat},${lng}`;
-                document.getElementById('locationStatus').innerHTML = `
-                    Location captured!<br>
-                    <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-                document.getElementById('locationStatus').style.display = 'block';
-            },
+            // Location
+            document.querySelector('[value="location"]').addEventListener('change', () => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        // Store location as Google Maps link
+                        userLocation = `https://maps.google.com/?q=${lat},${lng}`;
+                        document.getElementById('locationStatus').innerHTML = `
+                        Location captured!<br>
+                        <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                        document.getElementById('locationStatus').style.display = 'block';
+                    },
                     (error) => {
                         switch (error.code) {
                             case error.PERMISSION_DENIED:
@@ -5081,8 +5116,6 @@ document.querySelector('[value="location"]').addEventListener('change', () => {
                     alert('Geolocation is not supported by this browser.');
                 }
             });
-            
-            
             
             let userLocation = ''; // Global variable to store the location
             
@@ -5187,7 +5220,7 @@ document.querySelector('[value="location"]').addEventListener('change', () => {
                 // Combine messages
                 const orderNumber = cachedOrderNumber + 1;
                 localStorage.setItem('lastOrderNumber', orderNumber);
-                cachedOrderNumber = orderNumber;
+     
                 
                 let message = `☕️ *Order No. ${orderNumber}* ☕️\n${'-'.repeat(30)}\n` +
                 scrapMessage +
@@ -5202,11 +5235,11 @@ document.querySelector('[value="location"]').addEventListener('change', () => {
                 if (formData.deliveryTime) {
                     message += `⏰ ${formData.deliveryTime}\n`;
                 }
-                if (formData.phone) {
-                    message += `📞 ${formData.phone}\n`;
-                }
                 if (formData.name) {
                     message += `👤 ${formData.name}\n`;
+                }
+                if (formData.phone) {
+                    message += `📞 ${formData.phone}\n`;
                 }
                 if (formData.address) {
                     message += `🏠 ${formData.address}\n`;
@@ -5235,6 +5268,10 @@ document.querySelector('[value="location"]').addEventListener('change', () => {
                 handleScrapItemsChange();
                 updateCartDisplay();               
                 showFeedback("Combined order sent!");
+                
+                                        updateCounter('updateOrders');
+                        cachedOrderNumber = orderNumber;
+
             }
             
             document.getElementById('clearAll').addEventListener('click', clearAll);
