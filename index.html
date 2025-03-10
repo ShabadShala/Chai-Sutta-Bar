@@ -2790,7 +2790,8 @@
             document.addEventListener('paste', event => event.preventDefault());
             
             // Declarations
-            let cachedOrderNumber = null;                    
+            // Initialize order number from localStorage
+            let cachedOrderNumber = parseInt(localStorage.getItem('lastOrderNumber')) || 0;                  
             
             
             function showFeedback(message) {
@@ -5041,17 +5042,19 @@
             });
             
             
-            document.querySelector('[value="location"]').addEventListener('change', () => {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const latitude = position.coords.latitude;
-                        const longitude = position.coords.longitude;
-                        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-                        // Display or use the location as needed
-                        document.getElementById('locationStatus').textContent = `Lat: ${latitude}, Lon: ${longitude}`;
-                        document.getElementById('locationStatus').style.display = 'block';
-                    },
+document.querySelector('[value="location"]').addEventListener('change', () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                // Store location as Google Maps link
+                userLocation = `https://maps.google.com/?q=${lat},${lng}`;
+                document.getElementById('locationStatus').innerHTML = `
+                    Location captured!<br>
+                    <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                document.getElementById('locationStatus').style.display = 'block';
+            },
                     (error) => {
                         switch (error.code) {
                             case error.PERMISSION_DENIED:
@@ -5081,6 +5084,8 @@
             
             
             
+            let userLocation = ''; // Global variable to store the location
+            
             function getLocation() {
                 if (navigator.geolocation) {
                     document.getElementById('locationStatus').textContent = 'Getting location...';
@@ -5088,6 +5093,11 @@
                     position => {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
+                        
+                        // Store the location as a Google Maps link
+                        userLocation = `https://maps.google.com/?q=${lat},${lng}`;
+                        
+                        // Update status display
                         document.getElementById('locationStatus').innerHTML = `
                         Location captured!<br>
                         <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
@@ -5098,6 +5108,9 @@
                     );
                 }
             }
+            
+            
+            
             
             // Form submission
             document.getElementById('deliveryForm').addEventListener('submit', function(e) {
@@ -5132,6 +5145,7 @@
                 document.getElementById('deliveryModal').style.display = 'none';
             });
             
+            
             document.getElementById('clearDate').addEventListener('click', function() {
                 const deliveryInput = document.getElementById('deliveryTime');
                 deliveryInput.value = ''; // Clear the input
@@ -5139,10 +5153,6 @@
             });
             
             
-            function sendCombinedOrder(data) {
-                console.log('Order Data:', data);
-                // Logic to process the order
-            }
             
             
             function sendCombinedOrder(formData) {
@@ -5176,20 +5186,40 @@
                 
                 // Combine messages
                 const orderNumber = cachedOrderNumber + 1;
-                let message = `☕️ *Combined Order No. ${orderNumber}* ☕️\n${'-'.repeat(30)}\n` +
+                localStorage.setItem('lastOrderNumber', orderNumber);
+                cachedOrderNumber = orderNumber;
+                
+                let message = `☕️ *Order No. ${orderNumber}* ☕️\n${'-'.repeat(30)}\n` +
                 scrapMessage +
                 offerMessage +
                 `\n${'-'.repeat(30)}\n`;
                 
                 // Append delivery details only if delivery is selected
-                if (formData.orderType === 'delivery') {
-                    message += `\nDelivery Details:\n` +
-                    `📅 ${formData.deliveryTime}\n` +
-                    `📞 ${formData.phone}\n` +
-                    `👤 ${formData.name}\n` +
-                    `📍 ${formData.address}\n` +
-                    `\n${'-'.repeat(30)}\n`;
+                // Start with the basic message structure
+                message += `\nDelivery Details:\n`;
+                
+                // Append only non-blank fields
+                if (formData.deliveryTime) {
+                    message += `⏰ ${formData.deliveryTime}\n`;
                 }
+                if (formData.phone) {
+                    message += `📞 ${formData.phone}\n`;
+                }
+                if (formData.name) {
+                    message += `👤 ${formData.name}\n`;
+                }
+                if (formData.address) {
+                    message += `🏠 ${formData.address}\n`;
+                }
+                if (userLocation) {
+                    message += `📍 Location: ${userLocation}\n`;
+                }
+                
+                // Add the separator only if any details were added
+                if (formData.deliveryTime || formData.phone || formData.name || formData.address) {
+                    message += `${'-'.repeat(30)}\n`;
+                }
+                
                 
                 message += `Thank you for your order!`;
                 
