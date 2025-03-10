@@ -2130,11 +2130,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            display: flex; /* Use flex to center the modal */
             justify-content: center;
             align-items: center;
-            z-index: 10000;
+            z-index: 10000; /* Ensure it's above everything else */
+            opacity: 0; /* Start hidden */
+            visibility: hidden; /* Start hidden */
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+            
+            .order-modal-overlay.active {
+            opacity: 1; /* Show when active */
+            visibility: visible; /* Show when active */
             }
             
             .order-modal-content {
@@ -2145,6 +2153,14 @@
             width: 90%;
             max-width: 500px;
             font-size: 5rem;
+            transform: scale(0.9); /* Start slightly smaller */
+            opacity: 0; /* Start hidden */
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+            
+            .order-modal-overlay.active .order-modal-content {
+            transform: scale(1); /* Scale up when active */
+            opacity: 1; /* Show when active */
             }
             
             .form-group {
@@ -2266,6 +2282,46 @@
             }
             
             
+            
+            
+            /* Delivery Modal Buttons */
+            .modal-button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 3rem;
+            }
+            
+            #deliveryForm button[type="submit"],
+            #cancelOrder {
+            display: block;
+            margin: 2rem auto 0;
+            padding: 1.5rem 3rem;
+            font-size: 5rem;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+            max-width: 150px;
+            }
+            
+            #deliveryForm button[type="submit"] {
+            background-color: #4CAF50;
+            }
+            
+            #cancelOrder {
+            background-color: #dc3545;
+            }
+            
+            #deliveryForm button[type="submit"]:hover {
+            background-color: #45a049;
+            }
+            
+            #cancelOrder:hover {
+            background-color: #c82333;
+            }
             
         </style>
         <link rel="stylesheet" href="ham.css">
@@ -2476,16 +2532,16 @@
         
         <!-- Inside the #scrapList .scrap-content div, after existing button-container -->
         <div class="button-container-all">
-            <button id="orderAll" class="child-lock-restricted">OrderAll</button>
+            <button id="orderAll" class="child-lock-restricted">ORDER</button>
             <button id="smartPickBtn2" class="smart-pick-btn"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
-            <button id="clearAll">ClearAll</button>
+            <button id="clearAll">CLEAR</button>
         </div>
         
         
         <div id="offer-cart" style="display: none;">
             <div class="offers-content">                        
                 <div id="closeOffer">×</div>
-                <h2 style="font-size: 6rem;">Selected Offers</h2>
+                <h2 style="font-size: 5rem;">Selected Offers</h2>
                 <div id="cart-items"></div>
                 <div id="totalOffers" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total Offers: 0</div>
                 <div class="button-container">
@@ -2577,7 +2633,7 @@
         
         
         <!-- Add this modal structure before </body> -->
-        <div id="deliveryModal" class="order-modal-overlay" style="display:none;">
+        <div id="deliveryModal" class="order-modal-overlay">
             <div class="order-modal-content">
                 <span class="close-button">&times;</span>
                 <h2>Delivery Details<br><small>(Optional)</small></h2>
@@ -2592,16 +2648,17 @@
                         </div>
                         
                         <div class="form-group">
-                            <label>Contact Person (25 chars max.)</label>
-                            <input type="text" id="customerName" maxlength="25">
-                        </div>
-                        
-                        <div class="form-group">
                             <label for="phone">Mobile Number</label>
                             <div style="display:flex;gap:5px">
                                 <input type="tel" id="phone" maxlength="11" pattern="\d{5}-\d{5}" placeholder="12345-67890" title="Enter 10 digits in the format 12345-67890">
                                 <button type="button" id="pickContact">📱</button>
                             </div>                            
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label>Contact Person (25 chars max.)</label>
+                            <input type="text" id="customerName" maxlength="25">
                         </div>
                         
                         <div class="address-method">
@@ -2614,28 +2671,23 @@
                         
                         <div class="address-method">
                             <label>
-                                <input type="checkbox" name="locationAddress" value="location"> Check Delivery and Attach Location
+                                <input type="checkbox" name="locationAddress" value="location"> Check/Attach Location
                             </label>
                         </div>
                         
                         <div id="locationStatus" style="display:none"></div>
                     </div>
-                    <button type="submit">Confirm Order</button>
+                    <!-- Inside the deliveryModal's form element, before the closing </form> tag -->
+                    <div class="modal-button-container">
+                        <button type="button" id="cancelOrder" class="cancel-btn">Cancel Order</button>
+                        <button type="submit">Confirm Order</button>
+                    </div>
                 </form>
                 
             </div>
         </div>    
         
-        
-        
         <script>
-            
-            
-            
-            
-            
-            
-            
             
             
             
@@ -2696,6 +2748,132 @@
                 let store = tx.objectStore(STORE_NAME);
                 store.put(true, "welcomeMessage");
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // temp disable offer cart button
+            document.getElementById("toggle-cart").style.display = "none"; // Hide
+            
+            // google script URL
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbwL-df0wEbrbZoebYhWuYZASWBkzHvMgrjQDg6AUrV4oHZTAd1y3lbyEDolErve_blZAg/exec";
+            
+            //Disable context menu, cut-copy-paste
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            document.addEventListener('copy', event => event.preventDefault());
+            document.addEventListener('cut', event => event.preventDefault());
+            document.addEventListener('paste', event => event.preventDefault());
+            
+            // Declarations
+            // Initialize order number from localStorage
+            let cachedOrderNumber = null;                  
+            
+            
+            function showFeedback(message) {
+                const feedback = document.querySelector('.feedback-message');
+                feedback.textContent = message;
+                feedback.style.display = 'block';
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 1000);
+            }
+            
+            
+            function updateScreenSize() {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                
+                const header = document.querySelector('.header');
+                
+                // If width is greater than or equal to height, make header scrollable
+                if (width >= height) {
+                    header.classList.add('scrollable'); // Make header scrollable
+                    } else {
+                    header.classList.remove('scrollable'); // Keep header fixed
+                }
+            }                    
+            // Listen for window resizing
+            window.addEventListener('resize', updateScreenSize);                    
+            // Call the function initially to set the correct behavior based on current screen size
+            updateScreenSize();
+            
+            
+            
+            async function loadReplacements() {
+                try {
+                    const response = await fetch(`${scriptUrl}?sheet=replace`);
+                    const data = await response.json();
+                    
+                    SEARCH_REPLACEMENTS = data.slice(1).reduce((acc, row) => {
+                        if (row.length >= 2) {
+                            // Split column A by commas and process each word separately
+                            const words = String(row[0]).split(',').map(word => word.trim()).filter(word => word);
+                            
+                            const isGurmukhi = words.some(word => /[\u0A00-\u0A7F]/.test(word));
+                            
+                            const replacements = isGurmukhi
+                            ? String(row[1]).trim()  // Preserve exact Gurmukhi
+                            : String(row[1]).toLowerCase().trim();
+                            
+                            words.forEach(original => {
+                                if (original && replacements) {
+                                    acc[isGurmukhi ? original : original.toLowerCase()] = replacements;
+                                }
+                            });
+                        }
+                        return acc;
+                    }, {});
+                    
+                    
+                    console.log('Final replacements:', SEARCH_REPLACEMENTS);
+                    
+                    } catch (error) {
+                    console.error('Error:', error);
+                    SEARCH_REPLACEMENTS = {
+                        'cofee': 'coffee',
+                        'coofe': 'coffee',
+                    };
+                }
+            }                    
+            // Initialize when page loads
+            loadReplacements();
+            
             
             
             
@@ -2815,91 +2993,14 @@
             
             
             
-            // temp disable offer cart button
-            document.getElementById("toggle-cart").style.display = "none"; // Hide
-            
-            // google script URL
-            const scriptUrl = "https://script.google.com/macros/s/AKfycbwL-df0wEbrbZoebYhWuYZASWBkzHvMgrjQDg6AUrV4oHZTAd1y3lbyEDolErve_blZAg/exec";
-            
-            //Disable context menu, cut-copy-paste
-            document.addEventListener('contextmenu', event => event.preventDefault());
-            document.addEventListener('copy', event => event.preventDefault());
-            document.addEventListener('cut', event => event.preventDefault());
-            document.addEventListener('paste', event => event.preventDefault());
-            
-            // Declarations
-            // Initialize order number from localStorage
-            let cachedOrderNumber = null;                  
-            
-            
-            function showFeedback(message) {
-                const feedback = document.querySelector('.feedback-message');
-                feedback.textContent = message;
-                feedback.style.display = 'block';
-                setTimeout(() => {
-                    feedback.style.display = 'none';
-                }, 1000);
-            }
-            
-            
-            function updateScreenSize() {
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-                
-                const header = document.querySelector('.header');
-                
-                // If width is greater than or equal to height, make header scrollable
-                if (width >= height) {
-                    header.classList.add('scrollable'); // Make header scrollable
-                    } else {
-                    header.classList.remove('scrollable'); // Keep header fixed
-                }
-            }                    
-            // Listen for window resizing
-            window.addEventListener('resize', updateScreenSize);                    
-            // Call the function initially to set the correct behavior based on current screen size
-            updateScreenSize();
             
             
             
-            async function loadReplacements() {
-                try {
-                    const response = await fetch(`${scriptUrl}?sheet=replace`);
-                    const data = await response.json();
-                    
-                    SEARCH_REPLACEMENTS = data.slice(1).reduce((acc, row) => {
-                        if (row.length >= 2) {
-                            // Split column A by commas and process each word separately
-                            const words = String(row[0]).split(',').map(word => word.trim()).filter(word => word);
-                            
-                            const isGurmukhi = words.some(word => /[\u0A00-\u0A7F]/.test(word));
-                            
-                            const replacements = isGurmukhi
-                            ? String(row[1]).trim()  // Preserve exact Gurmukhi
-                            : String(row[1]).toLowerCase().trim();
-                            
-                            words.forEach(original => {
-                                if (original && replacements) {
-                                    acc[isGurmukhi ? original : original.toLowerCase()] = replacements;
-                                }
-                            });
-                        }
-                        return acc;
-                    }, {});
-                    
-                    
-                    console.log('Final replacements:', SEARCH_REPLACEMENTS);
-                    
-                    } catch (error) {
-                    console.error('Error:', error);
-                    SEARCH_REPLACEMENTS = {
-                        'cofee': 'coffee',
-                        'coofe': 'coffee',
-                    };
-                }
-            }                    
-            // Initialize when page loads
-            loadReplacements();
+            
+            
+            
+            
+            
             
             
             // Filter menu items
@@ -3436,35 +3537,6 @@
             
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             // Modify toggleScrapList function
             function toggleScrapList() {
                 const overlay = document.querySelector('.scrap-overlay');
@@ -3518,7 +3590,6 @@
                 closeScrapList();
                 closeOfferCart();
             });
-            
             
             
             // Empty-warning
@@ -3697,10 +3768,16 @@
             }
             
             
-            
             document.addEventListener('DOMContentLoaded', () => {
-                document.getElementById('smartPickBtn2').addEventListener('click', addRandomItem);
+                document.getElementById('smartPickBtn2').addEventListener('click', () => {
+                    const scrapList = document.getElementById('scrapList');
+                    
+                    scrapList.style.display = 'flex'; // Always show scrapList when clicked
+                    addRandomItem(); // Add the item
+                });
             });
+            
+            
             
             
             
@@ -3803,7 +3880,7 @@
             
             
             
-            
+            // Scrap List
             let scrapItems = [];
             let scrapVisible = false;                                                        
             // Add these JavaScript modifications
@@ -4425,17 +4502,12 @@
                 }
             }
             
-            
-            
             // Add this in the DOMContentLoaded event listener
             document.addEventListener("DOMContentLoaded", function () {
                 loadScrapItems();
                 loadOfferCart(); // Add this line
                 setActiveTab("allButton");
             }); 
-            
-            
-            
             
             // Add these functions
             function saveOfferCart() {
@@ -4484,7 +4556,7 @@
             
             
             
-            
+            // Offer Cart
             let offersData = [];
             let offerNsg = '';
             let offerCart = [];
@@ -4710,7 +4782,14 @@
                 });
                 
                 const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
-                totalOffers.textContent = `Total Offers: ${totalItems}`;
+                
+                if (totalItems <= 1) {
+                    totalOffers.style.display = 'none'; // Hide if totalItems is 0 or 1
+                    } else {
+                    totalOffers.style.display = 'block'; // Show otherwise
+                    totalOffers.textContent = `Total Offers: ${totalItems}`;
+                }
+                
                 toggleBtn.textContent = `Offer Cart (${totalItems})`;
                 
                 
@@ -4747,13 +4826,6 @@
                 updateScrapButtonStatus();
                 saveOfferCart(); // Add this line
             }                 
-            
-            
-            
-            
-            
-            
-            
             
             
             
@@ -4829,8 +4901,7 @@
             
             
             
-            // Cloing of scraplist and offer-cart
-            
+            // Closing of scraplist and offer-cart
             
             // scrap-close-outside offer-close-outside
             document.addEventListener('click', (e) => {
@@ -4972,59 +5043,42 @@
             
             
             
-            // Add these functions to your script
-            function orderAll() {
-                // Check if both lists are empty
-                if (scrapItems.length === 0 && offerCart.length === 0) {
-                    showFeedback("Both lists are empty!");
-                    return;
-                }
-                
-                
-                // Show the delivery modal first
-                showDeliveryModal();
-            }
-            
-            function clearAll() {
-                scrapItems = [];
-                offerCart = [];
-                handleScrapItemsChange();
-                updateCartDisplay();
-                showFeedback("All items cleared!");
-                closeScrapList();
-                saveOfferCart();
-            }
-            
-            // Add event listeners for the new buttons
+            // Handle ordering both carts and showing the delivery modal
             document.getElementById('orderAll').addEventListener('click', function(e) {
                 e.preventDefault();
-                closeScrapList(); // Add this line
+                closeScrapList(); 
                 closeOfferCart(); 
                 showDeliveryModal();
             });
             
-            // Initialize form state on modal open
+            
+            // Function to show the delivery modal
             function showDeliveryModal() {
                 const modal = document.getElementById('deliveryModal');
-                modal.style.display = 'flex';
+                modal.classList.add('active'); // Add active class to show the modal
                 document.getElementById('deliveryForm').reset();
             }
             
+            // Function to hide the delivery modal
+            function hideDeliveryModal() {
+                const modal = document.getElementById('deliveryModal');
+                modal.classList.remove('active'); // Remove active class to hide the modal
+            }
             
+            // Close button handler
+            document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
             
-            // Close button
-            document.querySelector('#deliveryModal .close-button').addEventListener('click', () => {
-                document.getElementById('deliveryModal').style.display = 'none';
-            });
-            
-            // Outside click
-            document.getElementById('deliveryModal').addEventListener('click', (e) => {
-                if(e.target === document.getElementById('deliveryModal')) {
-                    document.getElementById('deliveryModal').style.display = 'none';
+            // Outside click handler
+            /*
+                document.getElementById('deliveryModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('deliveryModal')) {
+                hideDeliveryModal();
                 }
-            });
+                });
+            */
             
-            //Name
+            
+            // Name (Contact Person)
             document.querySelectorAll('[name="orderType"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     const isDelivery = e.target.value === 'delivery';
@@ -5043,8 +5097,7 @@
                 });
             });
             
-            
-            // Contact picker
+            // Contact Number
             document.getElementById('pickContact').addEventListener('click', async () => {
                 if (navigator.contacts && navigator.contacts.select) {
                     try {
@@ -5077,7 +5130,6 @@
             });
             
             // Location
-            // Fixed delivery center coordinates
             const centerLat = 30.6668;
             const centerLng = 75.0641;
             
@@ -5094,110 +5146,106 @@
                 return R * c; // Distance in kilometers
             }
             
-let userLocation = ''; // Global variable to store the location
-const locationCheckbox = document.querySelector('[value="location"]');
-const locationStatus = document.getElementById('locationStatus');
-
-locationCheckbox.addEventListener('change', () => {
-    if (locationCheckbox.checked) {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-
-                    // Calculate distance
-                    const distance = calculateDistance(lat, lng, centerLat, centerLng);
-
-                    userLocation = `https://maps.google.com/?q=${lat},${lng}`;
-
-                    if (distance > 15) {
-                        locationStatus.innerHTML = `
-                            <span style="color: red;">Delivery not available at this location.</span><br>
-                            <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+            let userLocation = ''; // Global variable to store the location
+            const locationCheckbox = document.querySelector('[value="location"]');
+            const locationStatus = document.getElementById('locationStatus');
+            
+            locationCheckbox.addEventListener('change', () => {
+                if (locationCheckbox.checked) {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+                            
+                            // Calculate distance
+                            const distance = calculateDistance(lat, lng, centerLat, centerLng);
+                            
+                            userLocation = `https://maps.google.com/?q=${lat},${lng}`;
+                            
+                            if (distance > 15) {
+                                locationStatus.innerHTML = `
+                                <span style="color: red;">Delivery not available at this location.</span><br>
+                                <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                                } else {
+                                locationStatus.innerHTML = `
+                                <span style="color: green;">Delivery available!</span><br>
+                                <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                            }
+                            
+                            locationStatus.style.display = 'block';
+                        },
+                        (error) => {
+                            switch (error.code) {
+                                case error.PERMISSION_DENIED:
+                                alert('Permission denied. Please allow location access.');
+                                break;
+                                case error.POSITION_UNAVAILABLE:
+                                alert('Location information is unavailable.');
+                                break;
+                                case error.TIMEOUT:
+                                alert('Location request timed out.');
+                                break;
+                                default:
+                                alert('An unknown error occurred.');
+                                break;
+                            }
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        }
+                        );
+                        } else {
+                        alert('Geolocation is not supported by this browser.');
+                    }
                     } else {
-                        locationStatus.innerHTML = `
-                            <span style="color: green;">Delivery available!</span><br>
-                            <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-                    }
-
-                    locationStatus.style.display = 'block';
-                },
-                (error) => {
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            alert('Permission denied. Please allow location access.');
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            alert('Location information is unavailable.');
-                            break;
-                        case error.TIMEOUT:
-                            alert('Location request timed out.');
-                            break;
-                        default:
-                            alert('An unknown error occurred.');
-                            break;
-                    }
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
+                    userLocation = '';
                 }
-            );
-        } else {
-            alert('Geolocation is not supported by this browser.');
-        }
-    } else {
-    userLocation = '';
-    }
-});
-            
-            
-
-            
+            });
             
             
             // Form submission
-document.getElementById('deliveryForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const deliveryInput = document.getElementById('deliveryTime');
-    const deliveryTime = deliveryInput.value;
-    const locationCheckbox = document.querySelector('[value="location"]');
-
-    if (!locationCheckbox.checked) {
-        userLocation = '';
-    }
-
-    if (deliveryTime) {
-        const selectedTime = new Date(deliveryTime).getTime();
-        const currentTimePlus10Min = new Date().getTime() + 10 * 60000;
-
-        if (selectedTime < currentTimePlus10Min) {
-            deliveryInput.setCustomValidity('Should be at least 10 minutes from now or leave it blank.');
-            deliveryInput.reportValidity();
-            return;
-        } else {
-            deliveryInput.setCustomValidity('');
-        }
-    } else {
-        deliveryInput.setCustomValidity('');
-    }
-
-    const formData = {
-        phone: document.getElementById('phone').value || '',
-        name: document.getElementById('customerName').value || '',
-        address: document.getElementById('manualAddress').value || '',
-        deliveryTime: deliveryTime,
-        userLocation: userLocation
-    };
-    
-    sendCombinedOrder(formData);
-    document.getElementById('deliveryModal').style.display = 'none';
-});
-
+            document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const deliveryInput = document.getElementById('deliveryTime');
+                const deliveryTime = deliveryInput.value;
+                const locationCheckbox = document.querySelector('[value="location"]');
+                
+                if (!locationCheckbox.checked) {
+                    userLocation = '';
+                }
+                
+                if (deliveryTime) {
+                    const selectedTime = new Date(deliveryTime).getTime();
+                    const currentTimePlus10Min = new Date().getTime() + 10 * 60000;
+                    
+                    if (selectedTime < currentTimePlus10Min) {
+                        deliveryInput.setCustomValidity('Should be at least 10 minutes from now or leave it blank.');
+                        deliveryInput.reportValidity();
+                        return;
+                        } else {
+                        deliveryInput.setCustomValidity('');
+                    }
+                    } else {
+                    deliveryInput.setCustomValidity('');
+                }
+                
+                const formData = {
+                    deliveryTime: deliveryTime,
+                    phone: document.getElementById('phone').value || '',
+                    name: document.getElementById('customerName').value || '',
+                    address: document.getElementById('manualAddress').value || '',
+                    userLocation: userLocation
+                };
+                
+                sendCombinedOrder(formData);
+                hideDeliveryModal();
+                // TimePlay
+            });
             
-            
+            // Clear Button Date-Time
             document.getElementById('clearDate').addEventListener('click', function() {
                 const deliveryInput = document.getElementById('deliveryTime');
                 deliveryInput.value = ''; // Clear the input
@@ -5205,8 +5253,7 @@ document.getElementById('deliveryForm').addEventListener('submit', function(e) {
             });
             
             
-            
-            
+            // Send order to WA
             function sendCombinedOrder(formData) {
                 // Generate scrap items message
                 let scrapMessage = '';
@@ -5246,34 +5293,29 @@ document.getElementById('deliveryForm').addEventListener('submit', function(e) {
                 offerMessage +
                 `\n${'-'.repeat(30)}\n`;
                 
-
-// Append delivery details only if at least one field is non-empty
-if (formData.deliveryTime || formData.name || formData.phone || formData.address || userLocation) {
-    message += `\nDelivery Details:\n`;
-
-    if (formData.deliveryTime) {
-        message += `⏰ ${formData.deliveryTime}\n`;
-    }
-    if (formData.name) {
-        message += `👤 ${formData.name}\n`;
-    }
-    if (formData.phone) {
-        message += `📞 ${formData.phone}\n`;
-    }
-    if (formData.address) {
-        message += `🏠 ${formData.address}\n`;
-    }
-    if (userLocation) {
-        message += `📍: ${userLocation}\n`;
-    }
-}
-
                 
-                // Add the separator only if any details were added
-                if (formData.deliveryTime || formData.phone || formData.name || formData.address || userLocation) {
+                // Append delivery details only if at least one field is non-empty
+                if (formData.deliveryTime || formData.name || formData.phone || formData.address || userLocation) {
+                    message += `\nDelivery Details:\n`;
+                    
+                    if (formData.deliveryTime) {
+                        message += `⏰ ${formData.deliveryTime}\n`;
+                    }
+                    if (formData.phone) {
+                        message += `📞 ${formData.phone}\n`;
+                    }
+                    if (formData.name) {
+                        message += `👤 ${formData.name}\n`;
+                    }
+                    if (formData.address) {
+                        message += `🏠 ${formData.address}\n`;
+                    }
+                    if (userLocation) {
+                        message += `📍 ${userLocation}\n`;
+                    }
+                    
                     message += `${'-'.repeat(30)}\n`;
-                }
-                
+                }                
                 
                 message += `Thank you for your order!`;
                 
@@ -5291,8 +5333,19 @@ if (formData.deliveryTime || formData.name || formData.phone || formData.address
                 showFeedback("Combined order sent!");
                 
                 updateCounter('updateOrders');
-                cachedOrderNumber = orderNumber;
-                
+                cachedOrderNumber = orderNumber;                
+            }
+            
+            
+            // Clear Both Carts
+            function clearAll() {
+                scrapItems = [];
+                offerCart = [];
+                handleScrapItemsChange();
+                updateCartDisplay();
+                showFeedback("All items cleared!");
+                closeScrapList();
+                saveOfferCart();
             }
             
             document.getElementById('clearAll').addEventListener('click', clearAll);
@@ -5301,44 +5354,11 @@ if (formData.deliveryTime || formData.name || formData.phone || formData.address
             
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            document.addEventListener("DOMContentLoaded", function () {
-                const header = document.querySelector(".header");
-                if (header) {
-                    const headerHeight = header.offsetHeight; // Get header height
-                    document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 20}px`);
-                }
+            // Cancel Order button handler
+           document.getElementById('cancelOrder').addEventListener('click', function(e) {
+                e.preventDefault();
+                hideDeliveryModal();
+                // showFeedback("Order cancelled");
             });
             
             
@@ -5347,6 +5367,37 @@ if (formData.deliveryTime || formData.name || formData.phone || formData.address
             
             
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Adjust scrapList and offercart
+            
+            // Calculate header height
+            document.addEventListener("DOMContentLoaded", function () {
+                const header = document.querySelector(".header");
+                if (header) {
+                    const headerHeight = header.offsetHeight; // Get header height
+                    document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 20}px`);
+                }
+            });
             
             // Add this function to update positions
             function updateCartPosition() {
@@ -5387,19 +5438,13 @@ if (formData.deliveryTime || formData.name || formData.phone || formData.address
             window.addEventListener('scroll', updateCartPosition); // Keep it fixed on scroll  
             
             
-            
-            
-            
-            
-            
-            
+            // DOM entries for adjustment
             document.addEventListener("DOMContentLoaded", () => {
                 const scrapList = document.getElementById('scrapList');
                 const offerCart = document.getElementById('offer-cart');
                 
                 function adjustScrapListHeight() {
                     const offerCartDisplay = window.getComputedStyle(offerCart).display;
-                    
                     
                     // Apply transition directly in JavaScript
                     scrapList.style.transition = "max-height 0.5s ease-in-out";
@@ -5434,7 +5479,7 @@ if (formData.deliveryTime || formData.name || formData.phone || formData.address
             
             
             
-            
+            // Update PWA
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/service-worker.js').then(reg => {
                     setInterval(() => {
@@ -5517,59 +5562,12 @@ if (formData.deliveryTime || formData.name || formData.phone || formData.address
             
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
         </script>        
         <script src="app.js"></script> <!-- PWA -->                
         <script src="com.js"></script> <!-- Commu sidebar -->                
         <script src="ham.js"></script> <!-- Hamburger sidebar -->                
         <script src="counter.js"></script> <!-- Counters -->                
         <script src="cheat.js"></script> <!-- Cheats, Dev tools -->         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
     </body>
 </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
