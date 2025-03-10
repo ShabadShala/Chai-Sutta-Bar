@@ -84,6 +84,7 @@ let longPressTimer = null; // Timer for long press detection
 
 // Function to add a random item
 function addRandomItem() {
+
     // Get all menu items from the DOM
     const menuItems = Array.from(document.querySelectorAll('.menu-item'));
     
@@ -150,6 +151,8 @@ function addRandomItem() {
     handleScrapItemsChange();
     updateScrapButtonStatus();
         showFeedback('DEV: Random item added!');    
+          // After adding the item to scrapItems:
+
 }
 
 
@@ -243,6 +246,9 @@ document.getElementById('devFill').addEventListener('click', () => {
     updateCartDisplay();
     updateScrapButtonStatus();
     updateScrapCounter();
+    handleScrapItemsChange();
+           
+        updateOfferAddButtons();
     showFeedback('DEV: Demo data loaded!');
 
     // Show both panels

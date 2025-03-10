@@ -117,12 +117,12 @@ fetch(miscUrl)
                 // Determine if open or closed
                 if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
                     const timeLeft = closeTimeInMinutes - currentTime;
-                    const blinkClass = timeLeft <= 30 ? 'blink' : '';
+                    const blinkClass = timeLeft <= 15 ? 'blink' : '';
                     statusMessage = `<span style="color: #00FF00; font-weight: bold;">Open</span> <span class="${blinkClass}">until ${formatTime(closeTime)}</span>`;
                 } else {
                     let timeUntilOpen = openTimeInMinutes - currentTime;
                     if (timeUntilOpen < 0) timeUntilOpen += 1440; // Add 24hrs in minutes
-                    const blinkClass = timeUntilOpen <= 30 ? 'blink' : '';
+                    const blinkClass = timeUntilOpen <= 15 ? 'blink' : '';
                     statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ <span class="${blinkClass}">Opens ${formatTime(openTime)}</span>`;
                 }
             }
