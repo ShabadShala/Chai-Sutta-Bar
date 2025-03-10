@@ -2614,7 +2614,7 @@
                         
                         <div class="address-method">
                             <label>
-                                <input type="checkbox" name="locationAddress" value="location"> Check Delivery Location
+                                <input type="checkbox" name="locationAddress" value="location"> Check Delivery and Attach Location
                             </label>
                         </div>
                         
@@ -5094,119 +5094,108 @@
                 return R * c; // Distance in kilometers
             }
             
-// Location capture and distance validation
-document.querySelector('[value="location"]').addEventListener('change', () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                
-                // Calculate distance
-                const distance = calculateDistance(lat, lng, centerLat, centerLng);
-                
-                userLocation = `https://maps.google.com/?q=${lat},${lng}`;
-                
-                if (distance > 15) {
-                    document.getElementById('locationStatus').innerHTML = `
-                    <span style="color: red;">Delivery not available at this location.</span><br>
-                    <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-                } else {
-                    document.getElementById('locationStatus').innerHTML = `
-                    <span style="color: green;">Delivery available!</span><br>
-                    <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+let userLocation = ''; // Global variable to store the location
+const locationCheckbox = document.querySelector('[value="location"]');
+const locationStatus = document.getElementById('locationStatus');
+
+locationCheckbox.addEventListener('change', () => {
+    if (locationCheckbox.checked) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    // Calculate distance
+                    const distance = calculateDistance(lat, lng, centerLat, centerLng);
+
+                    userLocation = `https://maps.google.com/?q=${lat},${lng}`;
+
+                    if (distance > 15) {
+                        locationStatus.innerHTML = `
+                            <span style="color: red;">Delivery not available at this location.</span><br>
+                            <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                    } else {
+                        locationStatus.innerHTML = `
+                            <span style="color: green;">Delivery available!</span><br>
+                            <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                    }
+
+                    locationStatus.style.display = 'block';
+                },
+                (error) => {
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            alert('Permission denied. Please allow location access.');
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            alert('Location information is unavailable.');
+                            break;
+                        case error.TIMEOUT:
+                            alert('Location request timed out.');
+                            break;
+                        default:
+                            alert('An unknown error occurred.');
+                            break;
+                    }
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
                 }
-                
-                document.getElementById('locationStatus').style.display = 'block';
-            },
-            (error) => {
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        alert('Permission denied. Please allow location access.');
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        alert('Location information is unavailable.');
-                        break;
-                    case error.TIMEOUT:
-                        alert('Location request timed out.');
-                        break;
-                    default:
-                        alert('An unknown error occurred.');
-                        break;
-                }
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000, // 10 seconds timeout
-                maximumAge: 0
-            }
-        );
+            );
+        } else {
+            alert('Geolocation is not supported by this browser.');
+        }
     } else {
-        alert('Geolocation is not supported by this browser.');
+    userLocation = '';
     }
 });
+            
+            
 
-            let userLocation = ''; // Global variable to store the location
-            
-            
-            function getLocation() {
-                if (navigator.geolocation) {
-                    document.getElementById('locationStatus').textContent = 'Getting location...';
-                    navigator.geolocation.getCurrentPosition(
-                    position => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        
-                        // Store the location as a Google Maps link
-                        userLocation = `https://maps.google.com/?q=${lat},${lng}`;
-                        
-                        // Update status display
-                        document.getElementById('locationStatus').innerHTML = `
-                        Location captured!<br>
-                        <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-                    },
-                    error => {
-                        document.getElementById('locationStatus').textContent = 'Error getting location: ' + error.message;
-                    }
-                    );
-                }
-            }
-            
             
             
             
             // Form submission
-            document.getElementById('deliveryForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const deliveryInput = document.getElementById('deliveryTime');
-                const deliveryTime = deliveryInput.value;
-                
-                if (deliveryTime) {
-                    const selectedTime = new Date(deliveryTime).getTime();
-                    const currentTimePlus10Min = new Date().getTime() + 10 * 60000;
-                    
-                    if (selectedTime < currentTimePlus10Min) {
-                        deliveryInput.setCustomValidity('Should be at least 10 minutes from now or leave it blank.');
-                        deliveryInput.reportValidity();
-                        return;
-                        } else {
-                        deliveryInput.setCustomValidity(''); // Clear if valid
-                    }
-                    } else {
-                    deliveryInput.setCustomValidity(''); // Allow blank input and clear previous messages
-                }
-                
-                
-                
-                const formData = {
-                    phone: document.getElementById('phone').value || '',
-                    name: document.getElementById('customerName').value || '',
-                    address: document.getElementById('manualAddress').value || '',
-                    deliveryTime: deliveryTime
-                };
-                sendCombinedOrder(formData);
-                document.getElementById('deliveryModal').style.display = 'none';
-            });
+document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const deliveryInput = document.getElementById('deliveryTime');
+    const deliveryTime = deliveryInput.value;
+    const locationCheckbox = document.querySelector('[value="location"]');
+
+    if (!locationCheckbox.checked) {
+        userLocation = '';
+    }
+
+    if (deliveryTime) {
+        const selectedTime = new Date(deliveryTime).getTime();
+        const currentTimePlus10Min = new Date().getTime() + 10 * 60000;
+
+        if (selectedTime < currentTimePlus10Min) {
+            deliveryInput.setCustomValidity('Should be at least 10 minutes from now or leave it blank.');
+            deliveryInput.reportValidity();
+            return;
+        } else {
+            deliveryInput.setCustomValidity('');
+        }
+    } else {
+        deliveryInput.setCustomValidity('');
+    }
+
+    const formData = {
+        phone: document.getElementById('phone').value || '',
+        name: document.getElementById('customerName').value || '',
+        address: document.getElementById('manualAddress').value || '',
+        deliveryTime: deliveryTime,
+        userLocation: userLocation
+    };
+    
+    sendCombinedOrder(formData);
+    document.getElementById('deliveryModal').style.display = 'none';
+});
+
             
             
             document.getElementById('clearDate').addEventListener('click', function() {
