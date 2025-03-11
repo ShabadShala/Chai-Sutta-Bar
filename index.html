@@ -4366,8 +4366,8 @@
                     itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
                 });
                 
-               // const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
-
+                // const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+                
                 const sortedItems = Array.from(itemMap.values()).sort((a, b) => {
                     const nameA = a.name.replace(/[^a-zA-Z]/g, '').toLowerCase(); // Extract only English characters
                     const nameB = b.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
@@ -5291,7 +5291,7 @@
                 
                 // const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
                 
-                                const sortedItems = Array.from(itemMap.values()).sort((a, b) => {
+                const sortedItems = Array.from(itemMap.values()).sort((a, b) => {
                     const nameA = a.name.replace(/[^a-zA-Z]/g, '').toLowerCase(); // Extract only English characters
                     const nameB = b.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
                     return nameA.localeCompare(nameB);
@@ -5312,32 +5312,28 @@
                 let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
                 
                 
-let scrapMessage = '';
+                let scrapMessage = '';
+                
+                if (totalItems > 0) {
+                    scrapMessage = 
+                    `${sortedItems.map(item => {
+                    let itemTotal = item.qty * parseFloat(item.rate);
+                    return item.qty > 1 
+                    ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                    : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                    }).join('\n')}\n${'-'.repeat(30)}\n` +
+                    `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}\n`;
+                }
+                
 
-if (totalItems > 0) {
-    scrapMessage = 
-        `${sortedItems.map(item => {
-            let itemTotal = item.qty * parseFloat(item.rate);
-            return item.qty > 1 
-                ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-                : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-        }).join('\n')}\n${'-'.repeat(30)}\n` +
-        `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}\n`;
-}
-
                 
-                
-                
-                // offer Message
-                // let offerMessage = '🎊\n';
-                let offerMessage = '';
-                offerCart.forEach((group, index) => {
-                    group.dates.forEach(date => {
-                       offerMessage += `🎊 *${group.title}*\n(${date})\n${group.description}\n${'-'.repeat(30)}\n`;
-
-                    });
-                });
-                
+    // Modified offer message section
+    let offerMessage = '';
+    offerCart.forEach((group) => {
+        group.dates.forEach(date => {
+            offerMessage += `🎊 *${group.title} (${group.count})*\n(${date})\n${group.description}\n${'-'.repeat(30)}\n`;
+        });
+    });
                 
                 
                 let deliveryDetail = '';
