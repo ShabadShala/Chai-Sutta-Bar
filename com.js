@@ -89,6 +89,13 @@ fetch(miscUrl)
         // Extract Open and Close times from Google Sheets
         const openTimeStr = data[0][1]; // Example: "09.30am"
         const closeTimeStr = data[1][1]; // Example: "10.45pm"
+        window.deliveryAfterOpening = Number(data[9][1]); // Example: "30"
+        window.deliveryBeforeClosing = Number(data[10][1]); // Example: "30"
+        window.deliveryFromNow = Number(data[11][1]); // Example: "30"
+      //  window.deliveryArea = Number(data[12][1].trim()); // Example: "15"
+        window.deliveryArea = Number(data[12][1].toString().trim());
+                
+    
         
         // Validate time format
         if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
@@ -102,6 +109,10 @@ fetch(miscUrl)
         const openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
         const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
         
+        // After parsing openTime and closeTime
+window.openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
+window.closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
+
         // Function to update status in real-time
         function updateStatus() {
             const now = new Date();

@@ -185,6 +185,7 @@ function addRandomItem() {
 
 // Development - 20 items and 4 offers
 document.getElementById('devFill').addEventListener('click', () => {
+    
     // Clear existing data
     // scrapItems = [];
     // offerCart = [];
@@ -256,6 +257,7 @@ document.getElementById('devFill').addEventListener('click', () => {
     document.getElementById('offer-cart').style.display = 'block';
     document.querySelector('.scrap-overlay').style.display = 'block';
 });
+
 
 
 
