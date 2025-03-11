@@ -1702,359 +1702,13 @@
             
             
             
-            /* Main Footer Container Styling */
-            .footer-container {
-            display: none;
-            width: 90%;
-            max-width: 600px;
-            margin: 3rem auto;
-            margin-bottom: 1rem;
-            text-align: center;
-            }
             
-            /* Footer Styling */
-            .footer {
-            background-color: rgba(16, 185, 129, 0.2);
-            padding: 2rem;
-            color: #FFFFFF;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            }
             
-            /* Address Styling */
-            .footer .address {
-            font-size: 4em;
             
             
-            margin-bottom: 0.5rem;
-            }
             
-            /* Phone Numbers */
-            .footer .phone {
-            font-size: 4em;
-            font-weight: bold;
-            }
             
-            .footer .phone a {
-            color: blue;
-            text-decoration: none;
-            font-weight: bold;
-            }
             
-            .footer .phone a:hover {
-            text-decoration: underline;
-            }
-            
-            #counterContainer {
-            display: flex;
-            justify-content: center; /* Centers them */
-            align-items: center; /* Aligns vertically */
-            gap: 2rem; /* Adds space between them */
-            margin-top:3rem;
-            }
-            
-            @import url('https://fonts.cdnfonts.com/css/digital-7'); /* Import Digital-7 Font */            
-            
-            #visitorCounter,
-            #viewsCounter {
-            font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
-            font-size: 5rem;
-            color: #fae68e;
-            background-color: black;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            display: inline-block;
-            text-align: center;
-            letter-spacing: 0.2rem;
-            box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.8); /* Glowing effect */            
-            }
-            
-            /* Hide from main screen */
-            #viewsCounter {
-            display: none !important;
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            /* Communication and Social media sidebar */
-            .phone-icon {
-            position: absolute;
-            right: 2rem; /* Adjust distance from the right */
-            top: 6rem;
-            transform: translateY(-50%) scaleX(-1); /* Center vertically */
-            width: 5rem; /* Adjust icon size */
-            height: auto;  
-            
-            }
-            
-            .phone-icon:hover {
-            transform: translateY(-50%) scaleX(-1) scale(1.2); /* Slightly enlarge on hover */
-            opacity: 0.8; /* Reduce opacity slightly */
-            cursor: pointer;
-            }
-            
-            /* Wrap container */
-            .social {
-            position: fixed; /* Ensures positioning without affecting elements */
-            left: 50%;
-            transform: translateX(-50%);
-            max-width: 600px;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            
-            }
-            
-            #sidebar {
-            position: fixed;
-            right: -100px; /* Off-screen initially */
-            top: 50%;
-            transform: translateY(-50%);
-            width: 17rem;
-            background-color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 0;
-            transition: right 0.3s ease;
-            z-index: 1000;
-            box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
-            pointer-events: none;
-            }
-            
-            #sidebar a {
-            margin: 2rem 0;
-            text-decoration: none;
-            }
-            
-            #sidebar .logo {
-            width: 10rem;
-            height: 10rem;
-            transition: transform 0.3s ease; /* Smooth zoom-in effect */
-            }
-            
-            #sidebar .logo.hovered,
-            #sidebar .logo:hover {
-            transform: scale(1.3); /* Zoom-in effect when hovering */
-            }
-            
-            
-            #sidebar.open {
-            right: 0; /* Show sidebar when open */
-            pointer-events: auto;
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            button.active {
-            background-color: red !important; /* Change color when active */
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            .starry-background {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: black; /* Remove this if transparent */
-            z-index: -1;
-            }
-            
-            .stars, .stars2, .stars3 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png');
-            animation: move-stars 50s linear infinite;
-            }
-            
-            .stars2 {
-            background-size: 200%;
-            animation-duration: 100s;
-            }
-            
-            .stars3 {
-            background-size: 300%;
-            animation-duration: 150s;
-            }
-            
-            @keyframes move-stars {
-            from { transform: translateY(0); }
-            to { transform: translateY(-100%); }
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            /* Welcome Modal Styles */
-            .welcome-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            animation: fadeIn 0.5s ease-out;
-            }
-            
-            .welcome-modal {
-            background: linear-gradient(135deg, #fae68e 0%, #ffd700 100%);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 90%;
-            width: 600px;
-            position: relative;
-            box-shadow: 0 0 40px rgba(250, 230, 142, 0.3);
-            }
-            
-            .welcome-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-            }
-            
-            .welcome-header h1 {
-            font-size: 6rem;
-            color: #2d2d2d;
-            margin-bottom: 1.5rem;
-            font-family: 'Arial Rounded MT Bold', sans-serif;
-            }
-            
-            .welcome-body {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            }
-            
-            .welcome-text {
-            font-size: 5rem;
-            color: #444;
-            text-align: center;
-            line-height: 1.4;
-            margin-bottom: 2rem;
-            }
-            
-            .welcome-features {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            }
-            
-            .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            }
-            
-            .feature-icon {
-            width: 4rem;
-            height: 4rem;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-            }
-            
-            .feature-item span {
-            font-size: 4rem;
-            color: #333;
-            flex: 1;
-            }
-            
-            .welcome-close-btn {
-            width: 100%;
-            padding: 1.5rem;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-            }
-            
-            .welcome-close-btn:hover {
-            background: #218838;
-            transform: translateY(-2px);
-            }
-            
-            /* Confetti Animation */
-            .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #ffd700;
-            animation: confettiFall 3s linear infinite;
-            }
-            
-            @keyframes confettiFall {
-            0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
-            }
-            
-            .confetti:nth-child(1) { left: 10%; animation-delay: 0s; }
-            .confetti:nth-child(2) { left: 50%; animation-delay: 0.5s; }
-            .confetti:nth-child(3) { right: 10%; animation-delay: 1s; }  
             
             
             
@@ -2105,9 +1759,6 @@
             #scrapList .button-container-all,
             #offer-cart .button-container-all {
             }
-            
-            
-            
             
             
             
@@ -2308,6 +1959,397 @@
             #cancelOrder:hover {
             background-color: #c82333;
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            /* Main Footer Container Styling */
+            .footer-container {
+            display: none;
+            width: 90%;
+            max-width: 600px;
+            margin: 3rem auto;
+            margin-bottom: 1rem;
+            text-align: center;
+            }
+            
+            /* Footer Styling */
+            .footer {
+            background-color: rgba(16, 185, 129, 0.2);
+            padding: 2rem;
+            color: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+            
+            /* Address Styling */
+            .footer .address {
+            font-size: 4em;
+            
+            
+            margin-bottom: 0.5rem;
+            }
+            
+            /* Phone Numbers */
+            .footer .phone {
+            font-size: 4em;
+            font-weight: bold;
+            }
+            
+            .footer .phone a {
+            color: blue;
+            text-decoration: none;
+            font-weight: bold;
+            }
+            
+            .footer .phone a:hover {
+            text-decoration: underline;
+            }
+            
+            #counterContainer {
+            display: flex;
+            justify-content: center; /* Centers them */
+            align-items: center; /* Aligns vertically */
+            gap: 2rem; /* Adds space between them */
+            margin-top:3rem;
+            }
+            
+            @import url('https://fonts.cdnfonts.com/css/digital-7'); /* Import Digital-7 Font */            
+            
+            #visitorCounter,
+            #viewsCounter {
+            font-family: 'Digital-7', 'Courier New', monospace; /* Digital font */
+            font-size: 5rem;
+            color: #fae68e;
+            background-color: black;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+            letter-spacing: 0.2rem;
+            box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.8); /* Glowing effect */            
+            }
+            
+            /* Hide from main screen */
+            #viewsCounter {
+            display: none !important;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            /* Communication and Social media sidebar */
+            .phone-icon {
+            position: absolute;
+            right: 2rem; /* Adjust distance from the right */
+            top: 6rem;
+            transform: translateY(-50%) scaleX(-1); /* Center vertically */
+            width: 5rem; /* Adjust icon size */
+            height: auto;  
+            
+            }
+            
+            .phone-icon:hover {
+            transform: translateY(-50%) scaleX(-1) scale(1.2); /* Slightly enlarge on hover */
+            opacity: 0.8; /* Reduce opacity slightly */
+            cursor: pointer;
+            }
+            
+            /* Wrap container */
+            .social {
+            position: fixed; /* Ensures positioning without affecting elements */
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 600px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            
+            }
+            
+            #sidebar {
+            position: fixed;
+            right: -100px; /* Off-screen initially */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 17rem;
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            transition: right 0.3s ease;
+            z-index: 1000;
+            box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            }
+            
+            #sidebar a {
+            margin: 2rem 0;
+            text-decoration: none;
+            }
+            
+            #sidebar .logo {
+            width: 10rem;
+            height: 10rem;
+            transition: transform 0.3s ease; /* Smooth zoom-in effect */
+            }
+            
+            #sidebar .logo.hovered,
+            #sidebar .logo:hover {
+            transform: scale(1.3); /* Zoom-in effect when hovering */
+            }
+            
+            
+            #sidebar.open {
+            right: 0; /* Show sidebar when open */
+            pointer-events: auto;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            button.active {
+            background-color: red !important; /* Change color when active */
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            /* Welcome Modal Styles */
+            .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeIn 0.5s ease-out;
+            }
+            
+            .welcome-modal {
+            background: linear-gradient(135deg, #fae68e 0%, #ffd700 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 90%;
+            width: 600px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(250, 230, 142, 0.3);
+            }
+            
+            .welcome-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            }
+            
+            .welcome-header h1 {
+            font-size: 6rem;
+            color: #2d2d2d;
+            margin-bottom: 1.5rem;
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            }
+            
+            .welcome-body {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            }
+            
+            .welcome-text {
+            font-size: 5rem;
+            color: #444;
+            text-align: center;
+            line-height: 1.4;
+            margin-bottom: 2rem;
+            }
+            
+            .welcome-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            }
+            
+            .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            }
+            
+            .feature-icon {
+            width: 4rem;
+            height: 4rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            }
+            
+            .feature-item span {
+            font-size: 4rem;
+            color: #333;
+            flex: 1;
+            }
+            
+            .welcome-close-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            }
+            
+            .welcome-close-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            }
+            
+            /* Confetti Animation */
+            .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            animation: confettiFall 3s linear infinite;
+            }
+            
+            @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+            }
+            
+            .confetti:nth-child(1) { left: 10%; animation-delay: 0s; }
+            .confetti:nth-child(2) { left: 50%; animation-delay: 0.5s; }
+            .confetti:nth-child(3) { right: 10%; animation-delay: 1s; }  
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
         </style>
         <link rel="stylesheet" href="ham.css">
@@ -2510,17 +2552,17 @@
                     <div id="totalPrice" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total: ₹0</div>
                 </div>
                 <div class="button-container">
-                    <button id="orderScrap" class="child-lock-restricted">Order</button>
                     <button id="clearScrap">Clear</button>
+                    <button id="orderScrap" class="child-lock-restricted">Order</button>                    
                 </div>      
             </div>
         </div> 
         
         <!-- Inside the #scrapList .scrap-content div, after existing button-container -->
         <div class="button-container-all">
-            <button id="orderAll" class="child-lock-restricted">ORDER</button>
-            <button id="smartPickBtn2" class="smart-pick-btn"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
             <button id="clearAll">CLEAR</button>
+            <button id="smartPickBtn2" class="smart-pick-btn"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
+            <button id="orderAll" class="child-lock-restricted">ORDER</button>
         </div>
         
         
@@ -5207,43 +5249,64 @@
             
             
             // Form submission
-            document.getElementById('deliveryForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const deliveryInput = document.getElementById('deliveryTime');
-                const deliveryTime = deliveryInput.value;
-                const locationCheckbox = document.querySelector('[value="location"]');
-                
-                if (!locationCheckbox.checked) {
-                    userLocation = '';
-                }
-                
-                if (deliveryTime) {
-                    const selectedTime = new Date(deliveryTime).getTime();
-                    const currentTimePlus10Min = new Date().getTime() + 10 * 60000;
-                    
-                    if (selectedTime < currentTimePlus10Min) {
-                        deliveryInput.setCustomValidity('Should be at least 10 minutes from now or leave it blank.');
-                        deliveryInput.reportValidity();
-                        return;
-                        } else {
-                        deliveryInput.setCustomValidity('');
-                    }
-                    } else {
-                    deliveryInput.setCustomValidity('');
-                }
-                
-                const formData = {
-                    deliveryTime: deliveryTime,
-                    phone: document.getElementById('phone').value || '',
-                    name: document.getElementById('customerName').value || '',
-                    address: document.getElementById('manualAddress').value || '',
-                    userLocation: userLocation
-                };
-                
-                sendCombinedOrder(formData);
-                hideDeliveryModal();
-                // TimePlay
-            });
+document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const deliveryInput = document.getElementById('deliveryTime');
+    const deliveryTime = deliveryInput.value;
+    const locationCheckbox = document.querySelector('[value="location"]');
+
+    if (!locationCheckbox.checked) {
+        userLocation = '';
+    }
+
+    // Function to format date to dd-mm-yyyy (hh:mm AM/PM)
+    function formatDate(date) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const year = date.getFullYear();
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour format, showing 12 instead of 0
+        hours = String(hours).padStart(2, '0');
+        return `${day}-${month}-${year}, ${hours}:${minutes} ${ampm}`;
+    }
+
+    if (deliveryTime) {
+        // Parsing input date and adjusting for seconds to avoid Android issues
+        const selectedTime = new Date(deliveryTime.replace('T', ' ') + ':00');
+        const currentTime = new Date();
+        const currentTimePlus10Min = new Date(currentTime.getTime() + 10 * 60000);
+
+        // Logging the formatted dates
+        console.log('Selected Time:', formatDate(selectedTime));
+        console.log('Current Time +10 Min:', formatDate(currentTimePlus10Min));
+
+        if (selectedTime < currentTimePlus10Min) {
+            deliveryInput.setCustomValidity('Should be at least 10 minutes from now or leave it blank.');
+            deliveryInput.reportValidity();
+            return;
+        } else {
+            deliveryInput.setCustomValidity('');
+        }
+    } else {
+        deliveryInput.setCustomValidity('');
+    }
+
+    const formData = {
+        // Formatting the delivery time for submission as well
+        deliveryTime: deliveryTime ? formatDate(new Date(deliveryTime.replace('T', ' ') + ':00')) : '',
+        phone: document.getElementById('phone').value || '',
+        name: document.getElementById('customerName').value || '',
+        address: document.getElementById('manualAddress').value || '',
+        userLocation: userLocation
+    };
+
+    sendCombinedOrder(formData);
+    hideDeliveryModal();
+    // TimePlay
+});
+
             
             // Clear Button Date-Time
             document.getElementById('clearDate').addEventListener('click', function() {
@@ -5278,7 +5341,7 @@
                 // Select a random emoji
                 let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
                 
-                let messageHeader = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'-'.repeat(30)}\n`;
+                let messageHeader = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'~'.repeat(20)}\n`;
                 
                 
                 // scrap message
@@ -5322,25 +5385,36 @@
                     ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
                     : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
                     }).join('\n')}\n${'-'.repeat(30)}\n` +
-                    `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'-'.repeat(30)}\n`;
+                    `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'~'.repeat(20)}\n`;
                 }
                 
-
                 
-    // Modified offer message section
-    let offerMessage = '';
-    offerCart.forEach((group) => {
-        group.dates.forEach(date => {
-            offerMessage += `🎊 *${group.title} (${group.count})*\n(${date})\n${group.description}\n${'-'.repeat(30)}\n`;
-        });
-    });
+                
+                // Modified offer message section
+                let offerMessage = '';
+                if (offerCart && offerCart.length > 0) {
+                    offerCart.forEach((group, groupIndex) => {
+                        group.dates.forEach((date, dateIndex) => {
+                            offerMessage += `🎊 *${group.title} (${group.count})*\n(${date})\n${group.description}`;
+                            
+                            // Determine the separator
+                            let separator = '-'.repeat(30); // Default separator
+                            if (groupIndex === offerCart.length - 1 && dateIndex === group.dates.length - 1) {
+                                separator = '~'.repeat(20); // Last offer separator
+                            }
+                            
+                            // Add the separator
+                            offerMessage += `\n${separator}\n`;
+                        });
+                    });
+                }
                 
                 
                 let deliveryDetail = '';
                 
                 // Append delivery details only if at least one field is non-empty
                 if (formData.deliveryTime || formData.name || formData.phone || formData.address || userLocation) {
-                    deliveryDetail = `\n*Delivery Details:*\n`;
+                    deliveryDetail = `*Delivery Details:*\n`;
                     
                     if (formData.deliveryTime) {
                         deliveryDetail += `⏰ ${formData.deliveryTime}\n`;
@@ -5358,7 +5432,7 @@
                         deliveryDetail += `📍 ${userLocation}\n`;
                     }
                     
-                    deliveryDetail += `${'-'.repeat(30)}\n`;
+                    deliveryDetail += `${'~'.repeat(20)}\n`;
                 }        
                 
                 
@@ -5366,7 +5440,7 @@
                 
                 
                 
-                let messageFooter = `Thank you for your order!`;
+                let messageFooter = `Thanks for your order!`;
                 
                 // Encode and send via WhatsApp
                 const encodedMessage = encodeURIComponent(messageHeader + scrapMessage + offerMessage + deliveryDetail + messageFooter);
