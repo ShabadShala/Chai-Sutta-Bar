@@ -43,6 +43,7 @@ function activateCheatMode() {
     // Clear TAB filters
     setActiveTab("allButton");
     resetFilters();
+    resetHeaders();
     // 1. Expand all categories and add borders
     document.querySelectorAll('.category-header').forEach(header => {
         const items = header.nextElementSibling;
