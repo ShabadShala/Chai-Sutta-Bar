@@ -105,24 +105,44 @@
         
         <div class="settings-options" style="display: none;">
         
-        <!-- Starry Background Toggle -->
-        <div class="hsidebar-option" id="toggle-starry-background">
-        <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon">
-        <span>Starry Back: On</span>
+<!-- Starry Background Toggle -->
+<div class="hsidebar-option" id="toggle-starry-background">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon">
+            <span>Starry Back</span>
         </div>
-        
-        
-        <!-- Word Search -->
-        <div class="hsidebar-option" id="cheatToggleButton">
-        <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
-        <span> Item Word Search: Inactive</span>
+        <div class="toggle-switch">
+            <div class="toggle-slider"></div>
         </div>
-        
-        <!-- Child Lock -->
-        <div class="hsidebar-option" id="childLockButton">
-        <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon">
-        <span>Child Lock: Disabled</span>
-        </div>                    
+    </div>
+</div>
+
+<!-- Word Search -->
+<div class="hsidebar-option" id="cheatToggleButton">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
+            <span>Item Word Search</span>
+        </div>
+        <div class="toggle-switch">
+            <div class="toggle-slider"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Child Lock -->
+<div class="hsidebar-option" id="childLockButton">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon">
+            <span>Child Lock</span>
+        </div>
+        <div class="toggle-switch">
+            <div class="toggle-slider"></div>
+        </div>
+    </div>
+</div>                   
         
         <!-- Clear Cache -->
         <div class="hsidebar-option" id="clear-storage">
@@ -1216,39 +1236,49 @@
         
         
         
-        
+      // Toggle Switch Handler
+function handleToggle(switchElement, callback) {
+  switchElement.classList.toggle('active');
+  callback(switchElement.classList.contains('active'));
+}  
         
         
         
         // Toggle Starry Background
-        const toggleStarryBg = document.getElementById('toggle-starry-background');
-        if (toggleStarryBg) {
-            // Initialize from localStorage or set default to false if not set
-            let isEnabled = localStorage.getItem('starryBackgroundEnabled');
-            if (isEnabled === null) {
-                // First-time installation: Set default to false
-                isEnabled = false;
-                localStorage.setItem('starryBackgroundEnabled', isEnabled);
-                } else {
-                // Convert stored string to boolean
-                isEnabled = isEnabled === 'true';
-            }
-            
-            // Apply the initial state
-            const starryBg = document.querySelector('.starry-background');
-            starryBg?.classList.toggle('disabled', !isEnabled);
-            toggleStarryBg.querySelector('span').textContent = `Starry Back: ${isEnabled ? 'On' : 'Off'}`;
-            
-            // Click handler
-            toggleStarryBg.addEventListener('click', function() {
-                isEnabled = !starryBg.classList.toggle('disabled');
-                this.querySelector('span').textContent = `Starry Back: ${isEnabled ? 'On' : 'Off'}`;
-                localStorage.setItem('starryBackgroundEnabled', isEnabled);
-                
-                // Close the sidebar when toggling the starry background
-                toggleSidebar(false);
-            });
-        }
+// Toggle Starry Background
+const toggleStarryBg = document.getElementById('toggle-starry-background');
+if (toggleStarryBg) {
+    // Get elements
+    const toggleSwitch = toggleStarryBg.querySelector('.toggle-switch');
+    const starryBg = document.querySelector('.starry-background');
+    
+    // Initialize state
+    let isEnabled = localStorage.getItem('starryBackgroundEnabled') === 'true';
+    if (localStorage.getItem('starryBackgroundEnabled') === null) {
+        isEnabled = false; // Default state
+        localStorage.setItem('starryBackgroundEnabled', isEnabled);
+    }
+    
+    // Set initial UI state
+    toggleSwitch.classList.toggle('active', isEnabled);
+    starryBg?.classList.toggle('disabled', !isEnabled);
+    
+    // Click handler
+    toggleStarryBg.addEventListener('click', function() {
+        // Toggle state
+        isEnabled = !isEnabled;
+        
+        // Update UI
+        toggleSwitch.classList.toggle('active');
+        starryBg?.classList.toggle('disabled');
+        
+        // Save state
+        localStorage.setItem('starryBackgroundEnabled', isEnabled);
+        
+        // Close sidebar (keep this if you want)
+        toggleSidebar(false);
+    });
+}
         
         
         
@@ -1326,27 +1356,26 @@
         
         
         // Child Lock Implementation
-        let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            childLockState = JSON.parse(localStorage.getItem('childLock')) || { 
-                pin: null, 
-                isEnabled: false 
-            };
-            updateChildLockDisplay();
-            disableElements();
-            
-            const modal = document.getElementById('pinModal');
-            const closeButton = document.querySelector('#pinModal .close-btn');
-            const cancelButton = document.getElementById('cancelPin');
-            
-            if (closeButton) closeButton.addEventListener('click', () => modal.style.display = 'none');
-            if (cancelButton) cancelButton.addEventListener('click', () => modal.style.display = 'none');
-            
-            
-        });
-        
-        document.getElementById('childLockButton').addEventListener('click', toggleChildLock);
+// Child Lock Implementation
+let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
+
+document.addEventListener('DOMContentLoaded', () => {
+    childLockState = JSON.parse(localStorage.getItem('childLock')) || { 
+        pin: null, 
+        isEnabled: false 
+    };
+    updateChildLockDisplay();
+    disableElements();
+});
+
+// Updated Child Lock toggle handler
+document.getElementById('childLockButton').addEventListener('click', function() {
+    if(childLockState.isEnabled) {
+        showPinModal('disable');
+    } else {
+        showPinModal('enable');
+    }
+});
         
         function toggleChildLock() {
             childLockState.isEnabled ? showPinModal('disable') : showPinModal('enable');
@@ -1431,7 +1460,7 @@
             childLockState = { pin: secondPin, isEnabled: true };
             localStorage.setItem('childLock', JSON.stringify(childLockState));
             
-            message.textContent = 'PIN set! Lock enabled';
+           
             updateChildLockDisplay();
             disableElements();
             
@@ -1483,19 +1512,20 @@
         }
         
         
-        function updateChildLockDisplay() {
-            const btn = document.getElementById('childLockButton');
-            const img = btn.querySelector('img');
-            const textSpan = btn.querySelector('span');
-            
-            if (childLockState.isEnabled) {
-                img.src = "icons/lock.svg";
-                textSpan.textContent = "Child Lock: Enabled";
-                } else {
-                img.src = "icons/unlock.svg";
-                textSpan.textContent = "Child Lock: Disabled";
-            }
-        }
+function updateChildLockDisplay() {
+    const btn = document.getElementById('childLockButton');
+    const toggleSwitch = btn.querySelector('.toggle-switch');
+    const img = btn.querySelector('img');
+    
+    // Update toggle state
+    toggleSwitch.classList.toggle('active', childLockState.isEnabled);
+    
+    // Update lock icon
+    img.src = childLockState.isEnabled ? "icons/lock.svg" : "icons/unlock.svg";
+    
+    // Update other elements
+    disableElements();
+}
         
         function disableElements() {
             document.querySelectorAll('.child-lock-restricted').forEach(element => {
@@ -2017,9 +2047,8 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 
 // Deep Search
-let cheatActive = false;
+let cheatActive = localStorage.getItem('cheatActive') === 'true'; // Get state from storage
 let activationListenersAdded = false;
-let touchStartPoints = []; // Track multiple touch points
 
 function getWordUnderPointer(event) {
     const x = event.clientX || (event.touches?.[0]?.clientX);
@@ -2086,17 +2115,33 @@ function addCheatListeners() {
 
 // Add event listener for the cheat toggle button
 document.getElementById('cheatToggleButton')?.addEventListener('click', function() {
+    const toggleSwitch = this.querySelector('.toggle-switch');
+    
+    // Toggle state
     cheatActive = !cheatActive;
     
-    // Update button text
-    const statusText = cheatActive ? 'Active' : 'Inactive';
-    this.querySelector('span').textContent = `Item Word Search: ${statusText}`;
+    // Update UI
+    toggleSwitch.classList.toggle('active');
+    localStorage.setItem('cheatActive', cheatActive);
     
+    // Manage functionality
     if (cheatActive) {
         addCheatListeners();
-        alert('Item Search feature activated.');
-        } else {
-        alert('Item Search feature deactivated');
+        showFeedback('Item Search activated');
+    } else {
+        showFeedback('Item Search deactivated');
     }
+    
+    // Close sidebar if needed
+    toggleSidebar(false);
 });
 
+// Initialize on load
+function initCheatToggle() {
+    const toggle = document.querySelector('#cheatToggleButton .toggle-switch');
+    if (toggle) {
+        toggle.classList.toggle('active', cheatActive);
+        if (cheatActive) addCheatListeners();
+    }
+}
+initCheatToggle();

@@ -430,16 +430,16 @@
 
 
 .scrollable-modal {
-  overflow: hidden;
-  touch-action: none; /* Prevent touch scrolling on background */
+    overflow: hidden;
+    touch-action: none; /* Prevent touch scrolling on background */
 }
 
 /* Add this to your stylesheet */
 .scroll-lock {
-  overflow: hidden !important;
-  position: fixed;
-  width: 100%;
-  height: 100%;
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -466,7 +466,7 @@
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(5px);
-     overflow: hidden;
+    overflow: hidden;
 }
 
 .modal-content {
@@ -481,10 +481,10 @@
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.3s ease-in-out;
     position: relative;
-     max-height: 90vh;
-      overflow-y: auto;
-      display: flex;
-  flex-direction: column;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Title Styling */
@@ -771,12 +771,12 @@
 }
 
 .modal-footer {
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: inherit;
-  border-top: 1px solid rgba(0,0,0,0.1);
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: inherit;
+    border-top: 1px solid rgba(0,0,0,0.1);
 }
 
 .modal-footer button {
@@ -923,6 +923,50 @@
 .toggle-icon.rotated {
     transform: rotate(90deg);
 }
+
+
+
+
+
+
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 25px;
+    background-color: #555;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-slider {
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    background-color: #fff;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.toggle-switch.active {
+    background-color: #4CAF50;
+}
+
+.toggle-switch.active .toggle-slider {
+    transform: translateX(25px);
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1167,7 +1211,7 @@
 }
 
 #faq-modal.modal {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 #faq-modal .modal-content {
@@ -1179,21 +1223,21 @@
     width: 95%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);  
     
-     height: 90vh;
-
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+    height: 90vh;
+    
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .faq-container {
-
+    
     min-height: 0; 
     overflow-y: auto;
     flex: 1;
-  padding: 10px 0;
-  will-change: transform;
-    }
+    padding: 10px 0;
+    will-change: transform;
+}
 
 .faq-item {
     border-bottom: 1px solid #e0e0e0;
@@ -1251,15 +1295,15 @@
     text-align: justify;
     overflow-wrap: break-word;
     max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
 }
 
 .faq-item.active .faq-answer {
     display: block;
     animation: fadeIn 0.3s ease-in;
     max-height: 500px; /* Adjust based on your needs */
-  overflow-y: auto; /* Enable scrolling for long answers */
+    overflow-y: auto; /* Enable scrolling for long answers */
 }
 
 
@@ -1294,55 +1338,55 @@
 }
 
 #faq-modal .modal-footer {
-  position: static;
-  bottom: 0;
-  background: white;
-  padding: 3rem;
-  margin-bottom: -4rem;
-   margin-top: auto;
+    position: static;
+    bottom: 0;
+    background: white;
+    padding: 3rem;
+    margin-bottom: -4rem;
+    margin-top: auto;
 }
 
 .copy-toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 25px;
-  font-size: 14px;
-  z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  animation: fadeInOut 2s ease-in-out;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeInOut 2s ease-in-out;
 }
 
 @keyframes fadeInOut {
-  0%, 100% { opacity: 0; }
-  15%, 85% { opacity: 1; }
+    0%, 100% { opacity: 0; }
+    15%, 85% { opacity: 1; }
 }
 
 
 /* Custom Scrollbar for FAQ Container */
 .faq-container::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 .faq-container::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.1);
+    background: rgba(0,0,0,0.1);
 }
 
 .faq-container::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+    background: #888;
+    border-radius: 4px;
 }
 
 .faq-container::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
 
 .faq-answer::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 
 
@@ -1500,44 +1544,45 @@
 
 
 
-  .starry-background {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: black; /* Remove this if transparent */
-            z-index: -1;
-            }
-            
-            .stars, .stars2, .stars3 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png');
-            animation: move-stars 50s linear infinite;
-            }
-            
-            .stars2 {
-            background-size: 200%;
-            animation-duration: 100s;
-            }
-            
-            .stars3 {
-            background-size: 300%;
-            animation-duration: 150s;
-            }
-            
-            @keyframes move-stars {
-            from { transform: translateY(0); }
-            to { transform: translateY(-100%); }
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+.starry-background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black; /* Remove this if transparent */
+    z-index: -1;
+}
+
+.stars, .stars2, .stars3 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png');
+    animation: move-stars 50s linear infinite;
+}
+
+.stars2 {
+    background-size: 200%;
+    animation-duration: 100s;
+}
+
+.stars3 {
+    background-size: 300%;
+    animation-duration: 150s;
+}
+
+@keyframes move-stars {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100%); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
