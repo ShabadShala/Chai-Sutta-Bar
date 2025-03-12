@@ -1429,8 +1429,8 @@
             flex-direction: column;
             z-index: 100;
             
-              transition: opacity 0.3s ease, transform 0.3s ease;
-    will-change: opacity, transform;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            will-change: opacity, transform;
             }   
             
             /* Scrap Content */
@@ -1990,16 +1990,16 @@
             }
             
             .delivery-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  z-index: 111; /* Below modal but above other content */
-  display: none;
-}
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 111; /* Below modal but above other content */
+            display: none;
+            }
             
             
             #deliveryModal .order-modal-content {
@@ -2011,7 +2011,7 @@
             width: 90%;
             max-width: 500px;
             font-size: 5rem;
-             z-index: 112;
+            z-index: 112;
             }
             
             #deliveryModal .close-button {
@@ -2449,24 +2449,143 @@
             
             
             
+/* Overlay styling */
+.checklist-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 151;
+}
+
+/* Modal styling */
+.checklist-modal {
+    background: #f9f9fc;
+    padding: 2rem;
+    border-radius: 12px;
+    color: #2c3e50;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.checklist-modal h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #4a90e2;
+    position: static;
+    top: 0;
+    background: #f9f9fc;
+    padding-bottom: 1rem;
+    font-size: 5rem
+}
+
+.checklist-items-container {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* Checklist item styling */
+.checklist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #dcdde1;
+    font-size: 4rem;
+    transition: background-color 0.3s ease;
+}
+
+.checklist-item:hover {
+    background-color: #eef6ff;
+}
+
+.checklist-item input {
+    margin-right: 2rem;
+    transform: scale(1.5);
+    accent-color: #4a90e2;
+}
+
+.checklist-item.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+    color: #95a5a6;
+}
+
+.item-quantity {
+    background: #d1f2eb;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: 1rem;
+    color: #1abc9c;
+}
+
+/* Summary section */
+.checklist-summary {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background: #f0f0f5;
+    border-top: 1px solid #dcdde1;
+    font-weight: bold;
+}
+
+/* Controls styling */
+.checklist-controls {
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+    padding: 2rem;
+    background: #f9f9fc;
+    border-top: 1px solid #dcdde1;
+    position: sticky;
+    bottom: 0;
+}
+
+.checklist-controls button {
+    padding: 1.5rem 3rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4a90e2;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.checklist-controls button:hover {
+    background-color: #357ab7;
+}
+
+.close-checklist {
+    cursor: pointer;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 5rem;
+    color: #e74c3c;
+    transition: color 0.3s ease;
+    z-index: 152;
+}
+
+.close-checklist:hover {
+    color: #c0392b;
+}
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+.summary-total {
+    font-size: 4rem;
+}            
             
             
             
@@ -2739,8 +2858,8 @@
                         <div class="form-group">
                             <label>Check/Attach Delivery Time</label>
                             <div style="display: flex; gap: 4px;">
-                                  <input type="datetime-local" id="deliveryTime">  
-                           <!--      <input type="time" id="deliveryTime" step="60">    -->                        
+                                <input type="datetime-local" id="deliveryTime">  
+                                <!--      <input type="time" id="deliveryTime" step="60">    -->                        
                                 <button type="button" id="clearDate">✖</button>
                             </div>
                         </div>
@@ -2764,15 +2883,40 @@
         </div>
         
         
+        <!-- Add this modal structure before closing body tag -->
+<div id="checklistOverlay" class="checklist-overlay" style="display: none;">
+    <div class="checklist-modal">
+        <span class="close-checklist">&times;</span>
+        <h2>Checklist</h2>
+        <div id="checklistItemsContainer" class="checklist-items-container"></div>
+        <div id="checklistSummary" class="checklist-summary">
+<span id="totalItems" class="summary-total">Total Items: 0</span>
+<span id="totalQty" class="summary-total">Total Qty: 0</span>
+
+        </div>
+        <div class="checklist-controls">
+            <button id="clearChecklist" disabled>Clear</button>
+            <button id="closeChecklist">Close</button>
+        </div>
+    </div>
+</div>
+        
+        
+        <!-- Add this button anywhere in the body, perhaps in the footer -->
+        <button id="checklistButton" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; padding: 1rem; background: #4CAF50; color: white; border: none; border-radius: 5px;">
+            Checklist
+        </button>
+        
+        
         <!-- Social Container -->
         <div class="social">
             <div id="sidebar">
                 <a id="delivery-link" href="#" target="_blank"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
-            <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
-            <a id="phone-link" href="#" target="_blank"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
-            <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA" target="_blank"><img src="sidebar/location.png" alt="Location" class="logo"></a>
-            <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
-            <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
+                <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
+                <a id="phone-link" href="#" target="_blank"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
+                <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA" target="_blank"><img src="sidebar/location.png" alt="Location" class="logo"></a>
+                <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
+                <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
             </div>
         </div>
         
@@ -5336,31 +5480,33 @@
             
             
             // Function to show the delivery modal
-function showDeliveryModal() {
-  const modal = document.getElementById('deliveryModal');
-  const overlay = document.getElementById('deliveryOverlay');
-  modal.classList.remove('hidden');
-  overlay.style.display = 'block';
-  setTimeout(() => modal.classList.add('active'), 10);
-}
-
-// Function to hide the delivery modal
-function hideDeliveryModal() {
-  const modal = document.getElementById('deliveryModal');
-  const overlay = document.getElementById('deliveryOverlay');
-  modal.classList.remove('active');
-  setTimeout(() => {
-    modal.classList.add('hidden');
-    overlay.style.display = 'none';
-  }, 300);
-}
-
-
-
+            function showDeliveryModal() {
+                const modal = document.getElementById('deliveryModal');
+                const overlay = document.getElementById('deliveryOverlay');
+                modal.classList.remove('hidden');
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Add this line
+                setTimeout(() => modal.classList.add('active'), 10);
+            }
+            
+            // Function to hide the delivery modal
+            function hideDeliveryModal() {
+                const modal = document.getElementById('deliveryModal');
+                const overlay = document.getElementById('deliveryOverlay');
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    overlay.style.display = 'none';
+                }, 300);
+                document.body.style.overflow = ''; // Add this line
+            }
+            
+            
+            
             
             
             // Close button handler
-           document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
+            document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
             
             // Outside click handler
             /*
@@ -5602,7 +5748,7 @@ function hideDeliveryModal() {
                 };
                 
                 sendCombinedOrder(formData);
-                 hideDeliveryModal();
+                hideDeliveryModal();
             });
             
             
@@ -5642,7 +5788,7 @@ function hideDeliveryModal() {
                 // Select a random emoji
                 let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
                 
-                let messageHeader = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'~'.repeat(20)}\n`;
+                let messageHeader = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'~'.repeat(15)}\n`;
                 
                 
                 // scrap message
@@ -5686,7 +5832,7 @@ function hideDeliveryModal() {
                     ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
                     : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
                     }).join('\n')}\n${'-'.repeat(30)}\n` +
-                    `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'~'.repeat(20)}\n`;
+                    `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'~'.repeat(15)}\n`;
                 }
                 
                 
@@ -5701,7 +5847,7 @@ function hideDeliveryModal() {
                             // Determine the separator
                             let separator = '-'.repeat(30); // Default separator
                             if (groupIndex === offerCart.length - 1 && dateIndex === group.dates.length - 1) {
-                                separator = '~'.repeat(20); // Last offer separator
+                                separator = '~'.repeat(15); // Last offer separator
                             }
                             
                             // Add the separator
@@ -5733,7 +5879,7 @@ function hideDeliveryModal() {
                         deliveryDetail += `📍 ${userLocation}\n`;
                     }
                     
-                    deliveryDetail += `${'~'.repeat(20)}\n`;
+                    deliveryDetail += `${'~'.repeat(15)}\n`;
                 }        
                 
                 
@@ -5785,9 +5931,9 @@ function hideDeliveryModal() {
                 e.preventDefault();
                 e.stopPropagation(); // For go back
                 hideDeliveryModal();
-               setTimeout(() => {
-        toggleScrapList(); // For go back
-    }, 300); 
+                setTimeout(() => {
+                    toggleScrapList(); // For go back
+                }, 300); 
             });
             
             
@@ -5798,6 +5944,71 @@ function hideDeliveryModal() {
             
             
             
+            
+            
+            
+            
+            
+            
+document.getElementById('checklistButton').addEventListener('click', showChecklist);
+
+function showChecklist() {
+    const overlay = document.getElementById('checklistOverlay');
+    const container = document.getElementById('checklistItemsContainer');
+    const lastOrder = JSON.parse(localStorage.getItem('lastOrder') || '[]');
+    const summaryItems = document.getElementById('totalItems');
+    const summaryQty = document.getElementById('totalQty');
+
+    const groupedItems = lastOrder.reduce((acc, item) => {
+        const cleanName = trimLeftNonEnglish(item.name);
+        acc[cleanName] = (acc[cleanName] || 0) + (item.qty || 1);
+        return acc;
+    }, {});
+
+    const sortedItems = Object.entries(groupedItems).sort(([a], [b]) => a.localeCompare(b));
+
+    let totalQty = 0;
+    container.innerHTML = sortedItems.length ? 
+        sortedItems.map(([name, qty]) => {
+            totalQty += qty;
+            return `<div class="checklist-item">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="checkbox">
+                            <span>${name}</span>
+                        </div>
+                        <span class="item-quantity">${qty}x</span>
+                    </div>`;
+        }).join('') : '<p>No previous order found</p>';
+
+    summaryItems.textContent = `Total Items: ${sortedItems.length}`;
+    summaryQty.textContent = `Total Qty: ${totalQty}`;
+
+    container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const item = this.closest('.checklist-item');
+            item.classList.toggle('completed', this.checked);
+        });
+    });
+
+    overlay.style.display = 'flex';
+}        
+            
+// Close handlers (keep existing functionality)
+document.querySelector('.close-checklist').addEventListener('click', () => {
+    document.getElementById('checklistOverlay').style.display = 'none';
+});
+
+document.getElementById('closeChecklist').addEventListener('click', () => {
+    document.getElementById('checklistOverlay').style.display = 'none';
+});
+
+// Clear button disabled as per request
+document.getElementById('clearChecklist').addEventListener('click', (e) => {
+    e.preventDefault();
+    // No functionality as requested
+});   
+            
+       
             
             
             
