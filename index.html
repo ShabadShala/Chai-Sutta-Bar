@@ -293,7 +293,7 @@
             
             .cached-offer {
             text-align: center;
-            padding: 2rem;
+            padding: 5rem;
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -321,7 +321,7 @@
             font-size: 4rem;
             }
             
-            .cached-button {
+            .cached-button, .retry-button {
             background: #3498db;
             color: white;
             border: none;
@@ -329,12 +329,12 @@
             border-radius: 25px;
             font-size: 4rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
+            transition: all 0.3s ease;           
             letter-spacing: 1px;
-            }
+            margin-bottom: 5rem;
+            }            
             
-            .cached-button:hover {
+            .cached-button:hover, .retry-button:hover {
             background: #2980b9;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -2732,7 +2732,7 @@
                 </div>
                 
                 <div class="modal-button-container">
-                    <button type="button" id="cancelOrder" class="cancel-btn">Cancel Order</button>
+                    <button type="button" id="cancelOrder" class="cancel-btn">Go Back</button>
                     <button type="submit">Confirm Order</button>
                 </div>
             </form>
@@ -2768,54 +2768,6 @@
         </button>
         
         
-        <div id="counters-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                
-                <h3 style="color: white; line-height: 0.8;">
-                    Dashboard <br>
-                    <span style="color: #CCCCCC; font-size: 0.6em;">Chai Sutta Bar - Bagha Purana</span>
-                </h3>
-                
-                <div class="counter-grid">
-                    <!-- Inside the counters-modal content (search for existing counters) -->
-                    <div class="counter-item">
-                        <img src="icons/likes.svg" alt="Likes" class="counter-icon">
-                        <span id="modal-likeCounter">0000</span>
-                        <span class="counter-label">Likes</span>
-                    </div>
-                    <div class="counter-item">
-                        <img src="icons/download.svg" alt="Installs" class="counter-icon">
-                        <span id="modal-installsCounter">0000</span>
-                        <!--        <div class="counter-label">Installs</div> -->
-                        <span class="counter-label">Installs</span> <!-- Changed from div to span -->
-                    </div>                    
-                    <div class="counter-item">
-                        <img src="icons/users.svg" alt="Users" class="counter-icon">
-                        <span id="modal-visitorCounter">0000</span>
-                        <span class="counter-label">Users</span>
-                    </div>
-                    <div class="counter-item">
-                        <img src="icons/eye.svg" alt="Views" class="counter-icon">
-                        <span id="modal-viewsCounter">0000</span>
-                        <span class="counter-label">Views</span>
-                    </div>
-                    <div class="counter-item">
-                        <img src="icons/orders.svg" alt="Orders" class="counter-icon">
-                        <span id="modal-orderNumber">0000</span>
-                        <span class="counter-label">Orders</span>
-                    </div>                    
-                </div>
-                
-                <div class="app-info" id="app-features">
-                    <img src="icons/feature.svg" alt="Features Icon" class="menu-icon invert-icon">
-                    App Features                    
-                    <img src="icons/feature.svg" alt="Features Icon" class="menu-icon invert-icon">
-                </div>  
-                
-                <!--   <h3 style="color: white; font-size: 4rem;">- Misrosoft Counters -</h3> -->
-            </div>
-        </div>
         
         
         
@@ -3265,8 +3217,8 @@
                     //remove braces
                     // headerText.toLowerCase().split(/\s+/).some(word => word.startsWith(term))
                     headerText.toLowerCase().split(/\s+/).some(word =>
-        word.replace(/[()]/g, '').startsWith(term)
-    )
+                    word.replace(/[()]/g, '').startsWith(term)
+                    )
                     );
                     
                     let hasVisibleItemsInCategory = false;
@@ -3299,12 +3251,12 @@
                             // remove break
                             // itemTextAB.toLowerCase().split(/\s+/).some(word => word.startsWith(term)) || 
                             // itemTextCDE.toLowerCase().split(/\s+/).some(word => word.startsWith(term))
-                             itemTextAB.toLowerCase().split(/\s+/).some(word =>
-            word.replace(/[()]/g, '').startsWith(term)
-        ) || 
-        itemTextCDE.toLowerCase().split(/\s+/).some(word =>
-            word.replace(/[()]/g, '').startsWith(term)
-        )
+                            itemTextAB.toLowerCase().split(/\s+/).some(word =>
+                            word.replace(/[()]/g, '').startsWith(term)
+                            ) || 
+                            itemTextCDE.toLowerCase().split(/\s+/).some(word =>
+                            word.replace(/[()]/g, '').startsWith(term)
+                            )
                             );
                         }
                         
@@ -3679,16 +3631,26 @@
                         <div class="cache-info">
                         Available cached version<br>${formattedDate}
                         </div>
+                        <div class="warning-text">
+                        <span style="color: green;">Food items menu can be loaded from the local storage,</span><br>but some features of the app may not work until you're back online.
+                        </div>
+                        
                         <br>
                         <button id="loadCached" class="cached-button">
-                        Load CSB-BPA Menu
+                        LOAD Items Menu
                         </button>
                         <br>
-                        <div class="warning-text">
-                        You can access the main menu, but some features may not work until you're back online
-                        </div>
+                        <button id="retryApp" class="retry-button">
+                        Retry Connectivity
+                        </button>
                         </div>
                         `;
+                        
+                        // Optional: Add functionality to the Retry button
+                        document.getElementById('retryApp').addEventListener('click', () => {
+                            location.reload(); // Refreshes the app
+                        });
+                        
                         
                         document.getElementById('loadCached').addEventListener('click', () => {
                             processAndDisplayMenu(cached.data);
@@ -3698,7 +3660,7 @@
                         loadingOverlay.innerHTML = `<div class="loading-message">Error loading menu</div>`;
                     }
                     }).catch(err => {
-                    document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading menu</div>";
+                    document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading data</div>";
                 });
             });
             
@@ -5160,771 +5122,844 @@
             });
             
             // Modify close functions
-        function closeScrapList() {
-        const scrapList = document.getElementById('scrapList');
-        const offerCartElement = document.getElementById('offer-cart');
-        const overlay = document.querySelector('.scrap-overlay');
-        
-        scrapList.style.display = 'none';
-        scrapVisible = false;
-        isWarningVisible = false;
-        
-        // Check if offer cart is visible or has items before hiding overlay
-        if (offerCartElement.style.display === 'block') {
-        overlay.style.display = 'block'; // Keep overlay if offer cart is visible
-        document.body.style.overflow = 'hidden';
-        } else {
-        overlay.style.display = 'none'; // Hide overlay only when both are closed
-        document.body.style.overflow = '';
-        }
-        }                     
-        
-        // offer-close-cross
-        document.getElementById('closeOffer').addEventListener('click', closeOfferCart);                    
-        
-        function closeOfferCart() {
-        const scrapList = document.getElementById('scrapList');
-        const overlay = document.querySelector('.scrap-overlay');
-        
-        // Hide the offer cart
-        document.getElementById('offer-cart').style.display = 'none';
-        offerCartVisible = false;
-        
-        // Only hide the overlay if scrapList is also not visible
-        if (scrapList.style.display !== 'flex') {
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
-        }
-        }
-        
-        
-        // scrap-close-esc offer-close-esc
-        document.addEventListener('keydown', (e) => {
-        if (e.key === "Escape") {
-        closeScrapList();
-        closeOfferCart();
-        }
-        });
-        
-        
-        // Add stopPropagation to the containers to prevent immediate closing
-        document.getElementById('scrapList').addEventListener('click', e => e.stopPropagation());
-        document.getElementById('offer-cart').addEventListener('click', e => e.stopPropagation());                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // Handle ordering both carts and showing the delivery modal
-        document.getElementById('orderAll').addEventListener('click', function(e) {
-        e.preventDefault();
-        closeScrapList(); 
-        closeOfferCart(); 
-        showDeliveryModal();
-        });
-        
-        
-        // Function to show the delivery modal
-        // Function to show the delivery modal
-        function showDeliveryModal() {
-        const modal = document.getElementById('deliveryModal');
-        modal.classList.remove('hidden'); // Remove hidden to display the modal
-        modal.classList.add('active');    // Add active for any animation or styling
-        document.getElementById('deliveryForm').reset();
-        }
-        
-        // Function to hide the delivery modal
-        function hideDeliveryModal() {
-        const modal = document.getElementById('deliveryModal');
-        modal.classList.remove('active'); // Remove active for transition
-        modal.classList.add('hidden');    // Add hidden to completely hide the modal
-        }
-        
-        
-        // Close button handler
-        document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
-        
-        // Outside click handler
-        /*
-        document.getElementById('deliveryModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('deliveryModal')) {
-        hideDeliveryModal();
-        }
-        });
-        */
-        
-        
-        // Name (Contact Person)
-        document.querySelectorAll('[name="orderType"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-        const isDelivery = e.target.value === 'delivery';
-        const deliveryFields = document.getElementById('deliveryFields');
-        const phoneField = document.getElementById('phone');
-        
-        // Enable/disable phone field and set it as required only for delivery
-        phoneField.required = isDelivery;
-        phoneField.disabled = !isDelivery;
-        
-        // All other fields remain optional and disabled unless it's a delivery
-        deliveryFields.querySelectorAll('input:not(#phone), textarea').forEach(input => {
-        input.required = false;
-        input.disabled = !isDelivery;
-        });
-        });
-        });
-        
-        // Contact Number
-        document.getElementById('pickContact').addEventListener('click', async () => {
-        if (navigator.contacts && navigator.contacts.select) {
-        try {
-        const contacts = await navigator.contacts.select(['name', 'tel'], { multiple: false });
-        const contact = contacts[0];
-        if (contact) {
-        let phone = contact.tel?.[0] || '';
-        phone = phone.replace(/\D/g, '').slice(0, 10);
-        if (phone.length > 5) {
-        phone = phone.slice(0, 5) + '-' + phone.slice(5);
-        }
-        document.getElementById('phone').value = phone;
-        document.getElementById('customerName').value = contact.name?.[0] || '';
-        }
-        } catch (error) {
-        console.error('Error picking contact:', error);
-        }
-        } else {
-        console.error('Contact Picker API not supported on this browser.');
-        }
-        });
-        
-        // Auto-insert dash after 5 digits on manual input
-        document.getElementById('phone').addEventListener('input', function (e) {
-        let value = e.target.value.replace(/\D/g, '').slice(0, 10);
-        if (value.length > 5) {
-        value = value.slice(0, 5) + '-' + value.slice(5);
-        }
-        e.target.value = value;
-        });
-        
-        // Location
-        const centerLat = 30.6668;
-        const centerLng = 75.0641;
-        
-        // Function to calculate distance using Haversine formula
-        function calculateDistance(lat1, lng1, lat2, lng2) {
-        const toRad = (value) => (value * Math.PI) / 180;
-        const R = 6371; // Earth's radius in kilometers
-        const dLat = toRad(lat2 - lat1);
-        const dLng = toRad(lng2 - lng1);
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-        Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c; // Distance in kilometers
-        }
-        
-        
-        let userLocation = ''; // Global variable to store the location
-        const locationCheckbox = document.querySelector('[value="location"]');
-        const locationStatus = document.getElementById('locationStatus');
-        
-        locationCheckbox.addEventListener('change', () => {
-        if (locationCheckbox.checked) {
-        locationStatus.innerHTML = '<span>Loading...</span>';
-        locationStatus.style.display = 'block';
-        
-        if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-        (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        
-        // Calculate distance
-        const distance = calculateDistance(lat, lng, centerLat, centerLng);
-        
-        userLocation = `https://maps.google.com/?q=${lat},${lng}`;
-        
-        //  if (distance > 15) {
-        if (distance > window.deliveryArea) {
-        locationStatus.innerHTML = `
-        <span style="color: red;">Delivery not available at this location.</span><br>
-        <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-        } else {
-        locationStatus.innerHTML = `
-        <span style="color: green;">Delivery available!</span><br>
-        <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-        }
-        },
-        (error) => {
-        locationStatus.style.display = 'none'; // Hide the loading message on error
-        switch (error.code) {
-        case error.PERMISSION_DENIED:
-        alert('Permission denied. Please allow location access.');
-        break;
-        case error.POSITION_UNAVAILABLE:
-        alert('Location information is unavailable.');
-        break;
-        case error.TIMEOUT:
-        alert('Location request timed out.');
-        break;
-        default:
-        alert('An unknown error occurred.');
-        break;
-        }
-        },
-        {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-        }
-        );
-        } else {
-        alert('Geolocation is not supported by this browser.');
-        locationStatus.style.display = 'none';
-        }
-        } else {
-        userLocation = '';
-        locationStatus.style.display = 'none'; // Hide status if checkbox is unchecked
-        }
-        });
-        
-        
-        
-        // Form submission
-        const deliveryInput = document.getElementById('deliveryTime');
-        const timeStatus = document.getElementById('timeStatus');
-        
-        // Real-time validation on input
-        deliveryInput.addEventListener('input', validateDeliveryTime);
-        
-        function validateDeliveryTime() {
-        const deliveryTime = deliveryInput.value;
-        timeStatus.innerHTML = ''; // Clear previous status
-        
-        if (!deliveryTime) return;
-        
-        const [hours, minutes] = deliveryTime.split(':').map(Number);
-        if (isNaN(hours) || isNaN(minutes)) {
-        timeStatus.innerHTML = `<span style="color: red;">Invalid time format.</span>`;
-        return;
-        }
-        
-        const deliveryMinutes = hours * 60 + minutes;
-        
-        // Time constraints
-        const minDeliveryTime = (window.openTimeInMinutes + window.deliveryAfterOpening) % (24 * 60);
-        const maxDeliveryTime = (window.closeTimeInMinutes - window.deliveryBeforeClosing + (24 * 60)) % (24 * 60);
-        
-        // Current time + 15 minutes
-        const now = new Date();
-        const currentMinutes = now.getHours() * 60 + now.getMinutes();
-        const minCurrentTime = (currentMinutes + window.deliveryFromNow) % (24 * 60);
-        
-        let isValidTime = true;
-        let errorMessage = '';
-        
-        // Check for open and close time constraints
-        if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
-        if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
-        isValidTime = false;
-        errorMessage = `Delivery must be at least ${window.deliveryAfterOpening} minutes after opening and ${window.deliveryBeforeClosing} minutes before closing.`;
-        }
-        } else {
-        if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
-        isValidTime = false;
-        errorMessage = `Delivery must be at least ${window.deliveryAfterOpening} minutes after opening and ${window.deliveryBeforeClosing} minutes before closing.`;
-        }
-        }
-        
-        
-        // Check for current time constraint
-        if (isValidTime && deliveryMinutes < minCurrentTime) {
-        isValidTime = false;
-        errorMessage = `Delivery time must be at least ${window.deliveryFromNow} minutes ahead of the current time.`;
-        }
-        
-        // Display message
-        if (!isValidTime) {
-        timeStatus.innerHTML = `<span style="color: red;">${errorMessage}</span>`;
-        } else {
-        timeStatus.innerHTML = `<span style="color: green;">Delivery time is valid!</span>`;
-        }
-        }
-        
-        // Form submission
-        document.getElementById('deliveryForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const deliveryTime = deliveryInput.value;
-        const locationCheckbox = document.querySelector('[value="location"]');
-        
-        if (!locationCheckbox.checked) {
-        userLocation = '';
-        }
-        
-        // Format time to hh:mm AM/PM
-        function formatTime(date) {
-        let hours = date.getHours();
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12;
-        hours = String(hours).padStart(2, '0');
-        return `${hours}:${minutes} ${ampm}`;
-        }
-        
-        // Final validation before submission
-        if (timeStatus.innerHTML.includes('red')) {
-        return; // Stop submission if there's an error
-        }
-        
-        const formData = {
-        deliveryTime: deliveryTime ? formatTime(new Date(new Date().setHours(...deliveryTime.split(":"), 0, 0))) : '',
-        phone: document.getElementById('phone').value || '',
-        name: document.getElementById('customerName').value || '',
-        address: document.getElementById('manualAddress').value || '',
-        userLocation: userLocation
-        };
-        
-        sendCombinedOrder(formData);
-        hideDeliveryModal();
-        });
-        
-        
-        
-        // Update the input field type and placeholder
-        document.getElementById('deliveryTime').setAttribute('type', 'time');
-        document.getElementById('deliveryTime').setAttribute('placeholder', 'hh:mm');
-        
-        
-        
-        
-        // Clear Button Date-Time
-        document.getElementById('clearDate').addEventListener('click', function() {
-        const deliveryInput = document.getElementById('deliveryTime');
-        deliveryInput.value = ''; // Clear the input
-        deliveryInput.setCustomValidity(''); // Clear any validation messages
-        });
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // Send order to WA
-        function sendCombinedOrder(formData) {
-        const orderNumber = cachedOrderNumber + 1;
-        
-        // List of food-related emojis
-        let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '💝'];
-        
-        // Select a random emoji
-        let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
-        
-        let messageHeader = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'~'.repeat(20)}\n`;
-        
-        
-        // scrap message
-        // Group items by name and rate to calculate quantities
-        const itemMap = new Map();
-        scrapItems.forEach((item) => {
-        const key = `${item.name}-${item.rate}`;
-        itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
-        });
-        
-        // const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
-        
-        const sortedItems = Array.from(itemMap.values()).sort((a, b) => {
-        const nameA = a.name.replace(/[^a-zA-Z]/g, '').toLowerCase(); // Extract only English characters
-        const nameB = b.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
-        return nameA.localeCompare(nameB);
-        });
-        
-        // Generate order text with quantities and total per row
-        let orderText = sortedItems.map(item => {
-        let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
-        return item.qty > 1 
-        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-        }).join('\n');                        
-        
-        // Calculate total cost
-        let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
-        
-        // Calculate total number of items
-        let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
-        
-        
-        let scrapMessage = '';
-        
-        if (totalItems > 0) {
-        scrapMessage = 
-        `${sortedItems.map(item => {
-        let itemTotal = item.qty * parseFloat(item.rate);
-        return item.qty > 1 
-        ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-        : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
-        }).join('\n')}\n${'-'.repeat(30)}\n` +
-        `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'~'.repeat(20)}\n`;
-        }
-        
-        
-        
-        // Modified offer message section
-        let offerMessage = '';
-        if (offerCart && offerCart.length > 0) {
-        offerCart.forEach((group, groupIndex) => {
-        group.dates.forEach((date, dateIndex) => {
-        offerMessage += `🎊 *${group.title} (${group.count})*\n(${date})\n${group.description}`;
-        
-        // Determine the separator
-        let separator = '-'.repeat(30); // Default separator
-        if (groupIndex === offerCart.length - 1 && dateIndex === group.dates.length - 1) {
-        separator = '~'.repeat(20); // Last offer separator
-        }
-        
-        // Add the separator
-        offerMessage += `\n${separator}\n`;
-        });
-        });
-        }
-        
-        
-        let deliveryDetail = '';
-        
-        // Append delivery details only if at least one field is non-empty
-        if (formData.deliveryTime || formData.name || formData.phone || formData.address || userLocation) {
-        deliveryDetail = `*Delivery Details:*\n`;
-        
-        if (formData.deliveryTime) {
-        deliveryDetail += `⏰ ${formData.deliveryTime}\n`;
-        }
-        if (formData.phone) {
-        deliveryDetail += `📞 ${formData.phone}\n`;
-        }
-        if (formData.name) {
-        deliveryDetail += `👤 ${formData.name}\n`;
-        }
-        if (formData.address) {
-        deliveryDetail += `🏠 ${formData.address}\n`;
-        }
-        if (userLocation) {
-        deliveryDetail += `📍 ${userLocation}\n`;
-        }
-        
-        deliveryDetail += `${'~'.repeat(20)}\n`;
-        }        
-        
-        
-        
-        
-        
-        
-        let messageFooter = `Thanks for your order!`;
-        
-        // Encode and send via WhatsApp
-        const encodedMessage = encodeURIComponent(messageHeader + scrapMessage + offerMessage + deliveryDetail + messageFooter);
-        window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
-        
-        
-        // Save the current scrapItems as the last order
-        localStorage.setItem('lastOrder', JSON.stringify(scrapItems)); // Add this line
-        
-        
-        // Clear both lists
-        scrapItems = [];
-        offerCart = [];
-        localStorage.removeItem('scrapList');
-        localStorage.removeItem('offerCart');
-        handleScrapItemsChange();
-        updateCartDisplay();               
-        showFeedback("Combined order sent!");
-        
-        updateCounter('updateOrders');
-        cachedOrderNumber = orderNumber;                
-        }
-        
-        
-        // Clear Both Carts
-        function clearAll() {
-        scrapItems = [];
-        offerCart = [];
-        handleScrapItemsChange();
-        updateCartDisplay();
-        showFeedback("All items cleared!");
-        closeScrapList();
-        saveOfferCart();
-        }
-        
-        document.getElementById('clearAll').addEventListener('click', clearAll);
-        
-        
-        
-        
-        
-        // Cancel Order button handler
-        document.getElementById('cancelOrder').addEventListener('click', function(e) {
-        e.preventDefault();
-        hideDeliveryModal();
-        // showFeedback("Order cancelled");
-        });
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // Adjust scrapList and offercart
-        
-        // Calculate header height
-        document.addEventListener("DOMContentLoaded", function () {
-        const header = document.querySelector(".header");
-        if (header) {
-        const headerHeight = header.offsetHeight; // Get header height
-        document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 20}px`);
-        }
-        });
-        
-        // Add this function to update positions
-        function updateCartPosition() {
-        const scrapList = document.getElementById('scrapList');
-        const offerCart = document.getElementById('offer-cart');
-        
-        // Ensure smooth transition effect
-        offerCart.style.transition = 'top 0.5s ease-in-out, transform 0.5s ease-in-out';
-        
-        
-        if (scrapList.style.display === 'flex' && scrapList.children.length > 0) {
-        // Position offer-cart below scrapList but keep it centered
-        const scrapListRect = scrapList.getBoundingClientRect();
-        offerCart.style.position = 'fixed';
-        offerCart.style.top = `${scrapListRect.bottom + 2}px`;
-        offerCart.style.left = '50%'; // Center it horizontally
-        offerCart.style.transform = 'translateX(-50%)'; // Adjust centering
-        offerCart.style.width = `${scrapList.offsetWidth}px`; // Optional: Match width
-        } else {
-        // Reset to default centered position
-        offerCart.style.position = 'fixed';
-        offerCart.style.top = 'var(--header-bottom, 8%)'; // Default position when scrapList is empty
-        offerCart.style.left = '50%'; // Keep it centered
-        offerCart.style.transform = 'translateX(-50%)';
-        offerCart.style.width = ''; // Reset width
-        }
-        }
-        
-        // Observer to track changes in scrapList
-        const scrapListObserver = new ResizeObserver(() => {
-        if (scrapVisible) {
-        updateCartPosition();
-        }
-        });
-        
-        // Update position on window resize
-        window.addEventListener('resize', updateCartPosition);
-        window.addEventListener('scroll', updateCartPosition); // Keep it fixed on scroll  
-        
-        
-        // DOM entries for adjustment
-        document.addEventListener("DOMContentLoaded", () => {
-        const scrapList = document.getElementById('scrapList');
-        const offerCart = document.getElementById('offer-cart');
-        
-        function adjustScrapListHeight() {
-        const offerCartDisplay = window.getComputedStyle(offerCart).display;
-        
-        // Apply transition directly in JavaScript
-        scrapList.style.transition = "max-height 0.5s ease-in-out";
-        scrapList.style.transition = (offerCartDisplay === 'none') ? "max-height 0.5s ease-in-out" : "";
-        
-        scrapList.style.maxHeight = (offerCartDisplay === 'none') ? '55vh' : '45vh';        
-        }
-        
-        const observer = new MutationObserver(() => adjustScrapListHeight());
-        
-        observer.observe(offerCart, {
-        attributes: true,
-        attributeFilter: ['style', 'class']
-        });
-        
-        window.addEventListener('resize', adjustScrapListHeight);
-        
-        adjustScrapListHeight(); // Initial adjustment
-        });
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // Update PWA
-        if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js').then(reg => {
-        setInterval(() => {
-        reg.update().then(() => {
-        if (reg.installing || reg.waiting) {
-        console.log("New update found!");
-        showUpdateNotification(reg);
-        }
-        });
-        }, 5000); // Check every 5 seconds
-        });
-        
-        
-        }
-        
-        function showUpdateNotification(reg) {
-        if (document.getElementById("update-notification")) {
-        return; // Prevent multiple notifications
-        }
-        
-        let updateDiv = document.createElement("div");
-        updateDiv.id = "update-notification";
-        updateDiv.innerHTML = `
-        <button id="refresh-btn" 
-        style="position: fixed;
-        left: 50%; /* Center horizontally */
-        top: 50%; /* Center vertically */
-        transform: translate(-50%, -50%); /* Adjust for exact center */
-        background: #4CAF50;
-        color: white;
-        padding: 2rem;
-        border: none;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
-        cursor: pointer;
-        font-size: 4rem;
-        transition: transform 0.1s, box-shadow 0.1s;
-        z-index: 1001;">
-        Refresh<br>Updates
-        </button>`;
-        document.body.appendChild(updateDiv);
-        
-        document.getElementById("refresh-btn").addEventListener("click", function () {
-        console.log("Refresh button clicked!");
-        
-        // Check if a waiting service worker exists
-        if (reg.waiting) {
-        reg.waiting.postMessage({ action: "skipWaiting" });
-        
-        reg.waiting.addEventListener("statechange", () => {
-        if (reg.waiting.state === "activated") {
-        console.log("New Service Worker activated, reloading...");
-        window.location.reload();
-        }
-        });
-        
-        // Fallback: Force reload after 3 seconds if no statechange fires
-        setTimeout(() => {
-        console.log("Forcing reload as a fallback...");
-        window.location.reload();
-        }, 3000);
-        } else {
-        console.log("No waiting service worker found. Reloading...");
-        window.location.reload(); // Force refresh if no service worker is waiting
-        }
-        });
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+            function closeScrapList() {
+                const scrapList = document.getElementById('scrapList');
+                const offerCartElement = document.getElementById('offer-cart');
+                const overlay = document.querySelector('.scrap-overlay');
+                
+                scrapList.style.display = 'none';
+                scrapVisible = false;
+                isWarningVisible = false;
+                
+                // Check if offer cart is visible or has items before hiding overlay
+                if (offerCartElement.style.display === 'block') {
+                    overlay.style.display = 'block'; // Keep overlay if offer cart is visible
+                    document.body.style.overflow = 'hidden';
+                    } else {
+                    overlay.style.display = 'none'; // Hide overlay only when both are closed
+                    document.body.style.overflow = '';
+                }
+            }                     
+            
+            // offer-close-cross
+            document.getElementById('closeOffer').addEventListener('click', closeOfferCart);                    
+            
+            function closeOfferCart() {
+                const scrapList = document.getElementById('scrapList');
+                const overlay = document.querySelector('.scrap-overlay');
+                
+                // Hide the offer cart
+                document.getElementById('offer-cart').style.display = 'none';
+                offerCartVisible = false;
+                
+                // Only hide the overlay if scrapList is also not visible
+                if (scrapList.style.display !== 'flex') {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            }
+            
+            
+            // scrap-close-esc offer-close-esc
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape") {
+                    closeScrapList();
+                    closeOfferCart();
+                }
+            });
+            
+            
+            // Add stopPropagation to the containers to prevent immediate closing
+            document.getElementById('scrapList').addEventListener('click', e => e.stopPropagation());
+            document.getElementById('offer-cart').addEventListener('click', e => e.stopPropagation());                
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Random item
+            function addRandomItem() {
+                
+                // Get all menu items from the DOM
+                const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+                
+                if (menuItems.length === 0) {
+                    showFeedback('No menu items found!');
+                    return;
+                }
+                
+                // Select a random menu item
+                const randomItem = menuItems[Math.floor(Math.random() * menuItems.length)];
+                
+                // Extract item details
+                const menuItemLine = randomItem.querySelector('.menu-item-line');
+                const colAB = menuItemLine.querySelector('.colAB').textContent.trim();
+                const colCDE = menuItemLine.querySelector('.colCDE').textContent.trim();
+                
+                // Extract rate (mimic your project's logic)
+                const rateMatch = colCDE.match(/\d+/); // Find the first number in colCDE
+                if (!rateMatch) {
+                    showFeedback('No rate found for this item!');
+                    return;
+                }
+                const rate = rateMatch[0];
+                
+                // Extract category details
+                const categoryHeader = randomItem.closest('.category-items').previousElementSibling;
+                const categoryLeft = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
+                const categoryRight = categoryHeader.querySelector('.right').textContent.trim(); // Get the right side of the header
+                
+                // Extract item name
+                const itemName = colAB.split('(')[0].trim();
+                
+                // Combine names (mimic your project's logic)
+                let combinedName = `${categoryLeft} - ${itemName}`;
+                
+                // Extract the specific part of the header-right side that matches the rate
+                if (categoryRight) {
+                    // Split the header-right side by "/" or other delimiters
+                    const rightParts = categoryRight.split('/').map(part => part.trim());
+                    
+                    // Find the corresponding part based on the rate column (C/D/E)
+                    const rateColumn = menuItemLine.querySelector('.colCDE').textContent.trim();
+                    const rateIndex = rateColumn.split(' / ').findIndex(part => part.includes(rate));
+                    
+                    // If a matching part is found, append it to the name
+                    if (rateIndex !== -1 && rightParts[rateIndex]) {
+                        combinedName += ` (${rightParts[rateIndex]})`;
+                    }
+                }
+                
+                // Add to scrap list
+                scrapItems.push({
+                    name: combinedName,
+                    rate: rate
+                });
+                
+                
+                // Animate the rate movement (mimic your project's logic)
+                animateRateMovement(menuItemLine.querySelector('.colCDE'));
+                
+                // Update UI
+                updateScrapListDisplay();
+                updateScrapCounter();
+                handleScrapItemsChange();
+                updateScrapButtonStatus();
+                // showFeedback('DEV: Random item added!');    
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Handle ordering both carts and showing the delivery modal
+            document.getElementById('orderAll').addEventListener('click', function(e) {
+                e.preventDefault();
+                closeScrapList(); 
+                closeOfferCart(); 
+                showDeliveryModal();
+            });
+            
+            
+            // Function to show the delivery modal
+            // Function to show the delivery modal
+            function showDeliveryModal() {
+                const modal = document.getElementById('deliveryModal');
+                modal.classList.remove('hidden'); // Remove hidden to display the modal
+                modal.classList.add('active');    // Add active for any animation or styling
+                document.getElementById('deliveryForm').reset();
+            }
+            
+            // Function to hide the delivery modal
+            function hideDeliveryModal() {
+                const modal = document.getElementById('deliveryModal');
+                modal.classList.remove('active'); // Remove active for transition
+                modal.classList.add('hidden');    // Add hidden to completely hide the modal
+            }
+            
+            
+            // Close button handler
+            document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
+            
+            // Outside click handler
+            /*
+                document.getElementById('deliveryModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('deliveryModal')) {
+                hideDeliveryModal();
+                }
+                });
+            */
+            
+            
+            // Name (Contact Person)
+            document.querySelectorAll('[name="orderType"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const isDelivery = e.target.value === 'delivery';
+                    const deliveryFields = document.getElementById('deliveryFields');
+                    const phoneField = document.getElementById('phone');
+                    
+                    // Enable/disable phone field and set it as required only for delivery
+                    phoneField.required = isDelivery;
+                    phoneField.disabled = !isDelivery;
+                    
+                    // All other fields remain optional and disabled unless it's a delivery
+                    deliveryFields.querySelectorAll('input:not(#phone), textarea').forEach(input => {
+                        input.required = false;
+                        input.disabled = !isDelivery;
+                    });
+                });
+            });
+            
+            // Contact Number
+            document.getElementById('pickContact').addEventListener('click', async () => {
+                if (navigator.contacts && navigator.contacts.select) {
+                    try {
+                        const contacts = await navigator.contacts.select(['name', 'tel'], { multiple: false });
+                        const contact = contacts[0];
+                        if (contact) {
+                            let phone = contact.tel?.[0] || '';
+                            phone = phone.replace(/\D/g, '').slice(0, 10);
+                            if (phone.length > 5) {
+                                phone = phone.slice(0, 5) + '-' + phone.slice(5);
+                            }
+                            document.getElementById('phone').value = phone;
+                            document.getElementById('customerName').value = contact.name?.[0] || '';
+                        }
+                        } catch (error) {
+                        console.error('Error picking contact:', error);
+                    }
+                    } else {
+                    console.error('Contact Picker API not supported on this browser.');
+                }
+            });
+            
+            // Auto-insert dash after 5 digits on manual input
+            document.getElementById('phone').addEventListener('input', function (e) {
+                let value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                if (value.length > 5) {
+                    value = value.slice(0, 5) + '-' + value.slice(5);
+                }
+                e.target.value = value;
+            });
+            
+            // Location
+            const centerLat = 30.6668;
+            const centerLng = 75.0641;
+            
+            // Function to calculate distance using Haversine formula
+            function calculateDistance(lat1, lng1, lat2, lng2) {
+                const toRad = (value) => (value * Math.PI) / 180;
+                const R = 6371; // Earth's radius in kilometers
+                const dLat = toRad(lat2 - lat1);
+                const dLng = toRad(lng2 - lng1);
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c; // Distance in kilometers
+            }
+            
+            
+            let userLocation = ''; // Global variable to store the location
+            const locationCheckbox = document.querySelector('[value="location"]');
+            const locationStatus = document.getElementById('locationStatus');
+            
+            locationCheckbox.addEventListener('change', () => {
+                if (locationCheckbox.checked) {
+                    locationStatus.innerHTML = '<span>Loading...</span>';
+                    locationStatus.style.display = 'block';
+                    
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+                            
+                            // Calculate distance
+                            const distance = calculateDistance(lat, lng, centerLat, centerLng);
+                            
+                            userLocation = `https://maps.google.com/?q=${lat},${lng}`;
+                            
+                            //  if (distance > 15) {
+                            if (distance > window.deliveryArea) {
+                                locationStatus.innerHTML = `
+                                <span style="color: red;">Delivery not available at this location.</span><br>
+                                <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                                } else {
+                                locationStatus.innerHTML = `
+                                <span style="color: green;">Delivery available!</span><br>
+                                <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                            }
+                        },
+                        (error) => {
+                            locationStatus.style.display = 'none'; // Hide the loading message on error
+                            switch (error.code) {
+                                case error.PERMISSION_DENIED:
+                                alert('Permission denied. Please allow location access.');
+                                break;
+                                case error.POSITION_UNAVAILABLE:
+                                alert('Location information is unavailable.');
+                                break;
+                                case error.TIMEOUT:
+                                alert('Location request timed out.');
+                                break;
+                                default:
+                                alert('An unknown error occurred.');
+                                break;
+                            }
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        }
+                        );
+                        } else {
+                        alert('Geolocation is not supported by this browser.');
+                        locationStatus.style.display = 'none';
+                    }
+                    } else {
+                    userLocation = '';
+                    locationStatus.style.display = 'none'; // Hide status if checkbox is unchecked
+                }
+            });
+            
+            
+            
+            // Form submission
+            const deliveryInput = document.getElementById('deliveryTime');
+            const timeStatus = document.getElementById('timeStatus');
+            
+            // Real-time validation on input
+            deliveryInput.addEventListener('input', validateDeliveryTime);
+            
+            function validateDeliveryTime() {
+                const deliveryTime = deliveryInput.value;
+                timeStatus.innerHTML = ''; // Clear previous status
+                
+                if (!deliveryTime) return;
+                
+                const [hours, minutes] = deliveryTime.split(':').map(Number);
+                if (isNaN(hours) || isNaN(minutes)) {
+                    timeStatus.innerHTML = `<span style="color: red;">Invalid time format.</span>`;
+                    return;
+                }
+                
+                const deliveryMinutes = hours * 60 + minutes;
+                
+                // Time constraints
+                const minDeliveryTime = (window.openTimeInMinutes + window.deliveryAfterOpening) % (24 * 60);
+                const maxDeliveryTime = (window.closeTimeInMinutes - window.deliveryBeforeClosing + (24 * 60)) % (24 * 60);
+                
+                // Current time + 15 minutes
+                const now = new Date();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                const minCurrentTime = (currentMinutes + window.deliveryFromNow) % (24 * 60);
+                
+                let isValidTime = true;
+                let errorMessage = '';
+                
+                // Check for open and close time constraints
+                if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
+                    if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
+                        isValidTime = false;
+                        errorMessage = `Delivery must be at least ${window.deliveryAfterOpening} minutes after opening and ${window.deliveryBeforeClosing} minutes before closing.`;
+                    }
+                    } else {
+                    if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
+                        isValidTime = false;
+                        errorMessage = `Delivery must be at least ${window.deliveryAfterOpening} minutes after opening and ${window.deliveryBeforeClosing} minutes before closing.`;
+                    }
+                }
+                
+                
+                // Check for current time constraint
+                if (isValidTime && deliveryMinutes < minCurrentTime) {
+                    isValidTime = false;
+                    errorMessage = `Delivery time must be at least ${window.deliveryFromNow} minutes ahead of the current time.`;
+                }
+                
+                // Display message
+                if (!isValidTime) {
+                    timeStatus.innerHTML = `<span style="color: red;">${errorMessage}</span>`;
+                    } else {
+                    timeStatus.innerHTML = `<span style="color: green;">Delivery time is valid!</span>`;
+                }
+            }
+            
+            // Form submission
+            document.getElementById('deliveryForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const deliveryTime = deliveryInput.value;
+                const locationCheckbox = document.querySelector('[value="location"]');
+                
+                if (!locationCheckbox.checked) {
+                    userLocation = '';
+                }
+                
+                // Format time to hh:mm AM/PM
+                function formatTime(date) {
+                    let hours = date.getHours();
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12 || 12;
+                    hours = String(hours).padStart(2, '0');
+                    return `${hours}:${minutes} ${ampm}`;
+                }
+                
+                // Final validation before submission
+                if (timeStatus.innerHTML.includes('red')) {
+                    return; // Stop submission if there's an error
+                }
+                
+                const formData = {
+                    deliveryTime: deliveryTime ? formatTime(new Date(new Date().setHours(...deliveryTime.split(":"), 0, 0))) : '',
+                    phone: document.getElementById('phone').value || '',
+                    name: document.getElementById('customerName').value || '',
+                    address: document.getElementById('manualAddress').value || '',
+                    userLocation: userLocation
+                };
+                
+                sendCombinedOrder(formData);
+                hideDeliveryModal();
+            });
+            
+            
+            
+            // Update the input field type and placeholder
+            document.getElementById('deliveryTime').setAttribute('type', 'time');
+            document.getElementById('deliveryTime').setAttribute('placeholder', 'hh:mm');
+            
+            
+            
+            
+            // Clear Button Date-Time
+            document.getElementById('clearDate').addEventListener('click', function() {
+                const deliveryInput = document.getElementById('deliveryTime');
+                deliveryInput.value = ''; // Clear the input
+                deliveryInput.setCustomValidity(''); // Clear any validation messages
+            });
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Send order to WA
+            function sendCombinedOrder(formData) {
+                const orderNumber = cachedOrderNumber + 1;
+                
+                // List of food-related emojis
+                let foodEmojis = ['🌶', '🫑', '🌽', '🍔', '🍟', '🍕', '🥙', '🌮', '🥗', '🍿', '🍎', '🍋', '🍓', '🍞', '🥘', '🍱', '🍧', '🍹', '👑', '☘️', '💥', '🍒', '🎁', '🎉', '💝'];
+                
+                // Select a random emoji
+                let randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
+                
+                let messageHeader = `${randomEmoji}\n*Order No. ${orderNumber}*\n${'~'.repeat(20)}\n`;
+                
+                
+                // scrap message
+                // Group items by name and rate to calculate quantities
+                const itemMap = new Map();
+                scrapItems.forEach((item) => {
+                    const key = `${item.name}-${item.rate}`;
+                    itemMap.has(key) ? itemMap.get(key).qty++ : itemMap.set(key, { ...item, qty: 1 });
+                });
+                
+                // const sortedItems = Array.from(itemMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+                
+                const sortedItems = Array.from(itemMap.values()).sort((a, b) => {
+                    const nameA = a.name.replace(/[^a-zA-Z]/g, '').toLowerCase(); // Extract only English characters
+                    const nameB = b.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+                
+                // Generate order text with quantities and total per row
+                let orderText = sortedItems.map(item => {
+                    let itemTotal = item.qty * parseFloat(item.rate); // Calculate total for each row
+                    return item.qty > 1 
+                    ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                    : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                }).join('\n');                        
+                
+                // Calculate total cost
+                let totalAmount = sortedItems.reduce((acc, item) => acc + (parseFloat(item.rate) * item.qty), 0);
+                
+                // Calculate total number of items
+                let totalItems = sortedItems.reduce((acc, item) => acc + item.qty, 0);
+                
+                
+                let scrapMessage = '';
+                
+                if (totalItems > 0) {
+                    scrapMessage = 
+                    `${sortedItems.map(item => {
+                    let itemTotal = item.qty * parseFloat(item.rate);
+                    return item.qty > 1 
+                    ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                    : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                    }).join('\n')}\n${'-'.repeat(30)}\n` +
+                    `*${totalItems}* ${totalItems > 1 ? "items" : "item"} - *₹${Math.round(totalAmount)}* only\n${'~'.repeat(20)}\n`;
+                }
+                
+                
+                
+                // Modified offer message section
+                let offerMessage = '';
+                if (offerCart && offerCart.length > 0) {
+                    offerCart.forEach((group, groupIndex) => {
+                        group.dates.forEach((date, dateIndex) => {
+                            offerMessage += `🎊 *${group.title} (${group.count})*\n(${date})\n${group.description}`;
+                            
+                            // Determine the separator
+                            let separator = '-'.repeat(30); // Default separator
+                            if (groupIndex === offerCart.length - 1 && dateIndex === group.dates.length - 1) {
+                                separator = '~'.repeat(20); // Last offer separator
+                            }
+                            
+                            // Add the separator
+                            offerMessage += `\n${separator}\n`;
+                        });
+                    });
+                }
+                
+                
+                let deliveryDetail = '';
+                
+                // Append delivery details only if at least one field is non-empty
+                if (formData.deliveryTime || formData.name || formData.phone || formData.address || userLocation) {
+                    deliveryDetail = `*Delivery Details:*\n`;
+                    
+                    if (formData.deliveryTime) {
+                        deliveryDetail += `⏰ ${formData.deliveryTime}\n`;
+                    }
+                    if (formData.phone) {
+                        deliveryDetail += `📞 ${formData.phone}\n`;
+                    }
+                    if (formData.name) {
+                        deliveryDetail += `👤 ${formData.name}\n`;
+                    }
+                    if (formData.address) {
+                        deliveryDetail += `🏠 ${formData.address}\n`;
+                    }
+                    if (userLocation) {
+                        deliveryDetail += `📍 ${userLocation}\n`;
+                    }
+                    
+                    deliveryDetail += `${'~'.repeat(20)}\n`;
+                }        
+                
+                
+                
+                let messageFooter = `Thanks for your order!`;
+                
+                // Encode and send via WhatsApp
+                const encodedMessage = encodeURIComponent(messageHeader + scrapMessage + offerMessage + deliveryDetail + messageFooter);
+                window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
+                
+                
+                // Save the current scrapItems as the last order
+                localStorage.setItem('lastOrder', JSON.stringify(scrapItems)); // Add this line
+                
+                
+                // Clear both lists
+                scrapItems = [];
+                offerCart = [];
+                localStorage.removeItem('scrapList');
+                localStorage.removeItem('offerCart');
+                handleScrapItemsChange();
+                updateCartDisplay();               
+                showFeedback("Combined order sent!");
+                
+                updateCounter('updateOrders');
+                cachedOrderNumber = orderNumber;                
+            }
+            
+            
+            // Clear Both Carts
+            function clearAll() {
+                scrapItems = [];
+                offerCart = [];
+                handleScrapItemsChange();
+                updateCartDisplay();
+                showFeedback("All items cleared!");
+                closeScrapList();
+                saveOfferCart();
+            }
+            
+            document.getElementById('clearAll').addEventListener('click', clearAll);
+            
+            
+            
+            
+            
+            // Cancel Order button handler
+            document.getElementById('cancelOrder').addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // For go back
+                hideDeliveryModal();
+                toggleScrapList(); // For go back
+            });
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Adjust scrapList and offercart
+            
+            // Calculate header height
+            document.addEventListener("DOMContentLoaded", function () {
+                const header = document.querySelector(".header");
+                if (header) {
+                    const headerHeight = header.offsetHeight; // Get header height
+                    document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 20}px`);
+                }
+            });
+            
+            // Add this function to update positions
+            function updateCartPosition() {
+                const scrapList = document.getElementById('scrapList');
+                const offerCart = document.getElementById('offer-cart');
+                
+                // Ensure smooth transition effect
+                offerCart.style.transition = 'top 0.5s ease-in-out, transform 0.5s ease-in-out';
+                
+                
+                if (scrapList.style.display === 'flex' && scrapList.children.length > 0) {
+                    // Position offer-cart below scrapList but keep it centered
+                    const scrapListRect = scrapList.getBoundingClientRect();
+                    offerCart.style.position = 'fixed';
+                    offerCart.style.top = `${scrapListRect.bottom + 2}px`;
+                    offerCart.style.left = '50%'; // Center it horizontally
+                    offerCart.style.transform = 'translateX(-50%)'; // Adjust centering
+                    offerCart.style.width = `${scrapList.offsetWidth}px`; // Optional: Match width
+                    } else {
+                    // Reset to default centered position
+                    offerCart.style.position = 'fixed';
+                    offerCart.style.top = 'var(--header-bottom, 8%)'; // Default position when scrapList is empty
+                    offerCart.style.left = '50%'; // Keep it centered
+                    offerCart.style.transform = 'translateX(-50%)';
+                    offerCart.style.width = ''; // Reset width
+                }
+            }
+            
+            // Observer to track changes in scrapList
+            const scrapListObserver = new ResizeObserver(() => {
+                if (scrapVisible) {
+                    updateCartPosition();
+                }
+            });
+            
+            // Update position on window resize
+            window.addEventListener('resize', updateCartPosition);
+            window.addEventListener('scroll', updateCartPosition); // Keep it fixed on scroll  
+            
+            
+            // DOM entries for adjustment
+            document.addEventListener("DOMContentLoaded", () => {
+                const scrapList = document.getElementById('scrapList');
+                const offerCart = document.getElementById('offer-cart');
+                
+                function adjustScrapListHeight() {
+                    const offerCartDisplay = window.getComputedStyle(offerCart).display;
+                    
+                    // Apply transition directly in JavaScript
+                    scrapList.style.transition = "max-height 0.5s ease-in-out";
+                    scrapList.style.transition = (offerCartDisplay === 'none') ? "max-height 0.5s ease-in-out" : "";
+                    
+                    scrapList.style.maxHeight = (offerCartDisplay === 'none') ? '55vh' : '45vh';        
+                }
+                
+                const observer = new MutationObserver(() => adjustScrapListHeight());
+                
+                observer.observe(offerCart, {
+                    attributes: true,
+                    attributeFilter: ['style', 'class']
+                });
+                
+                window.addEventListener('resize', adjustScrapListHeight);
+                
+                adjustScrapListHeight(); // Initial adjustment
+            });
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // Update PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js').then(reg => {
+                    setInterval(() => {
+                        reg.update().then(() => {
+                            if (reg.installing || reg.waiting) {
+                                console.log("New update found!");
+                                showUpdateNotification(reg);
+                            }
+                        });
+                    }, 5000); // Check every 5 seconds
+                });
+                
+                
+            }
+            
+            function showUpdateNotification(reg) {
+                if (document.getElementById("update-notification")) {
+                    return; // Prevent multiple notifications
+                }
+                
+                let updateDiv = document.createElement("div");
+                updateDiv.id = "update-notification";
+                updateDiv.innerHTML = `
+                <button id="refresh-btn" 
+                style="position: fixed;
+                left: 50%; /* Center horizontally */
+                top: 50%; /* Center vertically */
+                transform: translate(-50%, -50%); /* Adjust for exact center */
+                background: #4CAF50;
+                color: white;
+                padding: 2rem;
+                border: none;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 6px 20px rgba(0,0,0,0.19);
+                cursor: pointer;
+                font-size: 4rem;
+                transition: transform 0.1s, box-shadow 0.1s;
+                z-index: 1001;">
+                Refresh<br>Updates
+                </button>`;
+                document.body.appendChild(updateDiv);
+                
+                document.getElementById("refresh-btn").addEventListener("click", function () {
+                    console.log("Refresh button clicked!");
+                    
+                    // Check if a waiting service worker exists
+                    if (reg.waiting) {
+                        reg.waiting.postMessage({ action: "skipWaiting" });
+                        
+                        reg.waiting.addEventListener("statechange", () => {
+                            if (reg.waiting.state === "activated") {
+                                console.log("New Service Worker activated, reloading...");
+                                window.location.reload();
+                            }
+                        });
+                        
+                        // Fallback: Force reload after 3 seconds if no statechange fires
+                        setTimeout(() => {
+                            console.log("Forcing reload as a fallback...");
+                            window.location.reload();
+                        }, 3000);
+                        } else {
+                        console.log("No waiting service worker found. Reloading...");
+                        window.location.reload(); // Force refresh if no service worker is waiting
+                    }
+                });
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         </script>        
         <script src="app.js"></script> <!-- PWA -->                
         <script src="com.js"></script> <!-- Commu sidebar -->                
@@ -5932,5 +5967,5 @@
         <script src="counter.js"></script> <!-- Counters -->                
         <script src="cheat.js"></script> <!-- Cheats, Dev tools -->         
         
-        </body>
-        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+    </body>
+</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
