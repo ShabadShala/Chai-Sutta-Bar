@@ -299,6 +299,10 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 400px;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Perfect centering */
             }
             
             .error-text {
@@ -325,7 +329,7 @@
             background: #3498db;
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 12px 15px;
             border-radius: 25px;
             font-size: 4rem;
             cursor: pointer;
@@ -355,10 +359,10 @@
             .offline-mode::after {
             content: "●";
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 1rem;
+            right: 1rem;
             color: #ff4444;
-            font-size: 16px;
+            font-size: 5rem;
             animation: pulse 1s infinite;
             }
             
@@ -640,8 +644,8 @@
             font-size: 3rem; /* Set font size */
             color: #F8BBD0;
             position: absolute; /* Position absolutely within .logo-text */
-            top: 0; /* Align to the top */
-            right: -7rem; /* Move to the right of the text */
+            top: -2rem; /* Align to the top */
+            right: -5rem; /* Move to the right of the text */
             vertical-align: top; /* Align to the top */
             }
             
@@ -1424,6 +1428,9 @@
             overflow: hidden;
             flex-direction: column;
             z-index: 100;
+            
+              transition: opacity 0.3s ease, transform 0.3s ease;
+    will-change: opacity, transform;
             }   
             
             /* Scrap Content */
@@ -1982,6 +1989,19 @@
             padding: 3rem;
             }
             
+            .delivery-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 111; /* Below modal but above other content */
+  display: none;
+}
+            
+            
             #deliveryModal .order-modal-content {
             position: relative; /* Add this line */
             background: white;
@@ -1991,6 +2011,7 @@
             width: 90%;
             max-width: 500px;
             font-size: 5rem;
+             z-index: 112;
             }
             
             #deliveryModal .close-button {
@@ -2557,6 +2578,7 @@
                 <span class="chai">CHAI</span>
                 <span class="sutta">SUTTA</span>
                 <span class="bar">BAR</span>                
+                <span class="bpa-logo offline-mode-target"></span>  
                 <div class="open-close"></div>               
             </div>            
             <img src="icons/phone.svg" class="phone-icon" alt="Phone">
@@ -2572,7 +2594,7 @@
                     <span>
                         <img src="icons/lens.svg" alt="Word Search" class="search-lens invert-icon">
                     </span>                    
-                    <input type="text" id="searchInput" name="searchInput" maxlength="10" placeholder="item or rate" autocomplete="on">
+                    <input type="text" id="searchInput" name="searchInput" maxlength="10" placeholder="item or rate" autocomplete="off">
                     <span id="clearButton" class="search-clear-btn" style="display: none;">×</span>
                 </div>
                 
@@ -2668,7 +2690,7 @@
         <div class="button-container-all">
             <button id="clearAll">CLEAR</button>
             <button id="smartPickBtn2" class="smart-pick-btn"  title="Smart Pick"> <img src="icons/magic.svg" alt="Magic" class="button-icon"> </button>
-            <button id="orderAll" class="child-lock-restricted offline-mode-target">ORDER</button>
+            <button id="orderAll">ORDER</button>
         </div>
         
         
@@ -2687,56 +2709,58 @@
         
         
         <!-- Add this modal structure before </body> -->
-        <div id="deliveryModal" class="order-modal-content hidden">
-            <span class="close-button">&times;</span>
-            <h2>Delivery Details<br><small>(Optional)</small></h2>
-            <form id="deliveryForm">
-                <div id="deliveryFields">
-                    
-                    <div class="form-group">
-                        <label for="phone">Mobile Number</label>
-                        <div style="display:flex;gap:5px">
-                            <input type="tel" id="phone" maxlength="11" pattern="\d{5}-\d{5}" placeholder="12345-67890" title="Enter 10 digits in the format 12345-67890">
-                            <button type="button" id="pickContact">📱</button>
-                        </div>                            
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Contact Person (25 chars max.)</label>
-                        <input type="text" id="customerName" maxlength="25">
-                    </div>
-                    
-                    <div class="address-method">
-                        <label>Address (100 chars max.)</label>
-                    </div>                    
-                    <div id="addressInput">
-                        <textarea id="manualAddress" maxlength="100"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Check/Attach Delivery Time</label>
-                        <div style="display: flex; gap: 4px;">
-                            <!--   <input type="datetime-local" id="deliveryTime">  -->
-                            <input type="time" id="deliveryTime" step="60">                            
-                            <button type="button" id="clearDate">✖</button>
+        <div id="deliveryOverlay" class="delivery-overlay">
+            <div id="deliveryModal" class="order-modal-content hidden">
+                <span class="close-button">&times;</span>
+                <h2>Delivery Details<br><small>(Optional)</small></h2>
+                <form id="deliveryForm">
+                    <div id="deliveryFields">
+                        
+                        <div class="form-group">
+                            <label for="phone">Mobile Number</label>
+                            <div style="display:flex;gap:5px">
+                                <input type="tel" id="phone" maxlength="11" pattern="\d{5}-\d{5}" placeholder="12345-67890" title="Enter 10 digits in the format 12345-67890">
+                                <button type="button" id="pickContact">📱</button>
+                            </div>                            
                         </div>
+                        
+                        <div class="form-group">
+                            <label>Contact Person (25 chars max.)</label>
+                            <input type="text" id="customerName" maxlength="25">
+                        </div>
+                        
+                        <div class="address-method">
+                            <label>Address (100 chars max.)</label>
+                        </div>                    
+                        <div id="addressInput">
+                            <textarea id="manualAddress" maxlength="100"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Check/Attach Delivery Time</label>
+                            <div style="display: flex; gap: 4px;">
+                                  <input type="datetime-local" id="deliveryTime">  
+                           <!--      <input type="time" id="deliveryTime" step="60">    -->                        
+                                <button type="button" id="clearDate">✖</button>
+                            </div>
+                        </div>
+                        <div id="timeStatus" style="margin-top: -2rem; padding-bottom: 2rem;"></div>
+                        
+                        <div class="address-method">
+                            <label>
+                                <input type="checkbox" name="locationAddress" value="location"> Check/Attach Location
+                            </label>
+                        </div>                    
+                        <div id="locationStatus" style="display:none"></div>
                     </div>
-                    <div id="timeStatus" style="margin-top: -2rem; padding-bottom: 2rem;"></div>
                     
-                    <div class="address-method">
-                        <label>
-                            <input type="checkbox" name="locationAddress" value="location"> Check/Attach Location
-                        </label>
-                    </div>                    
-                    <div id="locationStatus" style="display:none"></div>
-                </div>
+                    <div class="modal-button-container">
+                        <button type="button" id="cancelOrder" class="cancel-btn">Go Back</button>
+                        <button type="submit" class="child-lock-restricted offline-mode-target">Confirm</button>
+                    </div>
+                </form>
                 
-                <div class="modal-button-container">
-                    <button type="button" id="cancelOrder" class="cancel-btn">Go Back</button>
-                    <button type="submit">Confirm Order</button>
-                </div>
-            </form>
-            
+            </div>
         </div>
         
         
@@ -2744,11 +2768,11 @@
         <div class="social">
             <div id="sidebar">
                 <a id="delivery-link" href="#" target="_blank"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
-                <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
-                <a id="phone-link" href="#" target="_blank"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
-                <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA" target="_blank"><img src="sidebar/location.png" alt="Location" class="logo"></a>
-                <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
-                <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
+            <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
+            <a id="phone-link" href="#" target="_blank"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
+            <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA" target="_blank"><img src="sidebar/location.png" alt="Location" class="logo"></a>
+            <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
+            <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
             </div>
         </div>
         
@@ -2763,7 +2787,7 @@
         
         
         <!-- Development Button -->
-        <button id="devFill" style="position: fixed; bottom: 15px; left: 17px; z-index: 9999; padding: 1rem; background: #ff4444; color: white; border: none; border-radius: 5px;">
+        <button id="devFill" style="position: fixed; bottom: 45px; right: 17px; z-index: 9999; padding: 1rem; background: #ff4444; color: white; border: none; border-radius: 5px;">
             DEV
         </button>
         
@@ -3301,7 +3325,7 @@
                         totalItemsDiv.textContent = `${totalVisibleItems} ${totalVisibleItems === 1 ? 'item' : 'items'}`;
                         totalItemsDiv.style.color = '#00FF00';
                         } else {
-                        totalItemsDiv.textContent = filterButtons.style.display === 'none' ? 'No menu item found' : 'No item';
+                        totalItemsDiv.textContent = filterButtons.style.display === 'none' ? 'No item found' : 'No item';
                         totalItemsDiv.style.color = '#ff4d4d';
                     }
                 }
@@ -3632,12 +3656,11 @@
                         Available cached version<br>${formattedDate}
                         </div>
                         <div class="warning-text">
-                        <span style="color: green;">Food items menu can be loaded from the local storage,</span><br>but some features of the app may not work until you're back online.
-                        </div>
-                        
+                        <span style="color: green;">Offline copy of food items can be loaded,</span><br>Some features of the app may not work until you're back online.
+                        </div>                        
                         <br>
                         <button id="loadCached" class="cached-button">
-                        LOAD Items Menu
+                        LOAD Offline Menu
                         </button>
                         <br>
                         <button id="retryApp" class="retry-button">
@@ -3651,13 +3674,12 @@
                             location.reload(); // Refreshes the app
                         });
                         
-                        
                         document.getElementById('loadCached').addEventListener('click', () => {
                             processAndDisplayMenu(cached.data);
                             loadingOverlay.style.display = 'none';
                         });
                         } else {
-                        loadingOverlay.innerHTML = `<div class="loading-message">Error loading menu</div>`;
+                        loadingOverlay.innerHTML = `<div class="loading-message">Error loading data</div>`;
                     }
                     }).catch(err => {
                     document.getElementById('loadingOverlay').innerHTML = "<div class='loading-message'>Error loading data</div>";
@@ -5210,7 +5232,7 @@
                 const menuItems = Array.from(document.querySelectorAll('.menu-item'));
                 
                 if (menuItems.length === 0) {
-                    showFeedback('No menu items found!');
+                    showFeedback('No items found!');
                     return;
                 }
                 
@@ -5314,24 +5336,31 @@
             
             
             // Function to show the delivery modal
-            // Function to show the delivery modal
-            function showDeliveryModal() {
-                const modal = document.getElementById('deliveryModal');
-                modal.classList.remove('hidden'); // Remove hidden to display the modal
-                modal.classList.add('active');    // Add active for any animation or styling
-                document.getElementById('deliveryForm').reset();
-            }
-            
-            // Function to hide the delivery modal
-            function hideDeliveryModal() {
-                const modal = document.getElementById('deliveryModal');
-                modal.classList.remove('active'); // Remove active for transition
-                modal.classList.add('hidden');    // Add hidden to completely hide the modal
-            }
+function showDeliveryModal() {
+  const modal = document.getElementById('deliveryModal');
+  const overlay = document.getElementById('deliveryOverlay');
+  modal.classList.remove('hidden');
+  overlay.style.display = 'block';
+  setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// Function to hide the delivery modal
+function hideDeliveryModal() {
+  const modal = document.getElementById('deliveryModal');
+  const overlay = document.getElementById('deliveryOverlay');
+  modal.classList.remove('active');
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    overlay.style.display = 'none';
+  }, 300);
+}
+
+
+
             
             
             // Close button handler
-            document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
+           document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
             
             // Outside click handler
             /*
@@ -5573,7 +5602,7 @@
                 };
                 
                 sendCombinedOrder(formData);
-                hideDeliveryModal();
+                 hideDeliveryModal();
             });
             
             
@@ -5756,7 +5785,9 @@
                 e.preventDefault();
                 e.stopPropagation(); // For go back
                 hideDeliveryModal();
-                toggleScrapList(); // For go back
+               setTimeout(() => {
+        toggleScrapList(); // For go back
+    }, 300); 
             });
             
             
