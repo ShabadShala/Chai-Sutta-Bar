@@ -89,11 +89,7 @@
         
         
         
-        <!-- FAQ -->
-        <div class="hsidebar-option" id="faq-option">
-        <img src="icons/faq.svg" alt="FAQ Icon" class="menu-icon invert-icon">
-        FAQs
-        </div>
+        
         
         <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
         
@@ -137,6 +133,14 @@
         Clear App Data
         </div>
         </div>
+        </div>
+        
+        <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
+        
+        <!-- FAQ -->
+        <div class="hsidebar-option" id="faq-option">
+        <img src="icons/faq.svg" alt="FAQ Icon" class="menu-icon invert-icon">
+        FAQs
         </div>
         
         </div>
@@ -248,24 +252,26 @@
         
         
         
-function showOverlay(opacity = 0.9) {
-  const hoverlay = document.getElementById('hsidebar-overlay') || createOverlay();
-  hoverlay.style.display = 'block';
-  hoverlay.style.opacity = opacity;
-  
-  // Add scroll lock class to body
-  document.documentElement.classList.add('scroll-lock');
-  document.body.classList.add('scroll-lock');
-}
-
-function hideOverlay() {
-  const hoverlay = document.getElementById('hsidebar-overlay');
-  if (hoverlay) hoverlay.style.display = 'none';
-  
-  // Remove scroll lock
-  document.documentElement.classList.remove('scroll-lock');
-  document.body.classList.remove('scroll-lock');
-}
+        
+        
+        function showOverlay(opacity = 0.9) {
+            const hoverlay = document.getElementById('hsidebar-overlay') || createOverlay();
+            hoverlay.style.display = 'block';
+            hoverlay.style.opacity = opacity;
+            
+            // Add scroll lock class to body
+            document.documentElement.classList.add('scroll-lock');
+            document.body.classList.add('scroll-lock');
+        }
+        
+        function hideOverlay() {
+            const hoverlay = document.getElementById('hsidebar-overlay');
+            if (hoverlay) hoverlay.style.display = 'none';
+            
+            // Remove scroll lock
+            document.documentElement.classList.remove('scroll-lock');
+            document.body.classList.remove('scroll-lock');
+        }
         
         function createOverlay() {
             const hoverlay = document.createElement('div');
@@ -343,7 +349,7 @@ function hideOverlay() {
             }  
             
             // 1️⃣ Close on clicking the cancel button
-            modal.querySelector(".cancel-btn")?.addEventListener("click", closeModal);
+            modal.querySelector(".cancel-btn")?.addEventListener("click", closeModal);    
         }
         
         
@@ -366,32 +372,6 @@ function hideOverlay() {
         
         
         
-        // Install App
-        const installAppButton = document.getElementById('install-app');
-        if (installAppButton) {
-            installAppButton.addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        console.log(choiceResult.outcome === "accepted" ? "User installed the app" : "User dismissed the install prompt");
-                        deferredPrompt = null;
-                    });
-                    } else {
-                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed.\n- ON WINDOWS, this method does not work. Install from the browser's menu.");
-                    
-                    
-                }
-            });
-        }
-        
-        // Disable pwa buton is installed
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-            const installOption = document.getElementById('install-app');
-            if (installOption) {
-                installOption.classList.add('disabled-option');
-                installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
-            }
-        }
         
         
         
@@ -399,202 +379,103 @@ function hideOverlay() {
         
         
         
-        
-        
-        
-        
-        
-        
-        // Share App
-        const shareModal = document.createElement('div');
-        shareModal.id = 'share-modal';
-        shareModal.className = 'modal';
-        shareModal.innerHTML = `
+        const countersModal = document.createElement('div');
+        countersModal.id = 'counters-modal';
+        countersModal.className = 'modal';
+        countersModal.innerHTML = `
         <div class="modal-content">
-        <div class="close-btn">&times;</div>
+        <span class="close-btn">&times;</span>
+        <h3 style="color: white; line-height: 0.8;">
+        Dashboard <br>
+        <span style="color: #CCCCCC; font-size: 0.6em;">Chai Sutta Bar - Bagha Purana</span>
+        </h3>
         
-        <div class="qrcode-container">
-        <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
+        <div class="counter-grid">
+        <div class="counter-item">
+        <img src="icons/likes.svg" alt="Likes" class="counter-icon">
+        <span id="modal-likeCounter">0000</span>
+        <span class="counter-label">Likes</span>
         </div>
-        <div class="modal-buttons">
-        <button id="share-qr-code">
-        <img src="icons/share.svg" alt="Code" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-        Code
-        </button>
-        <button id="save-qr-code">
-        <img src="icons/save.svg" alt="Save" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-        Save
-        </button>
-        <button id="print-qr-code">
-        <img src="icons/print.svg" alt="Print" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-        Print
-        </button>
-        <button id="share-link">
-        <img src="icons/share.svg" alt="Link" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
-        Link
-        </button>
+        <div class="counter-item">
+        <img src="icons/download.svg" alt="Installs" class="counter-icon">
+        <span id="modal-installsCounter">0000</span>
+        <span class="counter-label">Installs</span>
+        </div>
+        <div class="counter-item">
+        <img src="icons/users.svg" alt="Users" class="counter-icon">
+        <span id="modal-visitorCounter">0000</span>
+        <span class="counter-label">Users</span>
+        </div>
+        <div class="counter-item">
+        <img src="icons/eye.svg" alt="Views" class="counter-icon">
+        <span id="modal-viewsCounter">0000</span>
+        <span class="counter-label">Views</span>
+        </div>
+        <div class="counter-item">
+        <img src="icons/orders.svg" alt="Orders" class="counter-icon">
+        <span id="modal-orderNumber">0000</span>
+        <span class="counter-label">Orders</span>
+        </div>
+        </div>
+        
+        <div class="app-info" id="app-features">
+        <img src="icons/feature.svg" alt="Features Icon" class="menu-icon invert-icon">
+        App Features
+        <img src="icons/feature.svg" alt="Features Icon" class="menu-icon invert-icon">
         </div>
         </div>`;
         
-        document.body.appendChild(shareModal);
+        document.body.appendChild(countersModal);
         
-        document.body.addEventListener('click', (event) => {
-            if (event.target.closest('#share-app')) {
-                toggleSidebar(false); // Close the sidebar
-                openModalStandalone('share-modal'); // Open the share modal
-            }
+
+        // Show counters modal when footer is clicked
+        document.getElementById('footer-info').addEventListener('click', () => {
+            // Open modal using universal function
+            toggleSidebar(false);
+            openModalStandalone('counters-modal');
+            // loadFeatures();
+            // Update counters after modal is opened
+            updateModalCounters();
         });
         
-        setupModalTriggers('share-modal'); 
+        setupModalTriggers('counters-modal'); 
         
         
         
-        // Share link
-        document.getElementById('share-link').addEventListener('click', async () => {
-            const text = 'Scan this QR code to open and install CSB-BPA app.';
-            const url = 'https://shabadshala.github.io/Chai-Sutta-Bar/';
+        // Counters
+        function updateModalCounters() {
+            // Update synchronous counters (already loaded)
+            document.getElementById('modal-visitorCounter').textContent = 
+            document.getElementById('visitorCounter').querySelector('span').textContent;
+            document.getElementById('modal-viewsCounter').textContent = 
+            document.getElementById('viewsCounter').querySelector('span').textContent;
+            document.getElementById('modal-likeCounter').textContent = 
+            document.getElementById('likeCounter').textContent;
             
-            // Copy text manually
-            try {
-                await navigator.clipboard.writeText(`${text}`);
-                console.log('Text copied to clipboard.');
-                } catch (err) {
-                console.log('Failed to copy text:', err);
-            }
+            // Fetch order number with loading spinner
+            const orderNumberElement = document.getElementById('modal-orderNumber');
+            orderNumberElement.innerHTML = '<div class="loading-spinner"></div>'; // Add spinner
+            fetch(`${scriptUrl}?sheet=counter&action=getOrders`)
+            .then(res => res.json())
+            .then(data => {
+                orderNumberElement.textContent = String(data.count).padStart(4, '0');
+            })
+            .catch(() => {
+                orderNumberElement.textContent = '0000';
+            });
             
-            // Proceed with sharing
-            navigator.share({
-                title: 'Share CSB-BPA Link',
-                url: url, // Only the URL is passed
-            }).catch(error => console.log('Error sharing link:', error));
-        });
-        
-        
-        
-        //Save QR code image to local storage
-        document.getElementById('save-qr-code').addEventListener('click', async () => {
-            try {
-                const imgElement = document.getElementById('qr-code-img');
-                if (!imgElement) throw new Error('QR Code image element not found');
-                
-                let blob;
-                if (imgElement.src.startsWith('data:')) {
-                    // If the image is already a data URL, convert it to a blob
-                    blob = dataURLtoBlob(imgElement.src);
-                    } else {
-                    // Fetch the image from the file path
-                    const response = await fetch(imgElement.src);
-                    if (!response.ok) throw new Error('Failed to fetch QR code');
-                    blob = await response.blob();
-                }
-                
-                // Create a URL for the blob
-                const url = URL.createObjectURL(blob);
-                
-                // Create a temporary anchor element to trigger the download
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
-                document.body.appendChild(a);
-                a.click(); // Trigger the download
-                document.body.removeChild(a); // Clean up
-                URL.revokeObjectURL(url); // Release the object URL
-                
-                console.log('QR code saved successfully');
-                } catch (error) {
-                console.error('Save failed:', error);
-                alert(`Save failed: ${error.message}`);
-            }
-        });
-        
-        
-        
-        // Share QR Image
-        document.addEventListener("DOMContentLoaded", function () {
-            // Function to share the QR Code
-            function shareQRCode() {
-                const qrImg = document.getElementById("qr-code-img");
-                if (!qrImg) {
-                    alert("QR Code not found!");
-                    return;
-                }
-                
-                // Convert QR code image to a Blob URL
-                fetch(qrImg.src)
-                .then(response => response.blob())
-                .then(blob => {
-                    const file = new File([blob], "qrcode.png", { type: blob.type });
-                    
-                    if (navigator.share) {
-                        navigator.share({
-                            title: "Scan this QR Code",
-                            text: "Scan this QR code to access the app.",
-                            files: [file],
-                        })
-                        .then(() => console.log("Successfully shared"))
-                        .catch(err => console.error("Error sharing:", err));
-                        } else {
-                        alert("Web Share API not supported. Please download and share manually.");
-                    }
-                })
-                .catch(err => console.error("Error fetching QR Code:", err));
-            }
-            
-            
-            
-            // Print the QR image
-            function printQRCode() {
-                const qrImg = document.getElementById("qr-code-img");
-                if (!qrImg) {
-                    alert("QR Code not found!");
-                    return;
-                }
-                
-                const printWindow = window.open("", "_blank");
-                
-                printWindow.document.write(`
-                    <html>
-                    <head>
-                    <title>Print QR Code</title>
-                    <style>
-                    @page { 
-                    size: A4; 
-                    margin: 20mm; 
-                    }
-                    body { 
-                    text-align: center; 
-                    padding: 20px; 
-                    }
-                    img { 
-                    max-width: 100%; 
-                    height: auto; 
-                    }
-                    </style>
-                    </head>
-                    <body>
-                    
-                    <img src="${qrImg.src}" alt="QR Code">
-                    
-                    <script>
-                    window.onload = function() { window.print(); };
-                    </script>
-                    
-                    </body>
-                    </html>
-                `);
-                
-                printWindow.document.close();
-            }
-            
-            
-            
-            
-            // Attach event listeners
-            document.getElementById("share-qr-code")?.addEventListener("click", shareQRCode);
-            document.getElementById("print-qr-code")?.addEventListener("click", printQRCode);
-        });
-        
-        
+            // Fetch installs counter with loading spinner
+            const installsElement = document.getElementById('modal-installsCounter');
+            installsElement.innerHTML = '<div class="loading-spinner"></div>'; // Add spinner
+            fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
+            .then(res => res.json())
+            .then(data => {
+                installsElement.textContent = String(data.count).padStart(4, '0');
+            })
+            .catch(() => {
+                installsElement.textContent = '0000';
+            });
+        }
         
         
         
@@ -779,48 +660,47 @@ function hideOverlay() {
         
         
         // Add info button handlers
-// Inside addInfoButtonListeners function
-function addInfoButtonListeners() {
-    document.querySelectorAll('.info-btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.stopPropagation();
-            
-            // Remove existing tooltips
-            document.querySelectorAll('.info-tooltip').forEach(tip => tip.remove());
-            
-            // Create new tooltip with fixed positioning
-            const tooltip = document.createElement('div');
-            tooltip.className = 'info-tooltip';
-            tooltip.textContent = this.dataset.info;
-            tooltip.style.position = 'fixed'; // Changed from absolute to fixed
-            tooltip.style.zIndex = '9999'; // Ensure higher than modal
-            
-            // Position using getBoundingClientRect
-            const rect = this.getBoundingClientRect();
-            tooltip.style.left = `${rect.left}px`;
-            tooltip.style.top = `${rect.bottom + 4}px`;
-            
-            document.body.appendChild(tooltip);
-            
-            // Close tooltip on interactions
-            function closeTooltip() {
-                tooltip.remove();
-                document.removeEventListener('click', closeTooltip);
-                window.removeEventListener('scroll', closeTooltip, true);
-                window.removeEventListener('touchmove', closeTooltip, true);
-            }
-            
-            document.addEventListener('click', closeTooltip);
-            window.addEventListener('scroll', closeTooltip, true);
-            window.addEventListener('touchmove', closeTooltip, true);
-        });
-    });
-}
+        function addInfoButtonListeners() {
+            document.querySelectorAll('.info-btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    
+                    // Remove existing tooltips
+                    document.querySelectorAll('.info-tooltip').forEach(tip => tip.remove());
+                    
+                    // Create new tooltip with fixed positioning
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'info-tooltip';
+                    tooltip.textContent = this.dataset.info;
+                    tooltip.style.position = 'fixed'; // Changed from absolute to fixed
+                    tooltip.style.zIndex = '9999'; // Ensure higher than modal
+                    
+                    // Position using getBoundingClientRect
+                    const rect = this.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left}px`;
+                    tooltip.style.top = `${rect.bottom + 4}px`;
+                    
+                    document.body.appendChild(tooltip);
+                    
+                    // Close tooltip on interactions
+                    function closeTooltip() {
+                        tooltip.remove();
+                        document.removeEventListener('click', closeTooltip);
+                        window.removeEventListener('scroll', closeTooltip, true);
+                        window.removeEventListener('touchmove', closeTooltip, true);
+                    }
+                    
+                    document.addEventListener('click', closeTooltip);
+                    window.addEventListener('scroll', closeTooltip, true);
+                    window.addEventListener('touchmove', closeTooltip, true);
+                });
+            });
+        }
         
         
         
         
-        // Keep the rest of your existing functions unchanged (buildList, addToggleListeners, etc.)        
+        
         function transformGoogleData(features) {
             return Object.keys(features).map(category => ({
                 name: category,
@@ -929,6 +809,7 @@ function addInfoButtonListeners() {
             collapseAllBtn.disabled = expandedContainers.length === 0;
         }
         
+        
         // Add footer button functionality
         document.querySelector('.expand-all-btn').addEventListener('click', expandAll);
         document.querySelector('.collapse-all-btn').addEventListener('click', collapseAll);
@@ -965,236 +846,273 @@ function addInfoButtonListeners() {
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        // FAQ Modal
-        const faqModal = document.createElement('div');
-        faqModal.id = 'faq-modal';
-        faqModal.className = 'modal';
-        faqModal.innerHTML = `
-        <div class="modal-content">
-        <div class="close-btn">&times;</div>
-        <h3 class="modal-header">Frequently Asked Questions</h3>
-        <input type="text" id="faq-search" class="faq-search" placeholder="Search questions...">
-        <div class="faq-container" id="faq-container">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Loading FAQs...</div>
-        </div>
-        <div class="modal-footer">
-        <button class="expand-all-btn" title="Expand All">
-        <img src="icons/expand-all.svg" alt="Expand">
-        </button>
-        <button class="collapse-all-btn" title="Collapse All">
-        <img src="icons/collapse-all.svg" alt="Collapse">
-        </button>
-        </div>
-        </div>`;
-        document.body.appendChild(faqModal);
-        
-        // Add search box styles
-        const searchStyle = document.createElement('style');
-        searchStyle.textContent = `
-        .faq-search {
-        width: 75%;
-        padding: 8px 16px;
-        margin: 10px auto;
-        display: block;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        outline: none;
-        }
-        `;
-        document.head.appendChild(searchStyle)
-        
-        
-        // Search functionality
-        function filterFAQs(searchTerm) {
-            const faqItems = document.querySelectorAll('#faq-container .faq-item');
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question').textContent.toLowerCase();
-                item.style.display = question.includes(searchTerm) ? 'block' : 'none';
+        // Install App
+        const installAppButton = document.getElementById('install-app');
+        if (installAppButton) {
+            installAppButton.addEventListener('click', () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        console.log(choiceResult.outcome === "accepted" ? "User installed the app" : "User dismissed the install prompt");
+                        deferredPrompt = null;
+                    });
+                    } else {
+                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed, and you opened in browser.\n- ON WINDOWS, this method does not work. Install from the browser's menu.");
+                    
+                    
+                }
             });
         }
         
-        document.getElementById('faq-search')?.addEventListener('input', function(e) {
-            filterFAQs(e.target.value.toLowerCase());
-        });
-        
-        // Modified FAQ option click handler
-        document.getElementById('faq-option')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            openModalStandalone('faq-modal');
-            document.getElementById('faq-search').value = ''; // Reset search on open
-            loadFAQs();
-        });
-        
-        
-        // Add event listener for the FAQ option
-        document.getElementById('faq-option')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            openModalStandalone('faq-modal');
-            loadFAQs();
-        });
-        
-        setupModalTriggers('faq-modal');
-        
-        
-        
-        
-        async function loadFAQs() {
-            const container = document.getElementById('faq-container');
-            
-            try {
-                // Show loading spinner
-                container.innerHTML = '<div class="loading-spinner"></div> Loading FAQs...';
-                
-                // Add timeout for slow networks (10 seconds)
-                const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Timeout loading FAQs')), 10000)
-                );
-                
-                // Fetch FAQs data with timeout
-                const response = await Promise.race([
-                    fetch('faq.json'),
-                    timeoutPromise
-                ]);
-                
-                // Check if response is valid
-                if (!response.ok) {
-                    throw new Error('Failed to fetch FAQs');
-                }
-                
-                // Parse JSON data
-                const faqs = await response.json();
-                
-                // Clear loading spinner
-                container.innerHTML = '';
-                
-                // Render FAQs
-                let activeFaq = null;
-                faqs.forEach((faq, index) => {
-                    const faqItem = document.createElement('div');
-                    faqItem.className = 'faq-item';
-                    faqItem.innerHTML = `
-                    <div class="faq-question">
-                    ${faq.question}
-                    <span class="toggle-arrow">▼</span>
-                    </div>
-                    <div class="faq-answer">${faq.answer}</div>
-                    `;
-                    
-                    const questionElement = faqItem.querySelector('.faq-question');
-                    const answerElement = faqItem.querySelector('.faq-answer');
-                    let pressTimer;
-                    
-                    // Long-press copy functionality
-                    const handleTouchStart = (e) => {
-                        if (!faqItem.classList.contains('active')) return;
-                        e.preventDefault();
-                        pressTimer = setTimeout(() => {
-                            navigator.clipboard.writeText(answerElement.textContent.trim())
-                            .then(() => showToast('Answer copied to clipboard!'))
-                            .catch(() => showToast('Failed to copy text'));
-                        }, 500);
-                    };
-                    
-                    const handleTouchEnd = (e) => {
-                        e.preventDefault();
-                        clearTimeout(pressTimer);
-                    };
-                    
-                    // Add event listeners for touch devices
-                    answerElement.addEventListener('touchstart', handleTouchStart);
-                    answerElement.addEventListener('touchend', handleTouchEnd);
-                    answerElement.addEventListener('touchcancel', handleTouchEnd);
-                    
-                    // Toggle FAQ on click
-  // Update question click handler
-  questionElement.addEventListener('click', () => {
-    const wasActive = faqItem.classList.contains('active');
-    
-    // Close all FAQs first
-    document.querySelectorAll('.faq-item').forEach(item => {
-      item.classList.remove('active');
-    });
-    
-    // Toggle if not already active
-    if (!wasActive) {
-      faqItem.classList.add('active');
-      
-      // Scroll to show full question with answer
-      setTimeout(() => {
-        const answerHeight = answerElement.scrollHeight;
-        const container = document.querySelector('.faq-container');
-        const scrollTop = faqItem.offsetTop - container.offsetTop;
-        
-        // Only scroll if answer doesn't fit
-        if (answerHeight > container.clientHeight) {
-          container.scrollTo({
-            top: scrollTop,
-            behavior: 'smooth'
-          });
-        }
-      }, 300);
-    }
-  });
-                    
-                    container.appendChild(faqItem);
-                });
-                
-                // Initialize button states
-                updateFAQButtonsState();
-                
-                // Show toast message
-                function showToast(message) {
-                    const toast = document.createElement('div');
-                    toast.className = 'copy-toast';
-                    toast.textContent = message;
-                    document.body.appendChild(toast);
-                    setTimeout(() => toast.remove(), 2000);
-                }
-                
-                // Filter FAQs if search term exists
-                const searchTerm = document.getElementById('faq-search').value.toLowerCase();
-                if (searchTerm) filterFAQs(searchTerm);
-                
-                } catch (error) {
-                console.error('Error loading FAQs:', error);
-                // Show error message
-                container.innerHTML = '<div class="error-message">❌ Failed to load FAQs. Please try again later.</div>';
+        // Disable pwa buton is installed
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            const installOption = document.getElementById('install-app');
+            if (installOption) {
+                installOption.classList.add('disabled-option');
+                installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
             }
         }
         
         
-        function expandAllFAQs() {
-            document.querySelectorAll('.faq-item').forEach(item => item.classList.add('active'));
-            updateFAQButtonsState();
-        }
         
-        function collapseAllFAQs() {
-            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
-            updateFAQButtonsState();
-        }
         
-        function updateFAQButtonsState() {
-            const allFAQs = document.querySelectorAll('.faq-item');
-            const expandedFAQs = document.querySelectorAll('.faq-item.active');
-            const expandBtn = document.querySelector('#faq-modal .expand-all-btn');
-            const collapseBtn = document.querySelector('#faq-modal .collapse-all-btn');
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Share App
+        const shareModal = document.createElement('div');
+        shareModal.id = 'share-modal';
+        shareModal.className = 'modal';
+        shareModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn">&times;</div>
+        
+        <div class="qrcode-container">
+        <img src="qrcode.png" alt="QR Code" class="qrcode" id="qr-code-img">
+        </div>
+        <div class="modal-buttons">
+        <button id="share-qr-code">
+        <img src="icons/share.svg" alt="Code" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Code
+        </button>
+        <button id="save-qr-code">
+        <img src="icons/save.svg" alt="Save" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Save
+        </button>
+        <button id="print-qr-code">
+        <img src="icons/print.svg" alt="Print" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Print
+        </button>
+        <button id="share-link">
+        <img src="icons/share.svg" alt="Link" width="14" height="14" class="invert-icon" style="margin-right: 3px; vertical-align: middle;">
+        Link
+        </button>
+        </div>
+        </div>`;
+        
+        document.body.appendChild(shareModal);
+        
+        document.body.addEventListener('click', (event) => {
+            if (event.target.closest('#share-app')) {
+                toggleSidebar(false); // Close the sidebar
+                openModalStandalone('share-modal'); // Open the share modal
+            }
+        });
+        
+        setupModalTriggers('share-modal'); 
+        
+        
+        
+        // Share QR Image
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to share the QR Code
+            function shareQRCode() {
+                const qrImg = document.getElementById("qr-code-img");
+                if (!qrImg) {
+                    alert("QR Code not found!");
+                    return;
+                }
+                
+                // Convert QR code image to a Blob URL
+                fetch(qrImg.src)
+                .then(response => response.blob())
+                .then(blob => {
+                    const file = new File([blob], "qrcode.png", { type: blob.type });
+                    
+                    if (navigator.share) {
+                        navigator.share({
+                            title: "Scan this QR Code",
+                            text: "Scan this QR code to open and install CSB-BPA app.",
+                            files: [file],
+                        })
+                        .then(() => console.log("Successfully shared"))
+                        .catch(err => console.error("Error sharing:", err));
+                        } else {
+                        alert("Web Share API not supported. Please download and share manually.");
+                    }
+                })
+                .catch(err => console.error("Error fetching QR Code:", err));
+            }
             
-            expandBtn.disabled = expandedFAQs.length === allFAQs.length;
-            collapseBtn.disabled = expandedFAQs.length === 0;
-        }
+            
+            
+            // Print the QR image
+            function printQRCode() {
+                const qrImg = document.getElementById("qr-code-img");
+                if (!qrImg) {
+                    alert("QR Code not found!");
+                    return;
+                }
+                
+                const printWindow = window.open("", "_blank");
+                
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                    <title>Print QR Code</title>
+                    <style>
+                    @page { 
+                    size: A4; 
+                    margin: 20mm; 
+                    }
+                    body { 
+                    text-align: center; 
+                    padding: 20px; 
+                    }
+                    img { 
+                    max-width: 100%; 
+                    height: auto; 
+                    }
+                    </style>
+                    </head>
+                    <body>
+                    
+                    <img src="${qrImg.src}" alt="QR Code">
+                    
+                    <script>
+                    window.onload = function() { window.print(); };
+                    </script>
+                    
+                    </body>
+                    </html>
+                `);
+                
+                printWindow.document.close();
+            }
+            
+            
+            
+            // Share link
+            document.getElementById('share-link').addEventListener('click', async () => {
+                const text = 'Use this link to open and install CSB-BPA app.';
+                const url = 'https://shabadshala.github.io/Chai-Sutta-Bar/';
+                
+                // Copy text manually
+                try {
+                    await navigator.clipboard.writeText(`${text}`);
+                    console.log('Text copied to clipboard.');
+                    } catch (err) {
+                    console.log('Failed to copy text:', err);
+                }
+                
+                // Proceed with sharing
+                navigator.share({
+                    title: 'Share CSB-BPA Link',
+                    url: url, // Only the URL is passed
+                }).catch(error => console.log('Error sharing link:', error));
+            });
+            
+            
+            
+            //Save QR code image to local storage
+            document.getElementById('save-qr-code').addEventListener('click', async () => {
+                try {
+                    const imgElement = document.getElementById('qr-code-img');
+                    if (!imgElement) throw new Error('QR Code image element not found');
+                    
+                    let blob;
+                    if (imgElement.src.startsWith('data:')) {
+                        // If the image is already a data URL, convert it to a blob
+                        blob = dataURLtoBlob(imgElement.src);
+                        } else {
+                        // Fetch the image from the file path
+                        const response = await fetch(imgElement.src);
+                        if (!response.ok) throw new Error('Failed to fetch QR code');
+                        blob = await response.blob();
+                    }
+                    
+                    // Create a URL for the blob
+                    const url = URL.createObjectURL(blob);
+                    
+                    // Create a temporary anchor element to trigger the download
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
+                    document.body.appendChild(a);
+                    a.click(); // Trigger the download
+                    document.body.removeChild(a); // Clean up
+                    URL.revokeObjectURL(url); // Release the object URL
+                    
+                    console.log('QR code saved successfully');
+                    } catch (error) {
+                    console.error('Save failed:', error);
+                    alert(`Save failed: ${error.message}`);
+                }
+            });
+            
+            
+            
+            
+            
+            // Attach event listeners
+            document.getElementById("share-qr-code")?.addEventListener("click", shareQRCode);
+            document.getElementById("print-qr-code")?.addEventListener("click", printQRCode);
+        });
         
         
-        // Add after FAQ modal creation
-        document.querySelector('#faq-modal .expand-all-btn').addEventListener('click', expandAllFAQs);
-        document.querySelector('#faq-modal .collapse-all-btn').addEventListener('click', collapseAllFAQs);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -1333,8 +1251,6 @@ function addInfoButtonListeners() {
                 // Close the sidebar when toggling the starry background
                 toggleSidebar(false);
             });
-            
-            
         }
         
         
@@ -1353,7 +1269,25 @@ function addInfoButtonListeners() {
         
         
         
-        // Create Child Lock Modal Elements
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Child Lock Modal Elements
         const pinModal = document.createElement('div');
         pinModal.id = 'pinModal';
         pinModal.className = 'modal';
@@ -1667,74 +1601,244 @@ function addInfoButtonListeners() {
         
         
         
+        // FAQ Modal
+        const faqModal = document.createElement('div');
+        faqModal.id = 'faq-modal';
+        faqModal.className = 'modal';
+        faqModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn">&times;</div>
+        <h3 class="modal-header">Frequently Asked Questions</h3>
+        <input type="text" id="faq-search" class="faq-search" placeholder="Search questions...">
+        <div class="faq-container" id="faq-container">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading FAQs...</div>
+        </div>
+        <div class="modal-footer">
+        <button class="expand-all-btn" title="Expand All">
+        <img src="icons/expand-all.svg" alt="Expand">
+        </button>
+        <button class="collapse-all-btn" title="Collapse All">
+        <img src="icons/collapse-all.svg" alt="Collapse">
+        </button>
+        </div>
+        </div>`;
+        document.body.appendChild(faqModal);
+        
+        // Add search box styles
+        const searchStyle = document.createElement('style');
+        searchStyle.textContent = `
+        .faq-search {
+        width: 75%;
+        padding: 8px 16px;
+        margin: 10px auto;
+        display: block;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+        }
+        `;
+        document.head.appendChild(searchStyle)
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // Update modal counters
-        function updateModalCounters() {
-            // Update synchronous counters (already loaded)
-            document.getElementById('modal-visitorCounter').textContent = 
-            document.getElementById('visitorCounter').querySelector('span').textContent;
-            document.getElementById('modal-viewsCounter').textContent = 
-            document.getElementById('viewsCounter').querySelector('span').textContent;
-            document.getElementById('modal-likeCounter').textContent = 
-            document.getElementById('likeCounter').textContent;
-            
-            // Fetch order number with loading spinner
-            const orderNumberElement = document.getElementById('modal-orderNumber');
-            orderNumberElement.innerHTML = '<div class="loading-spinner"></div>'; // Add spinner
-            fetch(`${scriptUrl}?sheet=counter&action=getOrders`)
-            .then(res => res.json())
-            .then(data => {
-                orderNumberElement.textContent = String(data.count).padStart(4, '0');
-            })
-            .catch(() => {
-                orderNumberElement.textContent = '0000';
-            });
-            
-            // Fetch installs counter with loading spinner
-            const installsElement = document.getElementById('modal-installsCounter');
-            installsElement.innerHTML = '<div class="loading-spinner"></div>'; // Add spinner
-            fetch(`${scriptUrl}?sheet=counter&action=getInstalls`)
-            .then(res => res.json())
-            .then(data => {
-                installsElement.textContent = String(data.count).padStart(4, '0');
-            })
-            .catch(() => {
-                installsElement.textContent = '0000';
+        // Search functionality
+        function filterFAQs(searchTerm) {
+            const faqItems = document.querySelectorAll('#faq-container .faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                item.style.display = question.includes(searchTerm) ? 'block' : 'none';
             });
         }
         
-        // Show counters modal when footer is clicked
-        document.getElementById('footer-info').addEventListener('click', () => {
-            // Open modal using universal function
-            toggleSidebar(false);
-            openModalStandalone('counters-modal');
-             loadFeatures();
-            // Update counters after modal is opened
-            updateModalCounters();
+        document.getElementById('faq-search')?.addEventListener('input', function(e) {
+            filterFAQs(e.target.value.toLowerCase());
         });
         
-        setupModalTriggers('counters-modal'); 
+        // Modified FAQ option click handler
+        document.getElementById('faq-option')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('faq-modal');
+            document.getElementById('faq-search').value = ''; // Reset search on open
+            loadFAQs();
+        });
+        
+        
+        // Add event listener for the FAQ option
+        document.getElementById('faq-option')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('faq-modal');
+            loadFAQs();
+        });
+        
+        setupModalTriggers('faq-modal');
+        
+        
+        
+        
+        async function loadFAQs() {
+            const container = document.getElementById('faq-container');
+            
+            try {
+                // Show loading spinner
+                container.innerHTML = '<div class="loading-spinner"></div> Loading FAQs...';
+                
+                // Add timeout for slow networks (10 seconds)
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Timeout loading FAQs')), 10000)
+                );
+                
+                // Fetch FAQs data with timeout
+                const response = await Promise.race([
+                    fetch('faq.json'),
+                    timeoutPromise
+                ]);
+                
+                // Check if response is valid
+                if (!response.ok) {
+                    throw new Error('Failed to fetch FAQs');
+                }
+                
+                // Parse JSON data
+                const faqs = await response.json();
+                
+                // Clear loading spinner
+                container.innerHTML = '';
+                
+                // Render FAQs
+                let activeFaq = null;
+                faqs.forEach((faq, index) => {
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'faq-item';
+                    faqItem.innerHTML = `
+                    <div class="faq-question">
+                    ${faq.question}
+                    <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">${faq.answer}</div>
+                    `;
+                    
+                    const questionElement = faqItem.querySelector('.faq-question');
+                    const answerElement = faqItem.querySelector('.faq-answer');
+                    let pressTimer;
+                    
+                    // Long-press copy functionality
+                    const handleTouchStart = (e) => {
+                        if (!faqItem.classList.contains('active')) return;
+                        e.preventDefault();
+                        pressTimer = setTimeout(() => {
+                            navigator.clipboard.writeText(answerElement.textContent.trim())
+                            .then(() => showToast('Answer copied to clipboard!'))
+                            .catch(() => showToast('Failed to copy text'));
+                        }, 500);
+                    };
+                    
+                    const handleTouchEnd = (e) => {
+                        e.preventDefault();
+                        clearTimeout(pressTimer);
+                    };
+                    
+                    // Add event listeners for touch devices
+                    answerElement.addEventListener('touchstart', handleTouchStart);
+                    answerElement.addEventListener('touchend', handleTouchEnd);
+                    answerElement.addEventListener('touchcancel', handleTouchEnd);
+                    
+                    // Toggle FAQ on click
+                    // Update question click handler
+                    questionElement.addEventListener('click', () => {
+                        const wasActive = faqItem.classList.contains('active');
+                        
+                        // Close all FAQs first
+                        document.querySelectorAll('.faq-item').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        
+                        // Toggle if not already active
+                        if (!wasActive) {
+                            faqItem.classList.add('active');
+                            
+                            // Scroll to show full question with answer
+                            setTimeout(() => {
+                                const answerHeight = answerElement.scrollHeight;
+                                const container = document.querySelector('.faq-container');
+                                const scrollTop = faqItem.offsetTop - container.offsetTop;
+                                
+                                // Only scroll if answer doesn't fit
+                                if (answerHeight > container.clientHeight) {
+                                    container.scrollTo({
+                                        top: scrollTop,
+                                        behavior: 'smooth'
+                                    });
+                                }
+                            }, 300);
+                        }
+                    });
+                    
+                    container.appendChild(faqItem);
+                });
+                
+                // Initialize button states
+                updateFAQButtonsState();
+                
+                // Show toast message
+                function showToast(message) {
+                    const toast = document.createElement('div');
+                    toast.className = 'copy-toast';
+                    toast.textContent = message;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 2000);
+                }
+                
+                // Filter FAQs if search term exists
+                const searchTerm = document.getElementById('faq-search').value.toLowerCase();
+                if (searchTerm) filterFAQs(searchTerm);
+                
+                } catch (error) {
+                console.error('Error loading FAQs:', error);
+                // Show error message
+                container.innerHTML = '<div class="error-message">❌ Failed to load FAQs. Please try again later.</div>';
+            }
+        }
+        
+        
+        function expandAllFAQs() {
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.add('active'));
+            updateFAQButtonsState();
+        }
+        
+        function collapseAllFAQs() {
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+            updateFAQButtonsState();
+        }
+        
+        function updateFAQButtonsState() {
+            const allFAQs = document.querySelectorAll('.faq-item');
+            const expandedFAQs = document.querySelectorAll('.faq-item.active');
+            const expandBtn = document.querySelector('#faq-modal .expand-all-btn');
+            const collapseBtn = document.querySelector('#faq-modal .collapse-all-btn');
+            
+            expandBtn.disabled = expandedFAQs.length === allFAQs.length;
+            collapseBtn.disabled = expandedFAQs.length === 0;
+        }
+        
+        
+        // Add after FAQ modal creation
+        document.querySelector('#faq-modal .expand-all-btn').addEventListener('click', expandAllFAQs);
+        document.querySelector('#faq-modal .collapse-all-btn').addEventListener('click', collapseAllFAQs);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -1787,6 +1891,16 @@ function addInfoButtonListeners() {
     setupHamburgerMenu();
     
 })(); // IIFE Ends
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1973,16 +2087,13 @@ function addCheatListeners() {
 }
 
 
-
-
-
 // Add event listener for the cheat toggle button
 document.getElementById('cheatToggleButton')?.addEventListener('click', function() {
     cheatActive = !cheatActive;
     
     // Update button text
     const statusText = cheatActive ? 'Active' : 'Inactive';
-    this.querySelector('span').textContent = `Item Search: ${statusText}`;
+    this.querySelector('span').textContent = `Item Word Search: ${statusText}`;
     
     if (cheatActive) {
         addCheatListeners();
@@ -1991,25 +2102,4 @@ document.getElementById('cheatToggleButton')?.addEventListener('click', function
         alert('Item Search feature deactivated');
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
