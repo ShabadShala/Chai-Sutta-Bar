@@ -239,119 +239,104 @@ document.addEventListener('keydown', function(e) {
 
 
 
-
-
-
-
-
-
-
-// Reliable Long Press + Swipe Up Gesture
+// ScrapButton Cheat Gesture (Long Press + Swipe Up)
 const scrapBtn = document.getElementById('scrapButton');
-let gesture = {
-    active: false,
-    startTime: 0,
+let gestureState = {
+    longPressActive: false,
     startY: 0,
-    timer: null
+    swipeProgress: 0,
+    longPressTimer: null
 };
 
-// Debugging Setup
-function gestureLog(message) {
-    console.log(`[Gesture] ${message}`);
-    // For production: remove or keep silent
-}
-
 // Visual Feedback Elements
-const gestureUI = document.createElement('div');
-gestureUI.innerHTML = `
-    <div class="gesture-timer"></div>
-    <div class="gesture-swipe"></div>
-`;
-Object.assign(gestureUI.style, {
-    position: 'fixed',
-    pointerEvents: 'none',
-    zIndex: 99999,
-    display: 'none'
-});
-document.body.appendChild(gestureUI);
+const createGestureUI = () => {
+    const ui = document.createElement('div');
+    ui.id = 'cheatGestureUI';
+    ui.innerHTML = `
+        <div class="longpress-indicator"></div>
+        <div class="swipe-indicator"></div>
+    `;
+    ui.style.cssText = `
+        position: fixed;
+        pointer-events: none;
+        z-index: 99999;
+        display: none;
+    `;
+    document.body.appendChild(ui);
+};
+createGestureUI();
 
-// Touch Handlers
 scrapBtn.addEventListener('touchstart', function(e) {
     if (e.touches.length !== 1) return;
     
-    const touch = e.touches[0];
-    gesture = {
-        active: true,
-        startTime: Date.now(),
-        startY: touch.clientY,
-        timer: setTimeout(() => {
-            gestureUI.querySelector('.gesture-timer').style.backgroundColor = '#00ff00';
-            gestureLog('Long press completed');
-        }, 1000) // Reduced to 1 second for better UX
+    gestureState = {
+        longPressActive: true,
+        startY: e.touches[0].clientY,
+        swipeProgress: 0
     };
 
-    // Position UI at touch point
-    const {clientX, clientY} = touch;
-    Object.assign(gestureUI.style, {
-        display: 'block',
-        left: `${clientX}px`,
-        top: `${clientY}px`
-    });
-    
-    gestureLog('Touch started');
-    e.preventDefault(); // Prevent scroll
+    const ui = document.getElementById('cheatGestureUI');
+    const rect = scrapBtn.getBoundingClientRect();
+    ui.style.display = 'block';
+    ui.style.left = `${rect.left + rect.width/2}px`;
+    ui.style.top = `${rect.top + rect.height/2}px`;
+
+    // Long Press Timeout (1.5 seconds)
+    gestureState.longPressTimer = setTimeout(() => {
+        ui.querySelector('.longpress-indicator').style.backgroundColor = '#00ff00';
+    }, 1500);
 });
 
 scrapBtn.addEventListener('touchmove', function(e) {
-    if (!gesture.active) return;
-    
+    if (!gestureState.longPressActive || !gestureState.longPressTimer) return;
+
     const touch = e.touches[0];
-    const deltaY = gesture.startY - touch.clientY;
+    const ui = document.getElementById('cheatGestureUI');
     
-    // Update swipe visual
-    gestureUI.querySelector('.gesture-swipe').style.transform = 
-        `translateY(${-Math.min(deltaY, 100)}px)`;
+    // Calculate swipe progress (minimum 100px upward)
+    const swipeDelta = gestureState.startY - touch.clientY;
+    gestureState.swipeProgress = Math.min(swipeDelta / 100, 1);
     
-    // Check activation (1s press + 100px swipe)
-    if (Date.now() - gesture.startTime > 1000 && deltaY > 100) {
-        gestureLog('Gesture activated');
+    // Update swipe indicator
+    ui.querySelector('.swipe-indicator').style.transform = 
+        `translateY(${-gestureState.swipeProgress * 50}px)`;
+
+    // Activate if both conditions met
+    if (gestureState.swipeProgress === 1 && 
+        Date.now() - gestureState.longPressTimer._idleStart >= 1500) {
         executeCheatOrder();
         resetGesture();
     }
 });
 
 scrapBtn.addEventListener('touchend', resetGesture);
-scrapBtn.addEventListener('touchcancel', resetGesture);
 
 function resetGesture() {
-    if (gesture.timer) clearTimeout(gesture.timer);
-    gesture.active = false;
-    gestureUI.style.display = 'none';
-    gestureLog('Gesture reset');
+    clearTimeout(gestureState.longPressTimer);
+    gestureState.longPressActive = false;
+    document.getElementById('cheatGestureUI').style.display = 'none';
 }
 
-// CSS Styles
+// Add to CSS
 const style = document.createElement('style');
 style.textContent = `
-.gesture-timer {
-    width: 50px;
-    height: 50px;
-    border: 2px solid #fff;
+.longpress-indicator {
+    width: 60px;
+    height: 60px;
+    border: 3px solid #fff;
     border-radius: 50%;
     position: absolute;
     transform: translate(-50%, -50%);
-    animation: pulse 1s infinite;
+    animation: pulse 1.5s infinite;
 }
 
-.gesture-swipe {
+.swipe-indicator {
     width: 30px;
     height: 30px;
-    background: #00ff00;
-    border-radius: 50%;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="%2300ff00" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
     position: absolute;
     transform: translate(-50%, -50%);
-    transition: transform 0.2s;
-    opacity: 0.7;
+    transition: transform 0.3s;
 }
 
 @keyframes pulse {
