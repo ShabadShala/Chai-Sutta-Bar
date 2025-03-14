@@ -2605,7 +2605,7 @@
             background-color: #d9363e; /* Darker red on hover */
             transform: scale(1.05);   /* Slight scale for hover effect */
             }
-              
+            
             .summary-total {
             font-size: 4rem;
             }             
@@ -2648,7 +2648,7 @@
             padding: 2rem;
             border-radius: 15px;
             width: 90%; 
-            max-width: 250px;
+            max-width: 225px;
             position: relative;
             }
             
@@ -2660,14 +2660,14 @@
             .timeplay-header h2 {
             font-size: 6rem; 
             color: #333;
-            margin-top: 2rem;
+            margin-top: 1rem;
             }
             
             .close-timeplay {
             position: absolute;
             top: 1rem;
             right: 1.5rem;
-            font-size: 5rem;
+            font-size: 7rem;
             cursor: pointer;
             color: #333;
             }
@@ -2695,7 +2695,7 @@
             
             .timeplay-item img {
             width: 3 0vw;
-            max-width: 100px;
+            max-width: 80px;
             height: auto;
             margin-bottom: 1rem;
             }
@@ -2706,7 +2706,7 @@
             text-align: center;
             }
             
-
+            
             
             
             
@@ -3013,13 +3013,13 @@
         <div id="checklistOverlay" class="checklist-overlay" style="display: none;">
             <div class="checklist-modal">
                 <span class="close-checklist">&times;</span>
-                <h2>Checklist (Last Order)</h2>
+                <h2 style="font-size: 7rem;">Checklist</h2>
+                <div id="orderDateTime" style="font-size: 5rem; margin-bottom: 1rem;"></div>
                 <div id="checklistItemsContainer" class="checklist-items-container"></div>
-                <div id="checklistSummary" class="checklist-summary">
+                <!--    <div id="checklistSummary" class="checklist-summary">
                     <span id="totalItems" class="summary-total">Total Items: 0</span>
-                    <span id="totalQty" class="summary-total">Total Qty: 0</span>
-                    
-                </div>
+                    <span id="totalQty" class="summary-total">Total Qty: 0</span>                    
+                </div> -->
                 <div class="checklist-controls">
                     <button id="clearChecklist">Clear</button>
                     <button id="closeChecklist">Close</button>
@@ -3058,10 +3058,13 @@
             DEV
         </button>
         
-      
-
-
-
+        
+        
+        
+        
+        
+        
+        
         
         <!-- Time Play Modal -->
         <div id="timePlayModal" class="timeplay-modal-overlay" style="display: none;">
@@ -3105,7 +3108,7 @@
             
             
             
-                        
+            
             // Update PWA
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/service-worker.js').then(reg => {
@@ -3266,7 +3269,7 @@
             
             
             
-                        
+            
             // Add this code where you initialize other JavaScript
             const fileId = "1_YZByTcu5rHIobQoOS1AZ_NjNCz98m8T";
             const timestamp = new Date().getTime();
@@ -3309,21 +3312,43 @@
             
             // offline mode
             function updateOnlineStatus() {
-                const isOffline = !navigator.onLine;
-                document.body.classList.toggle('app-offline', isOffline);
+                // First check basic navigator.onLine status
+                const isBasicOffline = !navigator.onLine;
                 
-                // Toggle offline-mode class on specific elements
-                document.querySelectorAll('.offline-mode-target').forEach(element => {
-                    element.classList.toggle('offline-mode', isOffline);
+                // Then verify with actual network request
+                const connectionTest = fetch('https://shabadshala.github.io/Chai-Sutta-Bar/icon-512.png?cache=' + Date.now(), {
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    cache: 'no-cache'
+                })
+                .then(() => false) // Online if successful
+                .catch(() => true); // Offline if failed
+                
+                // Timeout in case request hangs
+                const timeout = new Promise(resolve => 
+                setTimeout(() => resolve(true), 2000)
+                );
+                
+                Promise.race([connectionTest, timeout])
+                .then(isReallyOffline => {
+                    const isOffline = isBasicOffline || isReallyOffline;
+                    
+                    document.body.classList.toggle('app-offline', isOffline);
+                    document.querySelectorAll('.offline-mode-target').forEach(element => {
+                        element.classList.toggle('offline-mode', isOffline);
+                    });
+                    
+                    if (isOffline) {
+                        console.log('Offline mode activated - No internet connection');
+                    }
                 });
             }
             
+            // Update check frequency (every 30 seconds + on network events)
             window.addEventListener('online', updateOnlineStatus);
             window.addEventListener('offline', updateOnlineStatus);
+            setInterval(updateOnlineStatus, 30000);
             updateOnlineStatus(); // Initial check
-            
-            
-            
             
             
             
@@ -3347,7 +3372,7 @@
             document.addEventListener('copy', event => event.preventDefault());
             document.addEventListener('cut', event => event.preventDefault());
             document.addEventListener('paste', event => event.preventDefault());
-                        
+            
             // Initialize order number from localStorage
             let cachedOrderNumber = null;                  
             
@@ -3445,16 +3470,16 @@
             // Initialize when page loads
             loadReplacements();
             
-
-
-
-
-
-
-
-
-
-
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             const SYNONYMS = {
                 'chai': ['tea'],
                 'tea': ['chai'],
@@ -3474,7 +3499,7 @@
             
             
             
-
+            
             // IndexedDB setup for menu caching
             const MENU_DB_NAME = "MenuDB"; // Changed from DB_NAME
             const MENU_STORE_NAME = "menuStore"; // Changed from STORE_NAME
@@ -3626,10 +3651,10 @@
             
             
             
-
             
             
-
+            
+            
             
             // Filter menu items
             let selectedFilter = "="; // Default to "="                                        
@@ -3644,13 +3669,20 @@
                 let totalVisibleItems = 0;
                 const normalizedSearchQuery = searchQuery.trim().toLowerCase();
                 
-                // Create search terms including synonyms
+
                 // Create search terms including synonyms
                 const searchTerms = new Set([normalizedSearchQuery]);
-                if (SEARCH_REPLACEMENTS[normalizedSearchQuery]) {
-                    const synonyms = SEARCH_REPLACEMENTS[normalizedSearchQuery].split(',');
-                    synonyms.forEach(synonym => searchTerms.add(synonym.trim()));
-                }
+if (SEARCH_REPLACEMENTS[normalizedSearchQuery]) {
+    const replacements = SEARCH_REPLACEMENTS[normalizedSearchQuery].split(',');
+    replacements.forEach(synonym => searchTerms.add(synonym.trim()));
+}
+
+// Add synonyms from SYNONYMS
+if (SYNONYMS[normalizedSearchQuery]) {
+    SYNONYMS[normalizedSearchQuery].forEach(synonym => {
+        searchTerms.add(synonym.toLowerCase().trim());
+    });
+}
                 
                 const isNumberSearch = /^\d+$/.test(normalizedSearchQuery);
                 
@@ -4136,7 +4168,7 @@
                         Available cached version<br>${formattedDate}
                         </div>
                         <div class="warning-text">
-                        <span style="color: green;">Offline copy of food items can be loaded,</span><br>Some features of the app may not work until you're back online.
+                        <span style="color: green;">Offline copy of 'Food-Menu' can be loaded,</span><br>Some features of the app may not work until you're back online.
                         </div>                        
                         <br>
                         <button id="loadCached" class="cached-button">
@@ -4171,7 +4203,7 @@
             
             
             
-
+            
             
             
             
@@ -4324,14 +4356,16 @@
                 const repeatButton = document.getElementById('repeatLastOrder');
                 
                 repeatButton.addEventListener('click', () => {
-                    const lastOrder = localStorage.getItem('lastOrder');
+                    const lastOrderData = localStorage.getItem('lastOrder');
+                    const lastOfferCartData = localStorage.getItem('lastOfferCart');
                     
-                    if (!lastOrder) {
-                        repeatButton.disabled = true; // Fully disable the button
-                        repeatButton.style.pointerEvents = 'none'; // Prevent clicks
-                        repeatButton.style.opacity = '0.5'; // Make it visibly disabled
+                    // Disable button only if both order and offer cart data are missing
+                    if (!lastOrderData && !lastOfferCartData) {
+                        repeatButton.disabled = true;
+                        repeatButton.style.pointerEvents = 'none';
+                        repeatButton.style.opacity = '0.5';
                         
-                        // Show message below the button
+                        // Show message below the button if not already present
                         let message = document.getElementById('orderMessage');
                         if (!message) {
                             message = document.createElement('p');
@@ -4339,29 +4373,83 @@
                             message.textContent = "No previous order found";
                             message.style.color = 'red';
                             message.style.fontWeight = 'bold';
-                            
                             message.style.marginTop = '8px';
                             message.style.fontSize = '14px';
                             repeatButton.parentNode.insertBefore(message, repeatButton.nextSibling);
                         }
-                        
                         return;
                     }
                     
                     triggerRepeatAnimation(() => {
                         setTimeout(() => {
                             try {
-                                const parsedOrder = JSON.parse(lastOrder);
-                                scrapItems = parsedOrder;
-                                updateScrapListDisplay();
-                                handleScrapItemsChange();
+                                console.log('Raw lastOrderData:', lastOrderData);
+                                console.log('Raw lastOfferCartData:', lastOfferCartData);
+                                
+                                // Load and process last order data
+                                if (lastOrderData) {
+                                    const parsedOrder = JSON.parse(lastOrderData);
+                                    console.log('Parsed lastOrder:', parsedOrder);
+                                    
+                                    scrapItems = parsedOrder.items || [];
+                                    if (typeof updateScrapListDisplay === 'function') {
+                                        
+                                        updateScrapListDisplay();
+                                        handleScrapItemsChange();
+                                        
+                                    }
+                                    } else {
+                                    console.warn('No last order data found.');
+                                    scrapItems = [];
+                                    
+                                    if (typeof updateScrapListDisplay === 'function') {
+                                        updateScrapListDisplay();
+                                        handleScrapItemsChange();   
+                                    }
+                                }
+                                
+                                
+                                
+                                // Load and process last offer cart data
+                                if (lastOfferCartData) {
+                                    const parsedOfferCart = JSON.parse(lastOfferCartData);
+                                    console.log('Parsed lastOfferCart:', parsedOfferCart);
+                                    
+                                    const offerCartElement = document.getElementById('offer-cart');
+                                    if (offerCartElement) {
+                                        offerCartElement.style.display = 'block';
+                                    }
+                                    offerCart = parsedOfferCart.items || [];
+                                    } else {
+                                    console.warn('No last offer cart data found.');
+                                    offerCart = [];
+                                }
+                                
+                                // Safely update offer cart display
+                                if (typeof updateCartDisplay === 'function') {
+                                    updateCartDisplay();
+                                    handleScrapItemsChange();
+                                    } else {
+                                    console.warn('updateCartDisplay function is not defined.');
+                                }
+                                
+                                if (scrapItems.length === 0) {
+                                    closeScrapList(); // Hide scrapList if no items
+                                    updateCartPosition();
+                                }
+                                
                                 } catch (error) {
-                                console.error('Error loading last order:', error);
-                                showFeedback('Error loading last order');
+                                console.error('Detailed error:', error);
+                                showFeedback('Error loading last order or offer cart');
                             }
-                        }, 500); // Delay processing
+                        }, 500);
                     });
                 });
+                
+                
+                
+                
+                
                 
             }
             
@@ -4855,7 +4943,7 @@
                     }
                 });
                 
-
+                
                 // Step 2: Convert map values to array and sort alphabetically by item name
                 const sortedItems = Array.from(itemMap.values()).sort((a, b) => {
                     const nameA = a.name.replace(/[^a-zA-Z]/g, '').toLowerCase(); // Extract only English characters
@@ -5818,7 +5906,7 @@
                 document.body.style.paddingRight = `${scrollbarWidth}px`; 
                 
                 setTimeout(() => modal.classList.add('active'), 10);
-            }
+                }
             
             // Function to hide the delivery modal
             function hideDeliveryModal() {
@@ -5906,8 +5994,12 @@
             });
             
             // Location
-            const centerLat = 30.6668;
-            const centerLng = 75.0641;
+           const centerLat = 30.68335;
+            const centerLng = 75.09015;
+  
+ // const centerLat = 30.6833;
+  //          const centerLng = 75.1717;
+            
             
             // Function to calculate distance using Haversine formula
             function calculateDistance(lat1, lng1, lat2, lng2) {
@@ -5927,6 +6019,8 @@
             const locationCheckbox = document.querySelector('[value="location"]');
             const locationStatus = document.getElementById('locationStatus');
             
+            let isLocation = true;
+            
             locationCheckbox.addEventListener('change', () => {
                 if (locationCheckbox.checked) {
                     locationStatus.innerHTML = '<span>Loading...</span>';
@@ -5945,12 +6039,13 @@
                             
                             //  if (distance > 15) {
                             if (distance > window.deliveryArea) {
+                                isLocation = false;
                                 locationStatus.innerHTML = `
-                                <span style="color: red;">Delivery not available at this location.</span><br>
+                                <span style="color: red;">Delivery not available at this location. (${distance.toFixed(2)} Km)</span><br>
                                 <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
                                 } else {
                                 locationStatus.innerHTML = `
-                                <span style="color: green;">Delivery available!</span><br>
+                                <span style="color: green;">Delivery available! (${distance.toFixed(2)} Km)</span><br>
                                 <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
                             }
                         },
@@ -6081,8 +6176,12 @@
                 }
                 
                 // Final validation before submission
-                if (timeStatus.innerHTML.includes('red')) {
-                    return; // Stop submission if there's an error
+                if (timeStatus.innerHTML.includes('red')) {            
+                    return; // Stop submission if there's an error            
+                }
+                
+                if (!isLocation && locationCheckbox.checked) {
+                    return; // Stop submission if there's an error                                
                 }
                 
                 const formData = {
@@ -6244,8 +6343,24 @@
                 window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
                 
                 
-                // Save the current scrapItems as the last order
-                localStorage.setItem('lastOrder', JSON.stringify(scrapItems)); // Add this line
+                // Clear previous lastOrder and lastOfferCart
+                localStorage.removeItem('lastOrder');
+                localStorage.removeItem('lastOfferCart');
+                
+                // Store new lastOrder
+                localStorage.setItem('lastOrder', JSON.stringify({
+                    items: scrapItems,
+                    dateTime: new Date().toISOString()
+                }));
+                
+                // Store new lastOfferCart if offerCart is not empty
+                if (offerCart && offerCart.length > 0) {
+                    localStorage.setItem('lastOfferCart', JSON.stringify({
+                        items: offerCart,
+                        dateTime: new Date().toISOString()
+                    }));
+                }
+                
                 
                 // Add:
                 document.getElementById('timePlayModal').style.display = 'flex';
@@ -6305,58 +6420,111 @@
             
             
             //Checklist (Last Order)
-            
-            
-            
             function showChecklist() {
                 const overlay = document.getElementById('checklistOverlay');
                 const container = document.getElementById('checklistItemsContainer');
-                const lastOrder = JSON.parse(localStorage.getItem('lastOrder') || '[]');
-                const summaryItems = document.getElementById('totalItems');
-                const summaryQty = document.getElementById('totalQty');
+                const dateTimeContainer = document.getElementById('orderDateTime');
+                const lastOrder = JSON.parse(localStorage.getItem('lastOrder') || '{}');
+                const lastOfferCart = JSON.parse(localStorage.getItem('lastOfferCart') || '{}');
                 const clearButton = document.getElementById('clearChecklist');
                 
-                const groupedItems = lastOrder.reduce((acc, item) => {
-                    const cleanName = trimLeftNonEnglish(item.name);
-                    acc[cleanName] = (acc[cleanName] || 0) + (item.qty || 1);
+                // Display the order date-time
+                if (lastOrder.dateTime) {
+                    const date = new Date(lastOrder.dateTime);
+                    const formattedDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
+                    const formattedTime = convertToAMPM(date);
+                    
+                    dateTimeContainer.textContent = `Last Order: ${formattedDate}, ${formattedTime}`;
+                    dateTimeContainer.style.textAlign = "center";
+                    dateTimeContainer.style.fontSize = "4rem";
+                    dateTimeContainer.style.marginBottom = "1rem";
+                    } else {
+                    dateTimeContainer.textContent = '';
+                }
+                
+                // Process Scrap Items
+                const groupedItems = (lastOrder.items || []).reduce((acc, item) => {
+                    const cleanName = item.name.trim();
+                    acc[cleanName] = (acc[cleanName] || 0) + 1;
                     return acc;
                 }, {});
                 
                 const sortedItems = Object.entries(groupedItems).sort(([a], [b]) => a.localeCompare(b));
+                const offerItems = lastOfferCart.items || [];
                 
-                let totalQty = 0;
-                container.innerHTML = sortedItems.length ? 
-                sortedItems.map(([name, qty]) => {
-                    totalQty += qty;
-                    return `<div class="checklist-item">
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                    <input type="checkbox">
-                    <span>${name}</span>
-                    </div>
-                    <span class="item-quantity">${qty}x</span>
+                let totalSortedQty = 0;
+                let totalOfferQty = 0;
+                
+                // If both are empty, show a single message
+                if (!sortedItems.length && !offerItems.length) {
+                    container.innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;">
+                    <p style="font-size: 5rem; margin: 15rem 0;">No last order found</p>
                     </div>`;
-                }).join('') : '<p>No previous order found</p>';
+                }
+                else {
+                    container.innerHTML = '';
+                    
+                    // Show Scrap Items if any
+                    if (sortedItems.length) {
+                        container.innerHTML += `<div style="margin-top: 5rem;"></div>`;
+                        container.innerHTML += sortedItems.map(([name, qty]) => {
+                            totalSortedQty += qty;
+                            return `<div class="checklist-item">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="checkbox">
+                            <span>${name}</span>
+                            </div>
+                            <span class="item-quantity">${qty}x</span>
+                            </div>`;
+                        }).join('') + 
+                        `<div style="display: flex; justify-content: space-between; font-size: 4rem; font-weight: bold; margin-top: 1rem;">
+                        <span>Total Items: ${sortedItems.length}</span>
+                        <span>Total Qty: ${totalSortedQty}</span>
+                        </div>`;
+                    }
+                    
+                    // Show Offer Cart Items if any
+                    if (offerItems.length) {
+                        container.innerHTML += `<div style="margin-top: 5rem;"></div>`;
+                        container.innerHTML += offerItems.map(item => {
+                            totalOfferQty += item.count;
+                            return `<div class="checklist-item">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="checkbox">
+                            <span>${item.title} - ${item.description}</span>
+                            </div>
+                            <span class="item-quantity">${item.count}x</span>
+                            </div>`;
+                        }).join('') + 
+                        `<div style="display: flex; justify-content: space-between; font-size: 4rem; font-weight: bold; margin-top: 1rem;">
+                        <span>Total Offer Items: ${offerItems.length}</span>
+                        <span>Total Offer Qty: ${totalOfferQty}</span>
+                        </div>`;
+                    }
+                }
                 
-                summaryItems.textContent = `Total Items: ${sortedItems.length}`;
-                summaryQty.textContent = `Total Qty: ${totalQty}`;
-                
+                // Checkbox functionality
                 const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-                
                 const updateClearButtonState = () => {
                     clearButton.disabled = !Array.from(checkboxes).some(cb => cb.checked);
                 };
                 
                 checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', function() {
+                    checkbox.addEventListener('change', function () {
                         const item = this.closest('.checklist-item');
                         item.classList.toggle('completed', this.checked);
                         updateClearButtonState();
                     });
                 });
                 
-                clearButton.disabled = true; // Initially disable the button
+                clearButton.disabled = true;
                 overlay.style.display = 'flex';
             }
+            
+            
+            
+            
             
             // Close handlers (keep existing functionality)
             document.querySelector('.close-checklist').addEventListener('click', () => {
@@ -6499,8 +6667,8 @@
             
             
             
-
-
+            
+            
             
             
             
