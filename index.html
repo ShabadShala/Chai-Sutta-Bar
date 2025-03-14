@@ -2604,6 +2604,87 @@
             
             
             
+            
+            
+            
+            
+            
+            
+            /* Time Play Modal Styles */
+            .timeplay-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+                     background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+            
+            .timeplay-modal {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 50%;
+            max-width: 200px;
+            position: relative;
+            }
+            
+            .timeplay-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            }
+            
+            .timeplay-header h2 {
+            font-size: 6rem;
+            color: #333;
+            }
+            
+            .close-timeplay {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 5rem;
+            cursor: pointer;
+            color: #333;
+            }
+            
+            .timeplay-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            }
+            
+            .timeplay-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            border-radius: 10px;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: transform 0.2s;
+            }
+            
+            .timeplay-item:hover {
+            transform: scale(1.05);
+            }
+            
+            .timeplay-item img {
+            width: 15rem;
+            height: 15rem;
+            margin-bottom: 1rem;
+            }
+            
+            .timeplay-item span {
+            font-size: 3rem;
+            color: #333;
+            text-align: center;
+            }
+            
         </style>
         <link rel="stylesheet" href="ham.css">
     </head>
@@ -2940,12 +3021,10 @@
         </button>
         
         
-        
         <!-- Add this button anywhere in the body, perhaps in the footer -->
         <button id="checklistButton" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; padding: 1rem; background: #4CAF50; color: white; border: none; border-radius: 5px;">
             Checklist (Last Order)
-        </button>
-        
+        </button>        
         
         
         <!-- Inside the #menu div -->
@@ -2953,33 +3032,51 @@
             Calculator
         </button>
         
+        
         <!-- Add this button anywhere in the body --> 
         <button id="stopwatchBtn" style="position: fixed; bottom: 80px; left: 20px; z-index: 999; padding: 1rem; background: #2196F3; color: white; border: none; border-radius: 5px;">
             Stopwatch
         </button>
         
-<button id="puzzleButton" style="position: fixed; bottom: 110px; left: 20px; z-index: 999; padding: 1rem; background: #6f4e37; color: white; border: none; border-radius: 5px;">
-    Puzzle
-</button>
+        
+        <button id="puzzleButton" style="position: fixed; bottom: 110px; left: 20px; z-index: 999; padding: 1rem; background: #6f4e37; color: white; border: none; border-radius: 5px;">
+            Puzzle
+        </button>
+        
+        
+        
+        <!-- Time Play Modal -->
+        <div id="timePlayModal" class="timeplay-modal-overlay" style="display: none;">
+            <div class="timeplay-modal">
+                <div class="timeplay-header">
+                    <h2>Time Play</h2>
+                    <span class="close-timeplay">&times;</span>
+                </div>
+                <div class="timeplay-grid">
 
-<!-- Add this modal structure before closing body tag -->
-<div id="puzzleModal" class="puzzle-modal-overlay" style="display: none;">
-    <div class="puzzle-modal">
-        <div class="puzzle-header">
-            <h2>Sliding Numbers</h2>
-            <select id="gridSize">
-                <option value="3">3x3</option>
-                <option value="4" selected>4x4</option>
-                <option value="5">5x5</option>
-            </select>
+                    <div class="timeplay-item" onclick="showChecklist()">
+                        <img src="icons/checklist.svg" alt="Checklist">
+                        <span>Checklist</span>
+                    </div>
+                    
+                    <div class="timeplay-item" onclick="document.getElementById('calculatorOverlay').style.display = 'flex';">
+                        <img src="icons/calculator.svg" alt="Calculator">
+                        <span>Calculator</span>
+                    </div>
+                    
+                                        <div class="timeplay-item" onclick="document.getElementById('stopwatchModal').style.display = 'flex'">
+                        <img src="icons/stopwatch.svg" alt="Stopwatch">
+                        <span>Stopwatch</span>
+                    </div>
+                    <div class="timeplay-item" onclick="document.getElementById('puzzleModal').style.display = 'flex'">
+                        <img src="icons/number-puzzle.svg" alt="Puzzle">
+                        <span>Puzzle</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="puzzle-grid" id="puzzleGrid"></div>
-        <div class="puzzle-controls">
-            <button id="restartPuzzle">Restart</button>
-            <button id="solvePuzzle">Solve</button>
-        </div>
-    </div>
-</div>
+        
+        
         
         <script>
             
@@ -6018,6 +6115,8 @@
                 // Save the current scrapItems as the last order
                 localStorage.setItem('lastOrder', JSON.stringify(scrapItems)); // Add this line
                 
+                // Add:
+                document.getElementById('timePlayModal').style.display = 'flex';
                 
                 // Clear both lists
                 scrapItems = [];
@@ -6474,23 +6573,23 @@
             
             
             // Insert the stopwatch modal HTML using template strings
-document.body.insertAdjacentHTML('beforeend', `
-    <div id="stopwatchModal" class="stopwatch-modal-overlay" style="display: none;">
-        <div class="stopwatch-modal">
+            document.body.insertAdjacentHTML('beforeend', `
+            <div id="stopwatchModal" class="stopwatch-modal-overlay" style="display: none;">
+            <div class="stopwatch-modal">
             <span id="muteToggle" class="mute-toggle" style="position: absolute; top: 10px; left: 10px; font-size: 16px; cursor: pointer;">🔊</span>
             <div class="stopwatch-display">
-                <canvas id="analogClock" width="150" height="150"></canvas>
-                <div id="digitalDisplay" class="digital-display">00:00:00</div>
+            <canvas id="analogClock" width="150" height="150"></canvas>
+            <div id="digitalDisplay" class="digital-display">00:00:00</div>
             </div>
             <div class="stopwatch-controls">
-                <button id="startStopBtn">Start</button>
-                <button id="resetBtn">Reset</button>
+            <button id="startStopBtn">Start</button>
+            <button id="resetBtn">Reset</button>
             </div>
             <span id="closeStopwatch" class="stopwatch-close-btn">×</span>
-        </div>
-    </div>
-    <audio id="tickSound" src="https://assets.mixkit.co/active_storage/sfx/3003/3003-preview.mp3"></audio>
-`);
+            </div>
+            </div>
+            <audio id="tickSound" src="https://assets.mixkit.co/active_storage/sfx/3003/3003-preview.mp3"></audio>
+            `);
             
             
             
@@ -6627,151 +6726,166 @@ document.body.insertAdjacentHTML('beforeend', `
             
             
             
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-   let puzzleState = [];
-    let moveHistory = [];
-    let gridSize = 4;
-
-    document.getElementById('puzzleButton').addEventListener('click', () => {
-        document.getElementById('puzzleModal').style.display = 'flex';
-        initializePuzzle(gridSize);
-    });
-
-    document.getElementById('gridSize').addEventListener('change', (e) => {
-        gridSize = parseInt(e.target.value);
-        initializePuzzle(gridSize);
-    });
-
-    document.getElementById('restartPuzzle').addEventListener('click', () => initializePuzzle(gridSize));
-    document.getElementById('solvePuzzle').addEventListener('click', solvePuzzle);
-
-document.getElementById('solvePuzzle').disabled = false;
-
-function initializePuzzle(size) {
-    puzzleState = [];
-    const totalTiles = size * size;
-    const grid = document.getElementById('puzzleGrid');
-    
-    grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-    grid.innerHTML = '';
-
-    // Enable Solve button on restart
-    document.getElementById('solvePuzzle').disabled = false;
-
-    // Create tiles
-    for(let i = 1; i < totalTiles; i++) {
-        puzzleState.push(i);
-    }
-    puzzleState.push(null); // Empty space
-
-    shufflePuzzle();
-    renderPuzzle(grid, size);
-}
-
-    function shufflePuzzle() {
-        let inversions;
-        do {
-            // Fisher-Yates shuffle
-            for(let i = puzzleState.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [puzzleState[i], puzzleState[j]] = [puzzleState[j], puzzleState[i]];
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            const puzzleModal = `
+            <div id="puzzleModal" class="puzzle-modal-overlay" style="display: none;">
+            <div class="puzzle-modal">
+            <div class="puzzle-header">
+            <h2>Sliding Numbers</h2>
+            <select id="gridSize">
+            <option value="3">3x3</option>
+            <option value="4" selected>4x4</option>
+            <option value="5">5x5</option>
+            </select>
+            </div>
+            <div class="puzzle-grid" id="puzzleGrid"></div>
+            <div class="puzzle-controls">
+            <button id="restartPuzzle">Restart</button>
+            <button id="solvePuzzle">Solve</button>
+            </div>
+            </div>
+            </div>`;
+            
+            
+            document.body.insertAdjacentHTML('beforeend', puzzleModal);
+            
+            
+            let puzzleState = [];
+            let moveHistory = [];
+            let gridSize = 4;
+            
+            document.getElementById('puzzleButton').addEventListener('click', () => {
+                document.getElementById('puzzleModal').style.display = 'flex';
+                initializePuzzle(gridSize);
+            });
+            
+            document.getElementById('gridSize').addEventListener('change', (e) => {
+                gridSize = parseInt(e.target.value);
+                initializePuzzle(gridSize);
+            });
+            
+            document.getElementById('restartPuzzle').addEventListener('click', () => initializePuzzle(gridSize));
+            document.getElementById('solvePuzzle').addEventListener('click', solvePuzzle);
+            
+            document.getElementById('solvePuzzle').disabled = false;
+            
+            function initializePuzzle(size) {
+                puzzleState = [];
+                const totalTiles = size * size;
+                const grid = document.getElementById('puzzleGrid');
+                
+                grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+                grid.innerHTML = '';
+                
+                // Enable Solve button on restart
+                document.getElementById('solvePuzzle').disabled = false;
+                
+                // Create tiles
+                for(let i = 1; i < totalTiles; i++) {
+                    puzzleState.push(i);
+                }
+                puzzleState.push(null); // Empty space
+                
+                shufflePuzzle();
+                renderPuzzle(grid, size);
             }
-            inversions = countInversions();
-        } while((gridSize % 2 === 0 && inversions % 2 !== 0) || 
-               (gridSize % 2 !== 0 && inversions % 2 === 0));
-    }
-
-    function countInversions() {
-        let count = 0;
-        const arr = puzzleState.filter(x => x !== null);
-        for(let i = 0; i < arr.length; i++) {
-            for(let j = i + 1; j < arr.length; j++) {
-                if(arr[i] > arr[j]) count++;
+            
+            function shufflePuzzle() {
+                let inversions;
+                do {
+                    // Fisher-Yates shuffle
+                    for(let i = puzzleState.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [puzzleState[i], puzzleState[j]] = [puzzleState[j], puzzleState[i]];
+                    }
+                    inversions = countInversions();
+                } while((gridSize % 2 === 0 && inversions % 2 !== 0) || 
+                (gridSize % 2 !== 0 && inversions % 2 === 0));
             }
-        }
-        return count;
-    }
-
-    function renderPuzzle(grid, size) {
-        grid.innerHTML = '';
-        puzzleState.forEach((num, index) => {
-            const tile = document.createElement('div');
-            tile.className = `puzzle-tile ${num ? '' : 'empty'}`;
-            tile.textContent = num || '';
-            tile.addEventListener('click', () => moveTile(index));
-            grid.appendChild(tile);
-        });
-    }
-
-function moveTile(index) {
-    const emptyIndex = puzzleState.indexOf(null);
-    const row = Math.floor(index / gridSize);
-    const col = index % gridSize;
-    const emptyRow = Math.floor(emptyIndex / gridSize);
-    const emptyCol = emptyIndex % gridSize;
-
-    if ((Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
-        (Math.abs(col - emptyCol) === 1 && row === emptyRow)) {
-        moveHistory.push([...puzzleState]);
-        [puzzleState[index], puzzleState[emptyIndex]] = [puzzleState[emptyIndex], puzzleState[index]];
-        renderPuzzle(document.getElementById('puzzleGrid'), gridSize);
-        checkSolved(); // Always check after a move
-    }
-}
-
-
-function checkSolved() {
-    const solveButton = document.getElementById('solvePuzzle');
-    const solved = puzzleState.slice(0, -1).every((num, index) => num === index + 1);
-
-    if (solved) {
-        solveButton.disabled = true;
-        setTimeout(() => alert('Congratulations! You solved the puzzle! ☕'), 100);
-    } else {
-        solveButton.disabled = false; // Re-enable if the puzzle is not solved
-    }
-}
-
-function solvePuzzle() {
-    puzzleState = [];
-    const totalTiles = gridSize * gridSize;
-    for (let i = 1; i < totalTiles; i++) {
-        puzzleState.push(i);
-    }
-    puzzleState.push(null); // Empty space at the end
-    renderPuzzle(document.getElementById('puzzleGrid'), gridSize);
-    moveHistory = [];
-
-    // Disable Solve button after solving
-    document.getElementById('solvePuzzle').disabled = true;
-}
-
-
-    // Close modal when clicking outside
-    document.querySelector('.puzzle-modal-overlay').addEventListener('click', (e) => {
-        if(e.target === document.querySelector('.puzzle-modal-overlay')) {
-            document.getElementById('puzzleModal').style.display = 'none';
-        }
-    });
-
-    // Initialize default puzzle
-    initializePuzzle(4);
+            
+            function countInversions() {
+                let count = 0;
+                const arr = puzzleState.filter(x => x !== null);
+                for(let i = 0; i < arr.length; i++) {
+                    for(let j = i + 1; j < arr.length; j++) {
+                        if(arr[i] > arr[j]) count++;
+                    }
+                }
+                return count;
+            }
+            
+            function renderPuzzle(grid, size) {
+                grid.innerHTML = '';
+                puzzleState.forEach((num, index) => {
+                    const tile = document.createElement('div');
+                    tile.className = `puzzle-tile ${num ? '' : 'empty'}`;
+                    tile.textContent = num || '';
+                    tile.addEventListener('click', () => moveTile(index));
+                    grid.appendChild(tile);
+                });
+            }
+            
+            function moveTile(index) {
+                const emptyIndex = puzzleState.indexOf(null);
+                const row = Math.floor(index / gridSize);
+                const col = index % gridSize;
+                const emptyRow = Math.floor(emptyIndex / gridSize);
+                const emptyCol = emptyIndex % gridSize;
+                
+                if ((Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
+                (Math.abs(col - emptyCol) === 1 && row === emptyRow)) {
+                    moveHistory.push([...puzzleState]);
+                    [puzzleState[index], puzzleState[emptyIndex]] = [puzzleState[emptyIndex], puzzleState[index]];
+                    renderPuzzle(document.getElementById('puzzleGrid'), gridSize);
+                    checkSolved(); // Always check after a move
+                }
+            }
+            
+            
+            function checkSolved() {
+                const solveButton = document.getElementById('solvePuzzle');
+                const solved = puzzleState.slice(0, -1).every((num, index) => num === index + 1);
+                
+                if (solved) {
+                    solveButton.disabled = true;
+                    setTimeout(() => alert('Congratulations! You solved the puzzle! ☕'), 100);
+                    } else {
+                    solveButton.disabled = false; // Re-enable if the puzzle is not solved
+                }
+            }
+            
+            function solvePuzzle() {
+                puzzleState = [];
+                const totalTiles = gridSize * gridSize;
+                for (let i = 1; i < totalTiles; i++) {
+                    puzzleState.push(i);
+                }
+                puzzleState.push(null); // Empty space at the end
+                renderPuzzle(document.getElementById('puzzleGrid'), gridSize);
+                moveHistory = [];
+                
+                // Disable Solve button after solving
+                document.getElementById('solvePuzzle').disabled = true;
+            }
+            
+            
+            // Close modal when clicking outside
+            document.querySelector('.puzzle-modal-overlay').addEventListener('click', (e) => {
+                if(e.target === document.querySelector('.puzzle-modal-overlay')) {
+                    document.getElementById('puzzleModal').style.display = 'none';
+                }
+            });
+            
+            // Initialize default puzzle
+            initializePuzzle(4);
             
             
             
@@ -6781,8 +6895,12 @@ function solvePuzzle() {
             
             
             
+            // Time Play Modal Handling
+            document.querySelector('.close-timeplay').addEventListener('click', () => {
+                document.getElementById('timePlayModal').style.display = 'none';
+            });
             
-            
+
             
             
             
