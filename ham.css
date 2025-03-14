@@ -1588,6 +1588,7 @@
 
 
 
+
 /* Calculator Modal */
 .calculator-modal-overlay {
     position: fixed;
@@ -1607,82 +1608,91 @@
     background: #3e3636;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
     border: 2px solid #c97b28;
 }
 
+.calculator {
+    width: 100%;
+    max-width: 320px;
+    background: #3e3636;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    border: 2px solid #c97b28;
+}
 
+/* Display Styling */
+.display {
+    width: 100%;
+    padding: 15px;
+    font-size: 26px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 10px;
+    text-align: right;
+    background-color: #f5e1d3;
+    color: #3e2f2f;
+    font-weight: bold;
+    outline: none;
+    box-sizing: border-box;
+}
 
-  .calculator {
-            width: 340px;
-            background: #3e3636;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
-            border: 2px solid #c97b28;
-        }
+/* Button Grid Layout */
+.calculator .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
 
-        .display {
-            width: 100%;
-            padding: 15px;
-            font-size: 26px;
-            margin-bottom: 15px;
-            border: none;
-            border-radius: 10px;
-            text-align: right;
-            background-color: #f5e1d3;
-            color: #3e2f2f;
-            font-weight: bold;
-            outline: none;
-        }
+/* General Button Styling */
+.calculator button {
+    width: 100%;
+    height: 60px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #c97b28;
+    color: white;
+    transition: background-color 0.3s, transform 0.1s;
+}
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
+/* Hover Effect */
+.calculator button:hover {
+    background-color: #a96220;
+    transform: scale(1.05);
+}
 
-        button {
-            padding: 18px;
-            font-size: 20px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background-color: #c97b28;
-            color: white;
-            transition: background-color 0.3s, transform 0.1s;
-        }
+/* Equal Button */
+.equal {
+    background-color: #5c3c24;
+}
 
-        button:hover {
-            background-color: #a96220;
-            transform: scale(1.05);
-        }
+.equal:hover {
+    background-color: #4b3020;
+}
 
-        .equal {
-            background-color: #5c3c24;
-        }
+/* Clear Button */
+.clear {
+    grid-column: span 2;
+    height: 60px;
+    background-color: #e63946;
+}
 
-        .equal:hover {
-            background-color: #4b3020;
-        }
+.clear:hover {
+    background-color: #c72e3c;
+}
 
-        .clear {
-            grid-column: span 2;
-            background-color: #e63946;
-        }
+/* Backspace Button */
+.backspace {
+    background-color: #f4a261;
+}
 
-        .clear:hover {
-            background-color: #c72e3c;
-        }
+.backspace:hover {
+    background-color: #e38b4f;
+}
 
-        .backspace {
-            background-color: #f4a261;
-        }
-
-        .backspace:hover {
-            background-color: #e38b4f;
-        }
-        
         
         
         
@@ -1752,7 +1762,7 @@
 }
 
 .stopwatch-controls button {
-  padding: 14px 28px;
+  padding: 10px 20px;
   margin: 0 8px;
   border: none;
   border-radius: 8px;
@@ -1849,7 +1859,7 @@
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
     width: 80vw; /* Modal width set to 80% of viewport width */
-    max-width: 80vw; /* Ensure it doesn't exceed 80% */
+    max-width: 320px; /* Ensure it doesn't exceed 80% */
     text-align: center;
 }
 
@@ -1886,7 +1896,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 8rem; /* Increased font size for larger numbers */
+     font-size: clamp(0.5rem, 7vw, 9rem);
+    
     color: #6f4e37;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1908,7 +1919,7 @@
     display: flex;
     gap: 3rem;
     justify-content: center;
-    margin-top: 3rem;
+    margin-top: 4rem;
 }
 
 .puzzle-controls button {
