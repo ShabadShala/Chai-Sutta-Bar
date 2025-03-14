@@ -87,7 +87,29 @@
         Share App
         </div>
         
-
+        
+        
+        <!-- Inside the hsidebar-content div -->
+        <div class="hsidebar-option" id="showChecklist">
+        <img src="icons/checklist.svg" alt="Checklist" class="menu-icon invert-icon">
+        Checklist
+        </div>
+        
+        <div class="hsidebar-option" id="showCalculator">
+        <img src="icons/calculator.svg" alt="Calculator" class="menu-icon invert-icon">
+        Calculator
+        </div>
+        
+        <div class="hsidebar-option" id="showStopwatch">
+        <img src="icons/stopwatch.svg" alt="Stopwatch" class="menu-icon invert-icon">
+        Stopwatch
+        </div>
+        
+        <div class="hsidebar-option" id="showPuzzle">
+        <img src="icons/number-puzzle.svg" alt="Puzzle" class="menu-icon invert-icon">
+        Puzzle
+        </div>
+        
         <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
         
         
@@ -105,44 +127,44 @@
         
         <div class="settings-options" style="display: none;">
         
-<!-- Starry Background Toggle -->
-<div class="hsidebar-option" id="toggle-starry-background">
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <!-- Starry Background Toggle -->
+        <div class="hsidebar-option" id="toggle-starry-background">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
-            <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon">
-            <span>Starry Back</span>
+        <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon">
+        <span>Starry Back</span>
         </div>
         <div class="toggle-switch">
-            <div class="toggle-slider"></div>
+        <div class="toggle-slider"></div>
         </div>
-    </div>
-</div>
-
-<!-- Word Search -->
-<div class="hsidebar-option" id="cheatToggleButton">
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        </div>
+        </div>
+        
+        <!-- Word Search -->
+        <div class="hsidebar-option" id="cheatToggleButton">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
-            <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
-            <span>Item Word Search</span>
+        <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
+        <span>Item Word Search</span>
         </div>
         <div class="toggle-switch">
-            <div class="toggle-slider"></div>
+        <div class="toggle-slider"></div>
         </div>
-    </div>
-</div>
-
-<!-- Child Lock -->
-<div class="hsidebar-option" id="childLockButton">
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        </div>
+        </div>
+        
+        <!-- Child Lock -->
+        <div class="hsidebar-option" id="childLockButton">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
-            <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon">
-            <span>Child Lock</span>
+        <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon">
+        <span>Child Lock</span>
         </div>
         <div class="toggle-switch">
-            <div class="toggle-slider"></div>
+        <div class="toggle-slider"></div>
         </div>
-    </div>
-</div>                   
+        </div>
+        </div>                   
         
         <!-- Clear Cache -->
         <div class="hsidebar-option" id="clear-storage">
@@ -444,7 +466,7 @@
         
         document.body.appendChild(countersModal);
         
-
+        
         // Show counters modal when footer is clicked
         document.getElementById('footer-info').addEventListener('click', () => {
             // Open modal using universal function
@@ -1236,49 +1258,49 @@
         
         
         
-      // Toggle Switch Handler
-function handleToggle(switchElement, callback) {
-  switchElement.classList.toggle('active');
-  callback(switchElement.classList.contains('active'));
-}  
+        // Toggle Switch Handler
+        function handleToggle(switchElement, callback) {
+            switchElement.classList.toggle('active');
+            callback(switchElement.classList.contains('active'));
+        }  
         
         
         
         // Toggle Starry Background
-// Toggle Starry Background
-const toggleStarryBg = document.getElementById('toggle-starry-background');
-if (toggleStarryBg) {
-    // Get elements
-    const toggleSwitch = toggleStarryBg.querySelector('.toggle-switch');
-    const starryBg = document.querySelector('.starry-background');
-    
-    // Initialize state
-    let isEnabled = localStorage.getItem('starryBackgroundEnabled') === 'true';
-    if (localStorage.getItem('starryBackgroundEnabled') === null) {
-        isEnabled = false; // Default state
-        localStorage.setItem('starryBackgroundEnabled', isEnabled);
-    }
-    
-    // Set initial UI state
-    toggleSwitch.classList.toggle('active', isEnabled);
-    starryBg?.classList.toggle('disabled', !isEnabled);
-    
-    // Click handler
-    toggleStarryBg.addEventListener('click', function() {
-        // Toggle state
-        isEnabled = !isEnabled;
-        
-        // Update UI
-        toggleSwitch.classList.toggle('active');
-        starryBg?.classList.toggle('disabled');
-        
-        // Save state
-        localStorage.setItem('starryBackgroundEnabled', isEnabled);
-        
-        // Close sidebar (keep this if you want)
-        toggleSidebar(false);
-    });
-}
+        // Toggle Starry Background
+        const toggleStarryBg = document.getElementById('toggle-starry-background');
+        if (toggleStarryBg) {
+            // Get elements
+            const toggleSwitch = toggleStarryBg.querySelector('.toggle-switch');
+            const starryBg = document.querySelector('.starry-background');
+            
+            // Initialize state
+            let isEnabled = localStorage.getItem('starryBackgroundEnabled') === 'true';
+            if (localStorage.getItem('starryBackgroundEnabled') === null) {
+                isEnabled = false; // Default state
+                localStorage.setItem('starryBackgroundEnabled', isEnabled);
+            }
+            
+            // Set initial UI state
+            toggleSwitch.classList.toggle('active', isEnabled);
+            starryBg?.classList.toggle('disabled', !isEnabled);
+            
+            // Click handler
+            toggleStarryBg.addEventListener('click', function() {
+                // Toggle state
+                isEnabled = !isEnabled;
+                
+                // Update UI
+                toggleSwitch.classList.toggle('active');
+                starryBg?.classList.toggle('disabled');
+                
+                // Save state
+                localStorage.setItem('starryBackgroundEnabled', isEnabled);
+                
+                // Close sidebar (keep this if you want)
+                toggleSidebar(false);
+            });
+        }
         
         
         
@@ -1356,26 +1378,26 @@ if (toggleStarryBg) {
         
         
         // Child Lock Implementation
-// Child Lock Implementation
-let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
-
-document.addEventListener('DOMContentLoaded', () => {
-    childLockState = JSON.parse(localStorage.getItem('childLock')) || { 
-        pin: null, 
-        isEnabled: false 
-    };
-    updateChildLockDisplay();
-    disableElements();
-});
-
-// Updated Child Lock toggle handler
-document.getElementById('childLockButton').addEventListener('click', function() {
-    if(childLockState.isEnabled) {
-        showPinModal('disable');
-    } else {
-        showPinModal('enable');
-    }
-});
+        // Child Lock Implementation
+        let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            childLockState = JSON.parse(localStorage.getItem('childLock')) || { 
+                pin: null, 
+                isEnabled: false 
+            };
+            updateChildLockDisplay();
+            disableElements();
+        });
+        
+        // Updated Child Lock toggle handler
+        document.getElementById('childLockButton').addEventListener('click', function() {
+            if(childLockState.isEnabled) {
+                showPinModal('disable');
+                } else {
+                showPinModal('enable');
+            }
+        });
         
         function toggleChildLock() {
             childLockState.isEnabled ? showPinModal('disable') : showPinModal('enable');
@@ -1460,7 +1482,7 @@ document.getElementById('childLockButton').addEventListener('click', function() 
             childLockState = { pin: secondPin, isEnabled: true };
             localStorage.setItem('childLock', JSON.stringify(childLockState));
             
-           
+            
             updateChildLockDisplay();
             disableElements();
             
@@ -1512,20 +1534,20 @@ document.getElementById('childLockButton').addEventListener('click', function() 
         }
         
         
-function updateChildLockDisplay() {
-    const btn = document.getElementById('childLockButton');
-    const toggleSwitch = btn.querySelector('.toggle-switch');
-    const img = btn.querySelector('img');
-    
-    // Update toggle state
-    toggleSwitch.classList.toggle('active', childLockState.isEnabled);
-    
-    // Update lock icon
-    img.src = childLockState.isEnabled ? "icons/lock.svg" : "icons/unlock.svg";
-    
-    // Update other elements
-    disableElements();
-}
+        function updateChildLockDisplay() {
+            const btn = document.getElementById('childLockButton');
+            const toggleSwitch = btn.querySelector('.toggle-switch');
+            const img = btn.querySelector('img');
+            
+            // Update toggle state
+            toggleSwitch.classList.toggle('active', childLockState.isEnabled);
+            
+            // Update lock icon
+            img.src = childLockState.isEnabled ? "icons/lock.svg" : "icons/unlock.svg";
+            
+            // Update other elements
+            disableElements();
+        }
         
         function disableElements() {
             document.querySelectorAll('.child-lock-restricted').forEach(element => {
@@ -1893,11 +1915,30 @@ function updateChildLockDisplay() {
         
         
         
+        document.getElementById('showChecklist')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            
+            showChecklist();
+        });
         
         
+        document.getElementById('showCalculator')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            
+            document.getElementById('calculatorOverlay').style.display = 'flex';    
+        });
         
+        document.getElementById('showStopwatch')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            
+            document.getElementById('stopwatchModal').style.display = 'flex';    
+        });
         
-        
+        document.getElementById('showPuzzle')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            
+            document.getElementById('puzzleModal').style.display = 'flex';    
+        });
         
         
         
@@ -2128,7 +2169,7 @@ document.getElementById('cheatToggleButton')?.addEventListener('click', function
     if (cheatActive) {
         addCheatListeners();
         showFeedback('Item Search activated');
-    } else {
+        } else {
         showFeedback('Item Search deactivated');
     }
     
