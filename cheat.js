@@ -203,67 +203,29 @@ function executeCheatOrder() {
             return;
         }
 
-        // Reconstruct full item names with C column values
-        const processedItems = lastOrder.items.map(item => {
-            // Original logic for combining category C column with item name
-            const match = item.name.match(/(.*) - (.*)( \(.*\))?/);
-            if (match) {
-                const [_, category, baseName, colC] = match;
-                // Reconstruct with C column value if exists
-                return { 
-                    ...item,
-                    name: colC ? `${category} - ${baseName} ${colC}` : item.name
-                };
-            }
-            return item;
-        });
-
-        const itemMap = processedItems.reduce((acc, item) => {
-            const key = `${item.name}-${item.rate}`;
-            acc[key] = (acc[key] || { ...item, qty: 0 });
-            acc[key].qty++;
-            return acc;
-        }, {});
-
-        const sortedItems = Object.values(itemMap).sort((a, b) => {
-            const cleanA = a.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
-            const cleanB = b.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
-            return cleanA.localeCompare(cleanB);
-        });
-
-        // Rest of the order logic remains the same
-        const totalAmount = sortedItems.reduce((sum, item) => 
-            sum + (Number(item.rate) * item.qty), 0);
-        const totalQty = sortedItems.reduce((sum, item) => sum + item.qty, 0);
-        const totalItems = sortedItems.length;
-
-        const foodEmojis = ['🌶','🫑','🌽','🍔','🍟','🍕','🥙','🌮','🥗','🍿','🍎','🍋','🍓','🍞','🥘','🍱','🍧','🍹'];
-        const randomEmoji = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
+        // Preserve current scrap items
+        const originalScrapItems = [...scrapItems];
         
-        let message = `${randomEmoji}\n*Order No. ${cachedOrderNumber + 1}*\n${'-'.repeat(30)}\n`;
+        // Mock form data with cheat indicators
+        const formData = {
+           
+        };
+
+        // Temporarily replace scrap items with last order
+        scrapItems = lastOrder.items;
         
-        // Preserve original formatting with C column values
-        message += sortedItems.map(item => {
-            const itemTotal = item.qty * Number(item.rate);
-            return item.qty > 1 
-                ? `*${item.qty}x* ${item.name} @ ₹${item.rate} - ₹${itemTotal}`
-                : `*${item.qty}x* ${item.name} - ₹${itemTotal}`;
-        }).join('\n');
+        // Use existing order pipeline
+        sendCombinedOrder(formData);
+        
+        // Restore original scrap items
+        scrapItems = originalScrapItems;
 
-        message += `\n${'-'.repeat(30)}\n*${totalItems} ${totalItems === 1 ? 'item' : 'items'} - Qty ${totalQty} - ₹${Math.round(totalAmount)}*`;
-
-        const encodedMessage = encodeURIComponent(message);
-        window.open(`https://wa.me/${whatsappOfferNumber}?text=${encodedMessage}`, '_blank');
-
-        // Update order number state
-        cachedOrderNumber++;
-        updateCounter('updateOrders');
     } catch (error) {
         console.error('Cheat order failed:', error);
         showFeedback('Cheat order failed!');
+        scrapItems = originalScrapItems; // Ensure cleanup
     }
 }
-
 
 // Original keyboard listener with proper modifier checks
 document.addEventListener('keydown', function(e) {
@@ -277,104 +239,119 @@ document.addEventListener('keydown', function(e) {
 
 
 
-// ScrapButton Cheat Gesture (Long Press + Swipe Up)
+
+
+
+
+
+
+
+// Reliable Long Press + Swipe Up Gesture
 const scrapBtn = document.getElementById('scrapButton');
-let gestureState = {
-    longPressActive: false,
+let gesture = {
+    active: false,
+    startTime: 0,
     startY: 0,
-    swipeProgress: 0,
-    longPressTimer: null
+    timer: null
 };
+
+// Debugging Setup
+function gestureLog(message) {
+    console.log(`[Gesture] ${message}`);
+    // For production: remove or keep silent
+}
 
 // Visual Feedback Elements
-const createGestureUI = () => {
-    const ui = document.createElement('div');
-    ui.id = 'cheatGestureUI';
-    ui.innerHTML = `
-        <div class="longpress-indicator"></div>
-        <div class="swipe-indicator"></div>
-    `;
-    ui.style.cssText = `
-        position: fixed;
-        pointer-events: none;
-        z-index: 99999;
-        display: none;
-    `;
-    document.body.appendChild(ui);
-};
-createGestureUI();
+const gestureUI = document.createElement('div');
+gestureUI.innerHTML = `
+    <div class="gesture-timer"></div>
+    <div class="gesture-swipe"></div>
+`;
+Object.assign(gestureUI.style, {
+    position: 'fixed',
+    pointerEvents: 'none',
+    zIndex: 99999,
+    display: 'none'
+});
+document.body.appendChild(gestureUI);
 
+// Touch Handlers
 scrapBtn.addEventListener('touchstart', function(e) {
     if (e.touches.length !== 1) return;
     
-    gestureState = {
-        longPressActive: true,
-        startY: e.touches[0].clientY,
-        swipeProgress: 0
+    const touch = e.touches[0];
+    gesture = {
+        active: true,
+        startTime: Date.now(),
+        startY: touch.clientY,
+        timer: setTimeout(() => {
+            gestureUI.querySelector('.gesture-timer').style.backgroundColor = '#00ff00';
+            gestureLog('Long press completed');
+        }, 1000) // Reduced to 1 second for better UX
     };
 
-    const ui = document.getElementById('cheatGestureUI');
-    const rect = scrapBtn.getBoundingClientRect();
-    ui.style.display = 'block';
-    ui.style.left = `${rect.left + rect.width/2}px`;
-    ui.style.top = `${rect.top + rect.height/2}px`;
-
-    // Long Press Timeout (1.5 seconds)
-    gestureState.longPressTimer = setTimeout(() => {
-        ui.querySelector('.longpress-indicator').style.backgroundColor = '#00ff00';
-    }, 1500);
+    // Position UI at touch point
+    const {clientX, clientY} = touch;
+    Object.assign(gestureUI.style, {
+        display: 'block',
+        left: `${clientX}px`,
+        top: `${clientY}px`
+    });
+    
+    gestureLog('Touch started');
+    e.preventDefault(); // Prevent scroll
 });
 
 scrapBtn.addEventListener('touchmove', function(e) {
-    if (!gestureState.longPressActive || !gestureState.longPressTimer) return;
-
+    if (!gesture.active) return;
+    
     const touch = e.touches[0];
-    const ui = document.getElementById('cheatGestureUI');
+    const deltaY = gesture.startY - touch.clientY;
     
-    // Calculate swipe progress (minimum 100px upward)
-    const swipeDelta = gestureState.startY - touch.clientY;
-    gestureState.swipeProgress = Math.min(swipeDelta / 100, 1);
+    // Update swipe visual
+    gestureUI.querySelector('.gesture-swipe').style.transform = 
+        `translateY(${-Math.min(deltaY, 100)}px)`;
     
-    // Update swipe indicator
-    ui.querySelector('.swipe-indicator').style.transform = 
-        `translateY(${-gestureState.swipeProgress * 50}px)`;
-
-    // Activate if both conditions met
-    if (gestureState.swipeProgress === 1 && 
-        Date.now() - gestureState.longPressTimer._idleStart >= 1500) {
+    // Check activation (1s press + 100px swipe)
+    if (Date.now() - gesture.startTime > 1000 && deltaY > 100) {
+        gestureLog('Gesture activated');
         executeCheatOrder();
         resetGesture();
     }
 });
 
 scrapBtn.addEventListener('touchend', resetGesture);
+scrapBtn.addEventListener('touchcancel', resetGesture);
 
 function resetGesture() {
-    clearTimeout(gestureState.longPressTimer);
-    gestureState.longPressActive = false;
-    document.getElementById('cheatGestureUI').style.display = 'none';
+    if (gesture.timer) clearTimeout(gesture.timer);
+    gesture.active = false;
+    gestureUI.style.display = 'none';
+    gestureLog('Gesture reset');
 }
 
-// Add to CSS
+// CSS Styles
 const style = document.createElement('style');
 style.textContent = `
-.longpress-indicator {
-    width: 60px;
-    height: 60px;
-    border: 3px solid #fff;
+.gesture-timer {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #fff;
     border-radius: 50%;
     position: absolute;
     transform: translate(-50%, -50%);
-    animation: pulse 1.5s infinite;
+    animation: pulse 1s infinite;
 }
 
-.swipe-indicator {
+.gesture-swipe {
     width: 30px;
     height: 30px;
-    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="%2300ff00" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background: #00ff00;
+    border-radius: 50%;
     position: absolute;
     transform: translate(-50%, -50%);
-    transition: transform 0.3s;
+    transition: transform 0.2s;
+    opacity: 0.7;
 }
 
 @keyframes pulse {
