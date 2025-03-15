@@ -105,125 +105,125 @@
     background-color: #e38b4f;
 }
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
- /* Stopwatch Styles - Chai Sutta Bar Theme */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Stopwatch Styles - Chai Sutta Bar Theme */
 .stopwatch-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-   background: rgba(0, 0, 0, 0.6); /* Slightly darker backdrop */            
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Slightly darker backdrop */            
     backdrop-filter: blur(5px); /* Adds a blur effect to the background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
 }
 
 .stopwatch-modal {
-  background: #f5f0e6; /* Light cream background */
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  border: 2px solid #6b4f4f; /* Dark brown border */
+    background: #f5f0e6; /* Light cream background */
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 2px solid #6b4f4f; /* Dark brown border */
 }
 
 .stopwatch-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .digital-display {
     
-   font-family: 'Arial', sans-serif;
-  font-size: 10rem;
-  color: #4e342e; /* Rich brown color */
-  margin-top: 15px;
-  background: #fff3e0;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: 2px dashed #6b4f4f;
-  letter-spacing: 2px; /* Pad last digit with spaces */
-  font-weight: bold; /* Make text bold */
+    font-family: 'Arial', sans-serif;
+    font-size: 10rem;
+    color: #4e342e; /* Rich brown color */
+    margin-top: 15px;
+    background: #fff3e0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px dashed #6b4f4f;
+    letter-spacing: 2px; /* Pad last digit with spaces */
+    font-weight: bold; /* Make text bold */
 }
 
 .stopwatch-controls button {
-  padding: 10px 20px;
-  margin: 0 8px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 6rem;
-  font-family: 'Arial', sans-serif;
-  transition: background 0.3s ease, transform 0.2s ease;
+    padding: 10px 20px;
+    margin: 0 8px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 6rem;
+    font-family: 'Arial', sans-serif;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 #startStopBtn {
-  background-color: #795548; /* Coffee brown */
-  color: #fff;
+    background-color: #795548; /* Coffee brown */
+    color: #fff;
 }
 
 #startStopBtn:hover {
-  background-color: #5d4037;
-  transform: scale(1.05);
+    background-color: #5d4037;
+    transform: scale(1.05);
 }
 
 #resetBtn {
-  background-color: #d84315; /* Spicy red */
-  color: white;
+    background-color: #d84315; /* Spicy red */
+    color: white;
 }
 
 #resetBtn:hover {
-  background-color: #bf360c;
-  transform: scale(1.05);
+    background-color: #bf360c;
+    transform: scale(1.05);
 }
 
 .stopwatch-close-btn {
-  position: absolute;
-  top: 2.3rem;
-  right: 3.6rem;
-  font-size: 7rem;
-  cursor: pointer;
-  color: #4e342e;
- 
+    position: absolute;
+    top: 2.3rem;
+    right: 3.6rem;
+    font-size: 7rem;
+    cursor: pointer;
+    color: #4e342e;
+    
 }
 
 .stopwatch-close-btn:hover {
-  color: #d84315;
+    color: #d84315;
 }
 
 /* Analog Clock Styles */
 #analogClock {
-  background-color: #f5f0e6;
-  border-radius: 50%;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 0 15px rgba(0,0,0,0.3);
-  border: 4px solid #6b4f4f;
+    background-color: #f5f0e6;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 0 15px rgba(0,0,0,0.3);
+    border: 4px solid #6b4f4f;
 }
 
 
@@ -257,7 +257,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
@@ -308,7 +308,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-     font-size: clamp(0.5rem, 7vw, 9rem);
+    font-size: clamp(0.5rem, 7vw, 9rem);
     
     color: #6f4e37;
     cursor: pointer;
@@ -385,160 +385,398 @@
 
 
 /* Outer Modal Background */
+
+
 .tic-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Content */
+.tic-modal-content {
+    background: #f4f1de; /* Light beige background */
+    padding: 10px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border: 2px solid #d4a373; /* Rustic border color */
+    text-align: center;
+}
+
+
+
+.tic-board-size {
+    margin-bottom: 15px; /* Reduced gap */
+    padding: 3px;  
+    font-size: 7rem; /* Adjusted size */
+}
+
+/* Dropdown and Select */
+.tic-container select {
+    margin-bottom: 15px; /* Reduced gap */
+    padding: 10px;
+    
+    font-size: 8rem; /* Adjusted size */
+    border-radius: 8px;
+    border: 2px solid #d4a373; /* Rustic border */
+    background: #f9f9f9;
+    width: 100%;
+    max-width: 200px;
+    color: #6b4f4f; /* Rustic brown text */
+}
+
+/* Responsive Tic-Tac-Toe Board */
+.tic-board {
+    display: grid;
+    gap: 8px; /* Reduced gap */
+    margin-bottom: 20px; /* Reduced gap */
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+grid-template-columns: repeat(var(--board-size), 1fr);
+}
+
+/* Responsive Board Cells */
+.tic-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #d4a373; /* Rustic border */
+    font-size: 6rem; /* Adjusted size */
+    font-weight: bold;
+    background-color: #f9f9f9;
+    color: #6b4f4f; /* Rustic brown text */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tic-cell:hover {
+    background-color: #e0c097; /* Light brown hover */
+    transform: scale(1.05);
+}
+
+.tic-cell:active {
+    transform: scale(0.95);
+}
+
+/* Status Display */
+.tic-status {
+    font-size: 7rem; /* Adjusted size */
+    font-weight: bold;
+    margin-bottom: 15px; /* Reduced gap */
+    color: #6b4f4f; /* Rustic brown text */
+}
+
+/* Buttons */
+.tic-reset {
+    padding: 8px 15px; /* Adjusted padding */
+    font-size: 7rem; /* Adjusted size */
+    background-color: #d4a373; /* Rustic button color */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: -3px; /* Reduced gap */
+    margin-bottom: -104px;
+}
+
+.tic-reset:hover, #tic-start-game:hover {
+    background-color: #b5835a; /* Darker rustic color on hover */
+}
+
+.tic-reset:active, #tic-start-game:active {
+    background-color: #8b5a2b; /* Even darker on active */
+}
+
+/* Chai Sutta Bar Theme Additions */
+.tic-modal-content::before {
+    content: "Tic-Tac-Toe"; 
+    font-size: 7rem;
+    display: block;
+    margin-bottom: 10px;
+    color: #6b4f4f; /* Rustic brown */
+}
+
+/* Responsive Gaps */
+@media (max-width: 600px) {
+    .tic-board {
+        gap: 5px; /* Smaller gap for small screens */
+    }
+    
+    .tic-cell {
+        font-size: 5rem; /* Smaller font for small screens */
+    }
+    
+    .tic-status {
+        font-size: 5rem; /* Smaller font for small screens */
+    }
+}
+
+/* Gap below the container */
+.tic-container {
+    margin-bottom: 20px; /* Added gap below container */
+}
+
+/* Gap above the status message */
+.tic-status {
+    font-size: 7rem; /* Adjusted size */
+    font-weight: bold;
+    margin-top: 20px; /* Added gap above status message */
+    margin-bottom: 15px; /* Existing gap */
+    color: #6b4f4f; /* Rustic brown text */
+}
+
+
+/* Add winning animation */
+@keyframes flash {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.winning-animation {
+  animation: flash 1s infinite;
+}
+
+/* Adjust spacing */
+.tic-status {
+  margin: 10px 0;
+}
+
+.tic-container {
+  margin-bottom: 10px;
+}
+
+
+.tic-modal-content {
+  padding: 10px 15px;
+}
+
+.tic-reset.disabled {
+  background-color: #a0a0a0; /* Grayed out for disabled state */
+  cursor: not-allowed;
+}
+
+.tic-reset:hover:not(.disabled) {
+  background-color: #b5835a;
+}
+
+.tic-reset:active:not(.disabled) {
+  background-color: #8b5a2b;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Updated CSS with modal overlay and increased sizes */
+.wait-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
-/* Modal Content */
-.tic-modal-content {
-  background: #f4f1de; /* Light beige background */
-  padding: 20px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border: 2px solid #d4a373; /* Rustic border color */
+.wait-tracker-modal {
+  background: #fff5e6;
+  padding: 5rem;
+  border-radius: 25px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
   text-align: center;
+  position: relative;
+  border: 5px solid #ff9933;
+  max-width: 600px;
+  margin: 2rem;
 }
 
-/* Close Button */
-.tic-close-btn {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 3rem; /* Reduced size */
-  cursor: pointer;
-  color: #6b4f4f; /* Rustic brown */
-  transition: color 0.3s ease;
-  z-index: 20000;
+.tracker-title {
+  color: #cc3300;
+  font-size: 6rem; /* Increased from 1.5rem */
+  margin-bottom: 3rem;
+  font-family: 'Arial Rounded MT Bold', sans-serif;
 }
 
-.tic-close-btn:hover {
-  color: #8b5a2b; /* Darker brown on hover */
+.time-display {
+  font-family: 'Digital-7', monospace;
+  font-size: 25rem; /* Increased from 3.5rem */
+  color: #333;
+  background: #f0f0f0;
+  padding: 2rem;
+  border-radius: 15px;
+  margin: 2rem 0;
+  border: 4px solid #666;
+  text-shadow: 0 0 10px rgba(51, 51, 51, 0.3);
 }
 
-/* Dropdown and Select */
-.tic-container select {
-  margin-bottom: 15px; /* Reduced gap */
-  padding: 10px;
-  
-  font-size: 8rem; /* Adjusted size */
-  border-radius: 8px;
-  border: 2px solid #d4a373; /* Rustic border */
-  background: #f9f9f9;
-  width: 100%;
-  max-width: 200px;
-  color: #6b4f4f; /* Rustic brown text */
+
+.status-message {
+  color: #666;
+  font-size: 6rem; /* Increased from 1rem */
+  margin-top: 2rem;
 }
 
-/* Responsive Tic-Tac-Toe Board */
-.tic-board {
-  display: grid;
-  gap: 8px; /* Reduced gap */
-  margin-bottom: 20px; /* Reduced gap */
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  grid-template-columns: repeat(var(--board-size), 1fr);
-}
 
-/* Responsive Board Cells */
-.tic-cell {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #d4a373; /* Rustic border */
-  font-size: 6rem; /* Adjusted size */
-  font-weight: bold;
-  background-color: #f9f9f9;
-  color: #6b4f4f; /* Rustic brown text */
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.tic-cell:hover {
-  background-color: #e0c097; /* Light brown hover */
-  transform: scale(1.05);
-}
-
-.tic-cell:active {
-  transform: scale(0.95);
-}
-
-/* Status Display */
-.tic-status {
-  font-size: 7rem; /* Adjusted size */
-  font-weight: bold;
-  margin-bottom: 15px; /* Reduced gap */
-  color: #6b4f4f; /* Rustic brown text */
-}
-
-/* Buttons */
-.tic-reset, #tic-start-game {
-  padding: 10px 20px; /* Adjusted padding */
-  font-size: 7rem; /* Adjusted size */
-  background-color: #d4a373; /* Rustic button color */
-  color: #fff;
+.order-button {
+  background-color: #ff9933;
+  color: white;
   border: none;
-  border-radius: 8px;
+  padding: 3rem 6rem;
+  font-size: 6.5rem;
+  border-radius: 20px;
   cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
-  margin: 5px; /* Reduced gap */
-}
-
-.tic-reset:hover, #tic-start-game:hover {
-  background-color: #b5835a; /* Darker rustic color on hover */
-}
-
-.tic-reset:active, #tic-start-game:active {
-  background-color: #8b5a2b; /* Even darker on active */
-}
-
-/* Chai Sutta Bar Theme Additions */
-.tic-modal-content::before {
-  content: "Tic-Tac-Toe"; /* Food icons for theme */
-  font-size: 7rem;
+  margin: 5rem auto;
   display: block;
-  margin-bottom: 10px;
-  color: #6b4f4f; /* Rustic brown */
 }
 
-/* Responsive Gaps */
-@media (max-width: 600px) {
-  .tic-board {
-    gap: 5px; /* Smaller gap for small screens */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.steam {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.steam::before,
+.steam::after {
+  content: '';
+  position: absolute;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 50%;
+  animation: steam 5s infinite linear;
+}
+
+.steam::before {
+  width: 40px;
+  height: 80px;
+  left: 20px;
+  animation-delay: 0.5s;
+}
+
+.steam::after {
+  width: 60px;
+  height: 100px;
+  right: 20px;
+}
+
+@keyframes steam {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0.6;
   }
-
-  .tic-cell {
-    font-size: 5rem; /* Smaller font for small screens */
+  50% {
+    transform: translateY(-80px) scale(1.2);
+    opacity: 0.3;
   }
-
-  .tic-status {
-    font-size: 5rem; /* Smaller font for small screens */
+  100% {
+    transform: translateY(-160px) scale(1.5);
+    opacity: 0;
   }
 }
 
-/* Gap below the container */
-.tic-container {
-  margin-bottom: 20px; /* Added gap below container */
+
+
+
+.alarm-controls {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 3rem;
 }
 
-/* Gap above the status message */
-.tic-status {
-  font-size: 7rem; /* Adjusted size */
-  font-weight: bold;
-  margin-top: 20px; /* Added gap above status message */
-  margin-bottom: 15px; /* Existing gap */
-  color: #6b4f4f; /* Rustic brown text */
+.alarm-button {
+    background-color: #ff9933;
+    color: white;
+    border: none;
+    padding: 2rem 4rem;
+    font-size: 3rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.alarm-button:hover {
+    background-color: #cc3300;
 }
 
 
+.alarm-controls {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.alarm-button {
+    background-color: #ff9933;
+    color: white;
+    border: none;
+    padding: 2rem 4rem;
+    font-size: 3rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 1rem;
+}
+
+.alarm-button:hover {
+    background-color: #cc3300;
+    transform: scale(1.05);
+}

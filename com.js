@@ -94,8 +94,10 @@ fetch(miscUrl)
         window.deliveryFromNow = Number(data[11][1]); // Example: "30"
       //  window.deliveryArea = Number(data[12][1].trim()); // Example: "15"
         window.deliveryArea = Number(data[12][1].toString().trim());
-                
-    
+        // NEW: Fetch waitTime from B14 (assuming data[13][1] is B14)
+window.waitTime = Number(data[13][1].toString().trim());
+
+
         
         // Validate time format
         if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {

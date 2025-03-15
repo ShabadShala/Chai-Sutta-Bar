@@ -103,11 +103,21 @@
         <div class="hsidebar-option" id="showStopwatch">
         <img src="icons/stopwatch2.svg" alt="Stopwatch" class="menu-icon invert-icon">
         Stopwatch
+        </div>        
+        
+        <div class="hsidebar-option" id="timer">
+        <img src="icons/timer2.svg" alt="Timer" class="menu-icon invert-icon">
+        Time Tracker
+        </div>           
+        
+        <div class="hsidebar-option" id="tic-tac-toe">
+        <img src="icons/tic-tac-toe2.svg" alt="Tic-Tac-Toe" class="menu-icon invert-icon">
+        Tic-Tac-Toe Game
         </div>
         
         <div class="hsidebar-option" id="showPuzzle">
         <img src="icons/number-puzzle2.svg" alt="Puzzle" class="menu-icon invert-icon">
-        Puzzle
+        Numbers Puzzle
         </div>
         
         <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
@@ -119,7 +129,7 @@
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
         <img src="icons/settings.svg" alt="Settings" class="menu-icon invert-icon" style="margin-right: 1rem;">
-
+        
         <span>Settings</span>
         </div>
         <span class="toggle-icon">▶</span>
@@ -133,7 +143,7 @@
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
         <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon settings-icon">
-        <span>Starry Back</span>
+        <span>Starry Background</span>
         </div>
         <div class="toggle-switch">
         <div class="toggle-slider"></div>
@@ -1300,7 +1310,7 @@
                 
                 // Close sidebar (keep this if you want)
                 if (isEnabled) {
-                toggleSidebar(false);
+                    toggleSidebar(false);
                 }
             });
         }
@@ -1943,8 +1953,19 @@
             document.getElementById('puzzleModal').style.display = 'flex';    
         });
         
+        document.getElementById('tic-tac-toe')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            
+            ticInitGame();
+        });
         
+        document.getElementById('timer')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            
+            openWaitTracker();
+        });
         
+                
         
         
         
