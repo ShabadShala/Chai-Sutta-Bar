@@ -255,7 +255,7 @@
 }
 
 .hsidebar-option {
-    padding: 1.5rem;
+    padding: 1rem;
     margin: 2rem;
     cursor: pointer;
     font-size: 5rem;
@@ -330,7 +330,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.5rem; /* Reduced padding */
+    
     padding-left: 2rem;
     width: 26.25%; /* 75% of original 35% */
     min-width: 100px; /* 75% of original 100px */
@@ -339,8 +339,7 @@
     font-size: 5.25rem; /* 75% of original 7rem */
     font-weight: bold;
     color: #fae68e;
-    margin: 3rem auto; /* Reduced margin */
-    margin: 3rem auto;
+    margin: 1rem auto; /* Reduced margin */
 }
 
 /* Like Icon */
@@ -901,6 +900,8 @@
 .settings-header {
     cursor: pointer;
     transition: background-color 0.3s;
+  
+
 }
 
 .settings-header:hover {
@@ -924,7 +925,15 @@
     transform: rotate(90deg);
 }
 
+#settings .menu-icon {
+    margin-right: -4rem;
+    }
 
+.settings-icon {
+    margin-left: 2rem;
+    margin-right: 1rem;
+}
+    
 
 
 

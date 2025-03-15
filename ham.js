@@ -118,7 +118,8 @@
         <div class="settings-header hsidebar-option">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
-        <img src="icons/settings.svg" alt="Settings" class="menu-icon invert-icon">
+        <img src="icons/settings.svg" alt="Settings" class="menu-icon invert-icon" style="margin-right: 1rem;">
+
         <span>Settings</span>
         </div>
         <span class="toggle-icon">▶</span>
@@ -131,7 +132,7 @@
         <div class="hsidebar-option" id="toggle-starry-background">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
-        <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon">
+        <img src="icons/stars.svg" alt="Starry Background" class="menu-icon invert-icon settings-icon">
         <span>Starry Back</span>
         </div>
         <div class="toggle-switch">
@@ -144,7 +145,7 @@
         <div class="hsidebar-option" id="cheatToggleButton">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
-        <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon">
+        <img src="icons/lens.svg" alt="Word Search" class="menu-icon invert-icon settings-icon">
         <span>Item Word Search</span>
         </div>
         <div class="toggle-switch">
@@ -157,7 +158,7 @@
         <div class="hsidebar-option" id="childLockButton">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center; gap: 10px;">
-        <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon">
+        <img src="icons/lock.svg" alt="Child Lock" class="menu-icon invert-icon settings-icon">
         <span>Child Lock</span>
         </div>
         <div class="toggle-switch">
@@ -168,7 +169,7 @@
         
         <!-- Clear Cache -->
         <div class="hsidebar-option" id="clear-storage">
-        <img src="icons/trash.svg" alt="Clear Icon" class="menu-icon invert-icon">
+        <img src="icons/trash.svg" alt="Clear Icon" class="menu-icon invert-icon settings-icon" style="margin-right: 4rem;">
         Clear App Data
         </div>
         </div>
@@ -1298,7 +1299,9 @@
                 localStorage.setItem('starryBackgroundEnabled', isEnabled);
                 
                 // Close sidebar (keep this if you want)
+                if (isEnabled) {
                 toggleSidebar(false);
+                }
             });
         }
         

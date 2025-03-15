@@ -194,6 +194,7 @@
             justify-content: center;     
             align-items: center;
             padding-top: 1rem;    
+            margin-top: -2rem;
             gap: 5rem;
             }
             
@@ -2710,7 +2711,11 @@
             
             
             
-            
+            #deliveryForm button[type="submit"]:disabled {
+            background-color: #6c757d !important;
+            cursor: not-allowed;
+            opacity: 0.65;
+            } 
             
             
             
@@ -3669,20 +3674,20 @@
                 let totalVisibleItems = 0;
                 const normalizedSearchQuery = searchQuery.trim().toLowerCase();
                 
-
+                
                 // Create search terms including synonyms
                 const searchTerms = new Set([normalizedSearchQuery]);
-if (SEARCH_REPLACEMENTS[normalizedSearchQuery]) {
-    const replacements = SEARCH_REPLACEMENTS[normalizedSearchQuery].split(',');
-    replacements.forEach(synonym => searchTerms.add(synonym.trim()));
-}
-
-// Add synonyms from SYNONYMS
-if (SYNONYMS[normalizedSearchQuery]) {
-    SYNONYMS[normalizedSearchQuery].forEach(synonym => {
-        searchTerms.add(synonym.toLowerCase().trim());
-    });
-}
+                if (SEARCH_REPLACEMENTS[normalizedSearchQuery]) {
+                    const replacements = SEARCH_REPLACEMENTS[normalizedSearchQuery].split(',');
+                    replacements.forEach(synonym => searchTerms.add(synonym.trim()));
+                }
+                
+                // Add synonyms from SYNONYMS
+                if (SYNONYMS[normalizedSearchQuery]) {
+                    SYNONYMS[normalizedSearchQuery].forEach(synonym => {
+                        searchTerms.add(synonym.toLowerCase().trim());
+                    });
+                }
                 
                 const isNumberSearch = /^\d+$/.test(normalizedSearchQuery);
                 
@@ -4164,11 +4169,9 @@ if (SYNONYMS[normalizedSearchQuery]) {
                         <div class="loading-message cached-offer">
                         <div class="error-text">Connection Error</div>
                         <br>
-                        <div class="cache-info">
-                        Available cached version<br>${formattedDate}
-                        </div>
+                        
                         <div class="warning-text">
-                        <span style="color: green;">Offline copy of 'Food-Menu' can be loaded,</span><br>Some features of the app may not work until you're back online.
+                        <span style="color: green;">Offline copy of 'Food-Menu' (dated ${formattedDate}) can be loaded</span><br>Some features of the app may not work until you're back online.
                         </div>                        
                         <br>
                         <button id="loadCached" class="cached-button">
@@ -4419,7 +4422,22 @@ if (SYNONYMS[normalizedSearchQuery]) {
                                     if (offerCartElement) {
                                         offerCartElement.style.display = 'block';
                                     }
-                                    offerCart = parsedOfferCart.items || [];
+                                    
+                                    // Filter offers based on the second date (end date)
+                                    const currentDate = new Date(); // Get the current date
+                                    offerCart = parsedOfferCart.items.filter(offer => {
+                                        // Extract the second date (end date) from the dates array
+                                        const dateRange = offer.dates[0]; // Assuming dates are stored as ["startDate to endDate"]
+                                        const endDateString = dateRange.split(' to ')[1]; // Extract the end date
+                                        
+                                        // Convert the end date string to a Date object
+                                        const endDate = new Date(endDateString);
+                                        
+                                        // Compare the end date with the current date
+                                        return endDate >= currentDate;
+                                    });
+                                    
+                                    saveOfferCart(); // Save the filtered offer cart
                                     } else {
                                     console.warn('No last offer cart data found.');
                                     offerCart = [];
@@ -4444,6 +4462,7 @@ if (SYNONYMS[normalizedSearchQuery]) {
                             }
                         }, 500);
                     });
+                    
                 });
                 
                 
@@ -5276,7 +5295,25 @@ if (SYNONYMS[normalizedSearchQuery]) {
                 const saved = localStorage.getItem('offerCart');
                 if (saved) {
                     try {
-                        offerCart = JSON.parse(saved);
+                        let parsedOfferCart = JSON.parse(saved);
+                        const currentDate = new Date(); // Get the current date
+                        
+                        // Filter offers based on the second date (end date)
+                        parsedOfferCart = parsedOfferCart.filter(offer => {
+                            if (!offer.dates || offer.dates.length === 0) return false;
+                            
+                            const dateRange = offer.dates[0]; // Assuming format ["startDate to endDate"]
+                            const endDateString = dateRange.split(' to ')[1]; // Extract the end date
+                            
+                            const endDate = new Date(endDateString); // Convert to Date object
+                            
+                            return endDate >= currentDate; // Keep only valid offers
+                        });
+                        
+                        offerCart = parsedOfferCart; // Update global offerCart
+                        
+                        saveOfferCart(); // Save the filtered offer cart back to localStorage
+                        
                         updateCartDisplay();
                         updateScrapButtonStatus();
                         } catch (e) {
@@ -5285,6 +5322,7 @@ if (SYNONYMS[normalizedSearchQuery]) {
                     }
                 }
             }
+            
             
             
             
@@ -5878,7 +5916,27 @@ if (SYNONYMS[normalizedSearchQuery]) {
             
             
             
+            // Add this validation check function
+            function checkFormValidity() {
+                const timeInvalid = document.getElementById('timeStatus').innerHTML.includes('red');
+                const locationInvalid = document.querySelector('[value="location"]').checked && !isLocation;
+                const phoneField = document.getElementById('phone');
+                const phoneInvalid = document.querySelector('[name="orderType"]:checked')?.value === 'delivery' && 
+                phoneField.required && !phoneField.value;
+                
+                return !(timeInvalid || locationInvalid || phoneInvalid);
+            }
             
+            // Update Confirm button state
+            function updateConfirmButton() {
+                const confirmBtn = document.querySelector('#deliveryForm button[type="submit"]');
+                confirmBtn.disabled = !checkFormValidity();
+            }
+            
+            // Add event listeners for form changes
+            document.getElementById('deliveryForm').addEventListener('input', updateConfirmButton);
+            document.getElementById('deliveryForm').addEventListener('change', updateConfirmButton);
+            document.querySelector('[value="location"]').addEventListener('change', updateConfirmButton);
             
             
             
@@ -5906,7 +5964,8 @@ if (SYNONYMS[normalizedSearchQuery]) {
                 document.body.style.paddingRight = `${scrollbarWidth}px`; 
                 
                 setTimeout(() => modal.classList.add('active'), 10);
-                }
+                updateConfirmButton(); 
+            }
             
             // Function to hide the delivery modal
             function hideDeliveryModal() {
@@ -5994,11 +6053,11 @@ if (SYNONYMS[normalizedSearchQuery]) {
             });
             
             // Location
-           const centerLat = 30.68335;
+            const centerLat = 30.68335;
             const centerLng = 75.09015;
-  
- // const centerLat = 30.6833;
-  //          const centerLng = 75.1717;
+            
+            // const centerLat = 30.6833;
+            //          const centerLng = 75.1717;
             
             
             // Function to calculate distance using Haversine formula
@@ -6039,18 +6098,23 @@ if (SYNONYMS[normalizedSearchQuery]) {
                             
                             //  if (distance > 15) {
                             if (distance > window.deliveryArea) {
+                            
                                 isLocation = false;
                                 locationStatus.innerHTML = `
                                 <span style="color: red;">Delivery not available at this location. (${distance.toFixed(2)} Km)</span><br>
                                 <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                                  updateConfirmButton(); 
                                 } else {
                                 locationStatus.innerHTML = `
                                 <span style="color: green;">Delivery available! (${distance.toFixed(2)} Km)</span><br>
                                 <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
+                                  updateConfirmButton(); 
                             }
                         },
                         (error) => {
                             locationStatus.style.display = 'none'; // Hide the loading message on error
+                              isLocation = false;
+                    updateConfirmButton(); 
                             switch (error.code) {
                                 case error.PERMISSION_DENIED:
                                 alert('Permission denied. Please allow location access.');
@@ -6075,11 +6139,16 @@ if (SYNONYMS[normalizedSearchQuery]) {
                         } else {
                         alert('Geolocation is not supported by this browser.');
                         locationStatus.style.display = 'none';
+                         isLocation = false;
+            updateConfirmButton(); //
                     }
                     } else {
                     userLocation = '';
                     locationStatus.style.display = 'none'; // Hide status if checkbox is unchecked
+                     isLocation = true;
+            updateConfirmButton(); //
                 }
+               
             });
             
             
@@ -6214,6 +6283,7 @@ if (SYNONYMS[normalizedSearchQuery]) {
                 deliveryInput.value = ''; // Clear the input
                 deliveryInput.setCustomValidity(''); // Clear any validation messages
                 timeStatus.innerHTML = ''; // Clear the error message
+                updateConfirmButton();
             });
             
             
@@ -6280,8 +6350,8 @@ if (SYNONYMS[normalizedSearchQuery]) {
                     `${sortedItems.map(item => {
                     let itemTotal = item.qty * parseFloat(item.rate);
                     return item.qty > 1 
-                    ? `*${item.qty}* x ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
-                    : `*${item.qty}* x ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
+                    ? `*${item.qty}x* ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
+                    : `*${item.qty}x* ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
                     }).join('\n')}\n${'-'.repeat(30)}\n` +
                     `*TOTAL*: ${totalItems} items, qty ${totalQty} - ₹${Math.round(totalAmount)} only\n${'~'.repeat(15)}\n`;
                 }
