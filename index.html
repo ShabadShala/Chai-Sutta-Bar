@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta name="apple-mobile-web-app-capable" content="yes">
         
         <meta charset="UTF-8">        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        
@@ -11,8 +10,11 @@
         <meta name="robots" content="index, follow">
         <link rel="canonical" href="https://shabadshala.github.io/Chai-Sutta-Bar/">
         
-        <link rel="manifest" href="manifest.json">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#000000">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
+        
+        
         
         <script type="application/ld+json">
             {
@@ -42,6 +44,12 @@
         
         <style>
             
+            @font-face {
+            font-family: 'Digital-7';
+            src: url('fonts/digital-7.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            }
             
             
             /* Universal reset */
@@ -614,6 +622,7 @@
             padding: 1.5rem; /* Adjust padding as needed */
             box-shadow: 0 0.4rem 3rem rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
             /* border-bottom: 1px solid #fae68e; /* Adds a border */     */
+            z-index: 1000;
             }
             
             .scrollable {
@@ -628,6 +637,7 @@
             white-space: nowrap;
             max-width: 100%;        
             position: relative; /* Required for absolute positioning of child */
+            z-index: 1002;
             }
             
             .logo-text .chai {
@@ -1021,8 +1031,8 @@
             cursor: pointer; /* Pointer for better UX */
             z-index: 103;            
             /* Circular button */
-            width: 13rem;
-            height: 13rem;
+            width: 10rem;
+            height: 10rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1131,7 +1141,7 @@
             right: -5px;
             bottom: -5px;
             border-radius: 50%;
-            border: 3px solid transparent;
+            border: 2px solid transparent;
             border-top-color: #00ff00;
             border-left-color: #00ff00;
             animation: rotate 5s linear infinite;
@@ -1899,7 +1909,7 @@
             width: 90%;
             max-width: 500px;
             font-size: 5rem;
-            z-index: 10000;
+            
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             display: none; /* Hidden by default */
             }
@@ -2093,7 +2103,11 @@
             }
             
             
-            
+            #deliveryForm button[type="submit"]:disabled {
+            background-color: #6c757d !important;
+            cursor: not-allowed;
+            opacity: 0.65;
+            } 
             
             
             
@@ -2165,7 +2179,7 @@
             margin-top:3rem;
             }
             
-            @import url('https://fonts.cdnfonts.com/css/digital-7'); /* Import Digital-7 Font */            
+            
             
             #visitorCounter,
             #viewsCounter {
@@ -2711,13 +2725,6 @@
             
             
             
-            #deliveryForm button[type="submit"]:disabled {
-            background-color: #6c757d !important;
-            cursor: not-allowed;
-            opacity: 0.65;
-            } 
-            
-            
             
             
             
@@ -2949,7 +2956,10 @@
                 <div id="closeOffer">×</div>
                 <h2 style="font-size: 5rem;">Selected Offers</h2>
                 <div id="cart-items"></div>
-                <div id="totalOffers" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;">Total Offers: 0</div>
+                <div id="totalOfferSummary" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;"></div>
+                
+                
+                
                 <div class="button-container">
                     <button id="order-offers" class="order-btn child-lock-restricted">Order</button>
                     <button id="clear-offers" class="clear-btn">Clear</button>
@@ -2969,36 +2979,37 @@
                         <div class="form-group">
                             <label for="phone">Mobile Number</label>
                             <div style="display:flex;gap:5px">
-                                <input type="tel" id="phone" maxlength="11" pattern="\d{5}-\d{5}" placeholder="12345-67890" title="Enter 10 digits in the format 12345-67890">
+                                <input type="tel" id="phone" name="phone" maxlength="11" 
+                                pattern="\d{5}-\d{5}" placeholder="12345-67890" 
+                                title="Enter 10 digits in the format 12345-67890" 
+                                autocomplete="tel-national">
                                 <button type="button" id="pickContact">📱</button>
                             </div>                            
                         </div>
                         
                         <div class="form-group">
-                            <label>Contact Person (25 chars max.)</label>
-                            <input type="text" id="customerName" maxlength="25">
-                        </div>
-                        
-                        <div class="address-method">
-                            <label>Address (100 chars max.)</label>
-                        </div>                    
-                        <div id="addressInput">
-                            <textarea id="manualAddress" maxlength="100"></textarea>
+                            <label for="customerName">Contact Person (25 chars max.)</label>
+                            <input type="text" id="customerName" name="customerName" maxlength="25" autocomplete="name">
                         </div>
                         
                         <div class="form-group">
-                            <label>Check/Attach Delivery Time</label>
+                            <label for="manualAddress">Address (100 chars max.)</label>
+                            <textarea id="manualAddress" name="manualAddress" maxlength="100" autocomplete="street-address"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="deliveryTime">Check/Attach Delivery Time</label>
                             <div style="display: flex; gap: 4px;">
-                                <input type="datetime-local" id="deliveryTime">  
-                                <!--      <input type="time" id="deliveryTime" step="60">    -->                        
+                                <input type="datetime-local" id="deliveryTime" name="deliveryTime" autocomplete="off">
                                 <button type="button" id="clearDate">✖</button>
                             </div>
                         </div>
+                        
                         <div id="timeStatus" style="margin-top: -2rem; padding-bottom: 2rem;"></div>
                         
                         <div class="address-method">
                             <label>
-                                <input type="checkbox" name="locationAddress" value="location"> Check/Attach Location
+                                <input type="checkbox" name="locationAddress" autocomplete="off" value="location"> Check/Attach Location
                             </label>
                         </div>                    
                         <div id="locationStatus" style="display:none"></div>
@@ -3021,10 +3032,6 @@
                 <h2 style="font-size: 7rem;">Checklist</h2>
                 <div id="orderDateTime" style="font-size: 5rem; margin-bottom: 1rem;"></div>
                 <div id="checklistItemsContainer" class="checklist-items-container"></div>
-                <!--    <div id="checklistSummary" class="checklist-summary">
-                    <span id="totalItems" class="summary-total">Total Items: 0</span>
-                    <span id="totalQty" class="summary-total">Total Qty: 0</span>                    
-                </div> -->
                 <div class="checklist-controls">
                     <button id="clearChecklist">Clear</button>
                     <button id="closeChecklist">Close</button>
@@ -3104,13 +3111,19 @@
             </div>
         </div>
         
+        <button id="tic-start-btn" style="position: inline-block; margin: 10px;">Start Tic-Tac-Toe</button>
+
+
         
         
         <script>
             
             
-            
-            
+            document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('tic-start-btn').addEventListener('click', ticInitGame);
+});
+
+
             
             
             
@@ -5527,18 +5540,19 @@
             
             
             // Update cart display with stepper
+            // Updated single div for better formatting
+            
             function updateCartDisplay() {
                 // Ensure button-container-all is in the correct container
                 updateButtonContainerAll(); 
                 
                 const cartItems = document.getElementById('cart-items');
-                const totalOffers = document.getElementById('totalOffers');
+                const totalOfferSummary = document.getElementById('totalOfferSummary');
                 const toggleBtn = document.getElementById('toggle-cart');
-                
                 
                 if (offerCart.length === 0) {
                     cartItems.innerHTML = '<div class="empty-cart">No offers selected</div>';
-                    totalOffers.textContent = 'Total Offers: 0';
+                    totalOfferSummary.innerHTML = 'TOTAL: <span style="color: blue;">0 titles</span>, <span style="color: green;">qty 0</span>';
                     toggleBtn.textContent = 'Offer Cart (0)';
                     closeOfferCart();
                     return;
@@ -5548,13 +5562,12 @@
                 <div class="scrap-item">
                 <div class="cart-item-header">
                 <div class="cart-item-title">${group.title}</div>
-                <!--   <div class="cart-item-date">${group.dates.join(', ')}</div> -->
                 <div class="cart-item-description">${group.description}</div>
                 </div>
                 <div class="offer-stepper">
                 <button class="off-decrement-btn" 
                 onclick="adjustOfferQuantity(${index}, -1)"
-                ${group.count <= 1 ? 'disabled' : ''}>-</button> <!-- Only check count -->
+                ${group.count <= 1 ? 'disabled' : ''}>-</button>
                 <span class="offer-qty-display">${group.count}</span>
                 <button class="off-increment-btn" 
                 onclick="adjustOfferQuantity(${index}, 1)"
@@ -5565,31 +5578,33 @@
                 </div>
                 `).join('');
                 
-                // offer-delete-button
-                document.querySelectorAll('.offer-delete-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const index = parseInt(e.target.dataset.index);
+                // Handle delete buttons
+                document.querySelectorAll('.offer-delete-btn').forEach((btn, index) => {
+                    btn.addEventListener('click', () => {
                         offerCart.splice(index, 1);
                         updateCartDisplay();
                         updateScrapButtonStatus();
                         showFeedback('Offer removed');
-                        saveOfferCart(); // Add this line
+                        saveOfferCart(); 
                     });
                 });
                 
-                const totalItems = offerCart.reduce((sum, group) => sum + group.count, 0);
+                // Calculate totals
+                const totalItems = offerCart.length;
+                const totalQuantities = offerCart.reduce((sum, group) => sum + group.count, 0);
                 
-                if (totalItems <= 1) {
-                    totalOffers.style.display = 'none'; // Hide if totalItems is 0 or 1
-                    } else {
-                    totalOffers.style.display = 'block'; // Show otherwise
-                    totalOffers.textContent = `Total Offers: ${totalItems}`;
-                }
+                // Determine singular or plural text
+                const titleText = totalItems === 1 ? 'title' : 'titles';
+                const qtyText = totalQuantities === 1 ? 'qty' : 'qty';
                 
-                toggleBtn.textContent = `Offer Cart (${totalItems})`;
+                // Update display with no extra spaces
+                totalOfferSummary.innerHTML = `TOTAL: <span style="color: blue;">${totalItems} ${titleText}</span>, <span style="color: green;">${qtyText} ${totalQuantities}</span>`;
                 
-                
+                toggleBtn.textContent = `Offer Cart (${totalQuantities})`;
             }
+            
+            
+            
             
             
             
@@ -6098,23 +6113,23 @@
                             
                             //  if (distance > 15) {
                             if (distance > window.deliveryArea) {
-                            
+                                
                                 isLocation = false;
                                 locationStatus.innerHTML = `
                                 <span style="color: red;">Delivery not available at this location. (${distance.toFixed(2)} Km)</span><br>
                                 <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-                                  updateConfirmButton(); 
+                                updateConfirmButton(); 
                                 } else {
                                 locationStatus.innerHTML = `
                                 <span style="color: green;">Delivery available! (${distance.toFixed(2)} Km)</span><br>
                                 <small>Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}</small>`;
-                                  updateConfirmButton(); 
+                                updateConfirmButton(); 
                             }
                         },
                         (error) => {
                             locationStatus.style.display = 'none'; // Hide the loading message on error
-                              isLocation = false;
-                    updateConfirmButton(); 
+                            isLocation = false;
+                            updateConfirmButton(); 
                             switch (error.code) {
                                 case error.PERMISSION_DENIED:
                                 alert('Permission denied. Please allow location access.');
@@ -6139,16 +6154,16 @@
                         } else {
                         alert('Geolocation is not supported by this browser.');
                         locationStatus.style.display = 'none';
-                         isLocation = false;
-            updateConfirmButton(); //
+                        isLocation = false;
+                        updateConfirmButton(); //
                     }
                     } else {
                     userLocation = '';
                     locationStatus.style.display = 'none'; // Hide status if checkbox is unchecked
-                     isLocation = true;
-            updateConfirmButton(); //
+                    isLocation = true;
+                    updateConfirmButton(); //
                 }
-               
+                
             });
             
             
@@ -6346,6 +6361,9 @@
                 let scrapMessage = '';
                 
                 if (totalItems > 0) {
+                    const itemText = totalItems === 1 ? 'item' : 'items';
+                    const qtyText = totalQty === 1 ? 'qty' : 'qty';
+                    
                     scrapMessage = 
                     `${sortedItems.map(item => {
                     let itemTotal = item.qty * parseFloat(item.rate);
@@ -6353,8 +6371,9 @@
                     ? `*${item.qty}x* ${trimLeftNonEnglish(item.name)} @ ₹${item.rate} - ₹${itemTotal}`
                     : `*${item.qty}x* ${trimLeftNonEnglish(item.name)} - ₹${itemTotal}`;
                     }).join('\n')}\n${'-'.repeat(30)}\n` +
-                    `*TOTAL*: ${totalItems} items, qty ${totalQty} - ₹${Math.round(totalAmount)} only\n${'~'.repeat(15)}\n`;
+                    `*TOTAL*: ${totalItems} ${itemText}, ${qtyText} ${totalQty} - ₹${Math.round(totalAmount)} only\n${'~'.repeat(15)}\n`;
                 }
+                
                 
                 
                 
@@ -6537,6 +6556,9 @@
                     
                     // Show Scrap Items if any
                     if (sortedItems.length) {
+                        const itemText = sortedItems.length === 1 ? 'Item' : 'Items';
+                        const qtyText = totalSortedQty === 1 ? 'Qty' : 'Qty';
+                        
                         container.innerHTML += `<div style="margin-top: 5rem;"></div>`;
                         container.innerHTML += sortedItems.map(([name, qty]) => {
                             totalSortedQty += qty;
@@ -6548,14 +6570,17 @@
                             <span class="item-quantity">${qty}x</span>
                             </div>`;
                         }).join('') + 
-                        `<div style="display: flex; justify-content: space-between; font-size: 4rem; font-weight: bold; margin-top: 1rem;">
-                        <span>Total Items: ${sortedItems.length}</span>
-                        <span>Total Qty: ${totalSortedQty}</span>
+                        `<div style="display: flex; justify-content: space-between; font-size: 4rem; font-weight: bold; color: blue; margin: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.1); padding-bottom: 1rem;">
+                        <span>${itemText}: ${sortedItems.length}</span>
+                        <span>${qtyText}: ${totalSortedQty}</span>
                         </div>`;
                     }
                     
                     // Show Offer Cart Items if any
                     if (offerItems.length) {
+                        const offerText = offerItems.length === 1 ? 'Offer Title' : 'Offer Titles';
+                        const offerQtyText = totalOfferQty === 1 ? 'Offer Qty' : 'Offer Qty';
+                        
                         container.innerHTML += `<div style="margin-top: 5rem;"></div>`;
                         container.innerHTML += offerItems.map(item => {
                             totalOfferQty += item.count;
@@ -6567,11 +6592,12 @@
                             <span class="item-quantity">${item.count}x</span>
                             </div>`;
                         }).join('') + 
-                        `<div style="display: flex; justify-content: space-between; font-size: 4rem; font-weight: bold; margin-top: 1rem;">
-                        <span>Total Offer Items: ${offerItems.length}</span>
-                        <span>Total Offer Qty: ${totalOfferQty}</span>
+                        `<div style="display: flex; justify-content: space-between; font-size: 4rem; font-weight: bold; color: blue; margin: 1rem;">
+                        <span>${offerText}: ${offerItems.length}</span>
+                        <span>${offerQtyText}: ${totalOfferQty}</span>
                         </div>`;
                     }
+                    
                 }
                 
                 // Checkbox functionality
@@ -6771,4 +6797,4 @@
         
         
     </body>
-</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+</html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

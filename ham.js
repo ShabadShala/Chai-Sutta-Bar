@@ -91,22 +91,22 @@
         
         <!-- Inside the hsidebar-content div -->
         <div class="hsidebar-option" id="showChecklist">
-        <img src="icons/checklist.svg" alt="Checklist" class="menu-icon invert-icon">
+        <img src="icons/checklist2.svg" alt="Checklist" class="menu-icon invert-icon">
         Checklist
         </div>
         
         <div class="hsidebar-option" id="showCalculator">
-        <img src="icons/calculator.svg" alt="Calculator" class="menu-icon invert-icon">
+        <img src="icons/calculator2.svg" alt="Calculator" class="menu-icon invert-icon">
         Calculator
         </div>
         
         <div class="hsidebar-option" id="showStopwatch">
-        <img src="icons/stopwatch.svg" alt="Stopwatch" class="menu-icon invert-icon">
+        <img src="icons/stopwatch2.svg" alt="Stopwatch" class="menu-icon invert-icon">
         Stopwatch
         </div>
         
         <div class="hsidebar-option" id="showPuzzle">
-        <img src="icons/number-puzzle.svg" alt="Puzzle" class="menu-icon invert-icon">
+        <img src="icons/number-puzzle2.svg" alt="Puzzle" class="menu-icon invert-icon">
         Puzzle
         </div>
         

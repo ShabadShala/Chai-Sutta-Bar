@@ -426,3 +426,114 @@
             initializePuzzle(4);
             
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+  // Initialize Tic-Tac-Toe Modal Game
+function ticInitGame() {
+  document.body.insertAdjacentHTML('beforeend', `
+    <div id="tic-modal" class="tic-modal">
+      <div class="tic-modal-content">
+        <span id="tic-close-btn" class="tic-close-btn">&times;</span>
+        <select id="tic-board-size" class="tic-board-size">
+          <option value="3">3x3</option>
+          <option value="4">4x4</option>
+          <option value="5">5x5</option>
+        </select>
+        <div id="tic-container" class="tic-container">
+          <div id="tic-board" class="tic-board"></div>
+          <div id="tic-status" class="tic-status">Select board size to start the game</div>
+          <button id="tic-reset" class="tic-reset">Reset</button>
+        </div>
+      </div>
+    </div>
+  `);
+
+  let boardSize = 3;
+  let board = [];
+  let currentPlayer = 'X';
+  const status = document.getElementById('tic-status');
+  const boardElement = document.getElementById('tic-board');
+
+  // Function to create the game board
+  function createBoard(size) {
+    board = Array(size * size).fill('');
+    boardElement.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    boardElement.innerHTML = board.map((_, i) =>
+      `<div class="tic-cell" data-index="${i}"></div>`).join('');
+    document.querySelectorAll('.tic-cell').forEach(cell =>
+      cell.addEventListener('click', handleCellClick)
+    );
+    status.innerHTML = `<span style='color: blue;'>Player X's Turn</span>`;
+  }
+
+  // Function to check for winner
+  function checkWinner() {
+    const winLength = boardSize;
+    const getLine = (start, step) => {
+      const line = [];
+      for (let i = 0; i < winLength; i++) {
+        line.push(start + i * step);
+      }
+      return line;
+    };
+
+    const lines = [];
+    for (let i = 0; i < boardSize; i++) {
+      lines.push(getLine(i * boardSize, 1));
+      lines.push(getLine(i, boardSize));
+    }
+    lines.push(getLine(0, boardSize + 1));
+    lines.push(getLine(boardSize - 1, boardSize - 1));
+
+    return lines.some(line => 
+      line.every(index => board[index] === currentPlayer)
+    );
+  }
+
+  // Handle cell clicks
+  function handleCellClick(e) {
+    const index = e.target.dataset.index;
+    if (board[index] || checkWinner()) return;
+    board[index] = currentPlayer;
+    e.target.textContent = currentPlayer;
+    if (checkWinner()) {
+      status.textContent = `Player ${currentPlayer} Wins!`;
+    } else if (board.every(cell => cell)) {
+      status.textContent = "It's a Draw!";
+    } else {
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      status.innerHTML = `<span style='color: ${currentPlayer === 'X' ? 'blue' : 'red'};'>Player ${currentPlayer}'s Turn</span>`;
+    }
+  }
+
+  // Dynamic board creation on size change
+  document.getElementById('tic-board-size').addEventListener('change', (e) => {
+    boardSize = parseInt(e.target.value);
+    currentPlayer = 'X';
+    createBoard(boardSize);
+  });
+
+  // Reset the game
+  document.getElementById('tic-reset').addEventListener('click', () => {
+    createBoard(boardSize);
+  });
+
+  // Close the modal
+  document.getElementById('tic-close-btn').addEventListener('click', () => {
+    document.getElementById('tic-modal').remove();
+  });
+
+  // Initialize default board
+  createBoard(boardSize);
+}
+
+document.getElementById('tic-start-btn').addEventListener('click', ticInitGame);

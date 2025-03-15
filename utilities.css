@@ -354,3 +354,191 @@
     cursor: not-allowed;
     color: #666;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Outer Modal Background */
+.tic-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Content */
+.tic-modal-content {
+  background: #f4f1de; /* Light beige background */
+  padding: 20px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border: 2px solid #d4a373; /* Rustic border color */
+  text-align: center;
+}
+
+/* Close Button */
+.tic-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 3rem; /* Reduced size */
+  cursor: pointer;
+  color: #6b4f4f; /* Rustic brown */
+  transition: color 0.3s ease;
+  z-index: 20000;
+}
+
+.tic-close-btn:hover {
+  color: #8b5a2b; /* Darker brown on hover */
+}
+
+/* Dropdown and Select */
+.tic-container select {
+  margin-bottom: 15px; /* Reduced gap */
+  padding: 10px;
+  
+  font-size: 8rem; /* Adjusted size */
+  border-radius: 8px;
+  border: 2px solid #d4a373; /* Rustic border */
+  background: #f9f9f9;
+  width: 100%;
+  max-width: 200px;
+  color: #6b4f4f; /* Rustic brown text */
+}
+
+/* Responsive Tic-Tac-Toe Board */
+.tic-board {
+  display: grid;
+  gap: 8px; /* Reduced gap */
+  margin-bottom: 20px; /* Reduced gap */
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  grid-template-columns: repeat(var(--board-size), 1fr);
+}
+
+/* Responsive Board Cells */
+.tic-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #d4a373; /* Rustic border */
+  font-size: 6rem; /* Adjusted size */
+  font-weight: bold;
+  background-color: #f9f9f9;
+  color: #6b4f4f; /* Rustic brown text */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tic-cell:hover {
+  background-color: #e0c097; /* Light brown hover */
+  transform: scale(1.05);
+}
+
+.tic-cell:active {
+  transform: scale(0.95);
+}
+
+/* Status Display */
+.tic-status {
+  font-size: 7rem; /* Adjusted size */
+  font-weight: bold;
+  margin-bottom: 15px; /* Reduced gap */
+  color: #6b4f4f; /* Rustic brown text */
+}
+
+/* Buttons */
+.tic-reset, #tic-start-game {
+  padding: 10px 20px; /* Adjusted padding */
+  font-size: 7rem; /* Adjusted size */
+  background-color: #d4a373; /* Rustic button color */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 5px; /* Reduced gap */
+}
+
+.tic-reset:hover, #tic-start-game:hover {
+  background-color: #b5835a; /* Darker rustic color on hover */
+}
+
+.tic-reset:active, #tic-start-game:active {
+  background-color: #8b5a2b; /* Even darker on active */
+}
+
+/* Chai Sutta Bar Theme Additions */
+.tic-modal-content::before {
+  content: "Tic-Tac-Toe"; /* Food icons for theme */
+  font-size: 7rem;
+  display: block;
+  margin-bottom: 10px;
+  color: #6b4f4f; /* Rustic brown */
+}
+
+/* Responsive Gaps */
+@media (max-width: 600px) {
+  .tic-board {
+    gap: 5px; /* Smaller gap for small screens */
+  }
+
+  .tic-cell {
+    font-size: 5rem; /* Smaller font for small screens */
+  }
+
+  .tic-status {
+    font-size: 5rem; /* Smaller font for small screens */
+  }
+}
+
+/* Gap below the container */
+.tic-container {
+  margin-bottom: 20px; /* Added gap below container */
+}
+
+/* Gap above the status message */
+.tic-status {
+  font-size: 7rem; /* Adjusted size */
+  font-weight: bold;
+  margin-top: 20px; /* Added gap above status message */
+  margin-bottom: 15px; /* Existing gap */
+  color: #6b4f4f; /* Rustic brown text */
+}
+
+
