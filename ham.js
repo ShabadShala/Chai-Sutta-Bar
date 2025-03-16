@@ -2071,36 +2071,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-let deferredPrompt; // Variable to hold the deferred prompt event
-
-// Listen for the beforeinstallprompt event
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault(); // Prevent the default prompt from showing automatically
-    deferredPrompt = e; // Store the event so we can trigger it later
-    
-    // Optionally, show a custom install button here if needed
-    // document.getElementById('install-button').style.display = 'block'; 
-    
-    // Automatically trigger the prompt after a delay
-    setTimeout(() => {
-        deferredPrompt.prompt(); // Show the install prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            // Handle the user's response
-            if (choiceResult.outcome === "accepted") {
-                console.log("User accepted the install prompt");
-                } else {
-                console.log("User dismissed the install prompt");
-            }
-            deferredPrompt = null; // Reset the deferred prompt
-        });
-    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-});               
-
-
-
-
-
-
 
 
 
