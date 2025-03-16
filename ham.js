@@ -895,79 +895,78 @@
         
         
         
-       // Install App Logic
 document.addEventListener('DOMContentLoaded', () => {
   const installAppButton = document.getElementById('install-app');
   if (!installAppButton) return;
 
   let deferredPrompt = null;
-  let isAppInstalled = checkIfAppInstalled();
+  let isAppInstalled = false;
 
-  // Check installation status using multiple methods
-  function checkIfAppInstalled() {
-    return window.matchMedia('(display-mode: standalone)').matches || 
-           window.navigator.standalone ||
-           document.referrer.includes('android-app://');
+  // Enhanced installation check with origin validation
+  function checkInstallStatus() {
+    const installOrigin = localStorage.getItem('pwa-install-origin');
+    const currentOrigin = window.location.origin;
+
+    // Platform-specific checks
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    const isIOS = !!window.navigator.standalone;
+    
+    // Validate against installation origin
+    return (isStandalone || isIOS) && installOrigin === currentOrigin;
   }
 
-  // Update button state
   function updateButtonState() {
-    const shouldDisable = isAppInstalled || !deferredPrompt;
-    installAppButton.classList.toggle('disabled-option', shouldDisable);
-    installAppButton.disabled = shouldDisable;
+    isAppInstalled = checkInstallStatus();
+    installAppButton.classList.toggle('disabled-option', isAppInstalled);
+    installAppButton.disabled = isAppInstalled;
+    installAppButton.style.display = isAppInstalled ? 'none' : 'block';
   }
 
-  // Beforeinstallprompt handler
+  // Installation event handlers
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    isAppInstalled = checkIfAppInstalled();
     updateButtonState();
   });
 
-  // Appinstalled handler
   window.addEventListener('appinstalled', () => {
-    isAppInstalled = true;
+    localStorage.setItem('pwa-install-origin', window.location.origin);
     deferredPrompt = null;
-    updateButtonState();
+    setTimeout(updateButtonState, 1000); // Allow time for mode change
   });
 
-  // Display mode change handler
-  const mediaQuery = window.matchMedia('(display-mode: standalone)');
-  mediaQuery.addEventListener('change', (e) => {
-    isAppInstalled = e.matches || checkIfAppInstalled();
-    updateButtonState();
+  // Visibility change handler for Android
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') updateButtonState();
   });
 
   // Initial setup
   updateButtonState();
 
-  // Click handler
+  // Click handler with enhanced platform detection
   installAppButton.addEventListener('click', async () => {
+    if (isAppInstalled) return;
+
     if (deferredPrompt) {
       try {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') {
-          console.log('User installed PWA');
-          deferredPrompt = null;
+          localStorage.setItem('pwa-install-origin', window.location.origin);
         }
-      } catch (err) {
-        console.log('Error handling install prompt:', err);
+      } catch (error) {
+        console.log('Installation failed:', error);
       }
     } else {
-      if (!isAppInstalled) {
-        // Cross-platform guidance
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const message = isMobile ?
-          'Use browser menu ➔ "Install App" or "Add to Home Screen"' :
-          'Click the install icon in the address bar (Chrome) or browser menu';
-        alert(`Installation guide:\n${message}`);
-      }
+      const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+      const instructions = isMobile ?
+        '1. Tap browser menu (⋮)\n2. Select "Install app" or "Add to Home Screen"' :
+        '1. Click the install icon (⬇) in the address bar\n2. Follow browser instructions';
+      
+      alert(`Manual Installation Required:\n${instructions}`);
     }
   });
-});
-        
+});   
         
         
         
