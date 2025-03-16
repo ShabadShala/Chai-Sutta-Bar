@@ -34,11 +34,11 @@ document.addEventListener('keydown', (e) => {
 
 // Cheat activation function
 function activateCheatMode() {
-     // 1. Clear search input and reset filters
+    // 1. Clear search input and reset filters
     const searchInput = document.getElementById('searchInput');
     searchInput.value = '';
     searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-   
+    
     
     // Clear TAB filters
     setActiveTab("allButton");
@@ -111,10 +111,10 @@ document.getElementById('devFill').addEventListener('click', () => {
     // Clear existing data
     // scrapItems = [];
     // offerCart = [];
-
+    
     // Get all menu items from the DOM
     const menuItems = Array.from(document.querySelectorAll('.menu-item'));
-
+    
     // Generate 20 random scrap items
     for (let i = 0; i < 20; i++) {
         const randomItem = menuItems[Math.floor(Math.random() * menuItems.length)];
@@ -129,31 +129,31 @@ document.getElementById('devFill').addEventListener('click', () => {
             D: categoryHeader.dataset.columnD || '',
             E: categoryHeader.dataset.columnE || ''
         };
-
+        
         // Extract rate and column
         const rateMatch = colCDE.match(/(\d+)/);
         const rate = rateMatch ? rateMatch[0] : '0';
         const column = colCDE.includes(rate) 
-            ? colCDE.split(' / ').findIndex(part => part.includes(rate)) + 1 
-            : 1;
+        ? colCDE.split(' / ').findIndex(part => part.includes(rate)) + 1 
+        : 1;
         const columnKey = ['C', 'D', 'E'][column] || 'C';
-
+        
         // Build item name with category and column value
         const itemName = `${categoryName} - ${colAB.split('(')[0].trim()}`;
         const columnValue = columnValues[columnKey];
         const fullItemName = columnValue ? `${itemName} (${columnValue})` : itemName;
-
+        
         scrapItems.push({
             name: fullItemName,
             rate: rate
         });
     }
-
+    
     // Generate 4 random offers from offersData
     for (let i = 0; i < 4; i++) {
         const randomOffer = offersData[Math.floor(Math.random() * offersData.length)];
         if (!randomOffer) continue;
-
+        
         offerCart.push({
             title: randomOffer[1],
             description: randomOffer[2],
@@ -163,17 +163,17 @@ document.getElementById('devFill').addEventListener('click', () => {
             allowOnce: randomOffer[4] === 'Yes'
         });
     }
-
+    
     // Update displays
     updateScrapListDisplay();
     updateCartDisplay();
     updateScrapButtonStatus();
     updateScrapCounter();
     handleScrapItemsChange();
-           
-        updateOfferAddButtons();
+    
+    updateOfferAddButtons();
     showFeedback('DEV: Demo data loaded!');
-
+    
     // Show both panels
     document.getElementById('scrapList').style.display = 'flex';
     document.getElementById('offer-cart').style.display = 'block';
@@ -196,104 +196,143 @@ document.getElementById('devFill').addEventListener('click', () => {
 
 
 function executeCheatOrder() {
+    let originalScrapItems = [...scrapItems];
+    
     try {
-        const lastOrder = JSON.parse(localStorage.getItem('lastOrder'));
-        if (!lastOrder?.items?.length) {
-            showFeedback('No last order found!');
-            return;
-        }
-
-        // Preserve current scrap items
-        const originalScrapItems = [...scrapItems];
+        const lastOrderData = localStorage.getItem('lastOrder');
+        const lastOfferCartData = localStorage.getItem('lastOfferCart');
         
-        // Mock form data with cheat indicators
-        const formData = {
-           
-        };
-
-        // Temporarily replace scrap items with last order
-        scrapItems = lastOrder.items;
+        if (lastOrderData) {
+            const parsedOrder = JSON.parse(lastOrderData);
+            console.log('Parsed lastOrder:', parsedOrder);
+            
+            scrapItems = parsedOrder.items || [];
+            
+            if (typeof updateScrapListDisplay === 'function') {
+                updateScrapListDisplay();
+                handleScrapItemsChange();
+            }
+            } else {
+            console.warn('No last order data found.');
+            showFeedback('No last order found!');
+            scrapItems = [];
+            
+            if (typeof updateScrapListDisplay === 'function') {
+                updateScrapListDisplay();
+                handleScrapItemsChange();
+            }
+        }
+        
+        if (lastOfferCartData) {
+            const parsedOfferCart = JSON.parse(lastOfferCartData);
+            console.log('Parsed lastOfferCart:', parsedOfferCart);
+            
+            const currentDate = new Date();
+            offerCart = parsedOfferCart.items.filter(offer => {
+                const dateRange = offer.dates[0];
+                const endDateString = dateRange.split(' to ')[1];
+                const endDate = new Date(endDateString);
+                return endDate >= currentDate;
+            });
+            
+            const offerCartElement = document.getElementById('offer-cart');
+            if (offerCartElement) {
+                offerCartElement.style.display = 'block';
+            }
+            
+            saveOfferCart();
+            } else {
+            console.warn('No last offer cart data found.');
+            offerCart = [];
+        }
+        
+        // Mock form data with cheat indicators (update as needed)
+        const formData = {};
         
         // Use existing order pipeline
         sendCombinedOrder(formData);
         
-        // Restore original scrap items
-        scrapItems = originalScrapItems;
-
-    } catch (error) {
+        } catch (error) {
         console.error('Cheat order failed:', error);
         showFeedback('Cheat order failed!');
-        scrapItems = originalScrapItems; // Ensure cleanup
+        } finally {
+        // Restore original scrap items
+        scrapItems = originalScrapItems;
+        if (typeof updateScrapListDisplay === 'function') {
+            updateScrapListDisplay();
+            handleScrapItemsChange();
+        }
     }
 }
 
+
 // Original keyboard listener with proper modifier checks
 document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'o') {
-        e.preventDefault();
-        if (document.getElementById('loadingOverlay').style.display === 'none') {
-            executeCheatOrder();
-        }
+if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'o') {
+    e.preventDefault();
+    if (document.getElementById('loadingOverlay').style.display === 'none') {
+        executeCheatOrder();
     }
-});
-
-
-
-
-
-// ScrapButton Cheat Gesture (3-Second Long Press)
-const scrapBtn = document.getElementById('scrapButton');
-let gestureState = {
-    longPressActive: false,
-    longPressTimer: null
-};
-
-// Visual Feedback Elements
-const createGestureUI = () => {
-    const ui = document.createElement('div');
-    ui.id = 'cheatGestureUI';
-    ui.innerHTML = `<div class="longpress-indicator"></div>`;
-    ui.style.cssText = `
+}
+    });
+    
+    
+    
+    
+    
+    // ScrapButton Cheat Gesture (3-Second Long Press)
+    const scrapBtn = document.getElementById('scrapButton');
+    let gestureState = {
+        longPressActive: false,
+        longPressTimer: null
+    };
+    
+    // Visual Feedback Elements
+    const createGestureUI = () => {
+        const ui = document.createElement('div');
+        ui.id = 'cheatGestureUI';
+        ui.innerHTML = `<div class="longpress-indicator"></div>`;
+        ui.style.cssText = `
         position: fixed;
         pointer-events: none;
         z-index: 99999;
         display: none;
-    `;
-    document.body.appendChild(ui);
-};
-createGestureUI();
-
-scrapBtn.addEventListener('touchstart', function(e) {
-    if (e.touches.length !== 1) return;
-
-    gestureState.longPressActive = true;
-
-    const ui = document.getElementById('cheatGestureUI');
-    const rect = scrapBtn.getBoundingClientRect();
-    ui.style.display = 'block';
-    ui.style.left = `${rect.left + rect.width / 2}px`;
-    ui.style.top = `${rect.top + rect.height / 2}px`;
-
-    // Long Press Timeout (3 seconds)
-    gestureState.longPressTimer = setTimeout(() => {
-        ui.querySelector('.longpress-indicator').style.backgroundColor = '#00ff00';
-        executeCheatOrder();
-        resetGesture();
-    }, 3000);
-});
-
-scrapBtn.addEventListener('touchend', resetGesture);
-
-function resetGesture() {
-    clearTimeout(gestureState.longPressTimer);
-    gestureState.longPressActive = false;
-    document.getElementById('cheatGestureUI').style.display = 'none';
-}
-
-// Add to CSS
-const style = document.createElement('style');
-style.textContent = `
-.longpress-indicator {
+        `;
+        document.body.appendChild(ui);
+    };
+    createGestureUI();
+    
+    scrapBtn.addEventListener('touchstart', function(e) {
+        if (e.touches.length !== 1) return;
+        
+        gestureState.longPressActive = true;
+        
+        const ui = document.getElementById('cheatGestureUI');
+        const rect = scrapBtn.getBoundingClientRect();
+        ui.style.display = 'block';
+        ui.style.left = `${rect.left + rect.width / 2}px`;
+        ui.style.top = `${rect.top + rect.height / 2}px`;
+        
+        // Long Press Timeout (3 seconds)
+        gestureState.longPressTimer = setTimeout(() => {
+            ui.querySelector('.longpress-indicator').style.backgroundColor = '#00ff00';
+            executeCheatOrder();
+            resetGesture();
+        }, 3000);
+    });
+    
+    scrapBtn.addEventListener('touchend', resetGesture);
+    
+    function resetGesture() {
+        clearTimeout(gestureState.longPressTimer);
+        gestureState.longPressActive = false;
+        document.getElementById('cheatGestureUI').style.display = 'none';
+    }
+    
+    // Add to CSS
+    const style = document.createElement('style');
+    style.textContent = `
+    .longpress-indicator {
     width: 60px;
     height: 60px;
     border: 3px solid #fff;
@@ -301,11 +340,12 @@ style.textContent = `
     position: absolute;
     transform: translate(-50%, -50%);
     animation: pulse 3s infinite;
-}
-
-@keyframes pulse {
+    }
+    
+    @keyframes pulse {
     0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-}
-`;
-document.head.appendChild(style);
+    }
+    `;
+    document.head.appendChild(style);
+        
