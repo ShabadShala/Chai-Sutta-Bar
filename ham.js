@@ -907,81 +907,21 @@
                         deferredPrompt = null;
                     });
                     } else {
-                    alert("You are viewing this message:\n- if the app is already installed, and you opened in browser.\n- sometimes on WINDOWS, this method does not work, in this case install from the browser's menu.");
+                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed, and you opened in browser.\n- ON WINDOWS, this method does not work. Install from the browser's menu.");
                     
                     
                 }
             });
         }
         
-const installOption = document.getElementById('install-app');
-
-// Disable the install button
-function disableInstallButton() {
-    if (installOption && !installOption.classList.contains('disabled-option')) {
-        installOption.classList.add('disabled-option');
-        installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
-    }
-}
-
-// Check if running in standalone mode
-function isStandaloneMode() {
-    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-}
-
-// Check if the app is already installed
-async function checkIfAppInstalled() {
-    try {
-        // Check localStorage flag first
-        if (localStorage.getItem('pwa-installed') === 'true') {
-            disableInstallButton();
-            return;
-        }
-
-        // Check via getInstalledRelatedApps (if supported)
-        if (navigator.getInstalledRelatedApps) {
-            const relatedApps = await navigator.getInstalledRelatedApps();
-            if (relatedApps.length > 0) {
-                localStorage.setItem('pwa-installed', 'true');
-                disableInstallButton();
-                return;
+        // Disable pwa buton is installed
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            const installOption = document.getElementById('install-app');
+            if (installOption) {
+                installOption.classList.add('disabled-option');
+                installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
             }
         }
-
-        // Fallback to standalone mode detection
-        if (isStandaloneMode()) {
-            localStorage.setItem('pwa-installed', 'true');
-            disableInstallButton();
-        }
-    } catch (error) {
-        console.error("Error checking installation status:", error);
-    }
-}
-
-// Detect installation on page load
-document.addEventListener('DOMContentLoaded', checkIfAppInstalled);
-
-// Detect real-time installation
-window.addEventListener('appinstalled', () => {
-    localStorage.setItem('pwa-installed', 'true');
-    disableInstallButton();
-});
-
-// Detect switching from browser to standalone mode
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        checkIfAppInstalled();
-    }
-});
-
-// Optional: Handle beforeinstallprompt to control visibility initially
-window.addEventListener('beforeinstallprompt', (event) => {
-    if (localStorage.getItem('pwa-installed') === 'true') {
-        disableInstallButton();
-    }
-});
-
-
         
         
         
