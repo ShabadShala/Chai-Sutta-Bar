@@ -895,36 +895,78 @@
         
         
         
-        
-        // Install App
-        const installAppButton = document.getElementById('install-app');
-        if (installAppButton) {
-            installAppButton.addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        console.log(choiceResult.outcome === "accepted" ? "User installed the app" : "User dismissed the install prompt");
-                        deferredPrompt = null;
-                    });
-                    } else {
-                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed, and you opened in browser.\n- ON WINDOWS, this method does not work. Install from the browser's menu.");
-                    
-                    
-                }
-            });
+       // Install App Logic
+document.addEventListener('DOMContentLoaded', () => {
+  const installAppButton = document.getElementById('install-app');
+  if (!installAppButton) return;
+
+  let deferredPrompt = null;
+  let isAppInstalled = checkIfAppInstalled();
+
+  // Check installation status using multiple methods
+  function checkIfAppInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches || 
+           window.navigator.standalone ||
+           document.referrer.includes('android-app://');
+  }
+
+  // Update button state
+  function updateButtonState() {
+    const shouldDisable = isAppInstalled || !deferredPrompt;
+    installAppButton.classList.toggle('disabled-option', shouldDisable);
+    installAppButton.disabled = shouldDisable;
+  }
+
+  // Beforeinstallprompt handler
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    isAppInstalled = checkIfAppInstalled();
+    updateButtonState();
+  });
+
+  // Appinstalled handler
+  window.addEventListener('appinstalled', () => {
+    isAppInstalled = true;
+    deferredPrompt = null;
+    updateButtonState();
+  });
+
+  // Display mode change handler
+  const mediaQuery = window.matchMedia('(display-mode: standalone)');
+  mediaQuery.addEventListener('change', (e) => {
+    isAppInstalled = e.matches || checkIfAppInstalled();
+    updateButtonState();
+  });
+
+  // Initial setup
+  updateButtonState();
+
+  // Click handler
+  installAppButton.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      try {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          console.log('User installed PWA');
+          deferredPrompt = null;
         }
-        
-        // Disable pwa buton is installed
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-            const installOption = document.getElementById('install-app');
-            if (installOption) {
-                installOption.classList.add('disabled-option');
-                installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
-            }
-        }
-        
-        
-        
+      } catch (err) {
+        console.log('Error handling install prompt:', err);
+      }
+    } else {
+      if (!isAppInstalled) {
+        // Cross-platform guidance
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const message = isMobile ?
+          'Use browser menu ➔ "Install App" or "Add to Home Screen"' :
+          'Click the install icon in the address bar (Chrome) or browser menu';
+        alert(`Installation guide:\n${message}`);
+      }
+    }
+  });
+});
         
         
         
