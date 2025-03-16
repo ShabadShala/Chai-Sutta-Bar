@@ -1,7 +1,7 @@
 {
   "name": "Chai Sutta Bar, Bagha Purana",
   "short_name": "CSB-BPA",
-  "start_url": "https://shabadshala.github.io/Chai-Sutta-Bar/",
+  "start_url": "/",
   "display": "standalone",
    "background_color": "#f5f5dc",
   "theme_color": "#4e342e",
