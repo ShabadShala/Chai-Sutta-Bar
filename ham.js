@@ -914,14 +914,36 @@
             });
         }
         
-        // Disable pwa buton is installed
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-            const installOption = document.getElementById('install-app');
-            if (installOption) {
-                installOption.classList.add('disabled-option');
-                installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
-            }
-        }
+const installOption = document.getElementById('install-app');
+
+// Function to disable the install button
+function disableInstallButton() {
+    if (installOption && !installOption.classList.contains('disabled-option')) {
+        installOption.classList.add('disabled-option');
+        installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
+    }
+}
+
+// Check if PWA is already installed or running in standalone mode
+function checkIfStandalone() {
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        disableInstallButton();
+    }
+}
+
+// Initial check on page load
+document.addEventListener('DOMContentLoaded', checkIfStandalone);
+
+// Real-time detection when the app is installed
+window.addEventListener('appinstalled', disableInstallButton);
+
+// Detect when switching from browser to standalone (like using "Open in App")
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        checkIfStandalone();
+    }
+});
+
         
         
         
