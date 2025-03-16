@@ -895,78 +895,37 @@
         
         
         
-document.addEventListener('DOMContentLoaded', () => {
-  const installAppButton = document.getElementById('install-app');
-  if (!installAppButton) return;
-
-  let deferredPrompt = null;
-  let isAppInstalled = false;
-
-  // Enhanced installation check with origin validation
-  function checkInstallStatus() {
-    const installOrigin = localStorage.getItem('pwa-install-origin');
-    const currentOrigin = window.location.origin;
-
-    // Platform-specific checks
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-    const isIOS = !!window.navigator.standalone;
-    
-    // Validate against installation origin
-    return (isStandalone || isIOS) && installOrigin === currentOrigin;
-  }
-
-  function updateButtonState() {
-    isAppInstalled = checkInstallStatus();
-    installAppButton.classList.toggle('disabled-option', isAppInstalled);
-    installAppButton.disabled = isAppInstalled;
-    installAppButton.style.display = isAppInstalled ? 'none' : 'block';
-  }
-
-  // Installation event handlers
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    updateButtonState();
-  });
-
-  window.addEventListener('appinstalled', () => {
-    localStorage.setItem('pwa-install-origin', window.location.origin);
-    deferredPrompt = null;
-    setTimeout(updateButtonState, 1000); // Allow time for mode change
-  });
-
-  // Visibility change handler for Android
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') updateButtonState();
-  });
-
-  // Initial setup
-  updateButtonState();
-
-  // Click handler with enhanced platform detection
-  installAppButton.addEventListener('click', async () => {
-    if (isAppInstalled) return;
-
-    if (deferredPrompt) {
-      try {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          localStorage.setItem('pwa-install-origin', window.location.origin);
+        
+        // Install App
+        const installAppButton = document.getElementById('install-app');
+        if (installAppButton) {
+            installAppButton.addEventListener('click', () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        console.log(choiceResult.outcome === "accepted" ? "User installed the app" : "User dismissed the install prompt");
+                        deferredPrompt = null;
+                    });
+                    } else {
+                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed, and you opened in browser.\n- ON WINDOWS, this method does not work. Install from the browser's menu.");
+                    
+                    
+                }
+            });
         }
-      } catch (error) {
-        console.log('Installation failed:', error);
-      }
-    } else {
-      const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
-      const instructions = isMobile ?
-        '1. Tap browser menu (⋮)\n2. Select "Install app" or "Add to Home Screen"' :
-        '1. Click the install icon (⬇) in the address bar\n2. Follow browser instructions';
-      
-      alert(`Manual Installation Required:\n${instructions}`);
-    }
-  });
-});   
+        
+        // Disable pwa buton is installed
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            const installOption = document.getElementById('install-app');
+            if (installOption) {
+                installOption.classList.add('disabled-option');
+                installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
+            }
+        }
+        
+        
+        
+        
         
         
         
@@ -2064,6 +2023,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+
+
+
+
+
+let deferredPrompt; // Variable to hold the deferred prompt event
+
+// Listen for the beforeinstallprompt event
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault(); // Prevent the default prompt from showing automatically
+    deferredPrompt = e; // Store the event so we can trigger it later
+    
+    // Optionally, show a custom install button here if needed
+    // document.getElementById('install-button').style.display = 'block'; 
+    
+    // Automatically trigger the prompt after a delay
+    setTimeout(() => {
+        deferredPrompt.prompt(); // Show the install prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            // Handle the user's response
+            if (choiceResult.outcome === "accepted") {
+                console.log("User accepted the install prompt");
+                } else {
+                console.log("User dismissed the install prompt");
+            }
+            deferredPrompt = null; // Reset the deferred prompt
+        });
+    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+});               
 
 
 
