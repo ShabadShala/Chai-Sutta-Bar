@@ -239,12 +239,12 @@ document.addEventListener('keydown', function(e) {
 
 
 
-// ScrapButton Cheat Gesture (Long Press + Swipe Up)
+
+
+// ScrapButton Cheat Gesture (3-Second Long Press)
 const scrapBtn = document.getElementById('scrapButton');
 let gestureState = {
     longPressActive: false,
-    startY: 0,
-    swipeProgress: 0,
     longPressTimer: null
 };
 
@@ -252,10 +252,7 @@ let gestureState = {
 const createGestureUI = () => {
     const ui = document.createElement('div');
     ui.id = 'cheatGestureUI';
-    ui.innerHTML = `
-        <div class="longpress-indicator"></div>
-        <div class="swipe-indicator"></div>
-    `;
+    ui.innerHTML = `<div class="longpress-indicator"></div>`;
     ui.style.cssText = `
         position: fixed;
         pointer-events: none;
@@ -268,45 +265,21 @@ createGestureUI();
 
 scrapBtn.addEventListener('touchstart', function(e) {
     if (e.touches.length !== 1) return;
-    
-    gestureState = {
-        longPressActive: true,
-        startY: e.touches[0].clientY,
-        swipeProgress: 0
-    };
+
+    gestureState.longPressActive = true;
 
     const ui = document.getElementById('cheatGestureUI');
     const rect = scrapBtn.getBoundingClientRect();
     ui.style.display = 'block';
-    ui.style.left = `${rect.left + rect.width/2}px`;
-    ui.style.top = `${rect.top + rect.height/2}px`;
+    ui.style.left = `${rect.left + rect.width / 2}px`;
+    ui.style.top = `${rect.top + rect.height / 2}px`;
 
-    // Long Press Timeout (1.5 seconds)
+    // Long Press Timeout (3 seconds)
     gestureState.longPressTimer = setTimeout(() => {
         ui.querySelector('.longpress-indicator').style.backgroundColor = '#00ff00';
-    }, 1500);
-});
-
-scrapBtn.addEventListener('touchmove', function(e) {
-    if (!gestureState.longPressActive || !gestureState.longPressTimer) return;
-
-    const touch = e.touches[0];
-    const ui = document.getElementById('cheatGestureUI');
-    
-    // Calculate swipe progress (minimum 100px upward)
-    const swipeDelta = gestureState.startY - touch.clientY;
-    gestureState.swipeProgress = Math.min(swipeDelta / 100, 1);
-    
-    // Update swipe indicator
-    ui.querySelector('.swipe-indicator').style.transform = 
-        `translateY(${-gestureState.swipeProgress * 50}px)`;
-
-    // Activate if both conditions met
-    if (gestureState.swipeProgress === 1 && 
-        Date.now() - gestureState.longPressTimer._idleStart >= 1500) {
         executeCheatOrder();
         resetGesture();
-    }
+    }, 3000);
 });
 
 scrapBtn.addEventListener('touchend', resetGesture);
@@ -327,16 +300,7 @@ style.textContent = `
     border-radius: 50%;
     position: absolute;
     transform: translate(-50%, -50%);
-    animation: pulse 1.5s infinite;
-}
-
-.swipe-indicator {
-    width: 30px;
-    height: 30px;
-    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="%2300ff00" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-    position: absolute;
-    transform: translate(-50%, -50%);
-    transition: transform 0.3s;
+    animation: pulse 3s infinite;
 }
 
 @keyframes pulse {

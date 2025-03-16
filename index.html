@@ -1836,23 +1836,29 @@
             
             
             
-            
-            /* Add to existing styles */
-            .button-container-all {
-            display: none;
-            justify-content: space-between;
-            margin-top: 2rem;
-            gap: 2rem;
-            }
-            
-            #orderAll, #clearAll {
-            flex: 1;
-            padding: 2rem;
-            font-size: 4rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            }
+.button-container-all {
+    width: 100%;              /* Allow full-width flexibility */
+    max-width: 300px;         /* Restrict maximum width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto;
+    margin-bottom: 1rem;
+    gap: 2rem;
+}
+
+#orderAll, #clearAll {
+    flex: 1 1 auto;           /* Allow flexible growth and shrink */
+    min-width: 75px;          /* Minimum width constraint */
+    max-width: 100px;         /* Maximum width constraint */
+    padding: 1rem;
+    font-size: 4rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+
             
             #orderAll {
             background-color: #2196F3;
