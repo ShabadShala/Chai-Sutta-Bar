@@ -4,6 +4,7 @@ const urlsToCache = [
   '/index.html', // Main HTML
   '/app.js', // Your JS file
   '/icon-192.png',
+  '/icon-256.png',
   '/icon-512.png',
 ];
 
