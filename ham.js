@@ -907,7 +907,7 @@
                         deferredPrompt = null;
                     });
                     } else {
-                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed, and you opened in browser.\n- ON WINDOWS, this method does not work. Install from the browser's menu.");
+                    alert("You are viewing this message:\n- if the app is already installed, and you opened in browser.\n- sometimes on WINDOWS, this method does not work, in this case install from the browser's menu.");
                     
                     
                 }
@@ -921,6 +921,7 @@ function disableInstallButton() {
     if (installOption && !installOption.classList.contains('disabled-option')) {
         installOption.classList.add('disabled-option');
         installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
+        sessionStorage.setItem('pwaInstalled', 'true'); // Store state in session
     }
 }
 
@@ -929,8 +930,13 @@ function isStandaloneMode() {
     return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 }
 
-// Check if the app is already installed using getInstalledRelatedApps
+// Check if the app is already installed
 async function checkIfAppInstalled() {
+    if (sessionStorage.getItem('pwaInstalled') === 'true') {
+        disableInstallButton();
+        return;
+    }
+
     if (navigator.getInstalledRelatedApps) {
         const relatedApps = await navigator.getInstalledRelatedApps();
         if (relatedApps.length > 0) {
@@ -939,7 +945,6 @@ async function checkIfAppInstalled() {
         }
     }
 
-    // Fallback to display mode check
     if (isStandaloneMode()) {
         disableInstallButton();
     }
@@ -954,9 +959,16 @@ window.addEventListener('appinstalled', disableInstallButton);
 // Detect switching from browser to standalone mode
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
-        checkIfAppInstalled();
+        setTimeout(checkIfAppInstalled, 500); // Add a small delay
     }
 });
+
+// Detect service worker updates
+if (navigator.serviceWorker) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        setTimeout(checkIfAppInstalled, 1000); // Wait a bit for changes to take effect
+    });
+}
 
         
         
