@@ -1,11 +1,18 @@
-const CACHE_NAME = 'my-app-cache-v1';
+const CACHE_NAME = 'my-app-cache-v2';
 const urlsToCache = [
   '/', // Cache the root page
-  '/index.html', // Main HTML
-  '/app.js', // Your JS file
+  '/index.html',  
+  '/com.js',
+  '/ham.js',
+  '/counter.js',
+  '/cheat.js',
+  '/uti.js',
   '/icon-192.png',
   '/icon-256.png',
   '/icon-512.png',
+  '/qrcode.png',
+  '/veg.png',
+  '/favicon.ico',   
 ];
 
 // Install and cache assets

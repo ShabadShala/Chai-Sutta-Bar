@@ -117,7 +117,7 @@
         
         <div class="hsidebar-option" id="showPuzzle">
         <img src="icons/number-puzzle2.svg" alt="Puzzle" class="menu-icon invert-icon">
-        Numbers Puzzle
+        Number Puzzle
         </div>
         
         <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
@@ -1597,6 +1597,7 @@
         <div class="modal-body">
         This will permanently delete all app data including:<br>
         - Last Order<br>
+        - Items/Offers Carts<br>
         - Child Lock PIN<br>
         - Settings<br>
         (The app will be restarted)<br>

@@ -1583,21 +1583,3 @@
 
 
 
-
-
-
-
-
-
-#install-app {
-  /* Your default button styles */
-}
-
-#install-app.disabled-option {
-  display: none !important;
-}
-
-#install-app[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
