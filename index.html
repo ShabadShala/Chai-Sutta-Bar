@@ -710,9 +710,9 @@
             }           
             
             .filter-btn.active {
-            background-color: #3399ff; 
-            color: #fff;
-            border-color: #3399ff;
+            background-color: #f1c40f; /* Light gray for better contrast */
+            color: #000;               /* Black text for readability */
+            border-color: #b0b0b0;     /* Match border to the background */
             }
             
             #total-items-found {
@@ -903,9 +903,10 @@
             
             
             
-            
-            
-            
+            .food-icon {
+            width: 11rem;    /* Adjust as needed */
+            height: 11rem;   /* Adjust as needed */
+            }
             
             #scrapButton {
             all: unset; /* Reset all styles */
@@ -917,8 +918,8 @@
             cursor: pointer; /* Pointer for better UX */
             z-index: 103;            
             /* Circular button */
-            width: 11rem;
-            height: 11rem;
+            width: 10rem;
+            height: 10rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1821,13 +1822,6 @@
             
             
             
-            
-            
-            
-            
-            
-            
-            
             .button-container-all {
             width: 100%;              /* Allow full-width flexibility */
             max-width: 300px;         /* Restrict maximum width */
@@ -1836,7 +1830,7 @@
             align-items: center;
             margin: 2rem auto;
             margin-bottom: 1rem;
-            gap: 2rem;
+            gap: 5rem;
             }
             
             #orderAll, #clearAll {
@@ -1894,7 +1888,7 @@
             
             
             
-            
+            /* Delivery Details */
             .order-modal-content {
             position: fixed;
             top: 50%;
@@ -1906,8 +1900,7 @@
             color: #333;
             width: 90%;
             max-width: 400px;
-            font-size: 5rem;
-            
+            font-size: 5rem;            
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             display: none; /* Hidden by default */
             }
@@ -2056,20 +2049,21 @@
             
             
             
-            
-            
-            
             /* Delivery Modal Buttons */
             .modal-button-container {
             display: flex;
             justify-content: space-between;
-            gap: 2rem;
+            align-items: center;
+            gap: 1.5rem;
             margin-top: 3rem;
+            width: 75%;                     /* Set width to 75% of the parent */
+            margin-left: auto;
+            margin-right: auto;
             }
             
             #deliveryForm button[type="submit"],
             #cancelOrder {
-            display: block;
+            align-items: center;
             margin: 2rem auto 0;
             padding: 1rem 1.5rem;
             font-size: 5rem;
@@ -2079,7 +2073,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
             flex: 1;
-            max-width: 125px;
+            max-width: 120px;
             }
             
             #deliveryForm button[type="submit"] {
@@ -2150,8 +2144,6 @@
             /* Address Styling */
             .footer .address {
             font-size: 4em;
-            
-            
             margin-bottom: 0.5rem;
             }
             
@@ -2178,8 +2170,6 @@
             gap: 2rem; /* Adds space between them */
             margin-top:3rem;
             }
-            
-            
             
             #visitorCounter,
             #viewsCounter {
@@ -2210,7 +2200,7 @@
             
             
             
-            /* Communication and Social media sidebar */
+            /* Communication sidebar */
             .phone-icon {
             position: absolute;
             right: 2rem; /* Adjust distance from the right */
@@ -2236,8 +2226,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            pointer-events: none;
-            
+            pointer-events: none;              
             }
             
             #sidebar {
@@ -2245,7 +2234,7 @@
             right: -100px; /* Off-screen initially */
             top: 50%;
             transform: translateY(-50%);
-            width: 17rem;
+            width: 18rem;
             background-color: #333;
             display: flex;
             flex-direction: column;
@@ -2255,60 +2244,26 @@
             z-index: 1000;
             box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
             pointer-events: none;
-            }
-            
-            #sidebar a {
-            margin: 2rem 0;
-            text-decoration: none;
+            gap: 4rem;  /* Vertical gap between logos */
             }
             
             #sidebar .logo {
-            width: 10rem;
-            height: 10rem;
+            width: 65%;                     /* 75% of the sidebar's width */
+            height: auto;                    /* Maintain aspect ratio */
             transition: transform 0.3s ease; /* Smooth zoom-in effect */
+            display: block;                  /* Ensure it behaves as a block element */
+            margin: 0 auto;                  /* Center horizontally */
             }
             
             #sidebar .logo.hovered,
             #sidebar .logo:hover {
             transform: scale(1.3); /* Zoom-in effect when hovering */
-            }
-            
+            }            
             
             #sidebar.open {
             right: 0; /* Show sidebar when open */
             pointer-events: auto;
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            button.active {
-            background-color: red !important; /* Change color when active */
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
             
             
@@ -2468,6 +2423,8 @@
             
             
             
+            
+            
             /* Overlay styling */
             .checklist-overlay {
             position: fixed;
@@ -2589,23 +2546,7 @@
             background-color: #357ab7;
             }
             
-            .close-checklist {
-            cursor: pointer;
-            position: absolute;
-            top: 1rem;
-            right: 2rem;
-            font-size: 7rem;
-            color: #e74c3c;
-            transition: color 0.3s ease;
-            z-index: 153;
-            }
-            
-            .close-checklist:hover {
-            color: #c0392b;
-            }
-            
-            /* Clear Checklist Button Styling */
-            #clearChecklist {
+            #clearChecklist, .close-checklist {
             padding: 1.5rem 3rem;
             border: none;
             border-radius: 5px;
@@ -2618,6 +2559,11 @@
             
             #clearChecklist:hover {
             background-color: #d9363e; /* Darker red on hover */
+            transform: scale(1.05);   /* Slight scale for hover effect */
+            }
+            
+            .close-checklist:hover {
+            color: #c0392b;
             transform: scale(1.05);   /* Slight scale for hover effect */
             }
             
@@ -2661,7 +2607,7 @@
             .timeplay-modal {
             background: #fff;
             padding: 2rem;
-            border-radius: 15px;
+            border-radius: 5rem;
             width: 90%; 
             max-width: 225px;
             position: relative;
@@ -2896,7 +2842,7 @@
             <!-- Scrap Button -->
             <div id="menu">
                 <button id="scrapButton">
-                    <img src="icons/food.svg" class="invert-icon" alt="Edit Icon" width="33" height="33">
+                    <img src="icons/food.svg" class="invert-icon food-icon" alt="Cart">
                     <div class="counter-badge"></div>
                 </button>
             </div>
@@ -3043,7 +2989,7 @@
         
         
         
-        <!-- Social Container -->
+        <!-- Communication Sidebar -->
         <div class="social">
             <div id="sidebar">
                 <a id="delivery-link" href="#" target="_blank"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
@@ -6291,19 +6237,20 @@
                 if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
                     if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
                         isValidTime = false;
-                        errorMessage = `Delivery time ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
+                        errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
                     }
                     } else {
+                    // only run when the business operates overnight—that is, the closeTime is less than the openTime (like 9 PM to 2 AM).
                     if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
                         isValidTime = false;
-                        errorMessage = `Delivery time ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
+                        errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
                     }
                 }
                 
                 // Check for current time constraint
                 if (isValidTime && deliveryMinutes < minCurrentTime) {
                     isValidTime = false;
-                    errorMessage = `Delivery time must be at least ${window.deliveryFromNow} minutes ahead of the current time.`;
+                    errorMessage = `Time must be at least ${window.deliveryFromNow} minutes ahead of the current time.`;
                 }
                 
                 // Display message
