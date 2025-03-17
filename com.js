@@ -91,7 +91,7 @@ fetch(miscUrl)
         const closeTimeStr = data[1][1]; // Example: "10.45pm"
         window.deliveryAfterOpening = Number(data[9][1]); // Example: "30"
         window.deliveryBeforeClosing = Number(data[10][1]); // Example: "30"
-        window.deliveryFromNow = Number(data[11][1]); // Example: "30"
+        window.preparationTime = Number(data[11][1]); // Example: "30"
       //  window.deliveryArea = Number(data[12][1].trim()); // Example: "15"
         window.deliveryArea = Number(data[12][1].toString().trim());
         // NEW: Fetch waitTime from B14 (assuming data[13][1] is B14)

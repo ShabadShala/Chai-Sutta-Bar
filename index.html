@@ -2048,6 +2048,16 @@
             }
             
             
+.time-range-container label {    
+    display: flex;
+    align-items: center;  
+}
+
+#deliveryTimeRange {
+    margin-left: 1.5rem; /* Small space after the label */
+}
+            
+            
             
             /* Delivery Modal Buttons */
             .modal-button-container {
@@ -2927,7 +2937,7 @@
                             <div style="display:flex;gap:5px">
                                 <input type="tel" id="phone" name="phone" maxlength="11" 
                                 pattern="\d{5}-\d{5}" placeholder="12345-67890" 
-                                title="Enter 10 digits in the format 12345-67890" 
+                                title="Enter 10 digits in the format 12345-67890." 
                                 autocomplete="tel-national">
                                 <button type="button" id="pickContact">📱</button>
                             </div>                            
@@ -2943,15 +2953,20 @@
                             <textarea id="manualAddress" name="manualAddress" maxlength="100" autocomplete="street-address"></textarea>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="deliveryTime">Check/Attach Delivery Time</label>
-                            <div style="display: flex; gap: 4px;">
-                                <input type="datetime-local" id="deliveryTime" name="deliveryTime" autocomplete="off">
-                                <button type="button" id="clearDate">✖</button>
-                            </div>
-                        </div>
-                        
-                        <div id="timeStatus" style="margin-top: -2rem; padding-bottom: 2rem;"></div>
+<!-- Inside the deliveryForm in your HTML -->
+<div class="form-group">
+    <div class="time-range-container">
+        <label for="deliveryTime">
+            Delivery Time
+            <span id="deliveryTimeRange"></span>
+        </label>
+    </div>
+    <div style="display: flex; gap: 4px;">
+        <input type="datetime-local" id="deliveryTime" name="deliveryTime" autocomplete="off">
+        <button type="button" id="clearDate">✖</button>
+    </div>
+    <div id="timeStatus" style="padding-top: 1.5rem;"></div>
+</div>
                         
                         <div class="address-method">
                             <label>
@@ -5941,15 +5956,20 @@
             
             
             // Add this validation check function
-            function checkFormValidity() {
-                const timeInvalid = document.getElementById('timeStatus').innerHTML.includes('red');
-                const locationInvalid = document.querySelector('[value="location"]').checked && !isLocation;
-                const phoneField = document.getElementById('phone');
-                const phoneInvalid = document.querySelector('[name="orderType"]:checked')?.value === 'delivery' && 
-                phoneField.required && !phoneField.value;
-                
-                return !(timeInvalid || locationInvalid || phoneInvalid);
-            }
+function checkFormValidity() {
+    const timeInvalid = document.getElementById('timeStatus').innerHTML.includes('red');
+    const locationInvalid = document.querySelector('[value="location"]').checked && !isLocation;
+    const phoneField = document.getElementById('phone');
+    
+    // Add phone validation (allow blank but validate format if entered)
+//    const phoneInvalid = phoneField.value && !/^\d{5}-\d{5}$/.test(phoneField.value);   
+  //  return !(timeInvalid || locationInvalid || phoneInvalid);
+    
+
+    return !(timeInvalid || locationInvalid);
+
+}
+
             
             // Update Confirm button state
             function updateConfirmButton() {
@@ -5975,21 +5995,28 @@
             
             
             // Function to show the delivery modal
-            function showDeliveryModal() {
-                const modal = document.getElementById('deliveryModal');
-                const overlay = document.getElementById('deliveryOverlay');
-                const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-                
-                modal.classList.remove('hidden');
-                overlay.style.display = 'block';
-                
-                // Hide overflow and add padding to avoid layout shift
-                document.body.style.overflow = 'hidden';
-                document.body.style.paddingRight = `${scrollbarWidth}px`; 
-                
-                setTimeout(() => modal.classList.add('active'), 10);
-                updateConfirmButton(); 
-            }
+function showDeliveryModal() {
+    const modal = document.getElementById('deliveryModal');
+    const overlay = document.getElementById('deliveryOverlay');
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    
+    // Calculate delivery time range
+    const minDeliveryTime = (window.openTimeInMinutes + window.preparationTime) % (24 * 60);
+    const maxDeliveryTime = (window.closeTimeInMinutes - window.preparationTime + (24 * 60)) % (24 * 60);
+    
+    // Update time range display
+    const timeRangeElement = document.getElementById('deliveryTimeRange');
+    timeRangeElement.textContent = `(${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)})`;
+
+    modal.classList.remove('hidden');
+    overlay.style.display = 'block';
+    
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`; 
+    
+    setTimeout(() => modal.classList.add('active'), 10);
+    updateConfirmButton();
+}
             
             // Function to hide the delivery modal
             function hideDeliveryModal() {
@@ -6207,89 +6234,58 @@
                 return `${formattedHours}:${formattedMinutes} ${period}`;
             }
             
-function validateDeliveryTime() {
-    const deliveryTime = deliveryInput.value;
-    timeStatus.innerHTML = ''; // Clear previous status
-
-    // Check if the user entered a delivery time
-    if (!deliveryTime) {
-        timeStatus.innerHTML = `<span style="color: red;">Please enter a delivery time.</span>`;
-        return;
-    }
-
-    // Parse the delivery time into hours and minutes
-    const [hours, minutes] = deliveryTime.split(':').map(Number);
-    if (isNaN(hours) || isNaN(minutes)) {
-        timeStatus.innerHTML = `<span style="color: red;">Invalid time format. Please use HH:MM format.</span>`;
-        return;
-    }
-
-    // Convert delivery time to total minutes
-    const deliveryMinutes = hours * 60 + minutes;
-
-    // Calculate store's minimum and maximum delivery times
-    const minDeliveryTime = (window.openTimeInMinutes + window.deliveryAfterOpening) % (24 * 60);
-    const maxDeliveryTime = (window.closeTimeInMinutes - window.deliveryBeforeClosing + (24 * 60)) % (24 * 60);
-
-    // Get the current time in minutes
-    const now = new Date();
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
-    const minCurrentTime = (currentMinutes + window.deliveryFromNow) % (24 * 60);
-
-    // Initialize variables for validation
-    let isValidTime = true;
-    let errorMessage = '';
-
-    // Format times for display
-    const formattedMinDelivery = convertToAMPM(minDeliveryTime);
-    const formattedMaxDelivery = convertToAMPM(maxDeliveryTime);
-    const formattedCurrentTime = convertToAMPM(currentMinutes);
-
-    // 1. Check if the delivery time is in the past
-    if (deliveryMinutes < currentMinutes) {
-        isValidTime = false;
-        errorMessage = `The selected time ${convertToAMPM(deliveryMinutes)} is in the past. Current time is ${formattedCurrentTime}.`;
-    }
-
-    // 2. Check store hours only if the time is not in the past
-    if (isValidTime) {
-        if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
-            // Store operates within a single day (e.g., 9 AM - 5 PM)
-            if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
-                isValidTime = false;
-                errorMessage = `Delivery time is available until ${formattedMaxDelivery}.`;
+            function validateDeliveryTime() {
+                const deliveryTime = deliveryInput.value;
+                timeStatus.innerHTML = ''; // Clear previous status
+                
+                if (!deliveryTime) return;
+                
+                const [hours, minutes] = deliveryTime.split(':').map(Number);
+                if (isNaN(hours) || isNaN(minutes)) {
+                    timeStatus.innerHTML = `<span style="color: red;">Invalid time format.</span>`;
+                    return;
+                }
+                
+                const deliveryMinutes = hours * 60 + minutes;
+                
+                // Time constraints
+                const minDeliveryTime = (window.openTimeInMinutes + window.preparationTime) % (24 * 60);
+                const maxDeliveryTime = (window.closeTimeInMinutes - window.preparationTime + (24 * 60)) % (24 * 60);
+                
+                const now = new Date();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                const minCurrentTime = (currentMinutes + window.preparationTime) % (24 * 60);
+                
+                let isValidTime = true;
+                let errorMessage = '';
+                
+                // Check for open and close time constraints
+                if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
+                    if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
+                        isValidTime = false;
+                      //  errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
+                      errorMessage = `Invalid time input.`;
+                    }
+                    } else {
+                    // only run when the business operates overnight—that is, the closeTime is less than the openTime (like 9 PM to 2 AM).
+                    if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
+                        isValidTime = false;
+                       // errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
+                        errorMessage = `Invalid time input.`;
+                    }
+                }
+                
+                // Check for current time constraint
+                if (isValidTime && deliveryMinutes < minCurrentTime) {
+                    isValidTime = false;
+                    errorMessage = `Time must be at least ${window.preparationTime} minutes ahead of the current time.`;
+                }
+                
+                // Display message
+                timeStatus.innerHTML = isValidTime
+                ? `<span style="color: green;">Delivery time is valid!</span>`
+                : `<span style="color: red;">${errorMessage}</span>`;
             }
-        } else {
-            // Store operates across midnight (e.g., 11 PM - 5 AM)
-            if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
-                isValidTime = false;
-                errorMessage = `Delivery time is available until ${formattedMaxDelivery}.`;
-            }
-        }
-    }
-
-    // 3. Check minimum lead time and other conditions if the time is still valid
-    if (isValidTime) {
-        if (deliveryMinutes < minCurrentTime) {
-            isValidTime = false;
-            const minFutureTime = convertToAMPM(minCurrentTime);
-            errorMessage = `Delivery time must be at least ${window.deliveryFromNow} minutes ahead. Earliest possible time is ${minFutureTime}.`;
-        } else if (deliveryMinutes - currentMinutes <= 30) {
-            errorMessage = `Note: The selected delivery time ${convertToAMPM(deliveryMinutes)} is within the next 30 minutes.`;
-        }
-    }
-
-    // Display the appropriate message based on validation
-    if (!isValidTime) {
-        timeStatus.innerHTML = `<span style="color: red;">${errorMessage}</span>`;
-    } else if (errorMessage) {
-        timeStatus.innerHTML = `<span style="color: orange;">${errorMessage}</span>`;
-    } else {
-        timeStatus.innerHTML = `<span style="color: green;">Delivery time is valid!</span>`;
-    }
-}
-
-
             
             // Form submission
             document.getElementById('deliveryForm').addEventListener('submit', function (e) {
