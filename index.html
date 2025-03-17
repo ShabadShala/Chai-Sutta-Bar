@@ -61,15 +61,20 @@
             box-sizing: border-box;
             }                
             
+            :root {
+            --scale-factor: 1.0; /* 150% scaling */
+            }
+            
             html {
-            font-size: clamp(3.5px, 1vw, 4px);
-            }        
+            font-size: calc(clamp(3px, 1vw, 3.5px) * var(--scale-factor));
+            }
+            
             
             .noscript-warning {
             background-color: red;
             color: white;
-            padding: 15px;
-            font-size: 18px;
+            padding: 5rem;
+            font-size: 6rem;
             text-align: center;
             position: fixed;
             top: 0;
@@ -81,15 +86,14 @@
             box-sizing: border-box; /* Prevent padding from increasing width */
             }
             
-            
             .noscript-warning button {
             background: transparent; /* Makes button clear */
             color: white;
-            margin-top: 15px;
-            padding: 8px 15px;
+            margin-top: 5rem;
+            padding: 2rem 4rem;
             border: 2px solid white; /* Adds a visible border */
             cursor: pointer;
-            font-size: 16px;
+            font-size: 5rem;
             }
             
             .noscript-warning button:hover {
@@ -121,125 +125,9 @@
             top: 0; /* Align to the top */
             left: calc(50% - 300px); 
             border-left: 1px solid rgba(255, 255, 255, 0.1); /* 50% transparent */
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            
+            border-right: 1px solid rgba(255, 255, 255, 0.1);            
             pointer-events: none; /* Prevents blocking interactions */
             }
-            
-            
-            
-            
-            
-            /* Common Elements */            
-            
-            /* Close Button */
-            #closeScrap, #closeOffer {
-            position: absolute;
-            top: 0;
-            right: 1rem;
-            font-size: 6rem;
-            cursor: pointer;
-            color: #333;
-            }
-            
-            /* Scrap and offer delete button */
-            .delete-btn, .offer-delete-btn {
-            cursor: pointer;
-            color: #cc0000;
-            font-size: 4rem;
-            margin-left: 2rem;
-    		transition: transform 0.2s ease;
-            }
-            
-            .delete-btn:hover, .offer-delete-btn:hover {
-            transform: scale(1.2);
-            color: #cc0000;
-            }
-            
-            .qty-stepper, .offer-stepper {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background-color: #f5f5f5;
-            border: 1px solid red;
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-            margin-right: auto;
-            }
-            
-            .decrement-btn, .increment-btn, .off-decrement-btn, .off-increment-btn {
-            cursor: pointer;
-            background: none;
-            border: none;
-            font-size: 5rem;
-            padding: 0 1rem;
-            color: #333;
-            transition: background-color 0.2s ease;
-            }
-            
-            .decrement-btn:hover, .increment-btn:hover, .off-decrement-btn:hover, .off-increment-btn:hover {
-            background-color: #ddd;
-            }
-            
-            .decrement-btn:disabled, .increment-btn:disabled,  .off-decrement-btn:disabled, .off-increment-btn:disabled {
-            background-color: #ccc !important; /* Gray background */
-            color: transparent !important; /* Transparent text color */
-            cursor: not-allowed !important; /* Change cursor */
-            opacity: 0; /* Set opacity to 0 */
-            pointer-events: none; /* Disable hover effect */
-            }
-            
-            .qty-display, .offer-qty-display {
-            font-size: 4rem;
-            min-width: 2rem;
-            text-align: center;
-            color: #333;
-            }
-            
-            /* Button Container */
-            .button-container {
-            display: flex;
-            justify-content: center;     
-            align-items: center;
-            padding-top: 1rem;    
-            margin-top: -2rem;
-            gap: 5rem;
-            }
-            
-            #orderScrap, #clearScrap, .order-btn, .clear-btn {
-            display: inline-block;
-            padding: 2rem 3rem;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 4rem;
-            cursor: pointer;            
-            }
-            
-            #smartPickBtn2 {
-            padding: 1rem 1.5rem; /* Apply padding only to this button */
-            }
-            
-            
-            
-            #orderScrap, .order-btn {
-            background-color: #28a745;
-            }
-            
-            #orderScrap:hover, .order-btn:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-            }
-            
-            #clearScrap, .clear-btn {
-            background-color: #dc3545; /* Red */
-            }
-            
-            #clearScrap:hover, .clear-btn:hover {
-            background-color: #c82333; /* Darker red on hover */
-            transform: translateY(-2px);
-            }
-            
             
             /* Feedback Message */
             .feedback-message {
@@ -285,7 +173,6 @@
             align-items: center;
             }
             
-            /* Spinner wrapper for positioning */
             .spinner-container {
             position: relative;  /* Allows absolute positioning inside */
             width: 25rem;
@@ -302,11 +189,12 @@
             
             
             
+            
             .cached-offer {
             text-align: center;
             padding: 5rem;
             background: #fff;
-            border-radius: 10px;
+            border-radius: 3rem;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 400px;
@@ -325,8 +213,8 @@
             
             .warning-text {
             color: red;
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 3rem;
+            font-size: 5rem;
             font-weight: bold;
             }
             
@@ -340,8 +228,8 @@
             background: #3498db;
             color: white;
             border: none;
-            padding: 12px 15px;
-            border-radius: 25px;
+            padding: 4rem 5rem;
+            border-radius: 8rem;
             font-size: 4rem;
             cursor: pointer;
             transition: all 0.3s ease;           
@@ -434,7 +322,6 @@
             letter-spacing: 0.5rem;
             }
             
-            
             /* Dive-in message */
             .load-container {
             top: 20px;
@@ -450,7 +337,7 @@
             width: 100%;
             opacity: 0;
             animation: fadeMove 6s infinite;
-            font-size: 22px;
+            font-size: 7rem;
             white-space: nowrap;
             }
             
@@ -516,8 +403,8 @@
             .overlay-image {
             max-width: 90%;
             max-height: 80%;
-            border-radius: 15px;
-            border: 3px solid #fae68e;
+            border-radius: 5rem;
+            border: 1rem solid #fae68e;
             box-shadow: 0 0 30px rgba(250, 230, 142, 0.3);
             }
             
@@ -758,11 +645,10 @@
             position: absolute;            
             top: 50%;
             transform: translateY(-50%);
-            width: 16px;
-            height: 16px;   
+            width: 4.5rem;
+            height: 4.5rem;   
             margin-left: 2rem;
             }
-            
             
             .search-lens:hover {
             transform: translateY(-50%) translateX(5px);
@@ -821,15 +707,13 @@
             display: flex; 
             align-items: center; /* Centers vertically */
             justify-content: center; /* Centers horizontally */
-            }
-            
+            }           
             
             .filter-btn.active {
-            background-color: #3399ff; /* Lighter blue */
+            background-color: #3399ff; 
             color: #fff;
             border-color: #3399ff;
             }
-            
             
             #total-items-found {
             color: white;
@@ -857,8 +741,6 @@
             }
             
             
-            
-            
             .tab-container {
             display: none;
             width: 100%;
@@ -870,7 +752,7 @@
             .tab-button {
             width: 33.33%;
             padding: 1rem;
-            font-size: 16px;
+            font-size: 5rem;
             cursor: pointer;
             border: 1px solid #424242;
             border-bottom: none;
@@ -986,12 +868,9 @@
             
             /* background: linear-gradient(90deg, rgba(250,230,142,0.1) 0%, rgba(64,224,208,0.05) 100%); */
             background: linear-gradient(90deg, #212121 0%, rgba(64,224,208,0.05) 100%);
-            
-            
             }
             
-            .category-header:hover {
-            
+            .category-header:hover {            
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             }
             
@@ -1021,6 +900,13 @@
             
             
             
+            
+            
+            
+            
+            
+            
+            
             #scrapButton {
             all: unset; /* Reset all styles */
             position: fixed;
@@ -1031,8 +917,8 @@
             cursor: pointer; /* Pointer for better UX */
             z-index: 103;            
             /* Circular button */
-            width: 10rem;
-            height: 10rem;
+            width: 11rem;
+            height: 11rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1085,8 +971,7 @@
             
             #scrapButton .counter-badge {
             position: absolute;
-            top: 1rem;
-            
+            top: 1rem;            
             color: white;
             font-weight: bold;
             font-size: 5rem;
@@ -1107,20 +992,6 @@
             
             
             
-            
-            
-            
-            .scrap-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 99; /* Below scrapList's 2000 but above content */
-            display: none;
-            }
             
             
             
@@ -1154,10 +1025,6 @@
             #scrapButton.offer-has-items::before {
             opacity: 1;
             }
-            
-            
-            
-            
             
             
             
@@ -1196,6 +1063,169 @@
             
             
             
+            .scrap-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 99; /* Below scrapList's 2000 but above content */
+            display: none;
+            }
+            
+            
+            
+            
+            
+            /* Carts Common Elements */            
+            
+            /* Carts */
+            #scrapList, #offer-cart {
+            display: none; /* Ensure it is hidden initially */
+            position: fixed;
+            top: var(--header-bottom, 8%);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            max-width: 90vw;
+            max-height: 55vh; /* Ensures modal doesn't exceed viewport */
+            background: rgba(255, 255, 255, 0.95);            
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            flex-direction: column;
+            z-index: 100;            
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            will-change: opacity, transform;
+            }   
+            
+            /* Scrap Content */
+            .scrap-content, .offers-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            max-width: 400px;
+            padding: 1rem;
+            border-radius: 1rem;
+            color: #333;
+            background: inherit;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Ensures no overflowing content */
+            }    
+            
+            /* Close Button */
+            #closeScrap, #closeOffer {
+            position: absolute;
+            top: 0;
+            right: 1rem;
+            font-size: 6rem;
+            cursor: pointer;
+            color: #333;
+            }
+            
+            /* Scrap and offer delete button */
+            .delete-btn, .offer-delete-btn {
+            cursor: pointer;
+            color: #cc0000;
+            font-size: 4rem;
+            margin-left: 2rem;
+    		transition: transform 0.2s ease;
+            }
+            
+            .delete-btn:hover, .offer-delete-btn:hover {
+            transform: scale(1.2);
+            color: #cc0000;
+            }
+            
+            .qty-stepper, .offer-stepper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #f5f5f5;
+            border: 1px solid red;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin-right: auto;
+            }
+            
+            .decrement-btn, .increment-btn, .off-decrement-btn, .off-increment-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 5rem;
+            padding: 0 1rem;
+            color: #333;
+            transition: background-color 0.2s ease;
+            }
+            
+            .decrement-btn:hover, .increment-btn:hover, .off-decrement-btn:hover, .off-increment-btn:hover {
+            background-color: #ddd;
+            }
+            
+            .decrement-btn:disabled, .increment-btn:disabled,  .off-decrement-btn:disabled, .off-increment-btn:disabled {
+            background-color: #ccc !important; /* Gray background */
+            color: transparent !important; /* Transparent text color */
+            cursor: not-allowed !important; /* Change cursor */
+            opacity: 0; /* Set opacity to 0 */
+            pointer-events: none; /* Disable hover effect */
+            }
+            
+            .qty-display, .offer-qty-display {
+            font-size: 4rem;
+            min-width: 2rem;
+            text-align: center;
+            color: #333;
+            }
+            
+            /* Button Container */
+            .button-container {
+            display: flex;
+            justify-content: center;     
+            align-items: center;
+            padding-top: 1rem;    
+            margin-top: -2rem;
+            gap: 5rem;
+            }
+            
+            #orderScrap, #clearScrap, .order-btn, .clear-btn {
+            display: inline-block;
+            padding: 2rem 3rem;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 4rem;
+            cursor: pointer;            
+            }
+            
+            #smartPickBtn2 {
+            padding: 1rem 1.5rem; /* Apply padding only to this button */
+            }
+            
+            #orderScrap, .order-btn {
+            background-color: #28a745;
+            }
+            
+            #orderScrap:hover, .order-btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            }
+            
+            #clearScrap, .clear-btn {
+            background-color: #dc3545; /* Red */
+            }
+            
+            #clearScrap:hover, .clear-btn:hover {
+            background-color: #c82333; /* Darker red on hover */
+            transform: translateY(-2px);
+            }
+            
+            
+            
+            
+            
             
             
             
@@ -1207,7 +1237,7 @@
             .empty-icon {
             width: 80px;
             height: 80px;
-            margin-bottom: 10px;
+            margin-bottom: 3rem;
             }
             
             .empty-text {
@@ -1216,7 +1246,6 @@
             margin: 5px 0;
             text-align: center;
             }
-            
             
             .main-menu-link {            
             color: blue;
@@ -1230,12 +1259,10 @@
             text-decoration: none; /* Ensures underline doesn’t reappear */
             }
             
-            
             .button-container-center {
             display: flex;
             justify-content: center;           
             }
-            
             
             #repeatLastOrder {
             background-color: #4CAF50; /* Green color */
@@ -1243,8 +1270,7 @@
             
             #repeatLastOrder:hover {
             background-color: #45a049;
-            }
-            
+            }            
             
             @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -1255,7 +1281,6 @@
             .repeat-animation {
             animation: shake 800ms ease-in-out;
             }
-            
             
             .smart-pick-btn {
             display: flex;
@@ -1276,7 +1301,6 @@
             transform: translateY(-2px);
             }
             
-            
             .button-icon {
             width: 20px;
             height: 20px;
@@ -1289,7 +1313,9 @@
             
             
             
-            /* Warning Modal Overlay */
+            
+            
+            /* Warning Modal Overlay - disabled */
             .modal-overlay {
             position: fixed;
             top: 0;
@@ -1426,41 +1452,7 @@
             
             
             
-            /* Scrap List Modal */
-            #scrapList, #offer-cart {
-            display: none; /* Ensure it is hidden initially */
-            position: fixed;
-            top: var(--header-bottom, 8%);
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            max-width: 90vw;
-            max-height: 55vh; /* Ensures modal doesn't exceed viewport */
-            background: rgba(255, 255, 255, 0.95);            
-            border-radius: 1rem;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            flex-direction: column;
-            z-index: 100;
             
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            will-change: opacity, transform;
-            }   
-            
-            /* Scrap Content */
-            .scrap-content, .offers-content {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            max-width: 400px;
-            padding: 1rem;
-            border-radius: 1rem;
-            color: #333;
-            background: inherit;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden; /* Ensures no overflowing content */
-            }
             
             #scrapItemsContainer {
             flex-grow: 1; /* Takes available space */
@@ -1836,47 +1828,47 @@
             
             
             
-.button-container-all {
-    width: 100%;              /* Allow full-width flexibility */
-    max-width: 300px;         /* Restrict maximum width */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2rem auto;
-    margin-bottom: 1rem;
-    gap: 2rem;
-}
-
-#orderAll, #clearAll {
-    flex: 1 1 auto;           /* Allow flexible growth and shrink */
-    min-width: 75px;          /* Minimum width constraint */
-    max-width: 100px;         /* Maximum width constraint */
-    padding: 1rem;
-    font-size: 4rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-
+            .button-container-all {
+            width: 100%;              /* Allow full-width flexibility */
+            max-width: 300px;         /* Restrict maximum width */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem auto;
+            margin-bottom: 1rem;
+            gap: 2rem;
+            }
+            
+            #orderAll, #clearAll {
+            flex: 1 1 auto;           /* Allow flexible growth and shrink */
+            min-width: 75px;          /* Minimum width constraint */
+            max-width: 100px;         /* Maximum width constraint */
+            padding: 1.5rem;
+            font-size: 4rem;
+            border-radius: 0.5rem;
+            border: none; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            }
             
             #orderAll {
-            background-color: #2196F3;
+            background-color: #4CAF50; /* Green for positive action */
             color: white;
             }
             
             #orderAll:hover {
-            background-color: #1976D2;
+            background-color: #388E3C; /* Darker green on hover */
             }
             
             #clearAll {
-            background-color: #9C27B0;
+            background-color: #F44336; /* Red for clear/remove action */
             color: white;
             }
             
             #clearAll:hover {
-            background-color: #7B1FA2;
+            background-color: #D32F2F; /* Darker red on hover */
             }
+            
             
             
             /* 1. Hide specified buttons */
@@ -1926,8 +1918,7 @@
             
             .hidden {
             display: none !important;
-            }
-            
+            }            
             
             .form-group {
             margin: 4rem 0;
@@ -2022,12 +2013,11 @@
             display: none;
             }
             
-            
             #deliveryModal .order-modal-content {
             position: relative; /* Add this line */
             background: white;
             padding: 2rem;
-            border-radius: 10px;
+            border-radius: 3rem;
             color: #333;
             width: 90%;
             max-width: 400px;
@@ -2081,7 +2071,7 @@
             #cancelOrder {
             display: block;
             margin: 2rem auto 0;
-            padding: 1.5rem 3rem;
+            padding: 1rem 1.5rem;
             font-size: 5rem;
             color: white;
             border: none;
@@ -2089,31 +2079,35 @@
             cursor: pointer;
             transition: background-color 0.3s;
             flex: 1;
-            max-width: 150px;
+            max-width: 125px;
             }
             
             #deliveryForm button[type="submit"] {
             background-color: #4CAF50;
             }
             
-            #cancelOrder {
-            background-color: #dc3545;
-            }
-            
             #deliveryForm button[type="submit"]:hover {
             background-color: #45a049;
             }
-            
-            #cancelOrder:hover {
-            background-color: #c82333;
-            }
-            
             
             #deliveryForm button[type="submit"]:disabled {
             background-color: #6c757d !important;
             cursor: not-allowed;
             opacity: 0.65;
             } 
+            
+            #cancelOrder {
+            background-color: #007bff;  /* Soft blue */
+            }
+            
+            #cancelOrder:hover {
+            background-color: #0069d9;  /* Darker blue on hover */
+            }
+            
+            
+            
+            
+            
             
             
             
@@ -2149,7 +2143,7 @@
             background-color: rgba(16, 185, 129, 0.2);
             padding: 2rem;
             color: #FFFFFF;
-            border-radius: 12px;
+            border-radius: 4rem;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             }
             
@@ -2194,7 +2188,7 @@
             color: #fae68e;
             background-color: black;
             padding: 1rem 2rem;
-            border-radius: 10px;
+            border-radius: 3rem;
             display: inline-block;
             text-align: center;
             letter-spacing: 0.2rem;
@@ -2256,7 +2250,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 0;
+            padding: 3rem 0;
             transition: right 0.3s ease;
             z-index: 1000;
             box-shadow: -3px 0 5px rgba(0, 0, 0, 0.5);
@@ -3148,7 +3142,7 @@
             
             
             
-                       
+            
             // offline mode
             function updateOnlineStatus() {
                 // First check basic navigator.onLine status
@@ -3317,7 +3311,7 @@
             
             
             
-
+            
             
             
             
@@ -3451,10 +3445,10 @@
             const scriptUrl = "https://script.google.com/macros/s/AKfycbwL-df0wEbrbZoebYhWuYZASWBkzHvMgrjQDg6AUrV4oHZTAd1y3lbyEDolErve_blZAg/exec";
             
             //Disable context menu, cut-copy-paste
-           document.addEventListener('contextmenu', event => event.preventDefault());
+            document.addEventListener('contextmenu', event => event.preventDefault());
             document.addEventListener('copy', event => event.preventDefault());
             document.addEventListener('cut', event => event.preventDefault());
-           document.addEventListener('paste', event => event.preventDefault());
+            document.addEventListener('paste', event => event.preventDefault());
             
             // Initialize order number from localStorage
             let cachedOrderNumber = null;                  
@@ -3577,8 +3571,8 @@
             
             
             
-
-
+            
+            
             
             
             
@@ -4251,7 +4245,7 @@
                         loadingOverlay.innerHTML = `
                         <div class="loading-message cached-offer">
                         <div class="error-text">Connection Error</div>
-                       
+                        
                         
                         <div class="warning-text">
                         <span style="color: green;">Offline copy of 'Food-Menu' (dated ${formattedDate}) can be loaded</span><br><br>Some features of the app may not work until you're back online.
@@ -6569,7 +6563,7 @@
             
             
             
-           
+            
             
             // Time Play Modal Handling
             document.querySelector('.close-timeplay').addEventListener('click', () => {
@@ -6577,7 +6571,7 @@
             });
             
             
-                      
+            
             
             
             
@@ -6892,11 +6886,11 @@
             
             
             
-  
-  
-  
-  
-  
+            
+            
+            
+            
+            
             
             
             
