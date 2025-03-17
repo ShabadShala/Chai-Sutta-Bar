@@ -6207,57 +6207,89 @@
                 return `${formattedHours}:${formattedMinutes} ${period}`;
             }
             
-            function validateDeliveryTime() {
-                const deliveryTime = deliveryInput.value;
-                timeStatus.innerHTML = ''; // Clear previous status
-                
-                if (!deliveryTime) return;
-                
-                const [hours, minutes] = deliveryTime.split(':').map(Number);
-                if (isNaN(hours) || isNaN(minutes)) {
-                    timeStatus.innerHTML = `<span style="color: red;">Invalid time format.</span>`;
-                    return;
-                }
-                
-                const deliveryMinutes = hours * 60 + minutes;
-                
-                // Time constraints
-                const minDeliveryTime = (window.openTimeInMinutes + window.deliveryAfterOpening) % (24 * 60);
-                const maxDeliveryTime = (window.closeTimeInMinutes - window.deliveryBeforeClosing + (24 * 60)) % (24 * 60);
-                
-                // Current time + 15 minutes
-                const now = new Date();
-                const currentMinutes = now.getHours() * 60 + now.getMinutes();
-                const minCurrentTime = (currentMinutes + window.deliveryFromNow) % (24 * 60);
-                
-                let isValidTime = true;
-                let errorMessage = '';
-                
-                // Check for open and close time constraints
-                if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
-                    if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
-                        isValidTime = false;
-                        errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
-                    }
-                    } else {
-                    // only run when the business operates overnight—that is, the closeTime is less than the openTime (like 9 PM to 2 AM).
-                    if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
-                        isValidTime = false;
-                        errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
-                    }
-                }
-                
-                // Check for current time constraint
-                if (isValidTime && deliveryMinutes < minCurrentTime) {
-                    isValidTime = false;
-                    errorMessage = `Time must be at least ${window.deliveryFromNow} minutes ahead of the current time.`;
-                }
-                
-                // Display message
-                timeStatus.innerHTML = isValidTime
-                ? `<span style="color: green;">Delivery time is valid!</span>`
-                : `<span style="color: red;">${errorMessage}</span>`;
+function validateDeliveryTime() {
+    const deliveryTime = deliveryInput.value;
+    timeStatus.innerHTML = ''; // Clear previous status
+
+    // Check if the user entered a delivery time
+    if (!deliveryTime) {
+        timeStatus.innerHTML = `<span style="color: red;">Please enter a delivery time.</span>`;
+        return;
+    }
+
+    // Parse the delivery time into hours and minutes
+    const [hours, minutes] = deliveryTime.split(':').map(Number);
+    if (isNaN(hours) || isNaN(minutes)) {
+        timeStatus.innerHTML = `<span style="color: red;">Invalid time format. Please use HH:MM format.</span>`;
+        return;
+    }
+
+    // Convert delivery time to total minutes
+    const deliveryMinutes = hours * 60 + minutes;
+
+    // Calculate store's minimum and maximum delivery times
+    const minDeliveryTime = (window.openTimeInMinutes + window.deliveryAfterOpening) % (24 * 60);
+    const maxDeliveryTime = (window.closeTimeInMinutes - window.deliveryBeforeClosing + (24 * 60)) % (24 * 60);
+
+    // Get the current time in minutes
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const minCurrentTime = (currentMinutes + window.deliveryFromNow) % (24 * 60);
+
+    // Initialize variables for validation
+    let isValidTime = true;
+    let errorMessage = '';
+
+    // Format times for display
+    const formattedMinDelivery = convertToAMPM(minDeliveryTime);
+    const formattedMaxDelivery = convertToAMPM(maxDeliveryTime);
+    const formattedCurrentTime = convertToAMPM(currentMinutes);
+
+    // 1. Check if the delivery time is in the past
+    if (deliveryMinutes < currentMinutes) {
+        isValidTime = false;
+        errorMessage = `The selected time ${convertToAMPM(deliveryMinutes)} is in the past. Current time is ${formattedCurrentTime}.`;
+    }
+
+    // 2. Check store hours only if the time is not in the past
+    if (isValidTime) {
+        if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
+            // Store operates within a single day (e.g., 9 AM - 5 PM)
+            if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
+                isValidTime = false;
+                errorMessage = `Delivery time is available until ${formattedMaxDelivery}.`;
             }
+        } else {
+            // Store operates across midnight (e.g., 11 PM - 5 AM)
+            if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
+                isValidTime = false;
+                errorMessage = `Delivery time is available until ${formattedMaxDelivery}.`;
+            }
+        }
+    }
+
+    // 3. Check minimum lead time and other conditions if the time is still valid
+    if (isValidTime) {
+        if (deliveryMinutes < minCurrentTime) {
+            isValidTime = false;
+            const minFutureTime = convertToAMPM(minCurrentTime);
+            errorMessage = `Delivery time must be at least ${window.deliveryFromNow} minutes ahead. Earliest possible time is ${minFutureTime}.`;
+        } else if (deliveryMinutes - currentMinutes <= 30) {
+            errorMessage = `Note: The selected delivery time ${convertToAMPM(deliveryMinutes)} is within the next 30 minutes.`;
+        }
+    }
+
+    // Display the appropriate message based on validation
+    if (!isValidTime) {
+        timeStatus.innerHTML = `<span style="color: red;">${errorMessage}</span>`;
+    } else if (errorMessage) {
+        timeStatus.innerHTML = `<span style="color: orange;">${errorMessage}</span>`;
+    } else {
+        timeStatus.innerHTML = `<span style="color: green;">Delivery time is valid!</span>`;
+    }
+}
+
+
             
             // Form submission
             document.getElementById('deliveryForm').addEventListener('submit', function (e) {
