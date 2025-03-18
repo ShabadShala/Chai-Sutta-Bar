@@ -14,7 +14,8 @@
         <meta name="theme-color" content="#000000">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
         
-        
+        <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+
         
         <script type="application/ld+json">
             {
@@ -62,7 +63,7 @@
             }                
             
             :root {
-            --scale-factor: 1.25; /* 150% scaling */
+            --scale-factor: 1.25; /* Zoom scaling */
             }
             
             html {
@@ -583,10 +584,7 @@
             width: 100%;
             max-width: 600px;
             margin: 2rem auto; 
-            margin-bottom: 2rem;
             position: relative; 
-            /* border: 2px solid white; */
-            
             border-radius: 5px;
             /* New styles to arrange children */
             flex-wrap: wrap;
@@ -603,15 +601,13 @@
             .search-input-wrapper {
             position: relative;
             display: flex;
-            align-items: center;
-            
+            align-items: center;            
             width: 60%;
             }
             
             #searchInput {
             width: 100%;
-            padding: 1.5rem 9rem;
-            
+            padding: 1.5rem 9rem;            
             font-size: 6rem;
             border: 1px solid #fae68e;  /* Converted 2px to 0.125rem */
             border-radius: 0 5rem 5rem 0;              /* Increased from 3rem to 5rem for more roundness */
@@ -776,7 +772,7 @@
             background-color: transparent;
             font-size: 6rem;
             font-weight: bold;
-            font-family: 'Comic Sans MS';
+ font-family: 'Comic Sans MS', 'Comic Neue', cursive; /* Fallback fonts */
             cursor: pointer;
             padding: 2rem 1rem; 
             display: flex;
@@ -1186,7 +1182,6 @@
             display: flex;
             justify-content: center;     
             align-items: center;
-            padding-top: 1rem;    
             margin-top: -2rem;
             gap: 5rem;
             }
@@ -1202,7 +1197,7 @@
             }
             
             #smartPickBtn2 {
-            padding: 1rem 1.5rem; /* Apply padding only to this button */
+            padding: 1.5rem 1.5rem; /* Apply padding only to this button */
             }
             
             #orderScrap, .order-btn {
@@ -1510,7 +1505,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 2rem;
             }
             
             /* Updated Title Style */
@@ -1556,14 +1551,14 @@
             #offers-button {
             position: relative;
             width: 35%; /* Ensure it doesn't exceed */
-            max-width: 125px;
+            max-width: 110px;
             margin: 0 !important; /* Remove any default margins */
             background: linear-gradient(135deg, #fae68e, #ffcc66);
             color: #212121;
             border: none;
             border-radius: 5rem 0 0 5rem;
-            padding: 1rem 3rem;
-            font-size: 5rem;
+            padding: 2rem 0;
+            font-size: 4rem;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -2048,14 +2043,14 @@
             }
             
             
-.time-range-container label {    
-    display: flex;
-    align-items: center;  
-}
-
-#deliveryTimeRange {
-    margin-left: 1.5rem; /* Small space after the label */
-}
+            .time-range-container label {    
+            display: flex;
+            align-items: center;  
+            }
+            
+            #deliveryTimeRange {
+            margin-left: 1.5rem; /* Small space after the label */
+            }
             
             
             
@@ -2953,20 +2948,20 @@
                             <textarea id="manualAddress" name="manualAddress" maxlength="100" autocomplete="street-address"></textarea>
                         </div>
                         
-<!-- Inside the deliveryForm in your HTML -->
-<div class="form-group">
-    <div class="time-range-container">
-        <label for="deliveryTime">
-            Delivery Time
-            <span id="deliveryTimeRange"></span>
-        </label>
-    </div>
-    <div style="display: flex; gap: 4px;">
-        <input type="datetime-local" id="deliveryTime" name="deliveryTime" autocomplete="off">
-        <button type="button" id="clearDate">✖</button>
-    </div>
-    <div id="timeStatus" style="padding-top: 1.5rem;"></div>
-</div>
+                        <!-- Inside the deliveryForm in your HTML -->
+                        <div class="form-group">
+                            <div class="time-range-container">
+                                <label for="deliveryTime">
+                                    Delivery Time
+                                    <span id="deliveryTimeRange"></span>
+                                </label>
+                            </div>
+                            <div style="display: flex; gap: 4px;">
+                                <input type="datetime-local" id="deliveryTime" name="deliveryTime" autocomplete="off">
+                                <button type="button" id="clearDate">✖</button>
+                            </div>
+                            <div id="timeStatus" style="padding-top: 1.5rem;"></div>
+                        </div>
                         
                         <div class="address-method">
                             <label>
@@ -3094,79 +3089,7 @@
             
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            // offline mode
-            function updateOnlineStatus() {
-                // First check basic navigator.onLine status
-                const isBasicOffline = !navigator.onLine;
-                
-                // Then verify with actual network request
-                const connectionTest = fetch('https://shabadshala.github.io/Chai-Sutta-Bar/icon-512.png?cache=' + Date.now(), {
-                    method: 'HEAD',
-                    mode: 'no-cors',
-                    cache: 'no-cache'
-                })
-                .then(() => false) // Online if successful
-                .catch(() => true); // Offline if failed
-                
-                // Timeout in case request hangs
-                const timeout = new Promise(resolve => 
-                setTimeout(() => resolve(true), 2000)
-                );
-                
-                Promise.race([connectionTest, timeout])
-                .then(isReallyOffline => {
-                    const isOffline = isBasicOffline || isReallyOffline;
-                    
-                    document.body.classList.toggle('app-offline', isOffline);
-                    document.querySelectorAll('.offline-mode-target').forEach(element => {
-                        element.classList.toggle('offline-mode', isOffline);
-                    });
-                    
-                    if (isOffline) {
-                        console.log('Offline mode activated - No internet connection');
-                    }
-                });
-            }
-            
-            // Update check frequency (every 30 seconds + on network events)
-            window.addEventListener('online', updateOnlineStatus);
-            window.addEventListener('offline', updateOnlineStatus);
-            setInterval(updateOnlineStatus, 15000);
-            updateOnlineStatus(); // Initial check
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            // Check if service workers are supported
+            // Check if service workers are supported, Register Service-worker
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
                     navigator.serviceWorker.register('/service-worker.js').then((registration) => {
@@ -3176,6 +3099,18 @@
                     });
                 });
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
             
             
@@ -3259,6 +3194,67 @@
                     }
                 });
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // offline mode
+            function updateOnlineStatus() {
+                // First check basic navigator.onLine status
+                const isBasicOffline = !navigator.onLine;
+                
+                // Then verify with actual network request
+                const connectionTest = fetch('https://shabadshala.github.io/Chai-Sutta-Bar/icon-512.png?cache=' + Date.now(), {
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    cache: 'no-cache'
+                })
+                .then(() => false) // Online if successful
+                .catch(() => true); // Offline if failed
+                
+                // Timeout in case request hangs
+                const timeout = new Promise(resolve => 
+                setTimeout(() => resolve(true), 2000)
+                );
+                
+                Promise.race([connectionTest, timeout])
+                .then(isReallyOffline => {
+                    const isOffline = isBasicOffline || isReallyOffline;
+                    
+                    document.body.classList.toggle('app-offline', isOffline);
+                    document.querySelectorAll('.offline-mode-target').forEach(element => {
+                        element.classList.toggle('offline-mode', isOffline);
+                    });
+                    
+                    if (isOffline) {
+                        console.log('Offline mode activated - No internet connection');
+                    }
+                });
+            }
+            
+            // Update check frequency (every 30 seconds + on network events)
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            setInterval(updateOnlineStatus, 15000);
+            updateOnlineStatus(); // Initial check
             
             
             
@@ -3398,7 +3394,7 @@
             
             
             
-            
+            // Main functionality
             // temp disable offer cart button
             document.getElementById("toggle-cart").style.display = "none"; // Hide
             
@@ -3468,7 +3464,7 @@
             
             
             
-            
+            // Search Replacements
             async function loadReplacements() {
                 try {
                     const response = await fetch(`${scriptUrl}?sheet=replace`);
@@ -3504,7 +3500,8 @@
                         'coofe': 'coffee',
                     };
                 }
-            }                    
+            }   
+            
             // Initialize when page loads
             loadReplacements();
             
@@ -3517,7 +3514,7 @@
             
             
             
-            
+            // Synonyms
             const SYNONYMS = {
                 'chai': ['tea'],
                 'tea': ['chai'],
@@ -5956,20 +5953,20 @@
             
             
             // Add this validation check function
-function checkFormValidity() {
-    const timeInvalid = document.getElementById('timeStatus').innerHTML.includes('red');
-    const locationInvalid = document.querySelector('[value="location"]').checked && !isLocation;
-    const phoneField = document.getElementById('phone');
-    
-    // Add phone validation (allow blank but validate format if entered)
-//    const phoneInvalid = phoneField.value && !/^\d{5}-\d{5}$/.test(phoneField.value);   
-  //  return !(timeInvalid || locationInvalid || phoneInvalid);
-    
-
-    return !(timeInvalid || locationInvalid);
-
-}
-
+            function checkFormValidity() {
+                const timeInvalid = document.getElementById('timeStatus').innerHTML.includes('red');
+                const locationInvalid = document.querySelector('[value="location"]').checked && !isLocation;
+                const phoneField = document.getElementById('phone');
+                
+                // Add phone validation (allow blank but validate format if entered)
+                //    const phoneInvalid = phoneField.value && !/^\d{5}-\d{5}$/.test(phoneField.value);   
+                //  return !(timeInvalid || locationInvalid || phoneInvalid);
+                
+                
+                return !(timeInvalid || locationInvalid);
+                
+            }
+            
             
             // Update Confirm button state
             function updateConfirmButton() {
@@ -5977,13 +5974,12 @@ function checkFormValidity() {
                 confirmBtn.disabled = !checkFormValidity();
             }
             
+            
             // Add event listeners for form changes
             document.getElementById('deliveryForm').addEventListener('input', updateConfirmButton);
             document.getElementById('deliveryForm').addEventListener('change', updateConfirmButton);
             document.querySelector('[value="location"]').addEventListener('change', updateConfirmButton);
-            
-            
-            
+
             
             // Handle ordering both carts and showing the delivery modal
             document.getElementById('orderAll').addEventListener('click', function(e) {
@@ -5999,24 +5995,29 @@ function showDeliveryModal() {
     const modal = document.getElementById('deliveryModal');
     const overlay = document.getElementById('deliveryOverlay');
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    
-    // Calculate delivery time range
-    const minDeliveryTime = (window.openTimeInMinutes + window.preparationTime) % (24 * 60);
-    const maxDeliveryTime = (window.closeTimeInMinutes - window.preparationTime + (24 * 60)) % (24 * 60);
-    
+
+    // Get current time and add preparation time
+    const currentTime = new Date();
+    currentTime.setMinutes(currentTime.getMinutes() + window.preparationTime);
+
+    // Convert to minutes of the day (0 - 1439)
+    const minDeliveryTime = (currentTime.getHours() * 60 + currentTime.getMinutes()) % (24 * 60);
+    const maxDeliveryTime = (window.closeTimeInMinutes + (24 * 60)) % (24 * 60);
+
     // Update time range display
     const timeRangeElement = document.getElementById('deliveryTimeRange');
     timeRangeElement.textContent = `(${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)})`;
 
     modal.classList.remove('hidden');
     overlay.style.display = 'block';
-    
+
     document.body.style.overflow = 'hidden';
     document.body.style.paddingRight = `${scrollbarWidth}px`; 
-    
+
     setTimeout(() => modal.classList.add('active'), 10);
     updateConfirmButton();
 }
+
             
             // Function to hide the delivery modal
             function hideDeliveryModal() {
@@ -6250,7 +6251,7 @@ function showDeliveryModal() {
                 
                 // Time constraints
                 const minDeliveryTime = (window.openTimeInMinutes + window.preparationTime) % (24 * 60);
-                const maxDeliveryTime = (window.closeTimeInMinutes - window.preparationTime + (24 * 60)) % (24 * 60);
+                const maxDeliveryTime = (window.closeTimeInMinutes + (24 * 60)) % (24 * 60);
                 
                 const now = new Date();
                 const currentMinutes = now.getHours() * 60 + now.getMinutes();
@@ -6263,14 +6264,14 @@ function showDeliveryModal() {
                 if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
                     if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
                         isValidTime = false;
-                      //  errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
-                      errorMessage = `Invalid time input.`;
+                        //  errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
+                        errorMessage = `Invalid time input.`;
                     }
                     } else {
                     // only run when the business operates overnight—that is, the closeTime is less than the openTime (like 9 PM to 2 AM).
                     if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
                         isValidTime = false;
-                       // errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
+                        // errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
                         errorMessage = `Invalid time input.`;
                     }
                 }
