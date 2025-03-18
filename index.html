@@ -590,6 +590,7 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            background-color: #212121; /* Match the body background */
             }
             
             /* When the search-container is displayed (via JS), use flex layout */
@@ -660,6 +661,7 @@
             display: flex;
             justify-content: center;
             margin-top: 1rem;
+            margin-bottom: -1rem;
             }
             
             .filter-label {
@@ -743,7 +745,8 @@
             max-width: 600px;
             /* background-color: #212121; */ 
             margin: 0 auto;
-            margin-bottom: 2rem;
+            margin-top: -1rem;
+            margin-bottom: 1rem;
             }
             
             .tab-button {
@@ -772,20 +775,39 @@
             
             
             
-            .tab-container {
-    overflow-x: auto;
+/* Add these styles */
+#menu {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tab-container {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
+    padding-bottom: 10px; /* Space for scroll snap */
 }
 
 .tab-container::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
 }
 
 .tab-button {
-    scroll-snap-align: start;
-    flex-shrink: 0;
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+    transition: transform 0.2s ease;
+}
+
+/* Active tab styling */
+.tab-button.active {
+    transform: scale(1.05);
+    z-index: 1;
 }
             
             
@@ -3743,39 +3765,75 @@
             
             
             
-          // Add touch event handlers for tab cycling
+// Add this JavaScript
+const menuArea = document.getElementById('menu');
 const tabContainer = document.querySelector('.tab-container');
-let touchStartX = 0;
+let isDragging = false;
+let startX = 0;
+let scrollLeft = 0;
 
-tabContainer.addEventListener('touchstart', function(e) {
-    touchStartX = e.touches[0].clientX;
+// Set tab container width to fit all tabs
+function setTabContainerWidth() {
+    const tabs = document.querySelectorAll('.tab-button');
+    const totalWidth = Array.from(tabs).reduce((acc, tab) => acc + tab.offsetWidth, 0);
+    tabContainer.style.width = `${totalWidth}px`;
+}
+setTabContainerWidth();
+window.addEventListener('resize', setTabContainerWidth);
+
+// Touch/mouse handlers
+menuArea.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - menuArea.offsetLeft;
+    scrollLeft = tabContainer.scrollLeft;
 });
 
-tabContainer.addEventListener('touchend', function(e) {
-    const touchEndX = e.changedTouches[0].clientX;
-    const deltaX = touchEndX - touchStartX;
-    const swipeThreshold = 50; // Minimum swipe distance in pixels
-
-    if (Math.abs(deltaX) > swipeThreshold) {
-        if (deltaX > 0) {
-            // Swipe right - previous tab
-            cycleTabs(-1);
-        } else {
-            // Swipe left - next tab
-            cycleTabs(1);
-        }
-    }
+menuArea.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].pageX - menuArea.offsetLeft;
+    scrollLeft = tabContainer.scrollLeft;
 });
 
-function cycleTabs(direction) {
-    const tabs = Array.from(document.querySelectorAll('.tab-button'));
-    const currentIndex = tabs.findIndex(t => t.classList.contains('active'));
-    const newIndex = (currentIndex + direction + tabs.length) % tabs.length;
+menuArea.addEventListener('mouseup', () => isDragging = false);
+menuArea.addEventListener('mouseleave', () => isDragging = false);
+menuArea.addEventListener('touchend', () => isDragging = false);
+
+menuArea.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - menuArea.offsetLeft;
+    const walk = (x - startX) * 2;
+    tabContainer.scrollLeft = scrollLeft - walk;
+});
+
+menuArea.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.touches[0].pageX - menuArea.offsetLeft;
+    const walk = (x - startX) * 2;
+    tabContainer.scrollLeft = scrollLeft - walk;
+});
+
+// Snap to tabs and handle cyclic scroll
+tabContainer.addEventListener('scroll', () => {
+    const tabs = document.querySelectorAll('.tab-button');
+    const scrollPosition = tabContainer.scrollLeft;
+    const totalWidth = Array.from(tabs).reduce((acc, tab) => acc + tab.offsetWidth, 0);
     
-    // Simulate click on new tab
-    tabs[newIndex].click();
-}  
-            
+    // Handle cyclic scroll
+    if (scrollPosition <= 0) {
+        tabContainer.scrollLeft = totalWidth - menuArea.offsetWidth;
+    } else if (scrollPosition + menuArea.offsetWidth >= totalWidth) {
+        tabContainer.scrollLeft = 0;
+    }
+    
+    // Snap to nearest tab
+    const activeIndex = Math.round(scrollPosition / (totalWidth / tabs.length));
+    tabContainer.scrollTo({
+        left: activeIndex * (totalWidth / tabs.length),
+        behavior: 'smooth'
+    });
+});        
             
             
             
