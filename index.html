@@ -15,7 +15,7 @@
         <link rel="icon" type="image/x-icon" href="favicon.ico">
         
         <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
-
+        
         
         <script type="application/ld+json">
             {
@@ -736,13 +736,14 @@
             transition: width 0.3s ease;
             }
             
-            
+            /* Tabs */     
             .tab-container {
             display: none;
             width: 100%;
             max-width: 600px;
-            background-color: #212121;
+            /* background-color: #212121; */ 
             margin: 0 auto;
+            margin-bottom: 2rem;
             }
             
             .tab-button {
@@ -757,13 +758,40 @@
             }
             
             #allButton {
-            background-color: #212121;
+            /* background-color: #212121; */ 
             }
             
             #drinksButton,
             #eatsButton {
-            background-color: #2C2C2C;
+            /* background-color: #2C2C2C; */ 
             }
+            
+            
+            
+            
+            
+            
+            
+            .tab-container {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+
+.tab-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.tab-button {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+            
+            
+            
+            
+            
             
             
             
@@ -772,7 +800,7 @@
             background-color: transparent;
             font-size: 6rem;
             font-weight: bold;
- font-family: 'Comic Sans MS', 'Comic Neue', cursive; /* Fallback fonts */
+            font-family: 'Comic Sans MS', 'Comic Neue', cursive; /* Fallback fonts */
             cursor: pointer;
             padding: 2rem 1rem; 
             display: flex;
@@ -1551,14 +1579,14 @@
             #offers-button {
             position: relative;
             width: 35%; /* Ensure it doesn't exceed */
-            max-width: 110px;
+            max-width: 120px;
             margin: 0 !important; /* Remove any default margins */
             background: linear-gradient(135deg, #fae68e, #ffcc66);
             color: #212121;
             border: none;
             border-radius: 5rem 0 0 5rem;
-            padding: 2rem 0;
-            font-size: 4rem;
+            padding: 1rem;
+            font-size: 5rem;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -2048,10 +2076,9 @@
             align-items: center;  
             }
             
-            #deliveryTimeRange {
-            margin-left: 1.5rem; /* Small space after the label */
+            .daily-time {
+            color: blue; /* Or any color you prefer */
             }
-            
             
             
             /* Delivery Modal Buttons */
@@ -2504,13 +2531,13 @@
             }
             
             .item-quantity {
-            background: #d1f2eb;
-            padding: 0.3rem 0.6rem;
+            background: #e0f8f5;
+            padding: 1rem;
             border-radius: 5px;
             font-weight: bold;
             margin-left: auto;
             margin-right: 1rem;
-            color: #1abc9c;
+            color: #117a65;
             }
             
             /* Summary section */
@@ -2551,7 +2578,21 @@
             background-color: #357ab7;
             }
             
-            #clearChecklist, .close-checklist {
+            .close-checklist {
+            position: absolute;
+            top: 0;
+            right: 1rem;
+            font-size: 6rem;
+            cursor: pointer;
+            color: #333;
+            }
+                        
+            .close-checklist:hover {
+            color: #c0392b;
+            transform: scale(1.05);   /* Slight scale for hover effect */
+            }
+            
+            #clearChecklist {
             padding: 1.5rem 3rem;
             border: none;
             border-radius: 5px;
@@ -2564,11 +2605,6 @@
             
             #clearChecklist:hover {
             background-color: #d9363e; /* Darker red on hover */
-            transform: scale(1.05);   /* Slight scale for hover effect */
-            }
-            
-            .close-checklist:hover {
-            color: #c0392b;
             transform: scale(1.05);   /* Slight scale for hover effect */
             }
             
@@ -2952,7 +2988,7 @@
                         <div class="form-group">
                             <div class="time-range-container">
                                 <label for="deliveryTime">
-                                    Delivery Time
+                                    
                                     <span id="deliveryTimeRange"></span>
                                 </label>
                             </div>
@@ -3609,6 +3645,16 @@
             
             
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             // Tabs - All Drinks Dishes
             
             // ✅ Set "All" as default active tab on page load
@@ -3686,6 +3732,54 @@
                     item.classList.remove("visible-border"); // Remove borders
                 });
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          // Add touch event handlers for tab cycling
+const tabContainer = document.querySelector('.tab-container');
+let touchStartX = 0;
+
+tabContainer.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+});
+
+tabContainer.addEventListener('touchend', function(e) {
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchEndX - touchStartX;
+    const swipeThreshold = 50; // Minimum swipe distance in pixels
+
+    if (Math.abs(deltaX) > swipeThreshold) {
+        if (deltaX > 0) {
+            // Swipe right - previous tab
+            cycleTabs(-1);
+        } else {
+            // Swipe left - next tab
+            cycleTabs(1);
+        }
+    }
+});
+
+function cycleTabs(direction) {
+    const tabs = Array.from(document.querySelectorAll('.tab-button'));
+    const currentIndex = tabs.findIndex(t => t.classList.contains('active'));
+    const newIndex = (currentIndex + direction + tabs.length) % tabs.length;
+    
+    // Simulate click on new tab
+    tabs[newIndex].click();
+}  
+            
+            
+            
+            
+            
             
             
             
@@ -5979,7 +6073,7 @@
             document.getElementById('deliveryForm').addEventListener('input', updateConfirmButton);
             document.getElementById('deliveryForm').addEventListener('change', updateConfirmButton);
             document.querySelector('[value="location"]').addEventListener('change', updateConfirmButton);
-
+            
             
             // Handle ordering both carts and showing the delivery modal
             document.getElementById('orderAll').addEventListener('click', function(e) {
@@ -5990,37 +6084,120 @@
             });
             
             
-            // Function to show the delivery modal
-function showDeliveryModal() {
-    const modal = document.getElementById('deliveryModal');
-    const overlay = document.getElementById('deliveryOverlay');
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-
-    // Get current time and add preparation time
-    const currentTime = new Date();
-    currentTime.setMinutes(currentTime.getMinutes() + window.preparationTime);
-
-    // Convert to minutes of the day (0 - 1439)
-    const minDeliveryTime = (currentTime.getHours() * 60 + currentTime.getMinutes()) % (24 * 60);
-    const maxDeliveryTime = (window.closeTimeInMinutes + (24 * 60)) % (24 * 60);
-
-    // Update time range display
-    const timeRangeElement = document.getElementById('deliveryTimeRange');
-    timeRangeElement.textContent = `(${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)})`;
-
-    modal.classList.remove('hidden');
-    overlay.style.display = 'block';
-
-    document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = `${scrollbarWidth}px`; 
-
-    setTimeout(() => modal.classList.add('active'), 10);
-    updateConfirmButton();
-}
-
+            function updateDeliveryTimeRange() {
+                const now = new Date();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                
+                // Calculate dynamic time constraints
+                // Fix the minDeliveryTime calculation
+                if (currentMinutes > window.openTimeInMinutes) {
+                    window.minDeliveryTime = currentMinutes + window.preparationTime;
+                    } else {
+                    window.minDeliveryTime = window.openTimeInMinutes + window.preparationTime;
+                }
+                window.maxDeliveryTime = window.closeTimeInMinutes;
+                
+                // Get elements
+                const timeRangeElement = document.getElementById('deliveryTimeRange');
+                const deliveryInput = document.getElementById('deliveryTime');
+                
+                // Check if delivery is closed
+                if (window.minDeliveryTime > window.maxDeliveryTime) {
+                    timeRangeElement.textContent = "Delivery timing closed for today 😔";
+                    if (deliveryInput) {
+                        deliveryInput.disabled = true;  // Disable input field
+                        deliveryInput.value = "";
+                    }
+                    } else {
+                    const minTimeDate = new Date();
+                    minTimeDate.setHours(Math.floor(window.minDeliveryTime / 60), window.minDeliveryTime % 60);
+                    
+                    const maxTimeDate = new Date();
+                    maxTimeDate.setHours(Math.floor(window.maxDeliveryTime / 60), window.maxDeliveryTime % 60);
+                    
+                    // timeRangeElement.classList.add('pre-line-text');
+                    if (currentMinutes > window.openTimeInMinutes) {
+                        timeRangeElement.innerHTML = `Delivery Time<br>
+                        <span class="daily-time">(daily: ${convertToAMPM(window.openTimeInMinutes + window.preparationTime)} to ${convertToAMPM(maxTimeDate)})</span><br>
+                        (available today: ${convertToAMPM(minTimeDate)} to ${convertToAMPM(maxTimeDate)})`;
+                        } else {
+                        timeRangeElement.innerHTML = `Delivery Time<br>
+                        <span class="daily-time">(daily: ${convertToAMPM(window.openTimeInMinutes + window.preparationTime)} to ${convertToAMPM(maxTimeDate)})</span>`;
+                    }
+                    if (deliveryInput) {
+                        deliveryInput.disabled = false;  // Enable input field if open
+                        deliveryInput.min = `${String(minTimeDate.getHours()).padStart(2, '0')}:${String(minTimeDate.getMinutes()).padStart(2, '0')}`;
+                        deliveryInput.max = `${String(maxTimeDate.getHours()).padStart(2, '0')}:${String(maxTimeDate.getMinutes()).padStart(2, '0')}`;
+                    }
+                }
+            }
+            
+            
+            let timeUpdateInterval;
+            
+            function showDeliveryModal() {
+                updateDeliveryTimeRange(); // Ensures minDeliveryTime and maxDeliveryTime are set
+                
+                const modal = document.getElementById('deliveryModal');
+                const overlay = document.getElementById('deliveryOverlay');
+                const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+                
+                const timeRangeElement = document.getElementById('deliveryTimeRange');
+                const deliveryInput = document.getElementById('deliveryTime'); // Make sure this is defined
+                
+                // Use the already calculated values
+                const minDeliveryTime = window.minDeliveryTime;
+                const maxDeliveryTime = window.maxDeliveryTime;
+                
+                const now = new Date();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                
+                // Condition: Show "Delivery Closed for Today" if applicable
+                if (minDeliveryTime >= maxDeliveryTime) {
+                    console.log("🚫 Delivery Closed: Showing Modal Message");
+                    timeRangeElement.textContent = "Delivery timing closed for today 😔";
+                    deliveryInput.value = "";
+                    } else {
+                    // Properly format the available time range
+                    // timeRangeElement.classList.add('pre-line-text'); // 1. Apply the class
+                    if (currentMinutes > window.openTimeInMinutes) {
+                        timeRangeElement.innerHTML = `Delivery Time<br>
+                        <span class="daily-time">(daily: ${convertToAMPM(new Date(0, 0, 0, Math.floor((window.openTimeInMinutes + window.preparationTime) / 60), window.openTimeInMinutes % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span><br>
+                        (available today: ${convertToAMPM(new Date(0, 0, 0, Math.floor(minDeliveryTime / 60), minDeliveryTime % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})`;
+                        } else {
+                        timeRangeElement.innerHTML = `Delivery Time<br>
+                        <span class="daily-time">(daily: ${convertToAMPM(new Date(0, 0, 0, Math.floor((window.openTimeInMinutes + window.preparationTime) / 60), window.openTimeInMinutes % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span>`;
+                    }
+                }
+                
+                modal.classList.remove('hidden');
+                overlay.style.display = 'block';
+                
+                document.body.style.overflow = 'hidden';
+                document.body.style.paddingRight = `${scrollbarWidth}px`;
+                
+                setTimeout(() => modal.classList.add('active'), 10);
+                updateConfirmButton();
+                
+                updateDeliveryTimeRange();
+                
+                // Clear any existing interval before starting a new one
+                if (timeUpdateInterval) clearInterval(timeUpdateInterval);
+                
+                timeUpdateInterval = setInterval(() => {
+                    updateDeliveryTimeRange();
+                    validateDeliveryTime();
+                    updateConfirmButton();
+                }, 10000);
+            }
+            
+            
+            
             
             // Function to hide the delivery modal
             function hideDeliveryModal() {
+                if (timeUpdateInterval) clearInterval(timeUpdateInterval);
+                
                 const modal = document.getElementById('deliveryModal');
                 const overlay = document.getElementById('deliveryOverlay');
                 
@@ -6038,19 +6215,10 @@ function showDeliveryModal() {
             
             
             
-            
-            
             // Close button handler
             document.querySelector('#deliveryModal .close-button').addEventListener('click', hideDeliveryModal);
             
-            // Outside click handler
-            /*
-                document.getElementById('deliveryModal').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('deliveryModal')) {
-                hideDeliveryModal();
-                }
-                });
-            */
+            
             
             
             // Name (Contact Person)
@@ -6106,11 +6274,7 @@ function showDeliveryModal() {
             
             // Location
             const centerLat = 30.68335;
-            const centerLng = 75.09015;
-            
-            // const centerLat = 30.6833;
-            //          const centerLng = 75.1717;
-            
+            const centerLng = 75.09015;           
             
             // Function to calculate distance using Haversine formula
             function calculateDistance(lat1, lng1, lat2, lng2) {
@@ -6236,26 +6400,23 @@ function showDeliveryModal() {
             }
             
             function validateDeliveryTime() {
-                const deliveryTime = deliveryInput.value;
+                const deliveryTime = deliveryInput.value; // Keep the same input
                 timeStatus.innerHTML = ''; // Clear previous status
                 
                 if (!deliveryTime) return;
                 
                 const [hours, minutes] = deliveryTime.split(':').map(Number);
                 if (isNaN(hours) || isNaN(minutes)) {
-                    timeStatus.innerHTML = `<span style="color: red;">Invalid time format.</span>`;
+                    timeStatus.innerHTML = '<span style="color: red;">Invalid time format.</span>';
                     return;
                 }
                 
                 const deliveryMinutes = hours * 60 + minutes;
-                
-                // Time constraints
-                const minDeliveryTime = (window.openTimeInMinutes + window.preparationTime) % (24 * 60);
-                const maxDeliveryTime = (window.closeTimeInMinutes + (24 * 60)) % (24 * 60);
-                
                 const now = new Date();
-                const currentMinutes = now.getHours() * 60 + now.getMinutes();
-                const minCurrentTime = (currentMinutes + window.preparationTime) % (24 * 60);
+                const currentMinutes = now.getHours() * 60 + now.getMinutes(); // Always update time
+                
+                const minDeliveryTime = window.minDeliveryTime;
+                const maxDeliveryTime = window.maxDeliveryTime;
                 
                 let isValidTime = true;
                 let errorMessage = '';
@@ -6264,34 +6425,53 @@ function showDeliveryModal() {
                 if (window.closeTimeInMinutes >= window.openTimeInMinutes) {
                     if (deliveryMinutes < minDeliveryTime || deliveryMinutes > maxDeliveryTime) {
                         isValidTime = false;
-                        //  errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
-                        errorMessage = `Invalid time input.`;
+                        errorMessage = 'Invalid time input.';
                     }
                     } else {
-                    // only run when the business operates overnight—that is, the closeTime is less than the openTime (like 9 PM to 2 AM).
+                    // Handles businesses operating overnight (e.g., 9 PM to 2 AM)
                     if (deliveryMinutes < minDeliveryTime && deliveryMinutes > maxDeliveryTime) {
                         isValidTime = false;
-                        // errorMessage = `Time must be inbetween ${convertToAMPM(minDeliveryTime)} to ${convertToAMPM(maxDeliveryTime)}.`;
-                        errorMessage = `Invalid time input.`;
+                        errorMessage = 'Invalid time input.';
                     }
                 }
                 
                 // Check for current time constraint
-                if (isValidTime && deliveryMinutes < minCurrentTime) {
+                if (isValidTime && deliveryMinutes < minDeliveryTime) {
                     isValidTime = false;
                     errorMessage = `Time must be at least ${window.preparationTime} minutes ahead of the current time.`;
                 }
                 
-                // Display message
+                // Update message dynamically
                 timeStatus.innerHTML = isValidTime
-                ? `<span style="color: green;">Delivery time is valid!</span>`
+                ? '<span style="color: green;">Delivery time is valid!</span>'
                 : `<span style="color: red;">${errorMessage}</span>`;
             }
+            
+            
+            
+            
+            
             
             // Form submission
             document.getElementById('deliveryForm').addEventListener('submit', function (e) {
                 e.preventDefault();
                 const deliveryTime = deliveryInput.value;
+                
+                // Get fresh validation using current time
+                const now = new Date();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                const minDeliveryTime = (currentMinutes + window.preparationTime) % (24 * 60);
+                
+                if (deliveryTime) {
+                    const [hours, minutes] = deliveryTime.split(':').map(Number);
+                    const selectedMinutes = hours * 60 + minutes;
+                    
+                    if (selectedMinutes < minDeliveryTime) {
+                        showFeedback('Selected time is no longer valid');
+                        return;
+                    }
+                }
+                
                 const locationCheckbox = document.querySelector('[value="location"]');
                 
                 if (!locationCheckbox.checked) {
@@ -6592,7 +6772,7 @@ function showDeliveryModal() {
                 
                 // Process Scrap Items
                 const groupedItems = (lastOrder.items || []).reduce((acc, item) => {
-                    const cleanName = item.name.trim();
+                   const cleanName = trimLeftNonEnglish(item.name).trim();
                     acc[cleanName] = (acc[cleanName] || 0) + 1;
                     return acc;
                 }, {});
