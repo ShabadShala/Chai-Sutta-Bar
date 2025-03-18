@@ -775,43 +775,7 @@
             
             
             
-/* Add these styles */
-#menu {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.tab-container {
-    display: flex;
-    overflow-x: scroll;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 10px; /* Space for scroll snap */
-}
-
-.tab-container::-webkit-scrollbar {
-    display: none;
-}
-
-.tab-button {
-    scroll-snap-align: center;
-    flex: 0 0 auto;
-    transition: transform 0.2s ease;
-}
-
-/* Active tab styling */
-.tab-button.active {
-    transform: scale(1.05);
-    z-index: 1;
-}
-            
-            
-            
+     
             
             
             
@@ -1675,7 +1639,7 @@
             background: #333;
             border-radius: 3rem;
             padding: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             transition: transform 0.2s ease;
             border: 2px solid #CCFFE6;
             }
@@ -3765,77 +3729,7 @@
             
             
             
-// Add this JavaScript
-const menuArea = document.getElementById('menu');
-const tabContainer = document.querySelector('.tab-container');
-let isDragging = false;
-let startX = 0;
-let scrollLeft = 0;
-
-// Set tab container width to fit all tabs
-function setTabContainerWidth() {
-    const tabs = document.querySelectorAll('.tab-button');
-    const totalWidth = Array.from(tabs).reduce((acc, tab) => acc + tab.offsetWidth, 0);
-    tabContainer.style.width = `${totalWidth}px`;
-}
-setTabContainerWidth();
-window.addEventListener('resize', setTabContainerWidth);
-
-// Touch/mouse handlers
-menuArea.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.pageX - menuArea.offsetLeft;
-    scrollLeft = tabContainer.scrollLeft;
-});
-
-menuArea.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    startX = e.touches[0].pageX - menuArea.offsetLeft;
-    scrollLeft = tabContainer.scrollLeft;
-});
-
-menuArea.addEventListener('mouseup', () => isDragging = false);
-menuArea.addEventListener('mouseleave', () => isDragging = false);
-menuArea.addEventListener('touchend', () => isDragging = false);
-
-menuArea.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - menuArea.offsetLeft;
-    const walk = (x - startX) * 2;
-    tabContainer.scrollLeft = scrollLeft - walk;
-});
-
-menuArea.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.touches[0].pageX - menuArea.offsetLeft;
-    const walk = (x - startX) * 2;
-    tabContainer.scrollLeft = scrollLeft - walk;
-});
-
-// Snap to tabs and handle cyclic scroll
-tabContainer.addEventListener('scroll', () => {
-    const tabs = document.querySelectorAll('.tab-button');
-    const scrollPosition = tabContainer.scrollLeft;
-    const totalWidth = Array.from(tabs).reduce((acc, tab) => acc + tab.offsetWidth, 0);
-    
-    // Handle cyclic scroll
-    if (scrollPosition <= 0) {
-        tabContainer.scrollLeft = totalWidth - menuArea.offsetWidth;
-    } else if (scrollPosition + menuArea.offsetWidth >= totalWidth) {
-        tabContainer.scrollLeft = 0;
-    }
-    
-    // Snap to nearest tab
-    const activeIndex = Math.round(scrollPosition / (totalWidth / tabs.length));
-    tabContainer.scrollTo({
-        left: activeIndex * (totalWidth / tabs.length),
-        behavior: 'smooth'
-    });
-});        
-            
-            
+        
             
             
             

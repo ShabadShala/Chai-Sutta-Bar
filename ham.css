@@ -167,13 +167,13 @@
 .header-title {
     display: flex;
     font-weight: 600;
-    font-size: 5rem;
+    font-size: 4.5rem;
     color: #fff;
 }
 
 .header-subtitle {            
-    font-size: 4.5rem;
-    color: #888;
+    font-size: 4rem;
+    color: #e0e0e0;
 }
 
 /* Close button */
@@ -333,8 +333,9 @@
     align-items: center;
     
     padding-left: 2rem;
-    width: 26.25%; /* 75% of original 35% */
-    min-width: 100px; /* 75% of original 100px */
+    width: 33%; /* 75% of original 35% */
+    min-width: 110px;
+    max-width: 150px; /* 75% of original 100px */
     border: 2px solid #fae68e;
     border-radius: 1.5rem; /* Reduced border radius */
     font-size: 5.25rem; /* 75% of original 7rem */

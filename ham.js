@@ -907,7 +907,7 @@
                         deferredPrompt = null;
                     });
                     } else {
-                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed, and you opened in browser.\n- ON WINDOWS, this method does not work. Install from the browser's menu.");
+                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed, and you opened in browser. OR, if you've denied browser auto install prompt (means you've clicked \"not now\").\n- ON WINDOWS, sometimes this method does not work, install from the browser's menu.");
                     
                     
                 }
