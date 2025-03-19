@@ -62,39 +62,39 @@
             box-sizing: border-box;
             }                
             
-:root {
-    --scale-factor: 1.0; /* Default for desktops */
-}
-
-/* 📱 Mobile Devices (max-width: 480px) */
-@media (max-width: 480px) and (hover: none) and (pointer: coarse) {
-    :root {
-        --scale-factor: 1.25;
-    }
-}
-
-/* 📟 Tablets (481px - 768px) */
-@media (min-width: 481px) and (max-width: 768px) and (hover: none) and (pointer: coarse) {
-    :root {
-        --scale-factor: 1.15;
-    }
-}
-
-/* 💻 Laptops (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) and (hover: hover) and (pointer: fine) {
-    :root {
-        --scale-factor: 1.05;
-    }
-}
-
-/* 🖥️ Desktops (1025px and above) */
-@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
-    :root {
-        --scale-factor: 1.0;
-    }
-}
-
-
+            :root {
+            --scale-factor: 1.0; /* Default for desktops */
+            }
+            
+            /* 📱 Mobile Devices (max-width: 480px) */
+            @media (max-width: 480px) and (hover: none) and (pointer: coarse) {
+            :root {
+            --scale-factor: 1.25;
+            }
+            }
+            
+            /* 📟 Tablets (481px - 768px) */
+            @media (min-width: 481px) and (max-width: 768px) and (hover: none) and (pointer: coarse) {
+            :root {
+            --scale-factor: 1.15;
+            }
+            }
+            
+            /* 💻 Laptops (769px - 1024px) */
+            @media (min-width: 769px) and (max-width: 1024px) and (hover: hover) and (pointer: fine) {
+            :root {
+            --scale-factor: 1.05;
+            }
+            }
+            
+            /* 🖥️ Desktops (1025px and above) */
+            @media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+            :root {
+            --scale-factor: 1.0;
+            }
+            }
+            
+            
             
             html {
             font-size: calc(clamp(3px, 1vw, 3.5px) * var(--scale-factor));
@@ -614,6 +614,7 @@
             width: 100%;
             max-width: 600px;
             margin: 2rem auto; 
+            margin-top: 1rem;
             position: relative; 
             border-radius: 5px;
             /* New styles to arrange children */
@@ -805,7 +806,7 @@
             
             
             
-     
+            
             
             
             
@@ -1601,15 +1602,15 @@
             color: #212121;
             border: none;
             border-radius: 5rem 0 0 5rem;
-            padding: 1rem;
+            padding: 2rem 1rem;
+            padding-bottom: 1rem;
             font-size: 5rem;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             display: none; /* Hidden by default */
             
-            animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
-            
+            animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;            
             }
             
             /* Floating Animation */
@@ -2153,6 +2154,61 @@
             
             
             
+            /* Help button styling */
+            .help-button {
+            position: absolute;
+            top: 2rem;
+            left: 2.5rem;
+            width: 6rem;
+            height: 6rem;
+            border-radius: 50%;
+            background: #007bff;
+            color: white;
+            font-size: 4rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            z-index: 1;
+            transition: all 0.3s ease;
+            }
+            
+            .help-button:hover {
+            background: #0056b3;
+            transform: scale(1.1);
+            }
+            
+            /* Help content styling */
+            .help-content {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            border: 1px solid #dee2e6;
+            font-size: 4rem;
+            line-height: 1.5;
+            color: #333;
+            }
+            
+            .help-content ul {
+            list-style-type: none;
+            padding-left: 2rem;
+            }
+            
+            .help-content li {
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            }
+            
+            
+            
+            
+            
             
             
             
@@ -2603,7 +2659,7 @@
             cursor: pointer;
             color: #333;
             }
-                        
+            
             .close-checklist:hover {
             color: #c0392b;
             transform: scale(1.05);   /* Slight scale for hover effect */
@@ -2724,6 +2780,22 @@
             color: #333;
             text-align: center;
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
             
             
@@ -2972,11 +3044,25 @@
         </div>
         
         
+        
         <!-- Add this modal structure before </body> -->
         <div id="deliveryOverlay" class="delivery-overlay">
             <div id="deliveryModal" class="order-modal-content hidden">
                 <span class="close-button">&times;</span>
-                <h2>Delivery Details<br><small>(Optional)</small></h2>
+                <button class="help-button">?</button> <!-- Added help button -->
+                <h2>Delivery Details<br><small style="color: orange">(Optional)</small></h2>
+                
+                <!-- Help content -->
+                <div class="help-content" style="display: none;">
+                    <p style="color: blue">You can skip this form, but if you provide:</p>
+                    <ul>
+                        <li>Phone - Must be 10 digits</li>
+                        <li>Time - Must be during working hours</li>
+                        <li>Location - Must be within delivery ranges</li>
+                    </ul>
+                    <p style="color: blue">Click outside to close it.</p>
+                </div>
+                
                 <form id="deliveryForm">
                     <div id="deliveryFields">
                         
@@ -3056,11 +3142,11 @@
         <div class="social">
             <div id="sidebar">
                 <a id="delivery-link" href="#" target="_blank"><img src="sidebar/delivery.png" alt="Delivery number" class="logo"></a>
-                <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.png" alt="Chat on WA" class="logo"></a>
+                <a id="whatsapp-link" href="#" target="_blank"><img src="sidebar/whatsapp.svg" alt="Chat on WA" class="logo"></a>
                 <a id="phone-link" href="#" target="_blank"><img src="sidebar/phone.png" alt="Phone" class="logo"></a>
                 <a href="https://maps.app.goo.gl/AhjPPKMp7NJvBphDA" target="_blank"><img src="sidebar/location.png" alt="Location" class="logo"></a>
-                <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.png" alt="Facebook" class="logo"></a>
-                <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.png" alt="Instagram" class="logo"></a>
+                <a href="https://www.facebook.com/p/Chai-Sutta-Bar-open-close-61553478237898/" target="_blank"><img src="sidebar/facebook.svg" alt="Facebook" class="logo"></a>
+                <a href="https://www.instagram.com/chaisuttabar_baghapurana/?hl=en" target="_blank"><img src="sidebar/insta.svg" alt="Instagram" class="logo"></a>
             </div>
         </div>
         
@@ -3121,7 +3207,7 @@
                         <img src="icons/number-puzzle.svg" alt="Puzzle">
                         <span>Puzzle</span>
                     </div> 
-                                                            
+                    
                     <div class="timeplay-item" onclick="ticInitGame();">
                         <img src="icons/tic-tac-toe.svg" alt="Tic-Tac-Toe">
                         <span>Tic-Tac-Toe</span>
@@ -3134,6 +3220,21 @@
         
         
         <script>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
             
             
@@ -3759,7 +3860,7 @@
             
             
             
-        
+            
             
             
             
@@ -6022,7 +6123,22 @@
             
             
             
+            // Help button functionality
+            document.querySelector('#deliveryModal .help-button').addEventListener('click', function (e) {
+                e.preventDefault();
+                const helpContent = document.querySelector('#deliveryModal .help-content');
+                helpContent.style.display = helpContent.style.display === 'none' ? 'block' : 'none';
+            });
             
+            // Optional: Close help content when clicking outside
+            document.addEventListener('click', function (e) {
+                const helpContent = document.querySelector('#deliveryModal .help-content');
+                const helpButton = document.querySelector('#deliveryModal .help-button');
+                
+                if (!helpContent.contains(e.target) && !helpButton.contains(e.target)) {
+                    helpContent.style.display = 'none';
+                }
+            });
             
             
             
@@ -6099,9 +6215,9 @@
                     
                     // timeRangeElement.classList.add('pre-line-text');
                     if (currentMinutes > window.openTimeInMinutes) {
-                       timeRangeElement.innerHTML = `Delivery Time<br>
-<span class="daily-time">(daily: ${convertToAMPM(window.openTimeInMinutes + window.preparationTime)} to ${convertToAMPM(maxTimeDate)})</span><br>
-<span style="color: green; font-size: calc(1em - 0.5rem);">(available today: ${convertToAMPM(minTimeDate)} to ${convertToAMPM(maxTimeDate)})</span>`;
+                        timeRangeElement.innerHTML = `Delivery Time<br>
+                        <span class="daily-time">(daily: ${convertToAMPM(window.openTimeInMinutes + window.preparationTime)} to ${convertToAMPM(maxTimeDate)})</span><br>
+                        <span style="color: green; font-size: calc(1em - 0.5rem);">(available today: ${convertToAMPM(minTimeDate)} to ${convertToAMPM(maxTimeDate)})</span>`;
                         } else {
                         timeRangeElement.innerHTML = `Delivery Time<br>
                         <span class="daily-time">(daily: ${convertToAMPM(window.openTimeInMinutes + window.preparationTime)} to ${convertToAMPM(maxTimeDate)})</span>`;
@@ -6145,7 +6261,7 @@
                     if (currentMinutes > window.openTimeInMinutes) {
                         timeRangeElement.innerHTML = `Delivery Time<br>
                         <span class="daily-time">(daily: ${convertToAMPM(new Date(0, 0, 0, Math.floor((window.openTimeInMinutes + window.preparationTime) / 60), window.openTimeInMinutes % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span><br>
-                         <span style="color: green; font-size: calc(1em - 0.5rem);">(available today: ${convertToAMPM(new Date(0, 0, 0, Math.floor(minDeliveryTime / 60), minDeliveryTime % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span>`;
+                        <span style="color: green; font-size: calc(1em - 0.5rem);">(available today: ${convertToAMPM(new Date(0, 0, 0, Math.floor(minDeliveryTime / 60), minDeliveryTime % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span>`;
                         } else {
                         timeRangeElement.innerHTML = `Delivery Time<br>
                         <span class="daily-time">(daily: ${convertToAMPM(new Date(0, 0, 0, Math.floor((window.openTimeInMinutes + window.preparationTime) / 60), window.openTimeInMinutes % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span>`;
@@ -6377,7 +6493,7 @@
                 const period = hours >= 12 ? 'pm' : 'am';
                 const formattedHours = hours % 12 || 12;
                 const formattedMinutes = String(minutes).padStart(2, '0');
-                 return `${formattedHours}:${formattedMinutes} ${period}`;
+                return `${formattedHours}:${formattedMinutes} ${period}`;
                 // return `${formattedHours}:${formattedMinutes}${period}`; // removed space before am/pm
             }
             
@@ -6618,7 +6734,7 @@
                         deliveryDetail += `🏠 ${formData.address}\n`;
                     }
                     if (userLocation) {
-                          deliveryDetail += `📍 (${window.distance.toFixed(2)} Km) ${userLocation}\n`;
+                        deliveryDetail += `📍 (${window.distance.toFixed(2)} Km) ${userLocation}\n`;
                     }
                     
                     deliveryDetail += `${'~'.repeat(15)}\n`;
@@ -6754,7 +6870,7 @@
                 
                 // Process Scrap Items
                 const groupedItems = (lastOrder.items || []).reduce((acc, item) => {
-                   const cleanName = trimLeftNonEnglish(item.name).trim();
+                    const cleanName = trimLeftNonEnglish(item.name).trim();
                     acc[cleanName] = (acc[cleanName] || 0) + 1;
                     return acc;
                 }, {});
