@@ -2636,7 +2636,7 @@
             padding: 2rem;
             border-radius: 5rem;
             width: 90%; 
-            max-width: 225px;
+            max-width: 250px;
             position: relative;
             }
             
@@ -2646,7 +2646,7 @@
             }
             
             .timeplay-header h2 {
-            font-size: 6rem; 
+            font-size: 5.5rem; 
             color: #333;
             margin-top: 1rem;
             }
@@ -2689,7 +2689,7 @@
             }
             
             .timeplay-item span {
-            font-size: 5rem;
+            font-size: 4rem;
             color: #333;
             text-align: center;
             }
@@ -3086,16 +3086,15 @@
                         <span>Timer</span>
                     </div>
                     
-                    <div class="timeplay-item" onclick="ticInitGame();">
-                        <img src="icons/tic-tac-toe.svg" alt="Tic-Tac-Toe">
-                        <span>Tic-Tac-Toe</span>
-                    </div>
-                    
                     <div class="timeplay-item" onclick="document.getElementById('puzzleModal').style.display = 'flex'">
                         <img src="icons/number-puzzle.svg" alt="Puzzle">
                         <span>Puzzle</span>
                     </div> 
-                    
+                                                            
+                    <div class="timeplay-item" onclick="ticInitGame();">
+                        <img src="icons/tic-tac-toe.svg" alt="Tic-Tac-Toe">
+                        <span>Tic-Tac-Toe</span>
+                    </div>
                     
                 </div>
             </div>
@@ -6260,13 +6259,11 @@
                             const lng = position.coords.longitude;
                             
                             // Calculate distance
-                            const distance = calculateDistance(lat, lng, centerLat, centerLng);
+                            const distance = calculateDistance(lat, lng, centerLat, centerLng);                      
                             
                             userLocation = `https://maps.google.com/?q=${lat},${lng}`;
                             
-                            //  if (distance > 15) {
-                            if (distance > window.deliveryArea) {
-                                
+                            if (distance > window.deliveryArea) {                                
                                 isLocation = false;
                                 locationStatus.innerHTML = `
                                 <span style="color: red;">Delivery not available at this location. (${distance.toFixed(2)} Km)</span><br>

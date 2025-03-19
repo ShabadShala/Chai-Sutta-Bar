@@ -331,14 +331,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    padding-left: 2rem;
-    width: 33%; /* 75% of original 35% */
+    padding: 2rem;
+    width: 33%; 
     min-width: 110px;
-    max-width: 150px; /* 75% of original 100px */
+    max-width: 150px;
     border: 2px solid #fae68e;
     border-radius: 1.5rem; /* Reduced border radius */
-    font-size: 5.25rem; /* 75% of original 7rem */
+    font-size: 5.25rem; 
     font-weight: bold;
     color: #fae68e;
     margin: 1rem auto; /* Reduced margin */
