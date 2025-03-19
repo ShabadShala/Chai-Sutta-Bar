@@ -62,9 +62,39 @@
             box-sizing: border-box;
             }                
             
-            :root {
-            --scale-factor: 1.25; /* Zoom scaling */
-            }
+:root {
+    --scale-factor: 1.0; /* Default for desktops */
+}
+
+/* 📱 Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) and (hover: none) and (pointer: coarse) {
+    :root {
+        --scale-factor: 1.25;
+    }
+}
+
+/* 📟 Tablets (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) and (hover: none) and (pointer: coarse) {
+    :root {
+        --scale-factor: 1.15;
+    }
+}
+
+/* 💻 Laptops (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) and (hover: hover) and (pointer: fine) {
+    :root {
+        --scale-factor: 1.05;
+    }
+}
+
+/* 🖥️ Desktops (1025px and above) */
+@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+    :root {
+        --scale-factor: 1.0;
+    }
+}
+
+
             
             html {
             font-size: calc(clamp(3px, 1vw, 3.5px) * var(--scale-factor));
@@ -1514,7 +1544,7 @@
             text-align: right;
             padding: 0 1rem;
             min-width: 70px;
-            max-width: 100px;
+            max-width: 110px;
             color: #333;
             display: flex;
             align-items: center;
@@ -2064,6 +2094,7 @@
             
             .daily-time {
             color: blue; /* Or any color you prefer */
+            font-size: calc(1em - 0.5rem);
             }
             
             
@@ -6068,9 +6099,9 @@
                     
                     // timeRangeElement.classList.add('pre-line-text');
                     if (currentMinutes > window.openTimeInMinutes) {
-                        timeRangeElement.innerHTML = `Delivery Time<br>
-                        <span class="daily-time">(daily: ${convertToAMPM(window.openTimeInMinutes + window.preparationTime)} to ${convertToAMPM(maxTimeDate)})</span><br>
-                        (available today: ${convertToAMPM(minTimeDate)} to ${convertToAMPM(maxTimeDate)})`;
+                       timeRangeElement.innerHTML = `Delivery Time<br>
+<span class="daily-time">(daily: ${convertToAMPM(window.openTimeInMinutes + window.preparationTime)} to ${convertToAMPM(maxTimeDate)})</span><br>
+<span style="color: green; font-size: calc(1em - 0.5rem);">(available today: ${convertToAMPM(minTimeDate)} to ${convertToAMPM(maxTimeDate)})</span>`;
                         } else {
                         timeRangeElement.innerHTML = `Delivery Time<br>
                         <span class="daily-time">(daily: ${convertToAMPM(window.openTimeInMinutes + window.preparationTime)} to ${convertToAMPM(maxTimeDate)})</span>`;
@@ -6114,7 +6145,7 @@
                     if (currentMinutes > window.openTimeInMinutes) {
                         timeRangeElement.innerHTML = `Delivery Time<br>
                         <span class="daily-time">(daily: ${convertToAMPM(new Date(0, 0, 0, Math.floor((window.openTimeInMinutes + window.preparationTime) / 60), window.openTimeInMinutes % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span><br>
-                        (available today: ${convertToAMPM(new Date(0, 0, 0, Math.floor(minDeliveryTime / 60), minDeliveryTime % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})`;
+                         <span style="color: green; font-size: calc(1em - 0.5rem);">(available today: ${convertToAMPM(new Date(0, 0, 0, Math.floor(minDeliveryTime / 60), minDeliveryTime % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span>`;
                         } else {
                         timeRangeElement.innerHTML = `Delivery Time<br>
                         <span class="daily-time">(daily: ${convertToAMPM(new Date(0, 0, 0, Math.floor((window.openTimeInMinutes + window.preparationTime) / 60), window.openTimeInMinutes % 60))} to ${convertToAMPM(new Date(0, 0, 0, Math.floor(maxDeliveryTime / 60), maxDeliveryTime % 60))})</span>`;
@@ -6260,6 +6291,7 @@
                             
                             // Calculate distance
                             const distance = calculateDistance(lat, lng, centerLat, centerLng);                      
+                            window.distance = distance;
                             
                             userLocation = `https://maps.google.com/?q=${lat},${lng}`;
                             
@@ -6342,10 +6374,11 @@
                     return 'Invalid input';
                 }
                 
-                const period = hours >= 12 ? 'PM' : 'AM';
+                const period = hours >= 12 ? 'pm' : 'am';
                 const formattedHours = hours % 12 || 12;
                 const formattedMinutes = String(minutes).padStart(2, '0');
-                return `${formattedHours}:${formattedMinutes} ${period}`;
+                 return `${formattedHours}:${formattedMinutes} ${period}`;
+                // return `${formattedHours}:${formattedMinutes}${period}`; // removed space before am/pm
             }
             
             function validateDeliveryTime() {
@@ -6585,7 +6618,7 @@
                         deliveryDetail += `🏠 ${formData.address}\n`;
                     }
                     if (userLocation) {
-                        deliveryDetail += `📍 ${userLocation}\n`;
+                          deliveryDetail += `📍 (${window.distance.toFixed(2)} Km) ${userLocation}\n`;
                     }
                     
                     deliveryDetail += `${'~'.repeat(15)}\n`;
