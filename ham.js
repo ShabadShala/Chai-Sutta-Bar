@@ -187,11 +187,26 @@
         
         <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
         
-        <!-- FAQ -->
-        <div class="hsidebar-option" id="faq-option">
-        <img src="icons/faq.svg" alt="FAQ Icon" class="menu-icon invert-icon">
+        
+        
+        
+        
+        
+        
+        <!-- Add this before the existing <hr> -->
+        <div class="hsidebar-option" id="showFAQs">
+        <img src="icons/faq.svg" alt="FAQs" class="menu-icon invert-icon">
         FAQs
         </div>
+        
+        <hr style="border: 1px solid rgba(255, 255, 255, 0.1); margin: 8px 0;">
+        
+        
+        
+        
+        
+        
+        
         
         </div>
         
@@ -1647,270 +1662,177 @@
         
         
         
+     //   <label for="faq-search">Search:</label>
+        
+
+// Updated FAQ Modal HTML
+// Update FAQ Modal HTML
+const faqModal = document.createElement('div');
+faqModal.id = 'faq-modal';
+faqModal.className = 'modal';
+faqModal.innerHTML = `
+  <div class="modal-content">
+    <div class="faq-header">
+      <h2>FAQs</h2>
+      
+      <input type="text" id="faq-search" placeholder="Search..." />
+      <div class="close-btn" style="color: white">&times;</div>
+    </div>
+    <div class="faq-scroll-container">
+      <div id="faq-content"></div>
+    </div>
+    <div class="faq-footer">
+      <button id="expand-all-btn" class="footer-button" onclick="expandAll()">
+        <img src="icons/expand-all.svg" alt="Expand All" width="20" class="invert-icon">
+      </button>
+      <button id="collapse-all-btn" class="footer-button" onclick="collapseAll()">
+        <img src="icons/collapse-all.svg" alt="Collapse All" width="20" class="invert-icon">
+      </button>
+    </div>
+  </div>`;
+
+document.body.appendChild(faqModal);
+
+// Add event listener for the FAQ option
+document.getElementById('showFAQs')?.addEventListener('click', () => {
+  toggleSidebar(false);
+  openModalStandalone('faq-modal');
+  loadFAQs();
+});
+
+setupModalTriggers('faq-modal');
+
+        
+          
         
         
         
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // FAQ Modal
-        const faqModal = document.createElement('div');
-        faqModal.id = 'faq-modal';
-        faqModal.className = 'modal';
-        faqModal.innerHTML = `
-        <div class="modal-content">
-        <div class="close-btn">&times;</div>
-        <h3 class="modal-header">Frequently Asked Questions</h3>
-        <input type="text" id="faq-search" class="faq-search" placeholder="Search questions...">
-        <div class="faq-container" id="faq-container">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Loading FAQs...</div>
-        </div>
-        <div class="modal-footer">
-        <button class="expand-all-btn" title="Expand All">
-        <img src="icons/expand-all.svg" alt="Expand">
-        </button>
-        <button class="collapse-all-btn" title="Collapse All">
-        <img src="icons/collapse-all.svg" alt="Collapse">
-        </button>
-        </div>
-        </div>`;
-        document.body.appendChild(faqModal);
-        
-        // Add search box styles
-        const searchStyle = document.createElement('style');
-        searchStyle.textContent = `
-        .faq-search {
-        width: 75%;
-        padding: 8px 16px;
-        margin: 10px auto;
-        display: block;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        outline: none;
-        }
-        `;
-        document.head.appendChild(searchStyle)
-        
-        
-        // Search functionality
-        function filterFAQs(searchTerm) {
-            const faqItems = document.querySelectorAll('#faq-container .faq-item');
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question').textContent.toLowerCase();
-                item.style.display = question.includes(searchTerm) ? 'block' : 'none';
-            });
-        }
-        
-        document.getElementById('faq-search')?.addEventListener('input', function(e) {
-            filterFAQs(e.target.value.toLowerCase());
-        });
-        
-        // Modified FAQ option click handler
-        document.getElementById('faq-option')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            openModalStandalone('faq-modal');
-            document.getElementById('faq-search').value = ''; // Reset search on open
-            loadFAQs();
-        });
-        
-        
-        // Add event listener for the FAQ option
-        document.getElementById('faq-option')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            openModalStandalone('faq-modal');
-            loadFAQs();
-        });
-        
-        setupModalTriggers('faq-modal');
-        
-        
-        
-        
-        async function loadFAQs() {
-            const container = document.getElementById('faq-container');
-            
-            try {
-                // Show loading spinner
-                container.innerHTML = '<div class="loading-spinner"></div> Loading FAQs...';
-                
-                // Add timeout for slow networks (10 seconds)
-                const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Timeout loading FAQs')), 10000)
-                );
-                
-                // Fetch FAQs data with timeout
-                const response = await Promise.race([
-                    fetch('faq.json'),
-                    timeoutPromise
-                ]);
-                
-                // Check if response is valid
-                if (!response.ok) {
-                    throw new Error('Failed to fetch FAQs');
-                }
-                
-                // Parse JSON data
-                const faqs = await response.json();
-                
-                // Clear loading spinner
-                container.innerHTML = '';
-                
-                // Render FAQs
-                let activeFaq = null;
-                faqs.forEach((faq, index) => {
-                    const faqItem = document.createElement('div');
-                    faqItem.className = 'faq-item';
-                    faqItem.innerHTML = `
-                    <div class="faq-question">
-                    ${faq.question}
-                    <span class="toggle-arrow">▼</span>
-                    </div>
-                    <div class="faq-answer">${faq.answer}</div>
-                    `;
-                    
-                    const questionElement = faqItem.querySelector('.faq-question');
-                    const answerElement = faqItem.querySelector('.faq-answer');
-                    let pressTimer;
-                    
-                    // Long-press copy functionality
-                    const handleTouchStart = (e) => {
-                        if (!faqItem.classList.contains('active')) return;
-                        e.preventDefault();
-                        pressTimer = setTimeout(() => {
-                            navigator.clipboard.writeText(answerElement.textContent.trim())
-                            .then(() => showToast('Answer copied to clipboard!'))
-                            .catch(() => showToast('Failed to copy text'));
-                        }, 500);
-                    };
-                    
-                    const handleTouchEnd = (e) => {
-                        e.preventDefault();
-                        clearTimeout(pressTimer);
-                    };
-                    
-                    // Add event listeners for touch devices
-                    answerElement.addEventListener('touchstart', handleTouchStart);
-                    answerElement.addEventListener('touchend', handleTouchEnd);
-                    answerElement.addEventListener('touchcancel', handleTouchEnd);
-                    
-                    // Toggle FAQ on click
-                    // Update question click handler
-                    questionElement.addEventListener('click', () => {
-                        const wasActive = faqItem.classList.contains('active');
-                        
-                        // Close all FAQs first
-                        document.querySelectorAll('.faq-item').forEach(item => {
-                            item.classList.remove('active');
-                        });
-                        
-                        // Toggle if not already active
-                        if (!wasActive) {
-                            faqItem.classList.add('active');
-                            
-                            // Scroll to show full question with answer
-                            setTimeout(() => {
-                                const answerHeight = answerElement.scrollHeight;
-                                const container = document.querySelector('.faq-container');
-                                const scrollTop = faqItem.offsetTop - container.offsetTop;
-                                
-                                // Only scroll if answer doesn't fit
-                                if (answerHeight > container.clientHeight) {
-                                    container.scrollTo({
-                                        top: scrollTop,
-                                        behavior: 'smooth'
-                                    });
-                                }
-                            }, 300);
-                        }
-                    });
-                    
-                    container.appendChild(faqItem);
-                });
-                
-                // Initialize button states
-                updateFAQButtonsState();
-                
-                // Show toast message
-                function showToast(message) {
-                    const toast = document.createElement('div');
-                    toast.className = 'copy-toast';
-                    toast.textContent = message;
-                    document.body.appendChild(toast);
-                    setTimeout(() => toast.remove(), 2000);
-                }
-                
-                // Filter FAQs if search term exists
-                const searchTerm = document.getElementById('faq-search').value.toLowerCase();
-                if (searchTerm) filterFAQs(searchTerm);
-                
-                } catch (error) {
-                console.error('Error loading FAQs:', error);
-                // Show error message
-                container.innerHTML = '<div class="error-message">❌ Failed to load FAQs. Please try again later.</div>';
-            }
-        }
-        
-        
-        function expandAllFAQs() {
-            document.querySelectorAll('.faq-item').forEach(item => item.classList.add('active'));
-            updateFAQButtonsState();
-        }
-        
-        function collapseAllFAQs() {
-            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
-            updateFAQButtonsState();
-        }
-        
-        function updateFAQButtonsState() {
-            const allFAQs = document.querySelectorAll('.faq-item');
-            const expandedFAQs = document.querySelectorAll('.faq-item.active');
-            const expandBtn = document.querySelector('#faq-modal .expand-all-btn');
-            const collapseBtn = document.querySelector('#faq-modal .collapse-all-btn');
-            
-            expandBtn.disabled = expandedFAQs.length === allFAQs.length;
-            collapseBtn.disabled = expandedFAQs.length === 0;
-        }
-        
-        
-        // Add after FAQ modal creation
-        document.querySelector('#faq-modal .expand-all-btn').addEventListener('click', expandAllFAQs);
-        document.querySelector('#faq-modal .collapse-all-btn').addEventListener('click', collapseAllFAQs);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+ // Updated FAQ Loading Function
+let currentFAQs = [];
+
+// Modified loadFAQs function
+async function loadFAQs() {
+  const container = document.getElementById('faq-content');
+  container.innerHTML = '<div class="loading-spinner"></div>';
+
+  try {
+    const response = await fetch(`${scriptUrl}?sheet=faq`);
+    const data = await response.json();
+
+    if (data.error) throw new Error(data.error);
+
+    const validFAQs = data.filter(item => 
+      item?.columnA && item?.columnB && item.partyColumn?.trim().toUpperCase() === 'Y'
+    );
+
+    if (validFAQs.length === 0) throw new Error('No FAQs found');
+
+    currentFAQs = validFAQs;
+    renderFAQs(validFAQs);
+
+  } catch (error) {
+    console.error('FAQ Error:', error);
+    container.innerHTML = `<div class="error-message">${error.message}</div>`;
+    setTimeout(() => container.innerHTML = '', 5000);
+  }
+}
+
+// Search functionality
+function handleSearch() {
+  const searchTerm = document.getElementById('faq-search').value.toLowerCase();
+  const filtered = currentFAQs.filter(item => {
+    const question = item.columnA?.trim().toLowerCase() || '';
+    const answer = item.columnB?.trim().toLowerCase() || '';
+    return question.includes(searchTerm) || answer.includes(searchTerm);
+  });
+  renderFAQs(filtered);
+}
+
+// Render FAQs function
+function renderFAQs(faqs) {
+  const container = document.getElementById('faq-content');
+  container.innerHTML = faqs.length > 0 ? faqs.map((item, index) => `
+    <div class="faq-item" data-index="${index}">
+      <div class="faq-question">
+        ${item.columnA?.trim() || 'Untitled Question'}
+        <span class="toggle-icon">▶</span>
+      </div>
+      <div class="faq-answer">
+        ${item.columnB?.trim() || 'No answer provided'}
+      </div>
+    </div>
+  `).join('') : '<div class="no-results">No matching FAQs found</div>';
+
+  // Reattach event listeners
+  document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', toggleFAQ);
+  });
+  updateButtonState();
+}
+
+// Add event listener for search input
+document.getElementById('faq-search')?.addEventListener('input', handleSearch);
+
+
+
+function toggleFAQ() {
+  const wasOpen = this.parentElement.classList.contains('active');
+  
+  // Collapse all items
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.classList.remove('active');
+    item.querySelector('.faq-answer').classList.remove('show');
+    item.querySelector('.toggle-icon').textContent = '▶';
+  });
+
+  // Open clicked item if it wasn't already open
+  if (!wasOpen) {
+    this.parentElement.classList.add('active');
+    this.nextElementSibling.classList.add('show');
+    this.querySelector('.toggle-icon').textContent = '▼';
+  }
+}
+
+
+
+window.expandAll = function() {
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.classList.add('active');
+    item.querySelector('.faq-answer').classList.add('show');
+    item.querySelector('.toggle-icon').textContent = '▼';
+  });
+  updateButtonState();
+};
+
+window.collapseAll = function() {
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.classList.remove('active');
+    item.querySelector('.faq-answer').classList.remove('show');
+    item.querySelector('.toggle-icon').textContent = '▶';
+  });
+  updateButtonState();
+};
+
+// Function to update button states
+function updateButtonState() {
+  const allExpanded = document.querySelectorAll('.faq-item.active').length === document.querySelectorAll('.faq-item').length;
+  const allCollapsed = document.querySelectorAll('.faq-item.active').length === 0;
+
+  document.getElementById('expand-all-btn').disabled = allExpanded;
+  document.getElementById('collapse-all-btn').disabled = allCollapsed;
+}
+
+// Update button state on individual question toggle
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('faq-question')) {
+    setTimeout(updateButtonState, 100); // Slight delay to ensure state updates
+  }
+});
+
+      
         
         
         
@@ -1966,7 +1888,7 @@
             openWaitTracker();
         });
         
-                
+        
         
         
         

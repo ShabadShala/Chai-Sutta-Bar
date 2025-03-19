@@ -2156,9 +2156,9 @@
             
             /* Help button styling */
             .help-button {
-            position: absolute;
-            top: 2rem;
-            left: 2.5rem;
+            position: relative;
+            top: -5.5rem;
+            left: -1rem;
             width: 6rem;
             height: 6rem;
             border-radius: 50%;
@@ -2172,7 +2172,6 @@
             cursor: pointer;
             border: none;
             outline: none;
-            z-index: 1;
             transition: all 0.3s ease;
             }
             
@@ -2181,21 +2180,24 @@
             transform: scale(1.1);
             }
             
-            /* Help content styling */
-            .help-content {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 1rem;
-            margin: 2rem 0;
-            border: 1px solid #dee2e6;
-            font-size: 4rem;
-            line-height: 1.5;
-            color: #333;
-            }
+.help-content {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 2rem;
+    width: 90%;
+    top: 30px; /* Adjust based on help-button position */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
             
             .help-content ul {
             list-style-type: none;
             padding-left: 2rem;
+            color: green;
             }
             
             .help-content li {
@@ -3048,10 +3050,13 @@
         <!-- Add this modal structure before </body> -->
         <div id="deliveryOverlay" class="delivery-overlay">
             <div id="deliveryModal" class="order-modal-content hidden">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span class="close-button">&times;</span>
                 <button class="help-button">?</button> <!-- Added help button -->
                 <h2>Delivery Details<br><small style="color: orange">(Optional)</small></h2>
-                
+            </div>
+            
                 <!-- Help content -->
                 <div class="help-content" style="display: none;">
                     <p style="color: blue">You can skip this form, but if you provide:</p>
@@ -3216,6 +3221,9 @@
                 </div>
             </div>
         </div>
+        
+        
+        
         
         
         
@@ -3552,7 +3560,7 @@
             document.getElementById("toggle-cart").style.display = "none"; // Hide
             
             // google script URL
-            const scriptUrl = "https://script.google.com/macros/s/AKfycbwL-df0wEbrbZoebYhWuYZASWBkzHvMgrjQDg6AUrV4oHZTAd1y3lbyEDolErve_blZAg/exec";
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbxXF5D8mnjc0WSubZubP7r0d0mm1Ng2kSZoT7tG8S4MRqp_1n_cv1Pl6DnXX8EnagO5MQ/exec";
             
             //Disable context menu, cut-copy-paste
             document.addEventListener('contextmenu', event => event.preventDefault());
@@ -6103,6 +6111,12 @@
                 updateScrapButtonStatus();
                 // showFeedback('DEV: Random item added!');    
             }
+            
+            
+            
+            
+            
+            
             
             
             
