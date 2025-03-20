@@ -1716,7 +1716,7 @@ let currentFAQs = [];
 // Modified loadFAQs function
 async function loadFAQs() {
   const container = document.getElementById('faq-content');
-  container.innerHTML = '<div class="loading-spinner"></div>';
+  container.innerHTML = '<div class="faq-spinner"></div>';
 
   try {
     const response = await fetch(`${scriptUrl}?sheet=faq`);
@@ -1761,7 +1761,7 @@ function renderFAQs(faqs) {
         <span class="toggle-icon">▶</span>
       </div>
       <div class="faq-answer">
-        ${item.columnB?.trim() || 'No answer provided'}
+        ${(item.columnB?.trim() || 'No answer provided').replace(/\n/g, '<br>')}
       </div>
     </div>
   `).join('') : '<div class="no-results">No matching FAQs found</div>';

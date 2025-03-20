@@ -280,3 +280,52 @@ if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'o') {
     
     
    
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   // Clear Favourites by Ctrl+Shift+F
+
+// Add this code in your existing JavaScript or in cheat.js
+
+function clearAllFavorites() {
+    // Clear localStorage favorites
+    localStorage.removeItem('favorites');
+    
+    // Reset all star elements
+    document.querySelectorAll('.favorite-star').forEach(star => {
+        star.classList.remove('active');
+        star.innerHTML = '☆';
+    });
+    
+    // Update favorite count
+    updateFavoriteCount();
+    
+    // Refresh favorites tab if active
+    if (activeTab === 'fav') {
+        filterFavorites();
+    }
+    
+    // Show feedback
+    showFeedback('Favorites cleared!');
+}
+
+// Keyboard shortcut listener
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        clearAllFavorites();
+    }
+});
