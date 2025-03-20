@@ -889,6 +889,8 @@
             .colAB {
             font-size: 5.5rem;
             font-weight: bold;
+            position: relative;
+    padding-right: 10rem; /* Space for star */
             }
             
             .colCDE {
@@ -897,7 +899,22 @@
             color: #40E0D0;
             }
             
-            
+            .favorite-star {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    font-size: 6rem;
+    user-select: none;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.favorite-star.active {
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255,215,0,0.5);
+}
+
+
             
             
             
@@ -1572,6 +1589,8 @@
             margin: 1rem 0;
             font-weight: bold;
             flex-shrink: 0; /* Keeps it fixed */
+            padding: 1rem;
+            background: #F5F5F5;
             }
             
             
@@ -1602,8 +1621,8 @@
             color: #212121;
             border: none;
             border-radius: 5rem 0 0 5rem;
-            padding: 2rem 1rem;
-            padding-bottom: 1rem;
+            padding: 1rem;
+            
             font-size: 5rem;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
@@ -1804,7 +1823,15 @@
             padding: 3rem 0;
             }
             
-            
+            #totalOfferSummary {
+  font-size: 4rem;
+  text-align: right;
+  margin: 2rem 0;
+  font-weight: bold;
+     background: #F5F5F5;
+     padding: 1rem 0;
+}
+
             
             
             
@@ -1976,6 +2003,12 @@
             padding: 0.5rem;
             cursor: pointer;
             }
+            
+            #pickContact:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
             
             #locationStatus {
             color: #666;
@@ -2185,14 +2218,19 @@
     position: absolute;
     background: white;
     border: 1px solid #ccc;
-    padding: 2rem;
+    padding: 7rem 2rem;
     width: 90%;
     top: 30px; /* Adjust based on help-button position */
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+      background: #f9f9f9; /* Light gray to contrast with white */
+    border: 2px solid #007bff; /* Blue border to make it prominent */
+     border-radius: 8px; /* Soft rounded corners */
 }
+
+
             
             .help-content ul {
             list-style-type: none;
@@ -3034,9 +3072,7 @@
                 <div id="closeOffer">×</div>
                 <h2 style="font-size: 5rem;">Selected Offers</h2>
                 <div id="cart-items"></div>
-                <div id="totalOfferSummary" style="font-size: 4rem; text-align: right; margin: 2rem 0; font-weight: bold;"></div>
-                
-                
+<div id="totalOfferSummary"></div>
                 
                 <div class="button-container">
                     <button id="order-offers" class="order-btn child-lock-restricted">Order</button>
@@ -3563,10 +3599,10 @@
             const scriptUrl = "https://script.google.com/macros/s/AKfycbxXF5D8mnjc0WSubZubP7r0d0mm1Ng2kSZoT7tG8S4MRqp_1n_cv1Pl6DnXX8EnagO5MQ/exec";
             
             //Disable context menu, cut-copy-paste
-            document.addEventListener('contextmenu', event => event.preventDefault());
+           /* document.addEventListener('contextmenu', event => event.preventDefault());
             document.addEventListener('copy', event => event.preventDefault());
             document.addEventListener('cut', event => event.preventDefault());
-            document.addEventListener('paste', event => event.preventDefault());
+           document.addEventListener('paste', event => event.preventDefault()); */
             
             // Initialize order number from localStorage
             let cachedOrderNumber = null;                  
@@ -4307,7 +4343,36 @@
                         
                         const colABElement = document.createElement('span');
                         colABElement.classList.add('colAB');
-                        colABElement.textContent = mergedColAB;
+                                    colABElement.textContent = mergedColAB;
+                                    
+                        // Add star element
+const star = document.createElement('span');
+star.classList.add('favorite-star');
+star.innerHTML = '☆';
+star.dataset.itemName = mergedColAB; // Use original name for storage key
+                 
+                 // Check if the item is already favorited
+const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+if (favorites[mergedColAB]) {
+    star.classList.add('active');
+    star.innerHTML = '★'; // Filled star for favorited items
+}
+
+             
+         // Add click handler to toggle favorite status
+star.addEventListener('click', function (e) {
+    e.stopPropagation(); // Prevent event bubbling
+    const isActive = this.classList.toggle('active'); // Toggle the active class
+    this.innerHTML = isActive ? '★' : '☆'; // Update the star icon
+
+    // Update localStorage
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+    favorites[mergedColAB] = isActive; // Set the favorite status
+    localStorage.setItem('favorites', JSON.stringify(favorites)); // Save to localStorage
+});   
+                         
+            
+                        colABElement.appendChild(star);
                         
                         const colCDEElement = document.createElement('span');
                         colCDEElement.classList.add('colCDE');
@@ -4430,9 +4495,7 @@
             
             
             
-            
-            
-            
+   
             
             
             
@@ -6351,6 +6414,30 @@
                     });
                 });
             });
+            
+            
+            // disable contact picker if not supported
+            document.addEventListener("DOMContentLoaded", function () {                
+                const pickContactButton = document.getElementById("pickContact");
+
+    if (!("contacts" in navigator && "select" in navigator.contacts)) {
+        pickContactButton.disabled = true; // Disable the button
+        pickContactButton.style.opacity = "0.5"; // Make it look disabled
+        pickContactButton.style.cursor = "not-allowed"; // Change cursor
+    } else {
+        pickContactButton.addEventListener("click", async () => {
+            try {
+                const contacts = await navigator.contacts.select(["tel"], { multiple: false });
+                if (contacts.length > 0) {
+                    document.getElementById("phone").value = contacts[0].tel[0];
+                }
+            } catch (error) {
+                console.error("Contact selection failed:", error);
+            }
+        });
+    }
+});
+
             
             // Contact Number
             document.getElementById('pickContact').addEventListener('click', async () => {
