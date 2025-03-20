@@ -781,7 +781,7 @@
             }
             
             .tab-button {
-            width: 33.33%;
+            width: 25%;
             padding: 1rem;
             font-size: 5rem;
             cursor: pointer;
@@ -801,7 +801,11 @@
             }
             
             
-            
+            /* Add favorite tab styling */
+#favButton {
+    background-color: #212121;
+    color: #ffd700; /* Gold color for favorites */
+}
             
             
             
@@ -3006,6 +3010,7 @@
                 <button id="allButton" class="tab-button">All</button>
                 <button id="drinksButton" class="tab-button">Drinks</button>
                 <button id="eatsButton" class="tab-button">Dishes</button>
+                <button id="favButton" class="tab-button">Fav ★</button>
             </div>
             
             
@@ -3826,24 +3831,36 @@
             // ✅ Event Listeners for Tab Clicks
             document.getElementById("allButton").addEventListener("click", function () {
                 resetFilters();
+                 resetItemVisibility(); // Reset visibility
                 setActiveTab("allButton");
             });
             
             document.getElementById("drinksButton").addEventListener("click", function () {
                 resetFilters();
+                 resetItemVisibility(); // Reset visibility
                 setActiveTab("drinksButton");
                 filterCategories("drinks");
             });
             
             document.getElementById("eatsButton").addEventListener("click", function () {
                 resetFilters();
+                 resetItemVisibility(); // Reset visibility
                 setActiveTab("eatsButton");
                 filterCategories("eats");
             });
             
+            // 1. Update tab click handler
+document.getElementById("favButton").addEventListener("click", function() {
+     resetFilters();
+    setActiveTab("favButton");
+    filterFavorites();
+});
+
+
+            
             // ✅ Function to Set Active Tab
             function setActiveTab(activeId) {
-                let tabs = ["allButton", "drinksButton", "eatsButton"];
+                 let tabs = ["allButton", "drinksButton", "eatsButton", "favButton"];
                 
                 tabs.forEach(id => {
                     let button = document.getElementById(id);
@@ -3897,10 +3914,55 @@
             
             
             
+
+
+// 2. Add favorite filtering function
+function filterFavorites() {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+    
+    document.querySelectorAll('.menu-item').forEach(item => {
+        const categoryHeader = item.closest('.category-items').previousElementSibling;
+        const categoryName = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
+        const itemName = item.querySelector('.colAB').textContent.replace(/☆|★/g, '').trim();
+        const uniqueKey = `${categoryName}:${itemName}`;
+        
+        item.style.display = favorites[uniqueKey] ? 'block' : 'none';
+    });
+
+    // Handle category headers
+    document.querySelectorAll('.category-header').forEach(header => {
+        const categoryItems = header.nextElementSibling;
+        const hasVisibleItems = Array.from(categoryItems.querySelectorAll('.menu-item'))
+            .some(item => item.style.display !== 'none');
+        
+        header.style.display = hasVisibleItems ? 'flex' : 'none';
+        categoryItems.style.display = hasVisibleItems ? 'block' : 'none';
+    });
+}
             
+ // 4. Add automatic refresh when favoriting
+function refreshFavTab() {
+    if (document.getElementById('favButton').style.backgroundColor === "#212121") {
+        filterFavorites();
+    }
+}           
             
-            
-            
+ function resetItemVisibility() {
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.style.display = 'block'; // Show all items
+    });
+
+    // Reset category headers
+    document.querySelectorAll('.category-header').forEach(header => {
+        header.style.display = 'flex'; // Show all headers
+        header.style.fontSize = '7rem'; // Reset collapsed size
+        header.querySelector('.right').style.display = 'none'; // Hide right column
+    });
+
+    document.querySelectorAll('.category-items').forEach(container => {
+        container.style.display = 'none'; // Collapse all categories
+    });
+}           
             
             
             
@@ -4349,26 +4411,29 @@
 const star = document.createElement('span');
 star.classList.add('favorite-star');
 star.innerHTML = '☆';
-star.dataset.itemName = mergedColAB; // Use original name for storage key
+// In processAndDisplayMenu() function, when creating stars:
+const categoryHeader = currentCategory.previousElementSibling;
+const categoryName = categoryHeader.querySelector('.left').textContent.split('(')[0].trim();
+star.dataset.itemName = `${categoryName}:${mergedColAB}`; // Combined key
                  
                  // Check if the item is already favorited
 const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
-if (favorites[mergedColAB]) {
+if (favorites[star.dataset.itemName]) {
     star.classList.add('active');
-    star.innerHTML = '★'; // Filled star for favorited items
+    star.innerHTML = '★';
 }
 
              
          // Add click handler to toggle favorite status
-star.addEventListener('click', function (e) {
-    e.stopPropagation(); // Prevent event bubbling
-    const isActive = this.classList.toggle('active'); // Toggle the active class
-    this.innerHTML = isActive ? '★' : '☆'; // Update the star icon
+star.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isActive = this.classList.toggle('active');
+    this.innerHTML = isActive ? '★' : '☆';
 
-    // Update localStorage
     const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
-    favorites[mergedColAB] = isActive; // Set the favorite status
-    localStorage.setItem('favorites', JSON.stringify(favorites)); // Save to localStorage
+    favorites[this.dataset.itemName] = isActive;
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    refreshFavTab();
 });   
                          
             
