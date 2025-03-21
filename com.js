@@ -91,30 +91,13 @@ fetch(miscUrl)
         const closeTimeStr = data[1][1]; // Example: "10.45pm"
         window.deliveryAfterOpening = Number(data[9][1]); // Example: "30"
         window.deliveryBeforeClosing = Number(data[10][1]); // Example: "30"
-        window.preparationTime = Number(data[11][1]); // Example: "30"
+        window.deliveryFromNow = Number(data[11][1]); // Example: "30"
       //  window.deliveryArea = Number(data[12][1].trim()); // Example: "15"
         window.deliveryArea = Number(data[12][1].toString().trim());
         // NEW: Fetch waitTime from B14 (assuming data[13][1] is B14)
 window.waitTime = Number(data[13][1].toString().trim());
-window.fileID = data[13][1].toString().trim();
 
- // Initialize image overlay with dynamic fileId
-        const timestamp = new Date().getTime();
-        const imageUrl = `https://lh3.googleusercontent.com/d/${window.fileID}?t=${timestamp}`;
 
-        // Close image overlay handler
-        document.getElementById('closeImage').addEventListener('click', () => {
-            document.getElementById('imageOverlay').style.display = 'none';
-        });
-
-        // Click-outside handler
-        document.getElementById('imageOverlay').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('imageOverlay')) {
-                document.getElementById('imageOverlay').style.display = 'none';
-            }
-        });
-        
-        
         
         // Validate time format
         if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
@@ -173,15 +156,15 @@ window.closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
         // Inside the Misc data fetch .then block, after processing other data:
         const a9Value = data[8] && data[8][0]; // A9 cell (row 8, column 0)
         if (a9Value === "Image") {
-            checkImageSize(imageUrl).then(valid => {
-                    if (valid) {
-                        document.getElementById('imageOverlay').style.display = 'flex';
-                        document.getElementById('driveImage').src = imageUrl;
-                        setTimeout(() => {
-                            document.getElementById('imageOverlay').style.display = 'none';
-                        }, 5000);
-                    }
-                });
+            checkImageSize().then(valid => {
+                if (valid) {
+                    document.getElementById('imageOverlay').style.display = 'flex';
+                    document.getElementById('driveImage').src = imageUrl;
+                    setTimeout(() => {
+                        document.getElementById('imageOverlay').style.display = 'none';
+                    }, 5000);
+                }
+            });
         } else if (a9Value === "Message") {
             const b9Value = data[8] && data[8][1]; // B9 cell
             if (b9Value && b9Value.trim() !== "") {
@@ -224,15 +207,15 @@ window.closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
     console.error("Error fetching Misc data:", error);
 });
 
-// Update checkImageSize to accept imageUrl as a parameter
-function checkImageSize(imageUrl) {
+// Function to check image size
+function checkImageSize() {
     return fetch(imageUrl)
-        .then(response => {
-            if (!response.ok) throw new Error('Network error');
-            return response.blob();
-        })
-        .then(blob => (blob.size / 1024) < 250) // Check if image size is less than 250KB
-        .catch(() => false);
+    .then(response => {
+        if (!response.ok) throw new Error('Network error');
+        return response.blob();
+    })
+    .then(blob => (blob.size / 1024) < 250)
+    .catch(() => false);
 }
 
 // Function to parse custom time format (hh.mmap)
