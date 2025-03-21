@@ -12,15 +12,19 @@ self.addEventListener('install', (event) => {
         urlsToCache.map(url => {
           return fetch(url, { cache: 'no-cache' })
             .then(response => {
-              if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+              // 🚨 Check if response is valid before caching
+              if (!response.ok || response.type === 'opaque' || response.status === 206 || response.headers.get('content-length') === '0') {
+                throw new Error(`Skipping caching for: ${url}, Status: ${response.status}`);
+              }
               return cache.put(url, response.clone());
             })
-            .catch(err => console.error('Failed to cache:', url, err));
+            .catch(err => console.warn('Skipping cache for:', url, err)); // Use warn instead of error
         })
       );
     }).then(() => self.skipWaiting()) // Activate new SW immediately
   );
 });
+
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
