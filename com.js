@@ -96,7 +96,7 @@ fetch(miscUrl)
         window.deliveryArea = Number(data[12][1].toString().trim());
         // NEW: Fetch waitTime from B14 (assuming data[13][1] is B14)
 window.waitTime = Number(data[13][1].toString().trim());
-
+window.fileID = data[13][1].toString().trim();
 
         
         // Validate time format
