@@ -98,6 +98,23 @@ fetch(miscUrl)
 window.waitTime = Number(data[13][1].toString().trim());
 window.fileID = data[13][1].toString().trim();
 
+ // Initialize image overlay with dynamic fileId
+        const timestamp = new Date().getTime();
+        const imageUrl = `https://lh3.googleusercontent.com/d/${window.fileID}?t=${timestamp}`;
+
+        // Close image overlay handler
+        document.getElementById('closeImage').addEventListener('click', () => {
+            document.getElementById('imageOverlay').style.display = 'none';
+        });
+
+        // Click-outside handler
+        document.getElementById('imageOverlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('imageOverlay')) {
+                document.getElementById('imageOverlay').style.display = 'none';
+            }
+        });
+        
+        
         
         // Validate time format
         if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
