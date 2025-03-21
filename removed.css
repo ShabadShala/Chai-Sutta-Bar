@@ -1,0 +1,125 @@
+            /* Warning Modal Overlay - disabled */
+            .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000; /* Ensure it's on top of everything */            
+            }
+            
+            /* Modal Content */
+            .modal-content {
+            position: relative;
+            background: #212121; /* Dark background to match your theme */
+            color: #fae68e; /* Accent color for text */
+            padding: 4rem;
+            border-radius: 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            border: 2px solid #fae68e; /* Accent border */
+            animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+            }
+            
+            /* Title Styling */
+            .modal-content p {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #fae68e; /* Accent color */
+            margin-bottom: 3rem;
+            }
+            
+            /* List Styling */
+            .modal-content ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            }
+            
+            .modal-content ul li {
+            font-size: 5rem;
+            color: #ffffff; /* White text for better readability */
+            margin: 2rem 0;
+            line-height: 1.5;
+            }
+            
+            /* Close Button */
+            .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            font-size: 6rem;
+            cursor: pointer;
+            color: #fae68e; /* Accent color */
+            transition: color 0.3s ease;
+            }
+            
+            .close-button:hover {
+            color: #ff4d4d; /* Red color on hover for better feedback */
+            }
+            
+            /* Eng-Punjabi Container */
+            .toggle-container {
+            margin-top: 3rem;
+            }
+            
+            .split-toggle {
+            display: flex;
+            width: 30rem;
+            height: 8rem;
+            border-radius: 5rem;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #fae68e; /* Accent border */
+            margin: 0 auto; /* Center the toggle */
+            }
+            
+            .toggle-half {
+            flex: 1;
+            text-align: center;
+            line-height: 8rem; /* Center text vertically */
+            font-size: 4rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: #fae68e; /* Accent color */
+            }
+            
+            .toggle-half:first-child {
+            border-top-left-radius: 5rem;
+            border-bottom-left-radius: 5rem;
+            }
+            
+            .toggle-half:last-child {
+            border-top-right-radius: 5rem;
+            border-bottom-right-radius: 5rem;
+            }
+            
+            .toggle-half.active {
+            background: #fae68e; /* Accent background */
+            color: #212121; /* Dark text for contrast */
+            }
+            
+            .toggle-half:not(.active) {
+            background: transparent;
+            color: #fae68e; /* Accent color */
+            }
+            
+            /* Fade-in Animation */
+            @keyframes fadeIn {
+            from {
+            opacity: 0;
+            transform: scale(0.9);
+            }
+            to {
+            opacity: 1;
+            transform: scale(1);
+            }
+            }
+            
