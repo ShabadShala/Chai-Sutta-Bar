@@ -1132,11 +1132,11 @@
 
 /* Clear cache */
 .modal-body {
-    padding: 15px;
+    padding: 5px;
     text-align: center;
     color: #ff6b6b;
     font-size: 0.9em;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 .modal-buttons {
@@ -1155,6 +1155,11 @@
     background: #bb2d3b !important;
 }
 
+.modal-body .modal-header {
+    padding: 0;
+    margin: 0;
+    height:0;
+}
 
 
 

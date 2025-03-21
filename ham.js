@@ -1598,7 +1598,7 @@
         
         
         
-        
+       //       (The app will be restarted)<br>
         
         
         // Clear Storage Modal
@@ -1607,17 +1607,21 @@
         clearStorageModal.className = 'modal';
         clearStorageModal.innerHTML = `
         <div class="modal-content">
-        <div class="close-btn">&times;</div>
-        <h3 class="modal-header">Warning!</h3>
-        <div class="modal-body">
-        This will permanently delete all app data including:<br>
+        <div class="close-btn" style="color: white;">&times;</div>
+        <h3 class="modal-header" style="margin:0; padding: 0; color: white;">Warning!</h3>
+        
+<div class="modal-body">
+    This will permanently delete:<br>
+    <span style="color: #00ff00;">
+        - Favourites<br>
+        - Carts Position<br>
         - Last Order<br>
-        - Items/Offers Carts<br>
         - Child Lock PIN<br>
-        - Settings<br>
-        (The app will be restarted)<br>
-        Are you sure you want to continue?
-        </div>
+        - Settings
+    </span><br>
+    Are you sure you want to continue?
+</div>
+
         <div class="modal-buttons">
         <button id="confirm-clear" class="danger-btn">
         <img src="icons/trash.svg" alt="Clear" width="14" height="14" class="invert-icon">
@@ -1640,322 +1644,322 @@
         
         // Add confirmation handler
         document.getElementById('confirm-clear')?.addEventListener('click', () => {
-            localStorage.clear();
-            sessionStorage.clear();
-            window.location.reload(true);
-        });
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-     //   <label for="faq-search">Search:</label>
-        
-
-// Updated FAQ Modal HTML
-// Update FAQ Modal HTML
-const faqModal = document.createElement('div');
-faqModal.id = 'faq-modal';
-faqModal.className = 'modal';
-faqModal.innerHTML = `
-  <div class="modal-content">
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload(true);
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //   <label for="faq-search">Search:</label>
+    
+    
+    // Updated FAQ Modal HTML
+    // Update FAQ Modal HTML
+    const faqModal = document.createElement('div');
+    faqModal.id = 'faq-modal';
+    faqModal.className = 'modal';
+    faqModal.innerHTML = `
+    <div class="modal-content">
     <div class="faq-header">
-      <h2>FAQs</h2>
-      
-      <input type="text" id="faq-search" placeholder="Search..." />
-      <div class="close-btn" style="color: white">&times;</div>
+    <h2>FAQs</h2>
+    
+    <input type="text" id="faq-search" placeholder="Search..." />
+    <div class="close-btn" style="color: white">&times;</div>
     </div>
     <div class="faq-scroll-container">
-      <div id="faq-content"></div>
+    <div id="faq-content"></div>
     </div>
     <div class="faq-footer">
-      <button id="expand-all-btn" class="footer-button" onclick="expandAll()">
-        <img src="icons/expand-all.svg" alt="Expand All" width="20" class="invert-icon">
-      </button>
-      <button id="collapse-all-btn" class="footer-button" onclick="collapseAll()">
-        <img src="icons/collapse-all.svg" alt="Collapse All" width="20" class="invert-icon">
-      </button>
+    <button id="expand-all-btn" class="footer-button" onclick="expandAll()">
+    <img src="icons/expand-all.svg" alt="Expand All" width="20" class="invert-icon">
+    </button>
+    <button id="collapse-all-btn" class="footer-button" onclick="collapseAll()">
+    <img src="icons/collapse-all.svg" alt="Collapse All" width="20" class="invert-icon">
+    </button>
     </div>
-  </div>`;
-
-document.body.appendChild(faqModal);
-
-// Add event listener for the FAQ option
-document.getElementById('showFAQs')?.addEventListener('click', () => {
-  toggleSidebar(false);
-  openModalStandalone('faq-modal');
-  loadFAQs();
-});
-
-setupModalTriggers('faq-modal');
-
-        
-          
-        
-        
-        
-        
-        
-        
- // Updated FAQ Loading Function
-let currentFAQs = [];
-
-// Modified loadFAQs function
-async function loadFAQs() {
-  const container = document.getElementById('faq-content');
-  container.innerHTML = '<div class="faq-spinner"></div>';
-
-  try {
+    </div>`;
+    
+    document.body.appendChild(faqModal);
+    
+    // Add event listener for the FAQ option
+    document.getElementById('showFAQs')?.addEventListener('click', () => {
+    toggleSidebar(false);
+    openModalStandalone('faq-modal');
+    loadFAQs();
+    });
+    
+    setupModalTriggers('faq-modal');
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Updated FAQ Loading Function
+    let currentFAQs = [];
+    
+    // Modified loadFAQs function
+    async function loadFAQs() {
+    const container = document.getElementById('faq-content');
+    container.innerHTML = '<div class="faq-spinner"></div>';
+    
+    try {
     const response = await fetch(`${scriptUrl}?sheet=faq`);
     const data = await response.json();
-
+    
     if (data.error) throw new Error(data.error);
-
+    
     const validFAQs = data.filter(item => 
-      item?.columnA && item?.columnB && item.partyColumn?.trim().toUpperCase() === 'Y'
+    item?.columnA && item?.columnB && item.partyColumn?.trim().toUpperCase() === 'Y'
     );
-
+    
     if (validFAQs.length === 0) throw new Error('No FAQs found');
-
+    
     currentFAQs = validFAQs;
     renderFAQs(validFAQs);
-
-  } catch (error) {
+    
+    } catch (error) {
     console.error('FAQ Error:', error);
     container.innerHTML = `<div class="error-message">${error.message}</div>`;
     setTimeout(() => container.innerHTML = '', 5000);
-  }
-}
-
-// Search functionality
-function handleSearch() {
-  const searchTerm = document.getElementById('faq-search').value.toLowerCase();
-  const filtered = currentFAQs.filter(item => {
+    }
+    }
+    
+    // Search functionality
+    function handleSearch() {
+    const searchTerm = document.getElementById('faq-search').value.toLowerCase();
+    const filtered = currentFAQs.filter(item => {
     const question = item.columnA?.trim().toLowerCase() || '';
     const answer = item.columnB?.trim().toLowerCase() || '';
     return question.includes(searchTerm) || answer.includes(searchTerm);
-  });
-  renderFAQs(filtered);
-}
-
-// Render FAQs function
-function renderFAQs(faqs) {
-  const container = document.getElementById('faq-content');
-  container.innerHTML = faqs.length > 0 ? faqs.map((item, index) => `
+    });
+    renderFAQs(filtered);
+    }
+    
+    // Render FAQs function
+    function renderFAQs(faqs) {
+    const container = document.getElementById('faq-content');
+    container.innerHTML = faqs.length > 0 ? faqs.map((item, index) => `
     <div class="faq-item" data-index="${index}">
-      <div class="faq-question">
-        ${item.columnA?.trim() || 'Untitled Question'}
-        <span class="toggle-icon">▶</span>
-      </div>
-      <div class="faq-answer">
-        ${(item.columnB?.trim() || 'No answer provided').replace(/\n/g, '<br>')}
-      </div>
+    <div class="faq-question">
+    ${item.columnA?.trim() || 'Untitled Question'}
+    <span class="toggle-icon">▶</span>
     </div>
-  `).join('') : '<div class="no-results">No matching FAQs found</div>';
-
-  // Reattach event listeners
-  document.querySelectorAll('.faq-question').forEach(question => {
+    <div class="faq-answer">
+    ${(item.columnB?.trim() || 'No answer provided').replace(/\n/g, '<br>')}
+    </div>
+    </div>
+    `).join('') : '<div class="no-results">No matching FAQs found</div>';
+    
+    // Reattach event listeners
+    document.querySelectorAll('.faq-question').forEach(question => {
     question.addEventListener('click', toggleFAQ);
-  });
-  updateButtonState();
-}
-
-// Add event listener for search input
-document.getElementById('faq-search')?.addEventListener('input', handleSearch);
-
-
-
-function toggleFAQ() {
-  const wasOpen = this.parentElement.classList.contains('active');
-  
-  // Collapse all items
-  document.querySelectorAll('.faq-item').forEach(item => {
+    });
+    updateButtonState();
+    }
+    
+    // Add event listener for search input
+    document.getElementById('faq-search')?.addEventListener('input', handleSearch);
+    
+    
+    
+    function toggleFAQ() {
+    const wasOpen = this.parentElement.classList.contains('active');
+    
+    // Collapse all items
+    document.querySelectorAll('.faq-item').forEach(item => {
     item.classList.remove('active');
     item.querySelector('.faq-answer').classList.remove('show');
     item.querySelector('.toggle-icon').textContent = '▶';
-  });
-
-  // Open clicked item if it wasn't already open
-  if (!wasOpen) {
+    });
+    
+    // Open clicked item if it wasn't already open
+    if (!wasOpen) {
     this.parentElement.classList.add('active');
     this.nextElementSibling.classList.add('show');
     this.querySelector('.toggle-icon').textContent = '▼';
-  }
-}
-
-
-
-window.expandAll = function() {
-  document.querySelectorAll('.faq-item').forEach(item => {
+    }
+    }
+    
+    
+    
+    window.expandAll = function() {
+    document.querySelectorAll('.faq-item').forEach(item => {
     item.classList.add('active');
     item.querySelector('.faq-answer').classList.add('show');
     item.querySelector('.toggle-icon').textContent = '▼';
-  });
-  updateButtonState();
-};
-
-window.collapseAll = function() {
-  document.querySelectorAll('.faq-item').forEach(item => {
+    });
+    updateButtonState();
+    };
+    
+    window.collapseAll = function() {
+    document.querySelectorAll('.faq-item').forEach(item => {
     item.classList.remove('active');
     item.querySelector('.faq-answer').classList.remove('show');
     item.querySelector('.toggle-icon').textContent = '▶';
-  });
-  updateButtonState();
-};
-
-// Function to update button states
-function updateButtonState() {
-  const allExpanded = document.querySelectorAll('.faq-item.active').length === document.querySelectorAll('.faq-item').length;
-  const allCollapsed = document.querySelectorAll('.faq-item.active').length === 0;
-
-  document.getElementById('expand-all-btn').disabled = allExpanded;
-  document.getElementById('collapse-all-btn').disabled = allCollapsed;
-}
-
-// Update button state on individual question toggle
-document.addEventListener('click', (event) => {
-  if (event.target.classList.contains('faq-question')) {
+    });
+    updateButtonState();
+    };
+    
+    // Function to update button states
+    function updateButtonState() {
+    const allExpanded = document.querySelectorAll('.faq-item.active').length === document.querySelectorAll('.faq-item').length;
+    const allCollapsed = document.querySelectorAll('.faq-item.active').length === 0;
+    
+    document.getElementById('expand-all-btn').disabled = allExpanded;
+    document.getElementById('collapse-all-btn').disabled = allCollapsed;
+    }
+    
+    // Update button state on individual question toggle
+    document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('faq-question')) {
     setTimeout(updateButtonState, 100); // Slight delay to ensure state updates
-  }
-});
-
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        document.getElementById('showChecklist')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            
-            showChecklist();
-        });
-        
-        
-        document.getElementById('showCalculator')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            
-            document.getElementById('calculatorOverlay').style.display = 'flex';    
-        });
-        
-        document.getElementById('showStopwatch')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            
-            document.getElementById('stopwatchModal').style.display = 'flex';    
-        });
-        
-        document.getElementById('showPuzzle')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            
-            document.getElementById('puzzleModal').style.display = 'flex';    
-        });
-        
-        document.getElementById('tic-tac-toe')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            
-            ticInitGame();
-        });
-        
-        document.getElementById('timer')?.addEventListener('click', () => {
-            toggleSidebar(false);
-            
-            openWaitTracker();
-        });
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    }
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    document.getElementById('showChecklist')?.addEventListener('click', () => {
+    toggleSidebar(false);
+    
+    showChecklist();
+    });
+    
+    
+    document.getElementById('showCalculator')?.addEventListener('click', () => {
+    toggleSidebar(false);
+    
+    document.getElementById('calculatorOverlay').style.display = 'flex';    
+    });
+    
+    document.getElementById('showStopwatch')?.addEventListener('click', () => {
+    toggleSidebar(false);
+    
+    document.getElementById('stopwatchModal').style.display = 'flex';    
+    });
+    
+    document.getElementById('showPuzzle')?.addEventListener('click', () => {
+    toggleSidebar(false);
+    
+    document.getElementById('puzzleModal').style.display = 'flex';    
+    });
+    
+    document.getElementById('tic-tac-toe')?.addEventListener('click', () => {
+    toggleSidebar(false);
+    
+    ticInitGame();
+    });
+    
+    document.getElementById('timer')?.addEventListener('click', () => {
+    toggleSidebar(false);
+    
+    openWaitTracker();
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     } //hsidebar
     
     // Call the setup function
     setupHamburgerMenu();
     
-})(); // IIFE Ends
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Hide the Save (save-qr-code) button from project
-document.addEventListener("DOMContentLoaded", function () {
+    })(); // IIFE Ends
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //Hide the Save (save-qr-code) button from project
+    document.addEventListener("DOMContentLoaded", function () {
     const saveButton = document.getElementById("save-qr-code");
     if (saveButton) {
-        saveButton.style.display = "none"; // Completely hide the button
+    saveButton.style.display = "none"; // Completely hide the button
     }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-let deferredPrompt; // Variable to hold the deferred prompt event
-
-// Listen for the beforeinstallprompt event
-window.addEventListener("beforeinstallprompt", (e) => {
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    let deferredPrompt; // Variable to hold the deferred prompt event
+    
+    // Listen for the beforeinstallprompt event
+    window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault(); // Prevent the default prompt from showing automatically
     deferredPrompt = e; // Store the event so we can trigger it later
     
@@ -1964,81 +1968,81 @@ window.addEventListener("beforeinstallprompt", (e) => {
     
     // Automatically trigger the prompt after a delay
     setTimeout(() => {
-        deferredPrompt.prompt(); // Show the install prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            // Handle the user's response
-            if (choiceResult.outcome === "accepted") {
-                console.log("User accepted the install prompt");
-                } else {
-                console.log("User dismissed the install prompt");
-            }
-            deferredPrompt = null; // Reset the deferred prompt
-        });
+    deferredPrompt.prompt(); // Show the install prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+    // Handle the user's response
+    if (choiceResult.outcome === "accepted") {
+    console.log("User accepted the install prompt");
+    } else {
+    console.log("User dismissed the install prompt");
+    }
+    deferredPrompt = null; // Reset the deferred prompt
+    });
     }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-});               
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Deep Search
-let cheatActive = localStorage.getItem('cheatActive') === 'true'; // Get state from storage
-let activationListenersAdded = false;
-
-function getWordUnderPointer(event) {
+    });               
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Deep Search
+    let cheatActive = localStorage.getItem('cheatActive') === 'true'; // Get state from storage
+    let activationListenersAdded = false;
+    
+    function getWordUnderPointer(event) {
     const x = event.clientX || (event.touches?.[0]?.clientX);
     const y = event.clientY || (event.touches?.[0]?.clientY);
     
@@ -2062,9 +2066,9 @@ function getWordUnderPointer(event) {
     return text.slice(start, end)
     .trim()  // First remove whitespace
     .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
-}
-
-function simulateSearchInput(word) {
+    }
+    
+    function simulateSearchInput(word) {
     const searchInput = document.getElementById('searchInput');
     
     // Show search UI elements
@@ -2075,34 +2079,34 @@ function simulateSearchInput(word) {
     // Trigger search
     searchInput.value = word;
     searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-}
-
-function handleCheatInteraction(event) {
+    }
+    
+    function handleCheatInteraction(event) {
     if (!cheatActive) return;
     
     const word = getWordUnderPointer(event);
     if (word) {
-        simulateSearchInput(word);
-        showFeedback(`CHEAT: Filtering by "${word}"`);
+    simulateSearchInput(word);
+    showFeedback(`CHEAT: Filtering by "${word}"`);
     }
-}
-
-function addCheatListeners() {
+    }
+    
+    function addCheatListeners() {
     if (activationListenersAdded) return;
     
     // Add click handler for desktop
     document.addEventListener('click', (e) => {
-        if (e.target.closest('.colAB')) {
-            handleCheatInteraction(e);
-        }
+    if (e.target.closest('.colAB')) {
+    handleCheatInteraction(e);
+    }
     });
     
     activationListenersAdded = true;
-}
-
-
-// Add event listener for the cheat toggle button
-document.getElementById('cheatToggleButton')?.addEventListener('click', function() {
+    }
+    
+    
+    // Add event listener for the cheat toggle button
+    document.getElementById('cheatToggleButton')?.addEventListener('click', function() {
     const toggleSwitch = this.querySelector('.toggle-switch');
     
     // Toggle state
@@ -2114,42 +2118,43 @@ document.getElementById('cheatToggleButton')?.addEventListener('click', function
     
     // Manage functionality
     if (cheatActive) {
-        addCheatListeners();
-        showFeedback('Item Search activated');
-        } else {
-        showFeedback('Item Search deactivated');
+    addCheatListeners();
+    showFeedback('Item Search activated');
+    } else {
+    showFeedback('Item Search deactivated');
     }
     
     // Close sidebar if needed
     toggleSidebar(false);
-});
-
-// Initialize on load
-function initCheatToggle() {
+    });
+    
+    // Initialize on load
+    function initCheatToggle() {
     const toggle = document.querySelector('#cheatToggleButton .toggle-switch');
     if (toggle) {
-        toggle.classList.toggle('active', cheatActive);
-        if (cheatActive) addCheatListeners();
+    toggle.classList.toggle('active', cheatActive);
+    if (cheatActive) addCheatListeners();
     }
-}
-initCheatToggle();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
+    initCheatToggle();
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
