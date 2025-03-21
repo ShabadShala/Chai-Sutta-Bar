@@ -3300,7 +3300,7 @@
 // Check if service workers are supported, Register Service-worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/Chai-Sutta-Bar/service-worker.js')
+        navigator.serviceWorker.register('service-worker.js')
             .then((registration) => {
                 console.log('Service Worker registered with scope:', registration.scope);
             })
@@ -3339,7 +3339,7 @@ if ('serviceWorker' in navigator) {
             
             // Update PWA
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/Chai-Sutta-Bar/service-worker.js').then(reg => {
+    navigator.serviceWorker.register('service-worker.js').then(reg => {
         setInterval(() => {
             reg.update().then(() => {
                 if (reg.installing || reg.waiting) {
