@@ -1,4 +1,5 @@
-// Cheat - Full menu - 3 finegr tap, Ctrl+Shift+E                
+// Cheat - Full menu - 3 finegr tap, Ctrl+Shift+E  
+
 let threeFingerStartTime = 0;
 
 document.addEventListener('touchstart', (e) => {
@@ -70,6 +71,155 @@ function activateCheatMode() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Direct Last order, Ctrl+Shift+O
+
+function executeCheatOrder() {
+    let originalScrapItems = [...scrapItems];
+    
+    try {
+        const lastOrderData = localStorage.getItem('lastOrder');
+        const lastOfferCartData = localStorage.getItem('lastOfferCart');
+        
+        if (lastOrderData) {
+            const parsedOrder = JSON.parse(lastOrderData);
+            console.log('Parsed lastOrder:', parsedOrder);
+            
+            scrapItems = parsedOrder.items || [];
+            
+            if (typeof updateScrapListDisplay === 'function') {
+                updateScrapListDisplay();
+                handleScrapItemsChange();
+            }
+            } else {
+            console.warn('No last order data found.');
+            showFeedback('No last order found!');
+            scrapItems = [];
+            
+            if (typeof updateScrapListDisplay === 'function') {
+                updateScrapListDisplay();
+                handleScrapItemsChange();
+            }
+        }
+        
+        if (lastOfferCartData) {
+            const parsedOfferCart = JSON.parse(lastOfferCartData);
+            console.log('Parsed lastOfferCart:', parsedOfferCart);
+            
+            const currentDate = new Date();
+            offerCart = parsedOfferCart.items.filter(offer => {
+                const dateRange = offer.dates[0];
+                const endDateString = dateRange.split(' to ')[1];
+                const endDate = new Date(endDateString);
+                return endDate >= currentDate;
+            });
+            
+            const offerCartElement = document.getElementById('offer-cart');
+            if (offerCartElement) {
+                offerCartElement.style.display = 'block';
+            }
+            
+            saveOfferCart();
+            } else {
+            console.warn('No last offer cart data found.');
+            offerCart = [];
+        }
+        
+        // Mock form data with cheat indicators (update as needed)
+        const formData = {};
+        
+        // Use existing order pipeline
+        sendCombinedOrder(formData);
+        
+        } catch (error) {
+        console.error('Cheat order failed:', error);
+        showFeedback('Cheat order failed!');
+        } finally {
+        // Restore original scrap items
+        scrapItems = originalScrapItems;
+        if (typeof updateScrapListDisplay === 'function') {
+            updateScrapListDisplay();
+            handleScrapItemsChange();
+        }
+    }
+}
+
+
+// Original keyboard listener with proper modifier checks
+document.addEventListener('keydown', function(e) {
+if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'o') {
+    e.preventDefault();
+    if (document.getElementById('loadingOverlay').style.display === 'none') {
+        executeCheatOrder();
+    }
+}
+    });
+    
+    
+    
+    
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   // Clear Favourites by Ctrl+Shift+F
+
+function clearAllFavorites() {
+    // Clear localStorage favorites
+    localStorage.removeItem('favorites');
+    
+    // Reset all star elements
+    document.querySelectorAll('.favorite-star').forEach(star => {
+        star.classList.remove('active');
+        star.innerHTML = '☆';
+    });
+    
+    // Update favorite count
+    updateFavoriteCount();
+    
+    // Refresh favorites tab if active
+    if (activeTab === 'fav') {
+        filterFavorites();
+    }
+    
+    // Show feedback
+    showFeedback('Favorites cleared!');
+}
+
+// Keyboard shortcut listener
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        clearAllFavorites();
+    }
+});
 
 
 
@@ -195,137 +345,26 @@ document.getElementById('devFill').addEventListener('click', () => {
 
 
 
-function executeCheatOrder() {
-    let originalScrapItems = [...scrapItems];
-    
-    try {
-        const lastOrderData = localStorage.getItem('lastOrder');
-        const lastOfferCartData = localStorage.getItem('lastOfferCart');
-        
-        if (lastOrderData) {
-            const parsedOrder = JSON.parse(lastOrderData);
-            console.log('Parsed lastOrder:', parsedOrder);
-            
-            scrapItems = parsedOrder.items || [];
-            
-            if (typeof updateScrapListDisplay === 'function') {
-                updateScrapListDisplay();
-                handleScrapItemsChange();
-            }
-            } else {
-            console.warn('No last order data found.');
-            showFeedback('No last order found!');
-            scrapItems = [];
-            
-            if (typeof updateScrapListDisplay === 'function') {
-                updateScrapListDisplay();
-                handleScrapItemsChange();
-            }
-        }
-        
-        if (lastOfferCartData) {
-            const parsedOfferCart = JSON.parse(lastOfferCartData);
-            console.log('Parsed lastOfferCart:', parsedOfferCart);
-            
-            const currentDate = new Date();
-            offerCart = parsedOfferCart.items.filter(offer => {
-                const dateRange = offer.dates[0];
-                const endDateString = dateRange.split(' to ')[1];
-                const endDate = new Date(endDateString);
-                return endDate >= currentDate;
-            });
-            
-            const offerCartElement = document.getElementById('offer-cart');
-            if (offerCartElement) {
-                offerCartElement.style.display = 'block';
-            }
-            
-            saveOfferCart();
-            } else {
-            console.warn('No last offer cart data found.');
-            offerCart = [];
-        }
-        
-        // Mock form data with cheat indicators (update as needed)
-        const formData = {};
-        
-        // Use existing order pipeline
-        sendCombinedOrder(formData);
-        
-        } catch (error) {
-        console.error('Cheat order failed:', error);
-        showFeedback('Cheat order failed!');
-        } finally {
-        // Restore original scrap items
-        scrapItems = originalScrapItems;
-        if (typeof updateScrapListDisplay === 'function') {
-            updateScrapListDisplay();
-            handleScrapItemsChange();
-        }
-    }
-}
 
 
-// Original keyboard listener with proper modifier checks
-document.addEventListener('keydown', function(e) {
-if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'o') {
-    e.preventDefault();
-    if (document.getElementById('loadingOverlay').style.display === 'none') {
-        executeCheatOrder();
-    }
-}
-    });
-    
-    
-    
-    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   // Clear Favourites by Ctrl+Shift+F
 
-// Add this code in your existing JavaScript or in cheat.js
 
-function clearAllFavorites() {
-    // Clear localStorage favorites
-    localStorage.removeItem('favorites');
-    
-    // Reset all star elements
-    document.querySelectorAll('.favorite-star').forEach(star => {
-        star.classList.remove('active');
-        star.innerHTML = '☆';
-    });
-    
-    // Update favorite count
-    updateFavoriteCount();
-    
-    // Refresh favorites tab if active
-    if (activeTab === 'fav') {
-        filterFavorites();
-    }
-    
-    // Show feedback
-    showFeedback('Favorites cleared!');
-}
 
-// Keyboard shortcut listener
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'f') {
-        e.preventDefault();
-        clearAllFavorites();
-    }
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

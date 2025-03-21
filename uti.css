@@ -13,7 +13,6 @@
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
 }
 
 .calculator-modal {
@@ -94,7 +93,7 @@
 
 .clear:hover {
     background-color: #c72e3c;
-}
+    }
 
 /* Backspace Button */
 .backspace {
@@ -139,7 +138,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10000;
 }
 
 .stopwatch-modal {
@@ -250,6 +248,204 @@
 
 
 
+
+
+
+/* Time Tracker */
+.wait-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wait-tracker-modal {
+  background: #fff5e6;
+  padding: 5rem;
+  border-radius: 25px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  border: 5px solid #ff9933;
+  max-width: 600px;
+  margin: 2rem;
+}
+
+.tracker-title {
+  color: #cc3300;
+  font-size: 6rem; /* Increased from 1.5rem */
+  margin-bottom: 3rem;
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+}
+
+.time-display {
+  font-family: 'Digital-7', monospace;
+  font-size: 22rem; /* Increased from 3.5rem */
+  color: #333;
+  background: #f0f0f0;
+  padding: 2rem;
+  border-radius: 15px;
+  margin: 2rem 0;
+  border: 4px solid #666;
+  text-shadow: 0 0 10px rgba(51, 51, 51, 0.3);
+}
+
+
+.status-message {
+  color: #666;
+  font-size: 6rem; /* Increased from 1rem */
+  margin-top: 2rem;
+}
+
+
+.order-button {
+  background-color: #ff9933;
+  color: white;
+  border: none;
+  padding: 3rem 6rem;
+  font-size: 6.5rem;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  margin: 5rem auto;
+  display: block;
+}
+
+
+
+
+.steam {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.steam::before,
+.steam::after {
+  content: '';
+  position: absolute;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 50%;
+  animation: steam 5s infinite linear;
+}
+
+.steam::before {
+  width: 40px;
+  height: 80px;
+  left: 20px;
+  animation-delay: 0.5s;
+}
+
+.steam::after {
+  width: 60px;
+  height: 100px;
+  right: 20px;
+}
+
+@keyframes steam {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-80px) scale(1.2);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-160px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+
+
+.alarm-controls {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.alarm-button {
+    background-color: #ff9933;
+    color: white;
+    border: none;
+    padding: 2rem 4rem;
+    font-size: 5rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.alarm-button:hover {
+    background-color: #cc3300;
+}
+
+.alarm-controls {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.alarm-button {
+    background-color: #ff9933;
+    color: white;
+    border: none;
+    padding: 2rem 4rem;
+    font-size: 5rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 1rem;
+}
+
+.alarm-button:hover {
+    background-color: #cc3300;
+    transform: scale(1.05);
+}
+
+.alarm-controls .soundButton {
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Puzzle Modal Styles */
 .puzzle-modal-overlay {
     position: fixed;
@@ -262,7 +458,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10000;
 }
 
 .puzzle-modal {
@@ -384,8 +579,7 @@
 
 
 
-/* Outer Modal Background */
-
+/* Tic-Tac-Toe */
 
 .tic-modal {
     position: fixed;
@@ -411,8 +605,6 @@
     border: 2px solid #d4a373; /* Rustic border color */
     text-align: center;
 }
-
-
 
 .tic-board-size {
     margin-bottom: 15px; /* Reduced gap */
@@ -578,209 +770,6 @@ grid-template-columns: repeat(var(--board-size), 1fr);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Updated CSS with modal overlay and increased sizes */
-.wait-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.wait-tracker-modal {
-  background: #fff5e6;
-  padding: 5rem;
-  border-radius: 25px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  position: relative;
-  border: 5px solid #ff9933;
-  max-width: 600px;
-  margin: 2rem;
-}
-
-.tracker-title {
-  color: #cc3300;
-  font-size: 6rem; /* Increased from 1.5rem */
-  margin-bottom: 3rem;
-  font-family: 'Arial Rounded MT Bold', sans-serif;
-}
-
-.time-display {
-  font-family: 'Digital-7', monospace;
-  font-size: 20rem; /* Increased from 3.5rem */
-  color: #333;
-  background: #f0f0f0;
-  padding: 2rem;
-  border-radius: 15px;
-  margin: 2rem 0;
-  border: 4px solid #666;
-  text-shadow: 0 0 10px rgba(51, 51, 51, 0.3);
-}
-
-
-.status-message {
-  color: #666;
-  font-size: 6rem; /* Increased from 1rem */
-  margin-top: 2rem;
-}
-
-
-.order-button {
-  background-color: #ff9933;
-  color: white;
-  border: none;
-  padding: 3rem 6rem;
-  font-size: 6.5rem;
-  border-radius: 20px;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-  margin: 5rem auto;
-  display: block;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.steam {
-  position: absolute;
-  top: -100px;
-  left: 50%;
-  width: 120px;
-  height: 120px;
-  transform: translateX(-50%);
-  z-index: 1;
-}
-
-.steam::before,
-.steam::after {
-  content: '';
-  position: absolute;
-  background: linear-gradient(to bottom, 
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  border-radius: 50%;
-  animation: steam 5s infinite linear;
-}
-
-.steam::before {
-  width: 40px;
-  height: 80px;
-  left: 20px;
-  animation-delay: 0.5s;
-}
-
-.steam::after {
-  width: 60px;
-  height: 100px;
-  right: 20px;
-}
-
-@keyframes steam {
-  0% {
-    transform: translateY(0) scale(0.8);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateY(-80px) scale(1.2);
-    opacity: 0.3;
-  }
-  100% {
-    transform: translateY(-160px) scale(1.5);
-    opacity: 0;
-  }
-}
-
-
-
-
-.alarm-controls {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    margin-top: 3rem;
-}
-
-.alarm-button {
-    background-color: #ff9933;
-    color: white;
-    border: none;
-    padding: 2rem 4rem;
-    font-size: 5rem;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.alarm-button:hover {
-    background-color: #cc3300;
-}
-
-
-.alarm-controls {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    margin-top: 3rem;
-    flex-wrap: wrap;
-}
-
-.alarm-button {
-    background-color: #ff9933;
-    color: white;
-    border: none;
-    padding: 2rem 4rem;
-    font-size: 5rem;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 1rem;
-}
-
-.alarm-button:hover {
-    background-color: #cc3300;
-    transform: scale(1.05);
-}
-
-.alarm-controls .soundButton {
-   
+body.no-scroll {
+  overflow: hidden;
 }

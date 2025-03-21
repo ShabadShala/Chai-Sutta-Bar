@@ -113,7 +113,7 @@
     transition: left 0.3s ease;
     z-index: 1004;
     padding-top: 40px;
-    border-radius: 0 15px 15px 0;
+    border-radius: 0 5rem 5rem 0;
     color: #e0e0e0;
     pointer-events: auto; /* Enable clicks when visible */
     padding:2rem;
@@ -144,8 +144,7 @@
     padding: 1rem; /* Consistent padding */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: sticky;
-    top: 0;
-    
+    top: 0;    
     line-height: 1.5;
     align-items: center; /* Vertically center logo and text */
     gap: 3rem; /* Consistent gap between logo and text */
@@ -155,7 +154,7 @@
 .header-logo {
     width: 8rem; /* Same as footer logo */
     height: 8rem; /* Same as footer logo */
-    border-radius: 15px; /* Optional: rounded corners */
+    border-radius: rem; /* Optional: rounded corners */
 }
 
 /* Header text */
@@ -334,7 +333,7 @@
     padding: 2rem;
     width: 33%; 
     min-width: 110px;
-    max-width: 150px;
+    
     border: 2px solid #fae68e;
     border-radius: 1.5rem; /* Reduced border radius */
     font-size: 5.25rem; 
@@ -421,8 +420,9 @@
     width: 8rem; /* Same as header logo */
     height: 8rem; /* Same as header logo */
     object-fit: contain;
-    border-radius: 15px; /* Optional: rounded corners */
+    border-radius: 5rem; /* Optional: rounded corners */
 }
+
 
 
 
@@ -441,6 +441,8 @@
     width: 100%;
     height: 100%;
 }
+
+
 
 
 
@@ -472,7 +474,7 @@
 .modal-content {
     background: #fff;
     padding: 3rem;
-    border-radius: 12px;
+    border-radius: 4rem;
     text-align: center;
     font-size: 5rem;
     color: black;
@@ -510,11 +512,11 @@
 
 .qrcode {
     width: 100%;
-    max-width: 500px;
+
     height: auto;
     object-fit: cover; /* Keeps proper scaling */
     object-position: top; /* Ensures no top cut */
-    border-radius: 8px;
+    border-radius: 2.5rem;
     clip-path: inset(0px 0px 20% 0px);
     display: block;
     margin-bottom: -25%; /* Pulls the image up slightly */
@@ -524,7 +526,7 @@
 .modal-buttons {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 3.5rem;
     margin-top: 1rem; /* Ensures space between QR code and buttons */
     margin-bottom: 3rem;
     flex-wrap: wrap;
@@ -548,8 +550,7 @@
 
 
 .modal-buttons button:hover {
-    background: #0056b3;
-    
+    background: #0056b3;    
     box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
 }
 
@@ -597,7 +598,7 @@
     align-items: center;
     justify-content: center;
     min-height: 200px; /* Adjust height to match container size */
-    font-size: 16px;
+    font-size: 5rem;
     font-weight: bold;
     color: #555;
 }
@@ -616,7 +617,6 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
 
 
 .feature-list {
@@ -638,7 +638,7 @@
     justify-content: space-between;
     width: 100%;
     border-bottom: 1px solid #f0f0f0;
-    padding-right: 10px; /* Prevent arrow misalignment */
+    padding-right: 3rem; /* Prevent arrow misalignment */
 }
 
 .toggle.has-children {
@@ -651,7 +651,7 @@
 
 .toggle-icon {
     font-size: 0.8em;
-    width: 20px;
+    width: 7rem;
     margin-left: auto; /* Align right */
     transition: transform 0.2s;
     display: inline-block;
@@ -688,7 +688,7 @@
 
 .features-container {
     max-height: 60vh; /* Adjusted for footer space */
-    padding: 10px 0;
+    padding: 3rem 0;
     overflow-y: auto; /* Vertical scroll only */
     overflow-x: hidden; /* Disable horizontal scroll */
     min-height: 200px;
@@ -764,7 +764,6 @@
 }
 
 
-
 .modal-header {
     color: #000;
     font-size: 6rem;
@@ -796,12 +795,10 @@
     white-space: nowrap; /* Prevents buttons from breaking into two lines */
 }
 
-
 .modal-footer button img {
-    width: 16px;
-    height: 16px;
+    width: 5rem;
+    height: 5rem;
 } 
-
 
 .copy-btn {
     transition: transform 0.3s ease-in-out, background-color 0.3s; /* Smooth transition */
@@ -821,13 +818,11 @@
     100% { transform: scale(1); }
 }
 
-
 .feature-content {
     display: inline-flex;
     align-items: center;
     gap: 4px; /* Space between text and info button */
 }
-
 
 .info-btn {
     margin-left: 8px;
@@ -855,17 +850,14 @@
     color: black;
 }
 
-
-
-
-
-
-
 #features-modal .modal-dialog {
-  max-width: 400px;
+  max-width: 350px;
   margin: 0 auto;
 }
 
+#features-modal .modal-content {
+  max-width: 375px;
+}
 
 
 
@@ -936,12 +928,9 @@
 }
 
 
-
-
-
 .toggle-switch {
-    width: 20px;
-    height: 20px;
+    width: 6rem;
+    height: 6rem;
     background-color: #cccccc; /* Gray when off */
     border-radius: 50%;
     cursor: pointer;
@@ -975,15 +964,12 @@
 
 
 
-
-
-
-
-
-
 .starry-background.disabled {
     display: none;
 }
+
+
+
 
 
 
@@ -1052,8 +1038,7 @@
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
-    align-items: center;
-    
+    align-items: center;    
 }
 
 #pinModal {
@@ -1065,20 +1050,17 @@
     background: rgba(0, 0, 0, 0.5); /* Full-screen overlay */
     display: none; /* Hidden by default */
     align-items: center;
-    justify-content: center;
-    
+    justify-content: center;    
 }
 
 #pinModal .modal-content {
     background: white;
-    padding: 20px;
+    padding: 6rem;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    border-radius: 3rem;
     width: 300px;
     text-align: center;
 }
-
-
 
 
 
@@ -1092,14 +1074,14 @@
 .restart-container {
     display: flex;
     justify-content: center;
-    margin-top: 10px; /* Adds space between rows */
+    margin-top: 3rem; /* Adds space between rows */
 }
 
 .restart-btn {
     background-color: green;
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 2rem 4rem;
     font-size: 4rem;
     cursor: pointer;
     border-radius: 1rem;
@@ -1110,8 +1092,8 @@
 }
 
 .restart-btn .icon {
-    width: 12px; /* Adjust icon size */
-    height: 12px;
+    width: 4rem; /* Adjust icon size */
+    height: 4rem;
     display: inline-block; /* Ensure it aligns properly */
     vertical-align: middle; /* Helps with alignment */
 }
@@ -1161,6 +1143,11 @@
     height:0;
 }
 
+#clear-storage-modal .modal-content {
+background-color: #0D0D0D;
+}
+
+
 
 
 
@@ -1209,15 +1196,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 /* Counters Modal */
 #counters-modal .modal-content {
     max-width: 350px;
@@ -1248,9 +1226,10 @@
 }
 
 .counter-item span {
-    font-family: 'Digital-7', monospace;
+    font-family: 'Courier New', monospace;
     font-size: 6rem;
     color: #fae68e;
+     font-weight: bold;
 }
 
 .counter-label {
@@ -1307,16 +1286,16 @@
 #counters-modal .app-info {
     width: 75%; /* Reduce width to 90% */
     background-color: rgba(255, 255, 255, 0.1); /* Light background */
-    border-radius: 8px; /* Rounded corners */
-    padding: 8px; /* Padding for spacing */
-    margin: 5px auto; /* Auto margins to center horizontally */
+    border-radius: 2.5rem; /* Rounded corners */
+    padding: 2.5rem; /* Padding for spacing */
+    margin: 2rem auto; /* Auto margins to center horizontally */
     
     color: #00FF00;
     text-align: center; /* Center text */
     display: flex; /* Flexbox for alignment */
     align-items: center; /* Vertically center content */
     justify-content: center; /* Horizontally center content */
-    gap: 8px; /* Space between icon and text */
+    gap: 3rem; /* Space between icon and text */
     transition: background-color 0.3s ease; /* Smooth hover effect */
 }
 
@@ -1458,9 +1437,9 @@ width: 100vw;
   background: #2a2a2a;
   border: 1px solid #4CAF50;
   color: #fff;
-  padding: 6px 10px;
-  border-radius: 25px;
-  font-size: 14px;
+  padding: 2rem 3rem;
+  border-radius: 7.5rem;
+  font-size: 4.5rem;
   transition: all 0.3s ease;
   position: absolute;
   top: 50%;

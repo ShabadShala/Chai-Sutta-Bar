@@ -88,19 +88,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     
     
-    document.addEventListener('click', (e) => {
-        const overlay = document.getElementById('calculatorOverlay');
-        if (e.target === overlay) {
-            document.getElementById('calculatorOverlay').style.display = 'none';
-        }
-    });
+document.addEventListener('click', (e) => {
+    const overlay = document.getElementById('calculatorOverlay');
     
-    // Close modal when pressing the Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            document.getElementById('calculatorOverlay').style.display = 'none';
-        }
-    });
+    // Close if clicked on overlay or inside an element with class 'header'
+    if (e.target === overlay || e.target.closest('.header')) {
+        overlay.style.display = 'none';
+        document.body.classList.remove('no-scroll');
+    }
+});
+
+// Close modal when pressing the Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        document.getElementById('calculatorOverlay').style.display = 'none';
+        document.body.classList.remove('no-scroll');
+    }
+});
+
 });
 
 
@@ -164,12 +169,14 @@ let lastPlayedMinute = 0;
 
 document.getElementById('closeStopwatch').addEventListener('click', () => {
     document.getElementById('stopwatchModal').style.display = 'none';
+    document.body.classList.remove('no-scroll');
 });
 
 document.addEventListener('click', (e) => {
     const overlay = document.getElementById('stopwatchModal');
     if (e.target === overlay) {
         document.getElementById('stopwatchModal').style.display = 'none';
+        document.body.classList.remove('no-scroll');
     }
 });
 
@@ -177,6 +184,7 @@ document.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         document.getElementById('stopwatchModal').style.display = 'none';
+        document.body.classList.remove('no-scroll');
     }
 });
 
@@ -440,6 +448,7 @@ function solvePuzzle() {
 document.querySelector('.puzzle-modal-overlay').addEventListener('click', (e) => {
     if(e.target === document.querySelector('.puzzle-modal-overlay')) {
         document.getElementById('puzzleModal').style.display = 'none';
+        document.body.classList.remove('no-scroll');
     }
 });
 
@@ -447,6 +456,7 @@ document.querySelector('.puzzle-modal-overlay').addEventListener('click', (e) =>
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         document.getElementById('puzzleModal').style.display = 'none';
+        document.body.classList.remove('no-scroll');
     }
 });
 
@@ -574,6 +584,7 @@ function ticInitGame() {
 document.querySelector('.tic-modal').addEventListener('click', (e) => {
     if(e.target === document.querySelector('.tic-modal')) {
         document.getElementById('tic-modal').remove();
+        document.body.classList.remove('no-scroll');
     }
 });
 
@@ -581,6 +592,7 @@ document.querySelector('.tic-modal').addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         document.getElementById('tic-modal').remove();
+        document.body.classList.remove('no-scroll');
     }
 });
 
@@ -699,7 +711,7 @@ function openWaitTracker() {
             <p class="status-message">Estimated waiting time</p>
             <div class="alarm-controls">
                 <button class="alarm-button resetButton">Reset</button>
-                <button class="alarm-button soundButton">Mute</button>
+                <button class="alarm-button soundButton">🔊</button>
                 <button class="alarm-button closeButton">Close</button>
             </div>
         </div>
@@ -726,13 +738,15 @@ function openWaitTracker() {
 
     overlay.querySelector('.soundButton').addEventListener('click', (e) => {
         isAlarmMuted = !isAlarmMuted;
-        e.target.textContent = isAlarmMuted ? 'Unmute' : 'Mute';
+        // e.target.textContent = isAlarmMuted ? 'Unmute' : 'Mute';
+        e.target.textContent = isAlarmMuted ? '🔇' : '🔊';
     });
 
     overlay.querySelector('.closeButton').addEventListener('click', () => {
         overlay.remove();
         clearInterval(timerInterval);
         stopAlarm();
+        document.body.classList.remove('no-scroll');
     });
 
     // Close on clicking overlay background
@@ -741,6 +755,7 @@ function openWaitTracker() {
             overlay.remove();
             clearInterval(timerInterval);
             stopAlarm();
+            document.body.classList.remove('no-scroll');
         }
     });
 
@@ -752,6 +767,7 @@ function openWaitTracker() {
                 overlayElement.remove();
                 clearInterval(timerInterval);
                 stopAlarm();
+document.body.classList.remove('no-scroll');
             }
         }
     });
@@ -764,3 +780,21 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', openWaitTracker);
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

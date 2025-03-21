@@ -135,33 +135,36 @@ function setupLikeButton() {
         }
     });
 
-    document.getElementById('likeContainer').addEventListener('click', async () => {
-        const isLiked = await getLikeStatus();
+document.getElementById('likeContainer').addEventListener('click', async () => {
+    const isLiked = await getLikeStatus();
 
-        if (!isLiked) {
-            await setLikeStatus(true);
-            likeIcon.classList.add('liked');
-            startBlinking(likeCounterElement);
+    if (!isLiked) {
+        await setLikeStatus(true);
+        likeIcon.classList.add('liked');
+        startBlinking(likeCounterElement);
 
-            updateCounter('incrementLikes').then(data => {
-                stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(4, '0'));
-                showFeedback('Thank you!');
-            });
+        updateCounter('incrementLikes').then(data => {
+            stopBlinking(likeCounterElement);
+            animateCounter(likeCounterElement, String(data.count).padStart(4, '0'));
+            showFeedback('Thank you!');
+            document.getElementById('modal-likeCounter').textContent = String(data.count).padStart(3, '0'); // Moved here
+        }).catch(error=>{
+            console.error("Error incrementing likes", error);
+        });
 
-            document.getElementById('modal-likeCounter').textContent =
-                String(data.count).padStart(3, '0');
-        } else {
-            await setLikeStatus(false);
-            likeIcon.classList.remove('liked');
-            startBlinking(likeCounterElement);
+    } else {
+        await setLikeStatus(false);
+        likeIcon.classList.remove('liked');
+        startBlinking(likeCounterElement);
 
-            updateCounter('decrementLikes').then(data => {
-                stopBlinking(likeCounterElement);
-                animateCounter(likeCounterElement, String(data.count).padStart(4, '0'));
-            });
-        }
-    });
+        updateCounter('decrementLikes').then(data => {
+            stopBlinking(likeCounterElement);
+            animateCounter(likeCounterElement, String(data.count).padStart(4, '0'));
+        }).catch(error=>{
+            console.error("Error decrementing likes", error);
+        });
+    }
+});
 }
 
 
