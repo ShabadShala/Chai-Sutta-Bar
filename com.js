@@ -173,15 +173,15 @@ window.closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
         // Inside the Misc data fetch .then block, after processing other data:
         const a9Value = data[8] && data[8][0]; // A9 cell (row 8, column 0)
         if (a9Value === "Image") {
-            checkImageSize().then(valid => {
-                if (valid) {
-                    document.getElementById('imageOverlay').style.display = 'flex';
-                    document.getElementById('driveImage').src = imageUrl;
-                    setTimeout(() => {
-                        document.getElementById('imageOverlay').style.display = 'none';
-                    }, 5000);
-                }
-            });
+            checkImageSize(imageUrl).then(valid => {
+                    if (valid) {
+                        document.getElementById('imageOverlay').style.display = 'flex';
+                        document.getElementById('driveImage').src = imageUrl;
+                        setTimeout(() => {
+                            document.getElementById('imageOverlay').style.display = 'none';
+                        }, 5000);
+                    }
+                });
         } else if (a9Value === "Message") {
             const b9Value = data[8] && data[8][1]; // B9 cell
             if (b9Value && b9Value.trim() !== "") {
@@ -224,15 +224,15 @@ window.closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
     console.error("Error fetching Misc data:", error);
 });
 
-// Function to check image size
-function checkImageSize() {
+// Update checkImageSize to accept imageUrl as a parameter
+function checkImageSize(imageUrl) {
     return fetch(imageUrl)
-    .then(response => {
-        if (!response.ok) throw new Error('Network error');
-        return response.blob();
-    })
-    .then(blob => (blob.size / 1024) < 250)
-    .catch(() => false);
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.blob();
+        })
+        .then(blob => (blob.size / 1024) < 250) // Check if image size is less than 250KB
+        .catch(() => false);
 }
 
 // Function to parse custom time format (hh.mmap)
