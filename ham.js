@@ -461,9 +461,9 @@
         <span class="counter-label">Likes</span>
         </div>
         <div class="counter-item">
-        <img src="icons/download.svg" alt="Installs" class="counter-icon">
+        <img src="icons/download.svg" alt="Install" class="counter-icon">
         <span id="modal-installsCounter">0000</span>
-        <span class="counter-label">Installs</span>
+        <span class="counter-label">Install</span>
         </div>
         <div class="counter-item">
         <img src="icons/users.svg" alt="Users" class="counter-icon">
