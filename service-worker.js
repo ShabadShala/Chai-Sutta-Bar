@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-app-cache-v45';
+const CACHE_NAME = 'my-app-cache-v47';
 const urlsToCache = [
   '/', '/index.html', '/com.js', '/ham.js', '/counter.js', 
   '/cheat.js', '/uti.js', '/icon-192.png', '/icon-256.png', 
