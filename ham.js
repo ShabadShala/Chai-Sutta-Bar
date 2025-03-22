@@ -928,82 +928,112 @@
             });
         }
         
-        let deferredPrompt;
+     let deferredPrompt;
 const installOption = document.getElementById('installOption'); // Ensure this element exists
 
 // Disable the install button
 function disableInstallButton() {
-    if (installOption && !installOption.classList.contains('disabled-option')) {
+    if (installOption) {
+        installOption.style.display = 'none';
         installOption.classList.add('disabled-option');
-        installOption.setAttribute('disabled', 'true'); // Prevent clicks
+        installOption.setAttribute('aria-disabled', 'true');
+        installOption.setAttribute('disabled', 'true');
     }
 }
 
 // Enable the install button
 function enableInstallButton() {
-    if (installOption && installOption.classList.contains('disabled-option')) {
+    if (installOption) {
+        installOption.style.display = 'block';
         installOption.classList.remove('disabled-option');
-        installOption.removeAttribute('disabled'); // Allow clicks
+        installOption.setAttribute('aria-disabled', 'false');
+        installOption.removeAttribute('disabled');
     }
 }
 
-// Check if running in standalone mode
+// Enhanced standalone mode detection
 function isStandaloneMode() {
-    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    return window.matchMedia('(display-mode: standalone)').matches || 
+           window.navigator.standalone ||
+           document.referrer.includes('android-app://');
 }
 
-// Check if the app is installed
+// Improved installation check
 async function checkIfAppInstalled() {
     try {
-        // If already installed, disable button
-        if (localStorage.getItem('pwa-installed') === 'true') {
+        // Immediate standalone check
+        if (isStandaloneMode()) {
+            localStorage.setItem('pwa-installed', 'true');
             disableInstallButton();
-            return;
+            return true;
         }
 
-        // Check via getInstalledRelatedApps (if supported)
+        // Check installed apps via API
         if (navigator.getInstalledRelatedApps) {
             const relatedApps = await navigator.getInstalledRelatedApps();
             if (relatedApps.length > 0) {
                 localStorage.setItem('pwa-installed', 'true');
                 disableInstallButton();
-                return;
+                return true;
             }
         }
 
-        // Fallback: If running in standalone mode, assume it's installed
-        if (isStandaloneMode()) {
-            localStorage.setItem('pwa-installed', 'true');
+        // Fallback to localStorage with validation
+        if (localStorage.getItem('pwa-installed') === 'true') {
+            if (!isStandaloneMode()) {
+                localStorage.removeItem('pwa-installed');
+                return false;
+            }
             disableInstallButton();
-            return;
+            return true;
         }
 
-        // If none of the conditions match, enable install button
-        enableInstallButton();
+        return false;
     } catch (error) {
-        console.error("Error checking installation status:", error);
+        console.error("Installation check failed:", error);
+        return false;
     }
 }
 
-// Handle beforeinstallprompt event
-window.addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault(); // Prevent the default browser prompt
-    deferredPrompt = event;
+// Event handlers
+window.addEventListener('beforeinstallprompt', async (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
     
-    // If not installed, show install option
-    if (localStorage.getItem('pwa-installed') !== 'true') {
-        enableInstallButton();
+    const isInstalled = await checkIfAppInstalled();
+    if (!isInstalled) enableInstallButton();
+});
+
+window.addEventListener('appinstalled', () => {
+    localStorage.setItem('pwa-installed', 'true');
+    disableInstallButton();
+    deferredPrompt = null;
+});
+
+// Visibility change handler
+document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible') {
+        await checkIfAppInstalled();
     }
 });
 
-// Install button click handler
+// Initial setup
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initial check
+    const isInstalled = await checkIfAppInstalled();
+    
+    // Hide button if PWA criteria aren't met or browser doesn't support installation
+    if (!window.matchMedia('(display-mode: browser)').matches && !isInstalled) {
+        if (!deferredPrompt) disableInstallButton();
+    }
+});
+
+// Install button handler
 if (installOption) {
     installOption.addEventListener('click', async () => {
         if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const choiceResult = await deferredPrompt.userChoice;
-            if (choiceResult.outcome === 'accepted') {
-                console.log("User accepted PWA installation.");
+            const { outcome } = await deferredPrompt.prompt();
+            if (outcome === 'accepted') {
                 localStorage.setItem('pwa-installed', 'true');
                 disableInstallButton();
             }
@@ -1011,24 +1041,6 @@ if (installOption) {
         }
     });
 }
-
-// Detect installation
-window.addEventListener('appinstalled', () => {
-    console.log("PWA installed");
-    localStorage.setItem('pwa-installed', 'true');
-    disableInstallButton();
-});
-
-// Check installation status on page load
-document.addEventListener('DOMContentLoaded', checkIfAppInstalled);
-
-// Detect visibility change to recheck installation status
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        checkIfAppInstalled();
-    }
-});
-
 
         
         
