@@ -95,6 +95,11 @@ function executeCheatOrder() {
         const lastOrderData = localStorage.getItem('lastOrder');
         const lastOfferCartData = localStorage.getItem('lastOfferCart');
         
+if (!lastOrderData && !lastOfferCartData) {
+    alert("No last order found");
+    return;
+}
+        
         if (lastOrderData) {
             const parsedOrder = JSON.parse(lastOrderData);
             console.log('Parsed lastOrder:', parsedOrder);
@@ -138,6 +143,8 @@ function executeCheatOrder() {
             console.warn('No last offer cart data found.');
             offerCart = [];
         }
+        
+
         
         // Mock form data with cheat indicators (update as needed)
         const formData = {};

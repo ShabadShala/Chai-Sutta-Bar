@@ -133,6 +133,79 @@
             }
             
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            /* Error Modal Styles */
+            .error-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-out;
+            }
+            
+            .error-modal {
+            background: white;
+            border-radius: 15px;
+            padding: 10rem 0;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 3px solid #ff4444;
+            box-shadow: 0 0 20px rgba(255,68,68,0.3);
+            }
+            
+            .error-modal-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* Ensure content takes full height */
+            }
+            
+            .error-message {
+            color: #333;
+            font-size: 3.5rem;
+            line-height: 1.5;
+            margin: 0; /* Remove default margin */
+            text-align: center;
+            }
+            
+            @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+            }       
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             /* /* General Styles */
             body {
             font-family: Arial, sans-serif;
@@ -2185,9 +2258,9 @@
             
             /* Help button styling */
             .help-button {
-           position: absolute;
-    top: 2.5rem; /* Adjust as needed */
-    left: 2.5rem; /* Adjust to keep it on the right */
+            position: absolute;
+            top: 2.5rem; /* Adjust as needed */
+            left: 2.5rem; /* Adjust to keep it on the right */
             width: 6rem;
             height: 6rem;
             border-radius: 50%;
@@ -2905,6 +2978,13 @@
         </noscript>
         
         
+        <div id="errorModal" class="error-modal-overlay" style="display: none;">
+            <div class="error-modal">
+                <div class="error-modal-content">
+                    <p class="error-message"></p> <!-- Only keep this -->
+                </div>
+            </div>
+        </div>
         
         
         <!-- Add this HTML just before the closing </body> tag -->
@@ -3289,6 +3369,10 @@
         <button id="devFill" style="position: fixed; bottom: 45px; right: 17px; z-index: 9999; padding: 1rem; background: #ff4444; color: white; border: none; border-radius: 5px;">
             DEV
         </button>
+        
+        
+        
+        
         
         
         
@@ -4640,6 +4724,34 @@
             
             
             
+            
+            
+            
+            
+            
+            // Add this function to show error modal
+            function showErrorModal(message) {
+                const modal = document.getElementById('errorModal');
+                const errorMessage = modal.querySelector('.error-message');
+                
+                // Convert newlines to <br>
+                let formattedMessage = message.replace(/\n/g, '<br>');
+                
+                // Convert email addresses to mailto links
+                formattedMessage = formattedMessage.replace(
+                /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+                '<a href="mailto:$1" style="color: blue; text-decoration: underline;">$1</a>'
+                );
+                
+                errorMessage.innerHTML = formattedMessage; // Apply the formatted message
+                modal.style.display = 'flex';
+            }
+            
+            
+            
+            
+            
+            
             // Fetch data from Google Script URL
             fetch(scriptUrl)
             .then(response => response.json())
@@ -4647,7 +4759,7 @@
                 
                 // Expiry check
                 if (data.error) {  
-                    alert(data.error); // Show error from backend
+                    showErrorModal(data.error); // Replace alert with custom modal
                     return;
                 }
                 
@@ -4855,9 +4967,9 @@
                     event.preventDefault(); // Prevent default link behavior
                     closeModal(); // Close modal when clicking "Main Menu"
                     activateCheatMode();
-//                    setActiveTab("allButton");
-  //                  resetFilters();
-    //                resetHeaders();
+                    //                    setActiveTab("allButton");
+                    //                  resetFilters();
+                    //                resetHeaders();
                 });
                 
                 // Favourites Button
@@ -4978,85 +5090,106 @@
             
             
             // Add this new function to handle favorites loading
-            function loadFromFavorites() {
-                const loadBtn = document.getElementById('loadFavoritesBtn');
-                
-                // Add loading animation
-                loadBtn.classList.add('loading');
-                loadBtn.disabled = true; // Optional: Disable button during loading
-                
-                setTimeout(() => {
-                    const favorites = JSON.parse(localStorage.getItem('favorites') || {});
-                    let loadedCount = 0;
-                    
-                    Object.keys(favorites).forEach(favoriteKey => {
-                        const [categoryName, itemName] = favoriteKey.split(':');
-                        
-                        const categoryHeader = Array.from(document.querySelectorAll('.category-header'))
-                        .find(header => {
-                            const leftPart = header.querySelector('.left').textContent.split('(')[0].trim();
-                            return leftPart === categoryName;
-                        });
-                        
-                        if (categoryHeader) {
-                            const categoryItems = categoryHeader.nextElementSibling;
-                            const menuItem = Array.from(categoryItems.querySelectorAll('.menu-item'))
-                            .find(item => {
-                                const colAB = item.querySelector('.colAB').textContent.replace(/☆|★/g, '').trim();
-                                return colAB === itemName;
-                            });
-                            
-                            if (menuItem) {
-                                const menuItemLine = menuItem.querySelector('.menu-item-line');
-                                const colCDE = menuItemLine.querySelector('.colCDE').textContent;
-                                const rateMatch = colCDE.match(/\d+/);
-                                
-                                if (rateMatch) {
-                                    const rate = rateMatch[0];
-                                    const categoryRight = categoryHeader.querySelector('.right').textContent.trim();
-                                    const rightParts = categoryRight.split('/').map(part => part.trim());
-                                    
-                                    const rateColumn = menuItemLine.querySelector('.colCDE').textContent.trim();
-                                    const rateParts = rateColumn.split(' / ');
-                                    const rateIndex = rateParts.findIndex(part => part.includes(rate));
-                                    
-                                    newitemName = itemName.replace(/\s*\(.*?\)\s*/g, '').trim();
-                                    let combinedName = `${categoryName} - ${newitemName}`;
-                                    
-                                    if (categoryRight && rateIndex !== -1 && rightParts[rateIndex]) {
-                                        combinedName += ` (${rightParts[rateIndex]})`;
-                                    }
-                                    
-                                    scrapItems.push({
-                                        name: combinedName,
-                                        rate: rate
-                                    });
-                                    loadedCount++;
-                                }
-                            }
+           function loadFromFavorites() {
+    const loadBtn = document.getElementById('loadFavoritesBtn');
+
+    // Prevent multiple clicks
+    if (loadBtn.classList.contains('loading')) return;
+
+    // Add loading animation
+    loadBtn.classList.add('loading');
+    loadBtn.disabled = true;
+
+    let timeout = setTimeout(() => {
+        let favorites = localStorage.getItem('favorites');
+
+        if (!favorites || favorites === '{}') { 
+            favorites = null;
+        } else {
+            favorites = JSON.parse(favorites);
+        }
+
+        if (!favorites || Object.keys(favorites).length === 0) {
+            // If no favorites exist, clear timeout, disable button, and exit
+            clearTimeout(timeout);
+            loadBtn.disabled = true;
+            loadBtn.style.pointerEvents = 'none';
+            loadBtn.style.opacity = '0.5';
+            document.getElementById('favoritesMessage').style.display = 'block';
+
+            // Remove loading animation
+            loadBtn.classList.remove('loading');
+            return;
+        }
+
+        let loadedCount = 0;
+
+        Object.keys(favorites).forEach(favoriteKey => {
+            const [categoryName, itemName] = favoriteKey.split(':');
+
+            const categoryHeader = Array.from(document.querySelectorAll('.category-header'))
+                .find(header => header.querySelector('.left').textContent.split('(')[0].trim() === categoryName);
+
+            if (categoryHeader) {
+                const categoryItems = categoryHeader.nextElementSibling;
+                const menuItem = Array.from(categoryItems.querySelectorAll('.menu-item'))
+                    .find(item => item.querySelector('.colAB').textContent.replace(/☆|★/g, '').trim() === itemName);
+
+                if (menuItem) {
+                    const menuItemLine = menuItem.querySelector('.menu-item-line');
+                    const colCDE = menuItemLine.querySelector('.colCDE').textContent;
+                    const rateMatch = colCDE.match(/\d+/);
+
+                    if (rateMatch) {
+                        const rate = rateMatch[0];
+                        const categoryRight = categoryHeader.querySelector('.right').textContent.trim();
+                        const rightParts = categoryRight.split('/').map(part => part.trim());
+
+                        const rateColumn = menuItemLine.querySelector('.colCDE').textContent.trim();
+                        const rateParts = rateColumn.split(' / ');
+                        const rateIndex = rateParts.findIndex(part => part.includes(rate));
+
+                        let newitemName = itemName.replace(/\s*\(.*?\)\s*/g, '').trim();
+                        let combinedName = `${categoryName} - ${newitemName}`;
+
+                        if (categoryRight && rateIndex !== -1 && rightParts[rateIndex]) {
+                            combinedName += ` (${rightParts[rateIndex]})`;
                         }
-                    });
-                    
-                    if (loadedCount > 0) {
-                        handleScrapItemsChange();
-                        updateScrapListDisplay();
-                        showFeedback(`Loaded ${loadedCount} favorites!`);
-                        } else {
-                        let favoritesButton = document.getElementById('loadFavoritesBtn');
-                        favoritesButton.disabled = true;
-                        favoritesButton.style.pointerEvents = 'none';
-                        favoritesButton.style.opacity = '0.5';
-                        
-                        // Show the existing message instead of recreating it
-                        document.getElementById('favoritesMessage').style.display = 'block';
+
+                        scrapItems.push({
+                            name: combinedName,
+                            rate: rate
+                        });
+                        loadedCount++;
                     }
-                    
-                    // Remove loading animation
-                    loadBtn.classList.remove('loading');
-                    loadBtn.disabled = false;
-                    
-                }, 250); // Simulating processing delay to match animation duration
+                }
             }
+        });
+
+        if (loadedCount > 0) {
+            handleScrapItemsChange();
+            updateScrapListDisplay();
+            showFeedback(`Loaded ${loadedCount} favorites!`);
+        } else {
+            // If nothing was loaded, disable the button
+            clearTimeout(timeout);
+            loadBtn.disabled = true;
+            loadBtn.style.pointerEvents = 'none';
+            loadBtn.style.opacity = '0.5';
+            document.getElementById('favoritesMessage').style.display = 'block';
+
+            // Remove loading animation
+            loadBtn.classList.remove('loading');
+            return;
+        }
+
+        // Remove loading animation
+        loadBtn.classList.remove('loading');
+        loadBtn.disabled = false;
+    }, 250); // Simulating processing delay
+}
+
+            
             
             
             
@@ -7322,255 +7455,255 @@
                             <span class="item-quantity">${qty}x</span>
                             </div>`;
                         }).join('');
-                    }
-                    
-                    // Add the fixed summary section
-                    container.innerHTML += `
-                    <div style="
-                    position: sticky;
-                    bottom: 0;
-                    background: white;
-                    padding: 1rem;
-                    padding-top: 2rem;
-                    display: flex;
-                    justify-content: space-between;
-                    font-size: 4rem;
-                    font-weight: bold;
-                    color: blue;
-                    
-                    ">
-                    <span>${sortedItems.length === 1 ? 'Item' : 'Items'}: ${sortedItems.length}</span>
-                    <span>${totalSortedQty === 1 ? 'Qty' : 'Qty'}: ${totalSortedQty}</span>
-                    </div>`;
-                    
-                    // ${offerItems.length ? 'border-bottom: 1px solid rgba(0, 0, 0, 0.1);' : ''}
-                    
-                    // Style container to allow scrolling
-                    container.style.display = 'flex';
-                    container.style.flexDirection = 'column';
-                    container.style.maxHeight = '80vh';
-                    container.style.overflowY = 'auto';
-                    
-                    
-                    // Show Offer Cart Items if any
-                    if (offerItems.length) {
+                        }
+                        
+                        // Add the fixed summary section
+                        container.innerHTML += `
+                        <div style="
+                        position: sticky;
+                        bottom: 0;
+                        background: white;
+                        padding: 1rem;
+                        padding-top: 2rem;
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 4rem;
+                        font-weight: bold;
+                        color: blue;
+                        
+                        ">
+                        <span>${sortedItems.length === 1 ? 'Item' : 'Items'}: ${sortedItems.length}</span>
+                        <span>${totalSortedQty === 1 ? 'Qty' : 'Qty'}: ${totalSortedQty}</span>
+                        </div>`;
+                        
+                        // ${offerItems.length ? 'border-bottom: 1px solid rgba(0, 0, 0, 0.1);' : ''}
+                        
+                        // Style container to allow scrolling
+                        container.style.display = 'flex';
+                        container.style.flexDirection = 'column';
+                        container.style.maxHeight = '80vh';
+                        container.style.overflowY = 'auto';
+                        
+                        
+                        // Show Offer Cart Items if any
+                        if (offerItems.length) {
                         const offerText = offerItems.length === 1 ? 'Offer Title' : 'Offer Titles';
                         const offerQtyText = totalOfferQty === 1 ? 'Offer Qty' : 'Offer Qty';
                         
                         container.innerHTML += `<div style="margin-top: 4rem;"></div>`;
                         container.innerHTML += offerItems.map(item => {
-                            totalOfferQty += item.count;
-                            return `<div class="checklist-item">
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                            <input type="checkbox">
-                            <span>${item.title} - ${item.description}</span>
-                            </div>
-                            <span class="item-quantity">${item.count}x</span>
-                            </div>`;
+                        totalOfferQty += item.count;
+                        return `<div class="checklist-item">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                        <input type="checkbox">
+                        <span>${item.title} - ${item.description}</span>
+                        </div>
+                        <span class="item-quantity">${item.count}x</span>
+                        </div>`;
                         }).join('') + 
                         `<div style="display: flex; justify-content: space-between; font-size: 4rem; font-weight: bold; color: blue; margin: 1rem;">
                         <span>${offerText}: ${offerItems.length}</span>
                         <span>${offerQtyText}: ${totalOfferQty}</span>
                         </div>`;
-                    }
-                    
-                }
-                
-                // Checkbox functionality
-                const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-                const updateClearButtonState = () => {
-                    clearButton.disabled = !Array.from(checkboxes).some(cb => cb.checked);
-                };
-                
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', function () {
+                        }
+                        
+                        }
+                        
+                        // Checkbox functionality
+                        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+                        const updateClearButtonState = () => {
+                        clearButton.disabled = !Array.from(checkboxes).some(cb => cb.checked);
+                        };
+                        
+                        checkboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function () {
                         const item = this.closest('.checklist-item');
                         item.classList.toggle('completed', this.checked);
                         updateClearButtonState();
-                    });
-                });
-                
-                clearButton.disabled = true;
-                overlay.style.display = 'flex';
-            }
-            
-            
-            
-            
-            
-            // Close handlers (keep existing functionality)
-            document.querySelector('.close-checklist').addEventListener('click', () => {
-                document.getElementById('checklistOverlay').style.display = 'none';
-                 document.body.classList.remove('no-scroll');
-            });
-            
-            document.getElementById('closeChecklist').addEventListener('click', () => {
-                document.getElementById('checklistOverlay').style.display = 'none';
-                 document.body.classList.remove('no-scroll');
-            });
-            
-            // Close modal when pressing the Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    document.getElementById('checklistOverlay').style.display = 'none';
-                     document.body.classList.remove('no-scroll');
-                }
-            });            
-            
-            // Close checklist when clicking outside the modal
-            document.getElementById('checklistOverlay').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('checklistOverlay')) {
-                    document.getElementById('checklistOverlay').style.display = 'none';
-                     document.body.classList.remove('no-scroll');
-                }
-            });
-            
-            
-            // Clear all checks when clearChecklist button is pressed
-            document.getElementById('clearChecklist').addEventListener('click', (e) => {
-                e.preventDefault();
-                const checkboxes = document.querySelectorAll('#checklistItemsContainer input[type="checkbox"]');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = false;
-                    checkbox.closest('.checklist-item').classList.remove('completed');
-                });
-                document.getElementById('clearChecklist').disabled = true; // Disable after clearing
-            });
-            
-            // Style for disabled button
-            document.addEventListener('DOMContentLoaded', () => {
-                const style = document.createElement('style');
-                style.textContent = `
-                #clearChecklist:disabled {
-                opacity: 0.5;
-                cursor: not-allowed;
-                }
-                `;
-                document.head.appendChild(style);
-            });
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            // Adjust scrapList and offercart
-            
-            // Calculate header height
-            document.addEventListener("DOMContentLoaded", function () {
-                const header = document.querySelector(".header");
-                if (header) {
-                    const headerHeight = header.offsetHeight; // Get header height
-                    document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 22}px`);
-                }
-            });
-            
-            // Add this function to update positions
-            function updateCartPosition() {
-                const scrapList = document.getElementById('scrapList');
-                const offerCart = document.getElementById('offer-cart');
-                
-                // Ensure smooth transition effect
-                offerCart.style.transition = 'top 0.5s ease-in-out, transform 0.5s ease-in-out';
-                
-                
-                if (scrapList.style.display === 'flex' && scrapList.children.length > 0) {
-                    // Position offer-cart below scrapList but keep it centered
-                    const scrapListRect = scrapList.getBoundingClientRect();
-                    offerCart.style.position = 'fixed';
-                    offerCart.style.top = `${scrapListRect.bottom + 2}px`;
-                    offerCart.style.left = '50%'; // Center it horizontally
-                    offerCart.style.transform = 'translateX(-50%)'; // Adjust centering
-                    offerCart.style.width = `${scrapList.offsetWidth}px`; // Optional: Match width
-                    } else {
-                    // Reset to default centered position
-                    offerCart.style.position = 'fixed';
-                    offerCart.style.top = 'var(--header-bottom, 22px)'; // Default position when scrapList is empty
-                    offerCart.style.left = '50%'; // Keep it centered
-                    offerCart.style.transform = 'translateX(-50%)';
-                    offerCart.style.width = ''; // Reset width
-                }
-            }
-            
-            // Observer to track changes in scrapList
-            const scrapListObserver = new ResizeObserver(() => {
-                if (scrapVisible) {
-                    updateCartPosition();
-                }
-            });
-            
-            // Update position on window resize
-            window.addEventListener('resize', updateCartPosition);
-            window.addEventListener('scroll', updateCartPosition); // Keep it fixed on scroll  
-            
-            
-            // DOM entries for adjustment
-            document.addEventListener("DOMContentLoaded", () => {
-                const scrapList = document.getElementById('scrapList');
-                const offerCart = document.getElementById('offer-cart');
-                
-                function adjustScrapListHeight() {
-                    const offerCartDisplay = window.getComputedStyle(offerCart).display;
-                
-                // Apply transition directly in JavaScript
-                scrapList.style.transition = "max-height 0.5s ease-in-out";
-                scrapList.style.transition = (offerCartDisplay === 'none') ? "max-height 0.5s ease-in-out" : "";
-                
-                scrapList.style.maxHeight = (offerCartDisplay === 'none') ? '55vh' : '45vh';        
-                }
-                
-                const observer = new MutationObserver(() => adjustScrapListHeight());
-                
-                observer.observe(offerCart, {
-                attributes: true,
-                attributeFilter: ['style', 'class']
-                });
-                
-                window.addEventListener('resize', adjustScrapListHeight);
-                
-                adjustScrapListHeight(); // Initial adjustment
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                </script>        
-                
-                
-                <script src="com.js"></script> <!-- Commu sidebar -->                
-                <script src="ham.js"></script> <!-- Hamburger sidebar -->                
-                <script src="counter.js"></script> <!-- Counters -->                
-                <script src="cheat.js"></script> <!-- Cheats, Dev tools -->     
-                <script src="uti.js"></script> <!-- Utilities -->     
-                
-                
-                </body>
-                </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                        });
+                        });
+                        
+                        clearButton.disabled = true;
+                        overlay.style.display = 'flex';
+                        }
+                        
+                        
+                        
+                        
+                        
+                        // Close handlers (keep existing functionality)
+                        document.querySelector('.close-checklist').addEventListener('click', () => {
+                        document.getElementById('checklistOverlay').style.display = 'none';
+                        document.body.classList.remove('no-scroll');
+                        });
+                        
+                        document.getElementById('closeChecklist').addEventListener('click', () => {
+                        document.getElementById('checklistOverlay').style.display = 'none';
+                        document.body.classList.remove('no-scroll');
+                        });
+                        
+                        // Close modal when pressing the Escape key
+                        document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') {
+                        document.getElementById('checklistOverlay').style.display = 'none';
+                        document.body.classList.remove('no-scroll');
+                        }
+                        });            
+                        
+                        // Close checklist when clicking outside the modal
+                        document.getElementById('checklistOverlay').addEventListener('click', (e) => {
+                        if (e.target === document.getElementById('checklistOverlay')) {
+                        document.getElementById('checklistOverlay').style.display = 'none';
+                        document.body.classList.remove('no-scroll');
+                        }
+                        });
+                        
+                        
+                        // Clear all checks when clearChecklist button is pressed
+                        document.getElementById('clearChecklist').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const checkboxes = document.querySelectorAll('#checklistItemsContainer input[type="checkbox"]');
+                        checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                        checkbox.closest('.checklist-item').classList.remove('completed');
+                        });
+                        document.getElementById('clearChecklist').disabled = true; // Disable after clearing
+                        });
+                        
+                        // Style for disabled button
+                        document.addEventListener('DOMContentLoaded', () => {
+                        const style = document.createElement('style');
+                        style.textContent = `
+                        #clearChecklist:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                        }
+                        `;
+                        document.head.appendChild(style);
+                        });
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        // Adjust scrapList and offercart
+                        
+                        // Calculate header height
+                        document.addEventListener("DOMContentLoaded", function () {
+                        const header = document.querySelector(".header");
+                        if (header) {
+                        const headerHeight = header.offsetHeight; // Get header height
+                        document.documentElement.style.setProperty("--header-bottom", `${headerHeight + 22}px`);
+                        }
+                        });
+                        
+                        // Add this function to update positions
+                        function updateCartPosition() {
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCart = document.getElementById('offer-cart');
+                        
+                        // Ensure smooth transition effect
+                        offerCart.style.transition = 'top 0.5s ease-in-out, transform 0.5s ease-in-out';
+                        
+                        
+                        if (scrapList.style.display === 'flex' && scrapList.children.length > 0) {
+                        // Position offer-cart below scrapList but keep it centered
+                        const scrapListRect = scrapList.getBoundingClientRect();
+                        offerCart.style.position = 'fixed';
+                        offerCart.style.top = `${scrapListRect.bottom + 2}px`;
+                        offerCart.style.left = '50%'; // Center it horizontally
+                        offerCart.style.transform = 'translateX(-50%)'; // Adjust centering
+                        offerCart.style.width = `${scrapList.offsetWidth}px`; // Optional: Match width
+                        } else {
+                        // Reset to default centered position
+                        offerCart.style.position = 'fixed';
+                        offerCart.style.top = 'var(--header-bottom, 22px)'; // Default position when scrapList is empty
+                        offerCart.style.left = '50%'; // Keep it centered
+                        offerCart.style.transform = 'translateX(-50%)';
+                        offerCart.style.width = ''; // Reset width
+                        }
+                        }
+                        
+                        // Observer to track changes in scrapList
+                        const scrapListObserver = new ResizeObserver(() => {
+                        if (scrapVisible) {
+                        updateCartPosition();
+                        }
+                        });
+                        
+                        // Update position on window resize
+                        window.addEventListener('resize', updateCartPosition);
+                        window.addEventListener('scroll', updateCartPosition); // Keep it fixed on scroll  
+                        
+                        
+                        // DOM entries for adjustment
+                        document.addEventListener("DOMContentLoaded", () => {
+                        const scrapList = document.getElementById('scrapList');
+                        const offerCart = document.getElementById('offer-cart');
+                        
+                        function adjustScrapListHeight() {
+                        const offerCartDisplay = window.getComputedStyle(offerCart).display;
+                        
+                        // Apply transition directly in JavaScript
+                        scrapList.style.transition = "max-height 0.5s ease-in-out";
+                        scrapList.style.transition = (offerCartDisplay === 'none') ? "max-height 0.5s ease-in-out" : "";
+                        
+                        scrapList.style.maxHeight = (offerCartDisplay === 'none') ? '55vh' : '45vh';        
+                        }
+                        
+                        const observer = new MutationObserver(() => adjustScrapListHeight());
+                        
+                        observer.observe(offerCart, {
+                        attributes: true,
+                        attributeFilter: ['style', 'class']
+                        });
+                        
+                        window.addEventListener('resize', adjustScrapListHeight);
+                        
+                        adjustScrapListHeight(); // Initial adjustment
+                        });
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        </script>        
+                        
+                        
+                        <script src="com.js"></script> <!-- Commu sidebar -->                
+                        <script src="ham.js"></script> <!-- Hamburger sidebar -->                
+                        <script src="counter.js"></script> <!-- Counters -->                
+                        <script src="cheat.js"></script> <!-- Cheats, Dev tools -->     
+                        <script src="uti.js"></script> <!-- Utilities -->     
+                        
+                        
+                        </body>
+                        </html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
