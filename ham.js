@@ -935,7 +935,7 @@ const installOption = document.getElementById('installOption'); // Ensure this e
 function disableInstallButton() {
     if (installOption && !installOption.classList.contains('disabled-option')) {
         installOption.classList.add('disabled-option');
-        installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
+        installOption.setAttribute('disabled', 'true'); // Prevent clicks
     }
 }
 
@@ -943,6 +943,7 @@ function disableInstallButton() {
 function enableInstallButton() {
     if (installOption && installOption.classList.contains('disabled-option')) {
         installOption.classList.remove('disabled-option');
+        installOption.removeAttribute('disabled'); // Allow clicks
     }
 }
 
@@ -954,10 +955,7 @@ function isStandaloneMode() {
 // Check if the app is installed
 async function checkIfAppInstalled() {
     try {
-        // Reset install button initially
-        enableInstallButton();
-
-        // Check localStorage flag first
+        // If already installed, disable button
         if (localStorage.getItem('pwa-installed') === 'true') {
             disableInstallButton();
             return;
@@ -973,13 +971,15 @@ async function checkIfAppInstalled() {
             }
         }
 
-        // Fallback to standalone mode detection
+        // Fallback: If running in standalone mode, assume it's installed
         if (isStandaloneMode()) {
             localStorage.setItem('pwa-installed', 'true');
             disableInstallButton();
             return;
         }
 
+        // If none of the conditions match, enable install button
+        enableInstallButton();
     } catch (error) {
         console.error("Error checking installation status:", error);
     }
@@ -989,7 +989,11 @@ async function checkIfAppInstalled() {
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault(); // Prevent the default browser prompt
     deferredPrompt = event;
-    enableInstallButton();
+    
+    // If not installed, show install option
+    if (localStorage.getItem('pwa-installed') !== 'true') {
+        enableInstallButton();
+    }
 });
 
 // Install button click handler
@@ -1024,6 +1028,7 @@ document.addEventListener('visibilitychange', () => {
         checkIfAppInstalled();
     }
 });
+
 
         
         
