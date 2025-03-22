@@ -30,7 +30,10 @@ fetch(miscUrl)
 .then(data => {
     if (data && data.length >= 2) {
         // Fetch delivery phone number from B3 cell
-        let deliveryPhone = data[3][1]; // Assuming B2 is in the 2nd row, 2nd column (0-indexed)
+        let deliveryPhone = (data[3][1] && typeof data[3][1] === "string" && data[3][1].trim() !== "")  
+        ? data[3][1].trim()  
+        : "91124-00010";
+        
         if (deliveryPhone) {
             deliveryPhone = deliveryPhone.replace(/-/g, ""); // Remove dashes
             const formattedDeliveryPhone = `tel:+91${deliveryPhone}`; // Add country code
@@ -43,7 +46,11 @@ fetch(miscUrl)
         }
         
         // Fetch WhatsApp phone number from B4 cell (3rd row, 2nd column, 0-indexed)
-        let chatNumber = data[4][1];
+        let chatNumber = (data[4][1] && typeof data[4][1] === "string" && data[4][1].trim() !== "")  
+        ? data[4][1].trim()  
+        : "91124-00010";
+        
+        
         if (chatNumber) {
             chatNumber = chatNumber.replace(/-/g, ""); // Remove dashes
         }
@@ -67,7 +74,10 @@ fetch(miscUrl)
         }
         
         // Fetch phone number from B6 cell (5th row, 2nd column, 0-indexed)
-        let contactPhone = data[6][1]; 
+        let contactPhone = (data[6][1] && typeof data[6][1] === "string" && data[6][1].trim() !== "")  
+        ? data[6][1].trim()  
+        : "90234-06002";
+        
         if (contactPhone) {
             contactPhone = contactPhone.replace(/-/g, ""); // Remove dashes
             const formattedContactPhone = `tel:+91${contactPhone}`; // Add country code
@@ -85,25 +95,39 @@ fetch(miscUrl)
             offerWhatsappNumber = offerWhatsappNumber.replace(/-/g, ""); // Remove dashes
             whatsappOfferNumber = '+91' + offerWhatsappNumber; // Add country code
         }
+               
+        //        window.deliveryAfterOpening = Number(data[9][1]); // Example: "30"
+        //        window.deliveryBeforeClosing = Number(data[10][1]); // Example: "30"
         
-        // Extract Open and Close times from Google Sheets
-        const openTimeStr = data[0][1]; // Example: "09.30am"
-        const closeTimeStr = data[1][1]; // Example: "10.45pm"
-        window.deliveryAfterOpening = Number(data[9][1]); // Example: "30"
-        window.deliveryBeforeClosing = Number(data[10][1]); // Example: "30"
         window.preparationTime = Number(data[11][1]); // Example: "30"
-      //  window.deliveryArea = Number(data[12][1].trim()); // Example: "15"
-        window.deliveryArea = Number(data[12][1].toString().trim());
+        //  window.deliveryArea = Number(data[12][1].trim()); // Example: "15"
+        window.deliveryArea = (data[12][1] && !isNaN(Number(data[12][1].toString().trim())))  
+        ? Number(data[12][1].toString().trim())  
+        : 5;
+        
         // NEW: Fetch waitTime from B14 (assuming data[13][1] is B14)
-window.waitTime = Number(data[13][1].toString().trim());
-
-
+        window.waitTime = (data[13][1] && !isNaN(Number(data[13][1].toString().trim())))  
+        ? Number(data[13][1].toString().trim())  
+        : 15;
+        
+        
+        // Open and Close timings
+        const openTimeStr = (data[0][1] && typeof data[0][1] === "string" && data[0][1].trim() !== "") 
+        ? data[0][1].trim() 
+        : "09.30am";
+        
+        const closeTimeStr = (data[1][1] && typeof data[1][1] === "string" && data[1][1].trim() !== "") 
+        ? data[1][1].trim() 
+        : "10.00pm";
         
         // Validate time format
-        if (!/^\d{1,2}\.\d{2}(am|pm)$/i.test(openTimeStr) || !/^\d{1,2}\.\d{2}(am|pm)$/i.test(closeTimeStr)) {
+        const timeRegex = /^\d{1,2}\.\d{2}(am|pm)$/i;
+        
+        if (!timeRegex.test(openTimeStr) || !timeRegex.test(closeTimeStr)) {
             console.error('Invalid time format detected');
             return;
         }
+        
         
         // Parse times once
         const openTime = parseCustomTime(openTimeStr);
@@ -112,140 +136,140 @@ window.waitTime = Number(data[13][1].toString().trim());
         const closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
         
         // After parsing openTime and closeTime
-window.openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
-window.closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
-
+        window.openTimeInMinutes = openTime.getHours() * 60 + openTime.getMinutes();
+        window.closeTimeInMinutes = closeTime.getHours() * 60 + closeTime.getMinutes();
+        
         // Function to update status in real-time
         function updateStatus() {
             const now = new Date();
             const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             const currentTime = now.getHours() * 60 + now.getMinutes();
             let statusMessage;
-
+            
             // Check if there's a special message for today
             const dataDate = new Date(data[2][0]);
             if (dataDate.getTime() === currentDate.getTime() && data[2][1] !== "") {
                 statusMessage = `<span style="color: #FFA500;">${data[2][1]}</span>`;
-            } else {
+                } else {
                 // Determine if open or closed
                 if (currentTime >= openTimeInMinutes && currentTime < closeTimeInMinutes) {
                     const timeLeft = closeTimeInMinutes - currentTime;
                     const blinkClass = timeLeft <= 15 ? 'blink' : '';
                     statusMessage = `<span style="color: #00FF00; font-weight: bold;">Open</span> <span class="${blinkClass}">until ${formatTime(closeTime)}</span>`;
-                } else {
+                    } else {
                     let timeUntilOpen = openTimeInMinutes - currentTime;
                     if (timeUntilOpen < 0) timeUntilOpen += 1440; // Add 24hrs in minutes
                     const blinkClass = timeUntilOpen <= 15 ? 'blink' : '';
                     statusMessage = `<span style="color: #FFA500;">Closed</span> ⋅ <span class="${blinkClass}">Opens ${formatTime(openTime)}</span>`;
                 }
             }
-
-            // Update the display
-            const timeElem = document.querySelector('.open-close');
-            if (timeElem) {
-                timeElem.innerHTML = statusMessage;
-            }
+        
+        // Update the display
+        const timeElem = document.querySelector('.open-close');
+        if (timeElem) {
+        timeElem.innerHTML = statusMessage;
         }
-
+        }
+        
         // Initial update
         updateStatus();
-
+        
         // Update every 30 seconds
         setInterval(updateStatus, 15000);
-
+        
         // Inside the Misc data fetch .then block, after processing other data:
         const a9Value = data[8] && data[8][0]; // A9 cell (row 8, column 0)
         if (a9Value === "Image") {
-            checkImageSize().then(valid => {
-                if (valid) {
-                    document.getElementById('imageOverlay').style.display = 'flex';
-                    document.getElementById('driveImage').src = imageUrl;
-                    setTimeout(() => {
-                        document.getElementById('imageOverlay').style.display = 'none';
-                    }, 5000);
-                }
-            });
-        } else if (a9Value === "Message") {
-            const b9Value = data[8] && data[8][1]; // B9 cell
-            if (b9Value && b9Value.trim() !== "") {
-                const messageOverlay = document.getElementById('messageOverlay');
-                const messageText = document.getElementById('messageText');
-                
-                // Set message content
-                messageText.textContent = b9Value;
-                
-                // Show the overlay
-                messageOverlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-                
-                // Close button handler
-                document.getElementById('closeMessage').onclick = () => {
-                    messageOverlay.style.display = 'none';
-                    document.body.style.overflow = '';
-                };
-                
-                // Click outside to close
-                messageOverlay.addEventListener('click', (e) => {
-                    if (e.target === messageOverlay) {
-                        messageOverlay.style.display = 'none';
-                        document.body.style.overflow = '';
-                    }
-                });
-                
-                // Auto-close after 5 seconds
-                setTimeout(() => {
-                    if (messageOverlay.style.display === 'flex') {
-                        messageOverlay.style.display = 'none';
-                        document.body.style.overflow = '';
-                    }
-                }, 5000);
-            }
+        checkImageSize().then(valid => {
+        if (valid) {
+        document.getElementById('imageOverlay').style.display = 'flex';
+        document.getElementById('driveImage').src = imageUrl;
+        setTimeout(() => {
+        document.getElementById('imageOverlay').style.display = 'none';
+        }, 5000);
         }
-    }
-})
-.catch(error => {
-    console.error("Error fetching Misc data:", error);
-});
-
-// Function to check image size
-function checkImageSize() {
-    return fetch(imageUrl)
-    .then(response => {
+        });
+        } else if (a9Value === "Message") {
+        const b9Value = data[8] && data[8][1]; // B9 cell
+        if (b9Value && b9Value.trim() !== "") {
+        const messageOverlay = document.getElementById('messageOverlay');
+        const messageText = document.getElementById('messageText');
+        
+        // Set message content
+        messageText.textContent = b9Value;
+        
+        // Show the overlay
+        messageOverlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Close button handler
+        document.getElementById('closeMessage').onclick = () => {
+        messageOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+        };
+        
+        // Click outside to close
+        messageOverlay.addEventListener('click', (e) => {
+        if (e.target === messageOverlay) {
+        messageOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+        }
+        });
+        
+        // Auto-close after 5 seconds
+        setTimeout(() => {
+        if (messageOverlay.style.display === 'flex') {
+        messageOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+        }
+        }, 5000);
+        }
+        }
+        }
+        })
+        .catch(error => {
+        console.error("Error fetching Misc data:", error);
+        });
+        
+        // Function to check image size
+        function checkImageSize() {
+        return fetch(imageUrl)
+        .then(response => {
         if (!response.ok) throw new Error('Network error');
         return response.blob();
-    })
-    .then(blob => (blob.size / 1024) < 250)
-    .catch(() => false);
-}
-
-// Function to parse custom time format (hh.mmap)
-function parseCustomTime(timeStr) {
-    const match = timeStr.match(/(\d{1,2})\.(\d{2})(am|pm)/i);
-    if (!match) {
+        })
+        .then(blob => (blob.size / 1024) < 250)
+        .catch(() => false);
+        }
+        
+        // Function to parse custom time format (hh.mmap)
+        function parseCustomTime(timeStr) {
+        const match = timeStr.match(/(\d{1,2})\.(\d{2})(am|pm)/i);
+        if (!match) {
         console.error('Invalid time format:', timeStr);
         return new Date(); // Handle error appropriately
-    }
-    
-    let hour = parseInt(match[1], 10);
-    const minute = parseInt(match[2], 10);
-    const period = match[3].toLowerCase();
-    
-    // Convert to 24-hour format
-    if (period === 'pm' && hour !== 12) {
+        }
+        
+        let hour = parseInt(match[1], 10);
+        const minute = parseInt(match[2], 10);
+        const period = match[3].toLowerCase();
+        
+        // Convert to 24-hour format
+        if (period === 'pm' && hour !== 12) {
         hour += 12;
-    } else if (period === 'am' && hour === 12) {
+        } else if (period === 'am' && hour === 12) {
         hour = 0;
-    }
-    
-    return new Date(0, 0, 0, hour, minute);
-}
-
-// Function to format time in hh:mm am/pm format
-function formatTime(date) {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const period = hours >= 12 ? "pm" : "am";
-    const formattedHours = hours % 12 || 12;  // Convert to 12-hour format
-    const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-    return `${formattedHours}:${formattedMinutes} ${period}`;
-}
+        }
+        
+        return new Date(0, 0, 0, hour, minute);
+        }
+        
+        // Function to format time in hh:mm am/pm format
+        function formatTime(date) {
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const period = hours >= 12 ? "pm" : "am";
+        const formattedHours = hours % 12 || 12;  // Convert to 12-hour format
+        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+        return `${formattedHours}:${formattedMinutes} ${period}`;
+        }                        
