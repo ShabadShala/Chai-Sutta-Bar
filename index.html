@@ -181,7 +181,7 @@
             
             .error-message {
             color: #333;
-            font-size: 3.5rem;
+            font-size: 5rem;
             line-height: 1.5;
             margin: 0; /* Remove default margin */
             text-align: center;
@@ -1056,8 +1056,8 @@
             cursor: pointer; /* Pointer for better UX */
             z-index: 103;            
             /* Circular button */
-            width: 10rem;
-            height: 10rem;
+            width: 12rem;
+            height: 12rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1383,22 +1383,14 @@
             }
             
             .hidden-message {
+             display: none;
             color: red;
             font-weight: bold;
-            font-size: 14px;
-            margin-top: 8px;
-            display: none; /* Initially hidden */
-            }
-            
-            .error-message {
-            width: 100%; /* Full width */
-            text-align: center; /* Center align */
             font-size: 5rem;
+            margin-top: 8px;
+             text-align: center;
             }
-            
-            
-            
-            
+
             
             
             
@@ -4939,11 +4931,11 @@
                 </div>
                 
                 <!-- Error messages below the full width of buttons -->
-                <p id="orderMessage" class="error-message" style="display: none; color: red; font-weight: bold; margin-top: 8px; font-size: 14px; text-align: center;">
+                <p id="orderMessage" class="hidden-message">
                 No previous order found
                 </p>
                 
-                <p id="favoritesMessage" class="error-message" style="display: none; color: red; font-weight: bold; margin-top: 8px; font-size: 14px; text-align: center;">
+                <p id="favoritesMessage" class="hidden-message">
                 No favourite item found
                 </p>
                 

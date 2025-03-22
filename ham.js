@@ -15,7 +15,7 @@
                     <li style="padding-left: ${indent}px;">
                     <div class="toggle ${hasChildren ? 'has-children' : ''}" data-level="${level}">
                     <span class="feature-name">${item.name}</span>
-                    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+                    ${hasChildren ? '<span class="toggle-icon">►</span>' : ''}
                     </div>
                     ${hasChildren ? `
                         <div class="sub-items-container">
@@ -131,7 +131,7 @@
         
         <span>Settings</span>
         </div>
-        <span class="toggle-icon">▶</span>
+        <span class="toggle-icon">►</span>
         </div>
         </div>
         
@@ -710,7 +710,7 @@
                     ${item.thirdColValue ? 
                     `<button class="info-btn" data-info="${item.thirdColValue.replace(/"/g, '&quot;')}">i</button>` : ''}
                     </div>
-                    ${hasChildren ? '<span class="toggle-icon">▶</span>' : ''}
+                    ${hasChildren ? '<span class="toggle-icon">►</span>' : ''}
                     </div>
                     ${hasChildren ? `
                         <div class="sub-items-container">
@@ -921,21 +921,80 @@
                         deferredPrompt = null;
                     });
                     } else {
-                    alert("You are viewing this message:\n- ON MOBILES, if the app is already installed, and you opened in browser. OR, if you've denied browser auto install prompt (means you've clicked \"not now\").\n- ON WINDOWS, sometimes this method does not work, install from the browser's menu.");
+                    alert("You are viewing this message:\n- on mobiiles, if the app is already installed, and you opened in browser.\n- on WINDOWS, this method does not work, install from the browser's menu.");
                     
                     
                 }
             });
         }
         
-        // Disable pwa buton is installed
-        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-            const installOption = document.getElementById('install-app');
-            if (installOption) {
+        const installOption = document.getElementById('install-app');
+        
+        // Disable the install button
+        function disableInstallButton() {
+            if (installOption && !installOption.classList.contains('disabled-option')) {
                 installOption.classList.add('disabled-option');
                 installOption.replaceWith(installOption.cloneNode(true)); // Remove event listeners
             }
         }
+        
+        // Check if running in standalone mode
+        function isStandaloneMode() {
+            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        }
+        
+        // Check if the app is already installed
+        async function checkIfAppInstalled() {
+            try {
+                // Check localStorage flag first
+                if (localStorage.getItem('pwa-installed') === 'true') {
+                    disableInstallButton();
+                    return;
+                }
+                
+                // Check via getInstalledRelatedApps (if supported)
+                if (navigator.getInstalledRelatedApps) {
+                    const relatedApps = await navigator.getInstalledRelatedApps();
+                    if (relatedApps.length > 0) {
+                        localStorage.setItem('pwa-installed', 'true');
+                        disableInstallButton();
+                        return;
+                    }
+                }
+                
+                // Fallback to standalone mode detection
+                if (isStandaloneMode()) {
+                    localStorage.setItem('pwa-installed', 'true');
+                    disableInstallButton();
+                }
+                } catch (error) {
+                console.error("Error checking installation status:", error);
+            }
+        }
+        
+        // Detect installation on page load
+        document.addEventListener('DOMContentLoaded', checkIfAppInstalled);
+        
+        // Detect real-time installation
+        window.addEventListener('appinstalled', () => {
+            localStorage.setItem('pwa-installed', 'true');
+            disableInstallButton();
+        });
+        
+        // Detect switching from browser to standalone mode
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                checkIfAppInstalled();
+            }
+        });
+        
+        // Optional: Handle beforeinstallprompt to control visibility initially
+        window.addEventListener('beforeinstallprompt', (event) => {
+            if (localStorage.getItem('pwa-installed') === 'true') {
+                disableInstallButton();
+            }
+        });
+        
         
         
         
@@ -1119,204 +1178,204 @@
                     // Create a URL for the blob
                     const url = URL.createObjectURL(blob);
                     
-                // Create a temporary anchor element to trigger the download
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
-                document.body.appendChild(a);
-                a.click(); // Trigger the download
-                document.body.removeChild(a); // Clean up
-                URL.revokeObjectURL(url); // Release the object URL
-                
-                console.log('QR code saved successfully');
-                } catch (error) {
-                console.error('Save failed:', error);
-                alert(`Save failed: ${error.message}`);
+                    // Create a temporary anchor element to trigger the download
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Chai-Sutta-Bar-BPA-QR-Code.png'; // Set the filename
+                    document.body.appendChild(a);
+                    a.click(); // Trigger the download
+                    document.body.removeChild(a); // Clean up
+                    URL.revokeObjectURL(url); // Release the object URL
+                    
+                    console.log('QR code saved successfully');
+                    } catch (error) {
+                    console.error('Save failed:', error);
+                    alert(`Save failed: ${error.message}`);
                 }
-                });
-                
-                
-                
-                
-                
-                // Attach event listeners
-                document.getElementById("share-qr-code")?.addEventListener("click", shareQRCode);
-                document.getElementById("print-qr-code")?.addEventListener("click", printQRCode);
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                // Initialize settings in collapsed state
-                const settingsSection = document.querySelector('.settings-section');
-                const settingsOptions = settingsSection.querySelector('.settings-options');
-                const toggleIcon = settingsSection.querySelector('.toggle-icon');
-                
-                // Function to collapse settings
-                function collapseSettings() {
-                settingsOptions.classList.remove('show');
-                settingsOptions.style.height = '0';
-                toggleIcon.classList.remove('rotated');
-                }
-                
-                // Toggle settings on header click
-                settingsSection.querySelector('.settings-header').addEventListener('click', function(e) {
-                e.stopPropagation();
-                const isOpening = !settingsOptions.classList.contains('show');
-                
-                if (isOpening) {
+            });
+            
+            
+            
+            
+            
+            // Attach event listeners
+            document.getElementById("share-qr-code")?.addEventListener("click", shareQRCode);
+            document.getElementById("print-qr-code")?.addEventListener("click", printQRCode);
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Initialize settings in collapsed state
+        const settingsSection = document.querySelector('.settings-section');
+        const settingsOptions = settingsSection.querySelector('.settings-options');
+        const toggleIcon = settingsSection.querySelector('.toggle-icon');
+        
+        // Function to collapse settings
+        function collapseSettings() {
+            settingsOptions.classList.remove('show');
+            settingsOptions.style.height = '0';
+            toggleIcon.classList.remove('rotated');
+        }
+        
+        // Toggle settings on header click
+        settingsSection.querySelector('.settings-header').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpening = !settingsOptions.classList.contains('show');
+            
+            if (isOpening) {
                 settingsOptions.classList.add('show');
                 settingsOptions.style.height = `${settingsOptions.scrollHeight}px`;
                 toggleIcon.classList.add('rotated');
                 } else {
                 collapseSettings();
-                }
-                });
-                
-                // Collapse settings when clicking anywhere else in the sidebar
-                document.querySelector('.hsidebar-content').addEventListener('click', function(e) {
-                if (!settingsSection.contains(e.target)) {
+            }
+        });
+        
+        // Collapse settings when clicking anywhere else in the sidebar
+        document.querySelector('.hsidebar-content').addEventListener('click', function(e) {
+            if (!settingsSection.contains(e.target)) {
                 collapseSettings();
-                }
-                });
-                
-                
-                // Initialize settings in collapsed state when sidebar opens
-                document.getElementById('hamburger-button').addEventListener('click', function() {
-                collapseSettings();
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                // Toggle Switch Handler
-                function handleToggle(switchElement, callback) {
-                switchElement.classList.toggle('active');
-                callback(switchElement.classList.contains('active'));
-                }  
-                
-                
-                
-                // Toggle Starry Background
-                // Toggle Starry Background
-                const toggleStarryBg = document.getElementById('toggle-starry-background');
-                if (toggleStarryBg) {
-                // Get elements
-                const toggleSwitch = toggleStarryBg.querySelector('.toggle-switch');
-                const starryBg = document.querySelector('.starry-background');
-                
-                // Initialize state
-                let isEnabled = localStorage.getItem('starryBackgroundEnabled') === 'true';
-                if (localStorage.getItem('starryBackgroundEnabled') === null) {
+            }
+        });
+        
+        
+        // Initialize settings in collapsed state when sidebar opens
+        document.getElementById('hamburger-button').addEventListener('click', function() {
+            collapseSettings();
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Toggle Switch Handler
+        function handleToggle(switchElement, callback) {
+            switchElement.classList.toggle('active');
+            callback(switchElement.classList.contains('active'));
+        }  
+        
+        
+        
+        // Toggle Starry Background
+        // Toggle Starry Background
+        const toggleStarryBg = document.getElementById('toggle-starry-background');
+        if (toggleStarryBg) {
+            // Get elements
+            const toggleSwitch = toggleStarryBg.querySelector('.toggle-switch');
+            const starryBg = document.querySelector('.starry-background');
+            
+            // Initialize state
+            let isEnabled = localStorage.getItem('starryBackgroundEnabled') === 'true';
+            if (localStorage.getItem('starryBackgroundEnabled') === null) {
                 isEnabled = false; // Default state
                 localStorage.setItem('starryBackgroundEnabled', isEnabled);
-                }
-                
-                // Set initial UI state
-                toggleSwitch.classList.toggle('active', isEnabled);
-                starryBg?.classList.toggle('disabled', !isEnabled);
-                
-                // Click handler
-                toggleStarryBg.addEventListener('click', function() {
+            }
+            
+            // Set initial UI state
+            toggleSwitch.classList.toggle('active', isEnabled);
+            starryBg?.classList.toggle('disabled', !isEnabled);
+            
+            // Click handler
+            toggleStarryBg.addEventListener('click', function() {
                 // Toggle state
                 isEnabled = !isEnabled;
                 
@@ -1329,176 +1388,176 @@
                 
                 // Close sidebar (keep this if you want)
                 if (isEnabled) {
-                toggleSidebar(false);
+                    toggleSidebar(false);
                 }
-                });
-                }
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                // Child Lock Modal Elements
-                const pinModal = document.createElement('div');
-                pinModal.id = 'pinModal';
-                pinModal.className = 'modal';
-                pinModal.innerHTML = `
-                <div class="modal-content" style="max-width: 300px">
-                <div class="close-btn">&times;</div>
-                <h3 class="modal-header">Child Lock</h3>
-                <div id="pinMessage" class="pin-message"></div>
-                <input type="number" 
-                id="pinInput" 
-                class="pin-input" 
-                placeholder="Enter 5-digit PIN" 
-                maxlength="5" 
-                inputmode="numeric">
-                <div class="modal-buttons">
-                <button id="confirmPin" class="confirm-btn">Confirm</button>
-                <button id="cancel-btn" class="cancel-btn">Cancel</button>
-                </div>
-                <div class="modal-buttons restart-container">
-                <button id="restartPin" class="restart-btn">
-                <img src="icons/startover.svg" 
-                alt="Restart" 
-                class="icon invert-icon">
-                Start Again
-                </button>
-                </div>
-                </div>`;
-                
-                document.body.appendChild(pinModal);
-                
-                // Add this with the other sidebar option event listeners
-                document.getElementById('childLockButton')?.addEventListener('click', () => {
-                toggleSidebar(false);
-                openModalStandalone('pinModal');
-                });
-                
-                setupModalTriggers('pinModal'); 
-                
-                
-                
-                // Child Lock Implementation
-                // Child Lock Implementation
-                let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
-                
-                document.addEventListener('DOMContentLoaded', () => {
-                childLockState = JSON.parse(localStorage.getItem('childLock')) || { 
+            });
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Child Lock Modal Elements
+        const pinModal = document.createElement('div');
+        pinModal.id = 'pinModal';
+        pinModal.className = 'modal';
+        pinModal.innerHTML = `
+        <div class="modal-content" style="max-width: 300px">
+        <div class="close-btn">&times;</div>
+        <h3 class="modal-header">Child Lock</h3>
+        <div id="pinMessage" class="pin-message"></div>
+        <input type="number" 
+        id="pinInput" 
+        class="pin-input" 
+        placeholder="Enter 5-digit PIN" 
+        maxlength="5" 
+        inputmode="numeric">
+        <div class="modal-buttons">
+        <button id="confirmPin" class="confirm-btn">Confirm</button>
+        <button id="cancel-btn" class="cancel-btn">Cancel</button>
+        </div>
+        <div class="modal-buttons restart-container">
+        <button id="restartPin" class="restart-btn">
+        <img src="icons/startover.svg" 
+        alt="Restart" 
+        class="icon invert-icon">
+        Start Again
+        </button>
+        </div>
+        </div>`;
+        
+        document.body.appendChild(pinModal);
+        
+        // Add this with the other sidebar option event listeners
+        document.getElementById('childLockButton')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('pinModal');
+        });
+        
+        setupModalTriggers('pinModal'); 
+        
+        
+        
+        // Child Lock Implementation
+        // Child Lock Implementation
+        let childLockState = JSON.parse(localStorage.getItem('childLock') || '{"pin": null, "isEnabled": false}');
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            childLockState = JSON.parse(localStorage.getItem('childLock')) || { 
                 pin: null, 
                 isEnabled: false 
-                };
-                updateChildLockDisplay();
-                disableElements();
-                });
-                
-                // Updated Child Lock toggle handler
-                document.getElementById('childLockButton').addEventListener('click', function() {
-                if(childLockState.isEnabled) {
+            };
+            updateChildLockDisplay();
+            disableElements();
+        });
+        
+        // Updated Child Lock toggle handler
+        document.getElementById('childLockButton').addEventListener('click', function() {
+            if(childLockState.isEnabled) {
                 showPinModal('disable');
                 } else {
                 showPinModal('enable');
-                }
-                });
-                
-                function toggleChildLock() {
-                childLockState.isEnabled ? showPinModal('disable') : showPinModal('enable');
-                }
-                
-                function showPinModal(action) {
-                const modal = document.getElementById('pinModal');
-                const message = document.getElementById('pinMessage');
-                const pinInput = document.getElementById('pinInput');
-                const confirmBtn = document.getElementById('confirmPin');
-                const restartBtn = document.getElementById('restartPin');
-                
-                if (restartBtn) restartBtn.style.display = 'none'; // Hide restart button
-                
-                pinInput.value = '';
-                pinInput.disabled = false;
-                message.textContent = action === 'enable' ? 'Set 5-digit PIN:' : 'Enter PIN to disable:';
-                confirmBtn.disabled = true;
-                
-                modal.style.display = 'flex';
-                
-                confirmBtn.replaceWith(confirmBtn.cloneNode(true));
-                pinInput.replaceWith(pinInput.cloneNode(true));
-                
-                const newConfirmBtn = document.getElementById('confirmPin');
-                const newPinInput = document.getElementById('pinInput');
-                
-                newPinInput.focus();
-                
-                if (action === 'enable') {
+            }
+        });
+        
+        function toggleChildLock() {
+            childLockState.isEnabled ? showPinModal('disable') : showPinModal('enable');
+        }
+        
+        function showPinModal(action) {
+            const modal = document.getElementById('pinModal');
+            const message = document.getElementById('pinMessage');
+            const pinInput = document.getElementById('pinInput');
+            const confirmBtn = document.getElementById('confirmPin');
+            const restartBtn = document.getElementById('restartPin');
+            
+            if (restartBtn) restartBtn.style.display = 'none'; // Hide restart button
+            
+            pinInput.value = '';
+            pinInput.disabled = false;
+            message.textContent = action === 'enable' ? 'Set 5-digit PIN:' : 'Enter PIN to disable:';
+            confirmBtn.disabled = true;
+            
+            modal.style.display = 'flex';
+            
+            confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+            pinInput.replaceWith(pinInput.cloneNode(true));
+            
+            const newConfirmBtn = document.getElementById('confirmPin');
+            const newPinInput = document.getElementById('pinInput');
+            
+            newPinInput.focus();
+            
+            if (action === 'enable') {
                 newConfirmBtn.onclick = () => handleFirstPinEntry(newPinInput, message, modal);
                 } else {
                 newConfirmBtn.onclick = () => handlePinSubmit(action, newPinInput, message, modal);
-                }
-                
-                newPinInput.onkeypress = (e) => {
+            }
+            
+            newPinInput.onkeypress = (e) => {
                 if (e.key === 'Enter' && newPinInput.value.length === 5) newConfirmBtn.click();
-                };
-                
-                newPinInput.oninput = () => {
+            };
+            
+            newPinInput.oninput = () => {
                 newPinInput.value = newPinInput.value.replace(/\D/g, '').slice(0, 5);
                 newConfirmBtn.disabled = newPinInput.value.length !== 5;
-                };
-                }
-                
-                function handleFirstPinEntry(pinInput, message, modal) {
-                const firstPin = pinInput.value;
-                if (firstPin.length !== 5 || isNaN(firstPin)) {
+            };
+        }
+        
+        function handleFirstPinEntry(pinInput, message, modal) {
+            const firstPin = pinInput.value;
+            if (firstPin.length !== 5 || isNaN(firstPin)) {
                 message.textContent = 'Invalid PIN! Must be 5 digits';
                 return;
-                }
-                pinInput.value = '';
-                message.textContent = 'Confirm 5-digit PIN:';
-                document.getElementById('confirmPin').disabled = true;
-                
-                pinInput.focus();
-                
-                document.getElementById('confirmPin').onclick = () => handleConfirmPinEntry(pinInput, message, modal, firstPin);
-                }
-                
-                function handleConfirmPinEntry(pinInput, message, modal, firstPin) {
-                const secondPin = pinInput.value;
-                
-                if (secondPin.length !== 5) {
+            }
+            pinInput.value = '';
+            message.textContent = 'Confirm 5-digit PIN:';
+            document.getElementById('confirmPin').disabled = true;
+            
+            pinInput.focus();
+            
+            document.getElementById('confirmPin').onclick = () => handleConfirmPinEntry(pinInput, message, modal, firstPin);
+        }
+        
+        function handleConfirmPinEntry(pinInput, message, modal, firstPin) {
+            const secondPin = pinInput.value;
+            
+            if (secondPin.length !== 5) {
                 message.textContent = 'Invalid PIN! Must be 5 digits';
                 return;
-                }
-                
-                if (secondPin !== firstPin) {
+            }
+            
+            if (secondPin !== firstPin) {
                 message.textContent = 'PINs do not match!';
                 pinInput.disabled = true;
                 document.getElementById('confirmPin').disabled = true;
@@ -1509,231 +1568,231 @@
                 restartBtn.onclick = () => showPinModal('enable');
                 
                 return;
-                }
-                
-                childLockState = { pin: secondPin, isEnabled: true };
-                localStorage.setItem('childLock', JSON.stringify(childLockState));
-                
-                
-                updateChildLockDisplay();
-                disableElements();
-                
-                setTimeout(() => {
+            }
+            
+            childLockState = { pin: secondPin, isEnabled: true };
+            localStorage.setItem('childLock', JSON.stringify(childLockState));
+            
+            
+            updateChildLockDisplay();
+            disableElements();
+            
+            setTimeout(() => {
                 modal.style.display = 'none';
                 hideOverlay(); // Add this line
-                }, 1000);
-                
-                }
-                
-                function handlePinSubmit(action, pinInput, message, modal, firstPin = null) {
-                const pin = pinInput.value;
-                
-                if (action === 'enable') {
+            }, 1000);
+            
+        }
+        
+        function handlePinSubmit(action, pinInput, message, modal, firstPin = null) {
+            const pin = pinInput.value;
+            
+            if (action === 'enable') {
                 if (pin !== firstPin) {
-                pinInput.value = 'PINs do not match!';
-                pinInput.disabled = true; // Disable input to prevent further typing
-                document.getElementById('confirmPin').disabled = true;
-                
-                // Create "Start Again" button
-                let restartBtn = document.createElement('button');
-                restartBtn.textContent = "Start Again";
-                restartBtn.onclick = () => showPinModal('enable');
-                
-                message.innerHTML = ''; // Clear existing message
-                message.appendChild(restartBtn);
-                
-                return;
+                    pinInput.value = 'PINs do not match!';
+                    pinInput.disabled = true; // Disable input to prevent further typing
+                    document.getElementById('confirmPin').disabled = true;
+                    
+                    // Create "Start Again" button
+                    let restartBtn = document.createElement('button');
+                    restartBtn.textContent = "Start Again";
+                    restartBtn.onclick = () => showPinModal('enable');
+                    
+                    message.innerHTML = ''; // Clear existing message
+                    message.appendChild(restartBtn);
+                    
+                    return;
                 }
                 childLockState = { pin: pin, isEnabled: true };
                 message.textContent = 'PIN set! Lock enabled';
                 } else {
                 if (pin !== childLockState.pin) {
-                message.textContent = 'Incorrect PIN!';
-                return;
+                    message.textContent = 'Incorrect PIN!';
+                    return;
                 }
                 childLockState = { pin: null, isEnabled: false };
                 message.textContent = 'Lock disabled';
-                }
-                
-                localStorage.setItem('childLock', JSON.stringify(childLockState));
-                updateChildLockDisplay();
-                disableElements();
-                
-                setTimeout(() => {
+            }
+            
+            localStorage.setItem('childLock', JSON.stringify(childLockState));
+            updateChildLockDisplay();
+            disableElements();
+            
+            setTimeout(() => {
                 modal.style.display = 'none';
                 hideOverlay(); // Add this line
-                }, 1000);
-                }
-                
-                
-                function updateChildLockDisplay() {
-                const btn = document.getElementById('childLockButton');
-                const toggleSwitch = btn.querySelector('.toggle-switch');
-                const img = btn.querySelector('img');
-                
-                // Update toggle state
-                toggleSwitch.classList.toggle('active', childLockState.isEnabled);
-                
-                // Update lock icon
-                img.src = childLockState.isEnabled ? "icons/lock.svg" : "icons/unlock.svg";
-                
-                // Update other elements
-                disableElements();
-                }
-                
-                function disableElements() {
-                document.querySelectorAll('.child-lock-restricted').forEach(element => {
+            }, 1000);
+        }
+        
+        
+        function updateChildLockDisplay() {
+            const btn = document.getElementById('childLockButton');
+            const toggleSwitch = btn.querySelector('.toggle-switch');
+            const img = btn.querySelector('img');
+            
+            // Update toggle state
+            toggleSwitch.classList.toggle('active', childLockState.isEnabled);
+            
+            // Update lock icon
+            img.src = childLockState.isEnabled ? "icons/lock.svg" : "icons/unlock.svg";
+            
+            // Update other elements
+            disableElements();
+        }
+        
+        function disableElements() {
+            document.querySelectorAll('.child-lock-restricted').forEach(element => {
                 element.classList.toggle('child-locked', childLockState.isEnabled);
                 if (element.tagName === 'BUTTON') {
-                element.disabled = childLockState.isEnabled;
+                    element.disabled = childLockState.isEnabled;
                 }
-                });
-                }
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                //       (The app will be restarted)<br>
-                
-                
-                // Clear Storage Modal
-                const clearStorageModal = document.createElement('div');
-                clearStorageModal.id = 'clear-storage-modal';
-                clearStorageModal.className = 'modal';
-                clearStorageModal.innerHTML = `
-                <div class="modal-content">
-                <div class="close-btn" style="color: white;">&times;</div>
-                <h3 class="modal-header" style="margin:0; padding: 0; color: white;">Warning!</h3>
-                
-                <div class="modal-body">
-                This will permanently delete:<br>
-                <span style="color: #00ff00;">
-                - Favourites<br>
-                - Carts Position<br>
-                - Last Order<br>
-                - Child Lock PIN<br>
-                - Settings
-                </span><br>
-                Are you sure you want to continue?
-                </div>
-                
-                <div class="modal-buttons">
-                <button id="confirm-clear" class="danger-btn">
-                <img src="icons/trash.svg" alt="Clear" width="14" height="14" class="invert-icon">
-                Clear
-                </button>
-                <button class="cancel-btn">Cancel</button>
-                </div>
-                </div>
-                `;
-                document.body.appendChild(clearStorageModal);
-                
-                // Add this with the other sidebar option event listeners
-                document.getElementById('clear-storage')?.addEventListener('click', () => {
-                toggleSidebar(false);
-                openModalStandalone('clear-storage-modal');
-                });
-                
-                setupModalTriggers('clear-storage-modal'); 
-                
-                
-                // Add confirmation handler
-                document.getElementById('confirm-clear')?.addEventListener('click', () => {
-                localStorage.clear();
-                sessionStorage.clear();
-                window.location.reload(true);
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                //   <label for="faq-search">Search:</label>
-                
-                
-                // Updated FAQ Modal HTML
-                // Update FAQ Modal HTML
-                const faqModal = document.createElement('div');
-                faqModal.id = 'faq-modal';
-                faqModal.className = 'modal';
-                faqModal.innerHTML = `
-                <div class="modal-content">
-                <div class="faq-header">
-                <h2>FAQs</h2>
-                
-                <input type="text" id="faq-search" placeholder="Search..." />
-                <div class="close-btn" style="color: white">&times;</div>
-                </div>
-                <div class="faq-scroll-container">
-                <div id="faq-content"></div>
-                </div>
-                <div class="faq-footer">
-                <button id="expand-all-btn" class="footer-button" onclick="expandAll()">
-                <img src="icons/expand-all.svg" alt="Expand All" width="20" class="invert-icon">
-                </button>
-                <button id="collapse-all-btn" class="footer-button" onclick="collapseAll()">
-                <img src="icons/collapse-all.svg" alt="Collapse All" width="20" class="invert-icon">
-                </button>
-                </div>
-                </div>`;
-                
-                document.body.appendChild(faqModal);
-                
-                // Add event listener for the FAQ option
-                document.getElementById('showFAQs')?.addEventListener('click', () => {
-                toggleSidebar(false);
-                openModalStandalone('faq-modal');
-                loadFAQs();
-                });
-                
-                setupModalTriggers('faq-modal');
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                // Updated FAQ Loading Function
-                let currentFAQs = [];
-                
-                // Modified loadFAQs function
-                async function loadFAQs() {
-                const container = document.getElementById('faq-content');
-                container.innerHTML = '<div class="faq-spinner"></div>';
-                
-                try {
+            });
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //       (The app will be restarted)<br>
+        
+        
+        // Clear Storage Modal
+        const clearStorageModal = document.createElement('div');
+        clearStorageModal.id = 'clear-storage-modal';
+        clearStorageModal.className = 'modal';
+        clearStorageModal.innerHTML = `
+        <div class="modal-content">
+        <div class="close-btn" style="color: white;">&times;</div>
+        <h3 class="modal-header" style="margin:0; padding: 0; color: white;">Warning!</h3>
+        
+        <div class="modal-body">
+        This will permanently delete:<br>
+        <span style="color: #00ff00;">
+        - Favourites<br>
+        - Carts Position<br>
+        - Last Order<br>
+        - Child Lock PIN<br>
+        - Settings
+        </span><br>
+        Are you sure you want to continue?
+        </div>
+        
+        <div class="modal-buttons">
+        <button id="confirm-clear" class="danger-btn">
+        <img src="icons/trash.svg" alt="Clear" width="14" height="14" class="invert-icon">
+        Clear
+        </button>
+        <button class="cancel-btn">Cancel</button>
+        </div>
+        </div>
+        `;
+        document.body.appendChild(clearStorageModal);
+        
+        // Add this with the other sidebar option event listeners
+        document.getElementById('clear-storage')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('clear-storage-modal');
+        });
+        
+        setupModalTriggers('clear-storage-modal'); 
+        
+        
+        // Add confirmation handler
+        document.getElementById('confirm-clear')?.addEventListener('click', () => {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.reload(true);
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //   <label for="faq-search">Search:</label>
+        
+        
+        // Updated FAQ Modal HTML
+        // Update FAQ Modal HTML
+        const faqModal = document.createElement('div');
+        faqModal.id = 'faq-modal';
+        faqModal.className = 'modal';
+        faqModal.innerHTML = `
+        <div class="modal-content">
+        <div class="faq-header">
+        <h2>FAQs</h2>
+        
+        <input type="text" id="faq-search" placeholder="Search..." />
+        <div class="close-btn" style="color: white">&times;</div>
+        </div>
+        <div class="faq-scroll-container">
+        <div id="faq-content"></div>
+        </div>
+        <div class="faq-footer">
+        <button id="expand-all-btn" class="footer-button" onclick="expandAll()">
+        <img src="icons/expand-all.svg" alt="Expand All" width="20" class="invert-icon">
+        </button>
+        <button id="collapse-all-btn" class="footer-button" onclick="collapseAll()">
+        <img src="icons/collapse-all.svg" alt="Collapse All" width="20" class="invert-icon">
+        </button>
+        </div>
+        </div>`;
+        
+        document.body.appendChild(faqModal);
+        
+        // Add event listener for the FAQ option
+        document.getElementById('showFAQs')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openModalStandalone('faq-modal');
+            loadFAQs();
+        });
+        
+        setupModalTriggers('faq-modal');
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Updated FAQ Loading Function
+        let currentFAQs = [];
+        
+        // Modified loadFAQs function
+        async function loadFAQs() {
+            const container = document.getElementById('faq-content');
+            container.innerHTML = '<div class="faq-spinner"></div>';
+            
+            try {
                 const response = await fetch(`${scriptUrl}?sheet=faq`);
                 const data = await response.json();
                 
                 if (data.error) throw new Error(data.error);
                 
                 const validFAQs = data.filter(item => 
-                item?.columnA && item?.columnB && item.partyColumn?.trim().toUpperCase() === 'Y'
+                    item?.columnA && item?.columnB && item.partyColumn?.trim().toUpperCase() === 'Y'
                 );
                 
                 if (validFAQs.length === 0) throw new Error('No FAQs found');
@@ -1745,419 +1804,418 @@
                 console.error('FAQ Error:', error);
                 container.innerHTML = `<div class="error-message">${error.message}</div>`;
                 setTimeout(() => container.innerHTML = '', 5000);
-                }
-                }
-                
-                // Search functionality
-                function handleSearch() {
-                const searchTerm = document.getElementById('faq-search').value.toLowerCase();
-                const filtered = currentFAQs.filter(item => {
+            }
+        }
+        
+        // Search functionality
+        function handleSearch() {
+            const searchTerm = document.getElementById('faq-search').value.toLowerCase();
+            const filtered = currentFAQs.filter(item => {
                 const question = item.columnA?.trim().toLowerCase() || '';
                 const answer = item.columnB?.trim().toLowerCase() || '';
                 return question.includes(searchTerm) || answer.includes(searchTerm);
-                });
-                renderFAQs(filtered);
-                }
-                
-                // Render FAQs function
-                function renderFAQs(faqs) {
-                const container = document.getElementById('faq-content');
-                container.innerHTML = faqs.length > 0 ? faqs.map((item, index) => `
+            });
+            renderFAQs(filtered);
+        }
+        
+        // Render FAQs function
+        function renderFAQs(faqs) {
+            const container = document.getElementById('faq-content');
+            container.innerHTML = faqs.length > 0 ? faqs.map((item, index) => `
                 <div class="faq-item" data-index="${index}">
                 <div class="faq-question">
                 ${item.columnA?.trim() || 'Untitled Question'}
-                <span class="toggle-icon">▶</span>
+                <span class="toggle-icon">►</span>
                 </div>
                 <div class="faq-answer">
                 ${(item.columnB?.trim() || 'No answer provided').replace(/\n/g, '<br>')}
                 </div>
                 </div>
-                `).join('') : '<div class="no-results">No matching FAQs found</div>';
-                
-                // Reattach event listeners
-                document.querySelectorAll('.faq-question').forEach(question => {
+            `).join('') : '<div class="no-results">No matching FAQs found</div>';
+            
+            // Reattach event listeners
+            document.querySelectorAll('.faq-question').forEach(question => {
                 question.addEventListener('click', toggleFAQ);
-                });
-                updateButtonState();
-                }
-                
-                // Add event listener for search input
-                document.getElementById('faq-search')?.addEventListener('input', handleSearch);
-                
-                
-                
-                function toggleFAQ() {
-                const wasOpen = this.parentElement.classList.contains('active');
-                
-                // Collapse all items
-                document.querySelectorAll('.faq-item').forEach(item => {
+            });
+            updateButtonState();
+        }
+        
+        // Add event listener for search input
+        document.getElementById('faq-search')?.addEventListener('input', handleSearch);
+        
+        
+        
+        function toggleFAQ() {
+            const wasOpen = this.parentElement.classList.contains('active');
+            
+            // Collapse all items
+            document.querySelectorAll('.faq-item').forEach(item => {
                 item.classList.remove('active');
                 item.querySelector('.faq-answer').classList.remove('show');
-                item.querySelector('.toggle-icon').textContent = '▶';
-                });
-                
-                // Open clicked item if it wasn't already open
-                if (!wasOpen) {
+                item.querySelector('.toggle-icon').textContent = '►';
+            });
+            
+            // Open clicked item if it wasn't already open
+            if (!wasOpen) {
                 this.parentElement.classList.add('active');
                 this.nextElementSibling.classList.add('show');
                 this.querySelector('.toggle-icon').textContent = '▼';
-                }
-                }
-                
-                
-                
-                window.expandAll = function() {
-                document.querySelectorAll('.faq-item').forEach(item => {
+            }
+        }
+        
+        
+        
+        window.expandAll = function() {
+            document.querySelectorAll('.faq-item').forEach(item => {
                 item.classList.add('active');
                 item.querySelector('.faq-answer').classList.add('show');
                 item.querySelector('.toggle-icon').textContent = '▼';
-                });
-                updateButtonState();
-                };
-                
-                window.collapseAll = function() {
-                document.querySelectorAll('.faq-item').forEach(item => {
+            });
+            updateButtonState();
+        };
+        
+        window.collapseAll = function() {
+            document.querySelectorAll('.faq-item').forEach(item => {
                 item.classList.remove('active');
                 item.querySelector('.faq-answer').classList.remove('show');
-                item.querySelector('.toggle-icon').textContent = '▶';
-                });
-                updateButtonState();
-                };
-                
-                // Function to update button states
-                function updateButtonState() {
-                const allExpanded = document.querySelectorAll('.faq-item.active').length === document.querySelectorAll('.faq-item').length;
-                const allCollapsed = document.querySelectorAll('.faq-item.active').length === 0;
-                
-                document.getElementById('expand-all-btn').disabled = allExpanded;
-                document.getElementById('collapse-all-btn').disabled = allCollapsed;
-                }
-                
-                // Update button state on individual question toggle
-                document.addEventListener('click', (event) => {
-                if (event.target.classList.contains('faq-question')) {
+                item.querySelector('.toggle-icon').textContent = '►';
+            });
+            updateButtonState();
+        };
+        
+        // Function to update button states
+        function updateButtonState() {
+            const allExpanded = document.querySelectorAll('.faq-item.active').length === document.querySelectorAll('.faq-item').length;
+            const allCollapsed = document.querySelectorAll('.faq-item.active').length === 0;
+            
+            document.getElementById('expand-all-btn').disabled = allExpanded;
+            document.getElementById('collapse-all-btn').disabled = allCollapsed;
+        }
+        
+        // Update button state on individual question toggle
+        document.addEventListener('click', (event) => {
+            if (event.target.classList.contains('faq-question')) {
                 setTimeout(updateButtonState, 100); // Slight delay to ensure state updates
-                }
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                document.getElementById('showChecklist')?.addEventListener('click', () => {
-                toggleSidebar(false);    
-                showChecklist();
-                document.body.classList.add('no-scroll');
-                });
-                
-                document.getElementById('showCalculator')?.addEventListener('click', () => {
-                toggleSidebar(false);    
-                document.getElementById('calculatorOverlay').style.display = 'flex';    
-                document.body.classList.add('no-scroll');
-                });
-                
-                document.getElementById('showStopwatch')?.addEventListener('click', () => {
-                toggleSidebar(false);    
-                document.getElementById('stopwatchModal').style.display = 'flex';    
-                document.body.classList.add('no-scroll');
-                });
-                
-                document.getElementById('showPuzzle')?.addEventListener('click', () => {
-                toggleSidebar(false);    
-                document.getElementById('puzzleModal').style.display = 'flex';    
-                document.body.classList.add('no-scroll');
-                });
-                
-                document.getElementById('tic-tac-toe')?.addEventListener('click', () => {
-                toggleSidebar(false);    
-                ticInitGame();
-                document.body.classList.add('no-scroll');
-                });
-                
-                document.getElementById('timer')?.addEventListener('click', () => {
-                toggleSidebar(false);
-                openWaitTracker();
-                document.body.classList.add('no-scroll');
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                } //hsidebar
-                
-                // Call the setup function
-                setupHamburgerMenu();
-                
-                })(); // IIFE Ends
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                //Hide the Save (save-qr-code) button from project
-                document.addEventListener("DOMContentLoaded", function () {
-                const saveButton = document.getElementById("save-qr-code");
-                if (saveButton) {
-                saveButton.style.display = "none"; // Completely hide the button
-                }
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                let deferredPrompt; // Variable to hold the deferred prompt event
-                
-                // Listen for the beforeinstallprompt event
-                window.addEventListener("beforeinstallprompt", (e) => {
-                e.preventDefault(); // Prevent the default prompt from showing automatically
-                deferredPrompt = e; // Store the event so we can trigger it later
-                
-                // Optionally, show a custom install button here if needed
-                // document.getElementById('install-button').style.display = 'block'; 
-                
-                // Automatically trigger the prompt after a delay
-                setTimeout(() => {
-                deferredPrompt.prompt(); // Show the install prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                // Handle the user's response
-                if (choiceResult.outcome === "accepted") {
+            }
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        document.getElementById('showChecklist')?.addEventListener('click', () => {
+            toggleSidebar(false);    
+            showChecklist();
+            document.body.classList.add('no-scroll');
+        });
+        
+        document.getElementById('showCalculator')?.addEventListener('click', () => {
+            toggleSidebar(false);    
+            document.getElementById('calculatorOverlay').style.display = 'flex';    
+            document.body.classList.add('no-scroll');
+        });
+        
+        document.getElementById('showStopwatch')?.addEventListener('click', () => {
+            toggleSidebar(false);    
+            document.getElementById('stopwatchModal').style.display = 'flex';    
+            document.body.classList.add('no-scroll');
+        });
+        
+        document.getElementById('showPuzzle')?.addEventListener('click', () => {
+            toggleSidebar(false);    
+            document.getElementById('puzzleModal').style.display = 'flex';    
+            document.body.classList.add('no-scroll');
+        });
+        
+        document.getElementById('tic-tac-toe')?.addEventListener('click', () => {
+            toggleSidebar(false);    
+            ticInitGame();
+            document.body.classList.add('no-scroll');
+        });
+        
+        document.getElementById('timer')?.addEventListener('click', () => {
+            toggleSidebar(false);
+            openWaitTracker();
+            document.body.classList.add('no-scroll');
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    } //hsidebar
+    
+    // Call the setup function
+    setupHamburgerMenu();
+    
+})(); // IIFE Ends
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Hide the Save (save-qr-code) button from project
+document.addEventListener("DOMContentLoaded", function () {
+    const saveButton = document.getElementById("save-qr-code");
+    if (saveButton) {
+        saveButton.style.display = "none"; // Completely hide the button
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let deferredPrompt; // Variable to hold the deferred prompt event
+
+// Listen for the beforeinstallprompt event
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault(); // Prevent the default prompt from showing automatically
+    deferredPrompt = e; // Store the event so we can trigger it later
+    
+    // Optionally, show a custom install button here if needed
+    // document.getElementById('install-button').style.display = 'block'; 
+    
+    // Automatically trigger the prompt after a delay
+    setTimeout(() => {
+        deferredPrompt.prompt(); // Show the install prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            // Handle the user's response
+            if (choiceResult.outcome === "accepted") {
                 console.log("User accepted the install prompt");
                 } else {
                 console.log("User dismissed the install prompt");
-                }
-                deferredPrompt = null; // Reset the deferred prompt
-                });
-                }, 3000); // Adjust delay as needed (e.g., 3 seconds)
-                });               
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                // Deep Search
-                let cheatActive = localStorage.getItem('cheatActive') === 'true'; // Get state from storage
-                let activationListenersAdded = false;
-                
-                function getWordUnderPointer(event) {
-                const x = event.clientX || (event.touches?.[0]?.clientX);
-                const y = event.clientY || (event.touches?.[0]?.clientY);
-                
-                const element = document.elementFromPoint(x, y);
-                if (!element?.classList?.contains('colAB')) return null;
-                
-                const range = document.caretRangeFromPoint(x, y);
-                if (!range) return null;
-                
-                const textNode = range.startContainer;
-                const offset = range.startOffset;
-                const text = textNode.textContent || '';
-                
-                // Find word boundaries
-                let start = offset;
-                while (start > 0 && !/\s/.test(text[start - 1])) start--;
-                
-                let end = offset;
-                while (end < text.length && !/\s/.test(text[end])) end++;
-                
-                return text.slice(start, end)
-                .trim()  // First remove whitespace
-                .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
-                }
-                
-                function simulateSearchInput(word) {
-                const searchInput = document.getElementById('searchInput');
-                
-                // Show search UI elements
-                document.querySelector('.search-container').style.display = 'block';
-                document.getElementById('filterContainer').style.display = 'flex';
-                document.getElementById('clearButton').style.display = 'block';
-                
-                // Trigger search
-                searchInput.value = word;
-                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                }
-                
-                function handleCheatInteraction(event) {
-                if (!cheatActive) return;
-                
-                const word = getWordUnderPointer(event);
-                if (word) {
-                simulateSearchInput(word);
-                showFeedback(`CHEAT: Filtering by "${word}"`);
-                }
-                }
-                
-                function addCheatListeners() {
-                if (activationListenersAdded) return;
-                
-                // Add click handler for desktop
-                document.addEventListener('click', (e) => {
-                if (e.target.closest('.colAB')) {
-                handleCheatInteraction(e);
-                }
-                });
-                
-                activationListenersAdded = true;
-                }
-                
-                
-                // Add event listener for the cheat toggle button
-                document.getElementById('cheatToggleButton')?.addEventListener('click', function() {
-                const toggleSwitch = this.querySelector('.toggle-switch');
-                
-                // Toggle state
-                cheatActive = !cheatActive;
-                
-                // Update UI
-                toggleSwitch.classList.toggle('active');
-                localStorage.setItem('cheatActive', cheatActive);
-                
-                // Manage functionality
-                if (cheatActive) {
-                addCheatListeners();
-                showFeedback('Item Search activated');
-                } else {
-                showFeedback('Item Search deactivated');
-                }
-                
-                // Close sidebar if needed
-                toggleSidebar(false);
-                });
-                
-                // Initialize on load
-                function initCheatToggle() {
-                const toggle = document.querySelector('#cheatToggleButton .toggle-switch');
-                if (toggle) {
-                toggle.classList.toggle('active', cheatActive);
-                if (cheatActive) addCheatListeners();
-                }
-                }
-                initCheatToggle();
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                                
+            }
+            deferredPrompt = null; // Reset the deferred prompt
+        });
+    }, 3000); // Adjust delay as needed (e.g., 3 seconds)
+});               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Deep Search
+let cheatActive = localStorage.getItem('cheatActive') === 'true'; // Get state from storage
+let activationListenersAdded = false;
+
+function getWordUnderPointer(event) {
+    const x = event.clientX || (event.touches?.[0]?.clientX);
+    const y = event.clientY || (event.touches?.[0]?.clientY);
+    
+    const element = document.elementFromPoint(x, y);
+    if (!element?.classList?.contains('colAB')) return null;
+    
+    const range = document.caretRangeFromPoint(x, y);
+    if (!range) return null;
+    
+    const textNode = range.startContainer;
+    const offset = range.startOffset;
+    const text = textNode.textContent || '';
+    
+    // Find word boundaries
+    let start = offset;
+    while (start > 0 && !/\s/.test(text[start - 1])) start--;
+    
+    let end = offset;
+    while (end < text.length && !/\s/.test(text[end])) end++;
+    
+    return text.slice(start, end)
+    .trim()  // First remove whitespace
+    .replace(/^[()]+|[()]+$/g, '');  // Then remove surrounding parentheses
+}
+
+function simulateSearchInput(word) {
+    const searchInput = document.getElementById('searchInput');
+    
+    // Show search UI elements
+    document.querySelector('.search-container').style.display = 'block';
+    document.getElementById('filterContainer').style.display = 'flex';
+    document.getElementById('clearButton').style.display = 'block';
+    
+    // Trigger search
+    searchInput.value = word;
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function handleCheatInteraction(event) {
+    if (!cheatActive) return;
+    
+    const word = getWordUnderPointer(event);
+    if (word) {
+        simulateSearchInput(word);
+        showFeedback(`CHEAT: Filtering by "${word}"`);
+    }
+}
+
+function addCheatListeners() {
+    if (activationListenersAdded) return;
+    
+    // Add click handler for desktop
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.colAB')) {
+            handleCheatInteraction(e);
+        }
+    });
+    
+    activationListenersAdded = true;
+}
+
+
+// Add event listener for the cheat toggle button
+document.getElementById('cheatToggleButton')?.addEventListener('click', function() {
+    const toggleSwitch = this.querySelector('.toggle-switch');
+    
+    // Toggle state
+    cheatActive = !cheatActive;
+    
+    // Update UI
+    toggleSwitch.classList.toggle('active');
+    localStorage.setItem('cheatActive', cheatActive);
+    
+    // Manage functionality
+    if (cheatActive) {
+        addCheatListeners();
+        showFeedback('Item Search activated');
+        } else {
+        showFeedback('Item Search deactivated');
+    }
+    
+    // Close sidebar if needed
+    toggleSidebar(false);
+});
+
+// Initialize on load
+function initCheatToggle() {
+    const toggle = document.querySelector('#cheatToggleButton .toggle-switch');
+    if (toggle) {
+        toggle.classList.toggle('active', cheatActive);
+        if (cheatActive) addCheatListeners();
+    }
+}
+initCheatToggle();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
